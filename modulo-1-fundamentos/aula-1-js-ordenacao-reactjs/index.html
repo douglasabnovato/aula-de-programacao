@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap de Estudos | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-left: 22px;
+        }
+
+        .atividade-box {
+            background-color: rgba(22, 27, 34, 0.6);
+            border: 1px dashed var(--border-color);
+            padding: 16px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .atividade-box span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.02);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .atividade-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Estilos do Acordeão de Atividade */
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Roadmap de Estudos Oficial</h1>
+        <p>Trilha prática recomendada para o desenvolvimento técnico no ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: JAVASCRIPT E ESTRUTURA DE DADOS -->
+            <div class="card" id="card-1">
+                <h2>🔎 1. Fundamentos de JavaScript, DOM e Algoritmos</h2>
+                <p>Pratique os conceitos essenciais da linguagem, manipulação de elementos e lógicas de programação
+                    diretamente aplicadas no desenvolvimento web moderno.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=lFq1aDSi3jI&t=96s" target="_blank">▶️ Revisando
+                            fundamentos do Javascript (em menos de 30 minutos)</a>
+                        <span class="link-desc">Uma passada rápida e prática pelos conceitos base, variáveis, tipos e
+                            manipulação inicial de elementos por Mayk Brito.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=EfF1M7myAyY" target="_blank">▶️ Estrutura de Dados (A
+                            famosa ED que todo dev tem que aprender)</a>
+                        <span class="link-desc">Desmistificando a estrutura de dados na computação e entendendo a
+                            importância disso para a performance de aplicações reais.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=feHP76lVg9w" target="_blank">▶️ Array - Estrutura de
+                            dados com javascript</a>
+                        <span class="link-desc">Compreensão prática de como funcionam os vetores, coleções e sua
+                            manipulação nativa eficiente em JavaScript.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=9GdesxWtOgs" target="_blank">▶️ Árvores: O Começo de
+                            TUDO | Estruturas de Dados e Algoritmos</a>
+                        <span class="link-desc">Introdução conceitual e prática a estruturas hierárquicas complexas para
+                            buscas e organização avançada de dados.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Construindo um Gerenciador de Lista com JS</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para criar sua aplicação prática aplicando
+                            os conceitos dos vídeos:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> Crie um arquivo <code>index.html</code> e um
+                                arquivo <code>script.js</code> vinculados na sua máquina.</li>
+                            <li><strong>Estrutura HTML Base:</strong> Adicione um campo de texto (`&lt;input&gt;`), um
+                                botão de adicionar e uma lista (`&lt;ul&gt;`) vazia na tela.</li>
+                            <li><strong>Seleção de Elementos (DOM):</strong> Utilize o
+                                <code>document.querySelector</code> para capturar os elementos criados no HTML dentro do
+                                seu JavaScript.
+                            </li>
+                            <li><strong>Criação da Estrutura de Dados:</strong> Declare uma variável do tipo Array
+                                (vetor) vazia chamada <code>atividades</code> para armazenar os itens.</li>
+                            <li><strong>Aplicação de Variáveis e Tipos:</strong> Crie constantes e variáveis (usando
+                                <code>const</code> e <code>let</code>) para gerenciar os valores digitados pelo usuário.
+                            </li>
+                            <li><strong>Função de Cadastro:</strong> Desenvolva uma função Arrow Function para capturar
+                                o valor digitado no input e inseri-lo no array utilizando o método adequado.</li>
+                            <li><strong>Manipulação de Coleções:</strong> Utilize métodos de array para garantir que
+                                novos itens sejam inseridos de forma limpa e organizada na memória.</li>
+                            <li><strong>Renderização Dinâmica na Tela:</strong> Atualize o conteúdo do elemento HTML da
+                                lista utilizando template literals para exibir os itens cadastrados.</li>
+                            <li><strong>Simulação de Lógica de Busca:</strong> Crie uma pequena função de busca que
+                                percorra o array para encontrar e destacar um item específico na tela.</li>
+                            <li><strong>Validação e Testes:</strong> Abra o arquivo no navegador, insira dados, teste o
+                                fluxo completo e valide o comportamento no Console do Desenvolvedor.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ALGORITMOS DE ORDENAÇÃO -->
+            <div class="card" id="card-2">
+                <h2>📊 2. Algoritmos de Ordenação em JavaScript</h2>
+                <p>Estude a lógica por trás dos principais métodos de ordenação de elementos para otimizar o desempenho
+                    computacional e a resolução de problemas.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=8RkZoBZNNgI&t=23s" target="_blank">▶️ O que é e COMO
+                            FUNCIONA o BubbleSort (passo-a-passo)</a>
+                        <span class="link-desc">Demonstração visual detalhada de como o algoritmo da bolha realiza as
+                            comparações sucessivas e as trocas de posições em um vetor.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=efiCoqRQxb4&list=PLG3ume5wUwQphfXY-kDQQ91CuBStoO56j&index=3"
+                            target="_blank">▶️ Insertion Sort - Ordenação por Inserção</a>
+                        <span class="link-desc">Estudo prático de como o algoritmo constrói a sub-lista ordenada
+                            elemento por elemento, semelhante à organização de cartas na mão.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=ilv2U7jRArQ" target="_blank">▶️ SelectionSort,
+                            demonstração do algoritmo de ordenação por seleção em JavaScript | Ordenação de Dados</a>
+                        <span class="link-desc">Demonstração aplicada em código JavaScript puro de como buscar o menor
+                            elemento a cada ciclo e posicioná-lo corretamente.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Implementando BubbleSort e SelectionSort em JS</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para criar sua aplicação prática de
+                            ordenação baseada nos vídeos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Ambiente de Testes:</strong> Crie um arquivo HTML simples e vincule um script
+                                JavaScript dedicado aos testes lógicos de ordenação.</li>
+                            <li><strong>Criação do Vetor Desordenado:</strong> Declare um array numérico contendo
+                                elementos fora de ordem (ex: <code>[5, 2, 9, 1, 7]</code>).</li>
+                            <li><strong>Função de Troca (Swap):</strong> Desenvolva uma lógica auxiliar ou função para
+                                alternar as posições de dois elementos dentro de um vetor.</li>
+                            <li><strong>Estrutura de Repetição Aninhada:</strong> Configure laços de repetição (como
+                                <code>for</code> cruzados) para varrer os elementos comparando vizinhos.
+                            </li>
+                            <li><strong>Implementação do BubbleSort:</strong> Aplique a lógica do algoritmo da bolha
+                                empurrando os maiores valores para o final da matriz a cada passada.</li>
+                            <li><strong>Isolamento do SelectionSort:</strong> Crie uma função separada para encontrar o
+                                índice do menor elemento do vetor e posicioná-lo no início.</li>
+                            <li><strong>Manipulação de Índices:</strong> Utilize variáveis de controle indexadas para
+                                rastrear o menor número ou a posição correta de inserção.</li>
+                            <li><strong>Exibição no Console:</strong> Utilize <code>console.log()</code> antes e depois
+                                da execução de cada algoritmo para validar o estado inicial e final do array.</li>
+                            <li><strong>Interface Visual Opcional:</strong> Conecte os arrays ordenados a elementos HTML
+                                de lista (`&lt;ul&gt;`) para exibir a ordenação em tela.</li>
+                            <li><strong>Validação de Performance:</strong> Teste diferentes tamanhos de arrays e analise
+                                o comportamento de execução de cada método estudado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: REACT E FRONTEND MODERNO -->
+            <div class="card" id="card-3">
+                <h2>🌟 3. Meu Primeiro Projeto em React.js</h2>
+                <p>Dê seus primeiros passos estruturando componentes modulares, entendendo props, estados e criando
+                    aplicações ricas em interface com o ecossistema moderno do React.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3Jg4tsebuTg&t=996s" target="_blank">▶️ 3 CONCEITOS QUE
+                            VOCÊ PRECISA DOMINAR | REACTJS</a>
+                        <span class="link-desc">Explicação direta e focada nos pilares fundamentais que todo programador
+                            iniciante precisa dominar no ecossistema React.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=Vo13m75XpIU" target="_blank">▶️ #41 - Ciclo de vida de
+                            um componente React e useState | MERN STACK</a>
+                        <span class="link-desc">Estudo detalhado sobre o comportamento e ciclo de vida dos componentes
+                            associados ao gerenciamento de estado com o Hook useState.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=Fc-___dblSI&t=819s" target="_blank">▶️ Aprenda REACT
+                            HOOKS em 30 minutos | Tutorial sobre Hooks</a>
+                        <span class="link-desc">Tutorial intensivo e prático focado em desmistificar o uso dos Hooks do
+                            React em meia hora de código.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=aJR7f45dBNs" target="_blank">▶️ Se Você Passar Por
+                            Esses 5 Desafios, Você Aprendeu React JS</a>
+                        <span class="link-desc">Análise prática baseada em desafios reais para testar se você realmente
+                            absorveu os fundamentos essenciais do React.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=YVEVrigByKY" target="_blank">▶️ PROJETO de React JS
+                            para INICIANTES - Faça uma To Do List do zero!</a>
+                        <span class="link-desc">Mão na massa construindo uma aplicação completa do zero (Lista de
+                            Tarefas) para consolidar o aprendizado na prática.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Construindo o Primeiro Componente Interativo em React</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para planejar e estruturar seu projeto
+                            prático em React.js:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Node.js e Vite:</strong> Inicialize um projeto moderno
+                                utilizando Vite e React no terminal executando <code>npm create vite@latest</code>.</li>
+                            <li><strong>Estrutura de Pastas e Limpeza:</strong> Remova arquivos padrões desnecessários e
+                                organize a pasta <code>src/</code> mantendo um padrão limpo.</li>
+                            <li><strong>Compreensão do JSX:</strong> Estude como o React mescla a lógica JavaScript com
+                                a estrutura visual por meio da sintaxe JSX.</li>
+                            <li><strong>Criação do Primeiro Componente:</strong> Desenvolva uma função JavaScript com a
+                                primeira letra maiúscula retornando um elemento visual.</li>
+                            <li><strong>Modularização e Importação:</strong> Importe e insira o componente criado dentro
+                                do componente principal da aplicação (<code>App.jsx</code>).</li>
+                            <li><strong>Utilização de Props:</strong> Adicione parâmetros de entrada no seu componente
+                                para permitir a customização dinâmica de dados.</li>
+                            <li><strong>Introdução ao Hook useState:</strong> Importe o gancho <code>useState</code>
+                                para gerenciar estados reativos locais.</li>
+                            <li><strong>Captura de Eventos de Tela:</strong> Conecte ações de usuário (cliques e
+                                digitação) para disparar as funções de alteração de estado.</li>
+                            <li><strong>Estilização Aplicada:</strong> Utilize classes CSS estruturadas para garantir um
+                                design limpo e responsivo.</li>
+                            <li><strong>Build e Validação:</strong> Execute o empacotamento do projeto e valide o
+                                funcionamento completo da aplicação.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                // Aqui está o segredo: ele puxa o número da atividade dinamicamente (idTema)
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        // Função para abrir e fechar o acordeão de atividades
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prática Guiada - Algoritmos de Ordenação | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 40px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        li {
+            background-color: #0D1117;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Linha em destaque durante a animação do algoritmo */
+        li.destaque-passo {
+            border-color: var(--primary-color) !important;
+            background-color: rgba(0, 255, 102, 0.15) !important;
+            color: var(--primary-color);
+            font-weight: bold;
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>📊 Laboratório de Ordenação (BubbleSort & SelectionSort)</h2>
+        <p>Abra o Console do navegador (F12) para acompanhar o passo a passo dos logs e clique nos botões abaixo para
+            testar visualmente.</p>
+
+        <button id="btnBubble">Executar BubbleSort</button>
+        <button id="btnSelection">Executar SelectionSort</button>
+
+        <div>
+            <h3 style="font-size: 1rem; margin-top: 20px; color: var(--text-muted);">Estado Atual na Tela:</h3>
+            <ul id="listaResultados"></ul>
+        </div>
+    </div>
+
+    <script>
+        let vetorOriginal = [5, 2, 9, 1, 7, 3];
+        const listaResultados = document.querySelector('#listaResultados');
+
+        const trocar = (arr, i, j) => {
+            let temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        };
+
+        // Função de renderização com suporte a múltiplos destaques visuais
+        const renderizarComDestaque = (array, titulo, indicesDestaque = []) => {
+            listaResultados.innerHTML = `<li><strong>--- ${titulo} ---</strong></li>`;
+            array.forEach((num, index) => {
+                const li = document.createElement('li');
+                li.textContent = `Posição [${index}] -> Valor: ${num}`;
+
+                if (indicesDestaque.includes(index)) {
+                    li.classList.add('destaque-passo');
+                }
+
+                listaResultados.appendChild(li);
+            });
+        };
+
+        // Função de pausa assíncrona (controla a velocidade da câmera lenta)
+        const pausar = (ms = 1200) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        };
+
+        // 1. BubbleSort em Câmera Lenta com Destaque Visual
+        const executarBubbleSortLento = async (arr) => {
+            let trabalho = [...arr];
+            let n = trabalho.length;
+
+            console.log("=== INÍCIO BUBBLE SORT LENTO ===");
+
+            renderizarComDestaque(trabalho, "Iniciando Ordenação Visual...");
+            await pausar(1500);
+
+            for (let i = 0; i < n - 1; i++) {
+                for (let j = 0; j < n - 1 - i; j++) {
+
+                    renderizarComDestaque(trabalho, `Comparando Posições [${j}] e [${j + 1}]`, [j, j + 1]);
+                    await pausar(1400);
+
+                    if (trabalho[j] > trabalho[j + 1]) {
+                        trocar(trabalho, j, j + 1);
+
+                        renderizarComDestaque(trabalho, `⚡ Trocando [${j}] com [${j + 1}]!`, [j, j + 1]);
+                        await pausar(1400);
+                    }
+                }
+            }
+
+            renderizarComDestaque(trabalho, "Ordenação Concluída com Sucesso! 🎉");
+            console.log("Vetor Final Ordenado:", trabalho);
+        };
+
+        // 2. SelectionSort em Câmera Lenta com Destaque Visual
+        const executarSelectionSortLento = async (arr) => {
+            let trabalho = [...arr];
+            let n = trabalho.length;
+
+            console.log("=== INÍCIO SELECTION SORT LENTO ===");
+            renderizarComDestaque(trabalho, "Iniciando SelectionSort Visual...");
+            await pausar(1500);
+
+            for (let i = 0; i < n - 1; i++) {
+                let menorIndice = i;
+
+                renderizarComDestaque(trabalho, `Buscando o menor valor a partir da posição [${i}]`, [i]);
+                await pausar(1200);
+
+                for (let j = i + 1; j < n; j++) {
+                    renderizarComDestaque(trabalho, `Analisando elemento [${j}] (Valor: ${trabalho[j]})`, [menorIndice, j]);
+                    await pausar(1000);
+
+                    if (trabalho[j] < trabalho[menorIndice]) {
+                        menorIndice = j;
+
+                        renderizarComDestaque(trabalho, `Novo menor valor encontrado na posição [${menorIndice}]!`, [menorIndice]);
+                        await pausar(1000);
+                    }
+                }
+
+                if (menorIndice !== i) {
+                    trocar(trabalho, i, menorIndice);
+                    renderizarComDestaque(trabalho, `⚡ Trocando o menor valor para a posição [${i}]`, [i, menorIndice]);
+                    await pausar(1400);
+                }
+            }
+
+            renderizarComDestaque(trabalho, "SelectionSort Concluído com Sucesso! 🎯");
+            console.log("Vetor Final Ordenado (SelectionSort):", trabalho);
+        };
+
+        // Event Listeners dos Botões
+        document.querySelector('#btnBubble').addEventListener('click', () => {
+            executarBubbleSortLento(vetorOriginal);
+        });
+
+        document.querySelector('#btnSelection').addEventListener('click', () => {
+            executarSelectionSortLento(vetorOriginal);
+        });
+
+        // Exibição do estado inicial ao abrir a página
+        renderizarComDestaque(vetorOriginal, "Vetor Desordenado Original");
+    </script>
+</body>
+
+</html>

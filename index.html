@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula de Programação | da ByteClass para o Aluno </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --bg-sidebar: #010409;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+            --warning-color: #f0883e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR LATERAL ESQUERDA */
+        sidebar {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .sidebar-brand {
+            padding: 22px 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: -0.5px;
+            display: flex;
+            justify-content: space-between;
+            /* Joga o logo pra esquerda e a data pra direita */
+            align-items: baseline;
+            /* Alinha perfeitamente as bases dos textos */
+            gap: 10px;
+        }
+
+        .sidebar-date {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: capitalize;
+            letter-spacing: 0px;
+            white-space: nowrap;
+        }
+
+        .sidebar-date .ano {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .home-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 15px 0 15px;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .home-btn:hover {
+            background-color: rgba(0, 255, 102, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            overflow-y: auto;
+            padding: 15px 10px;
+            flex: 1;
+        }
+
+        .menu-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin: 20px 10px 8px 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+        }
+
+        .menu-item.ativo {
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .menu-item.em-construcao {
+            opacity: 0.6;
+        }
+
+        /* ÁREA DE CONTEÚDO PRINCIPAL (DIREITA) */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+            overflow-y: auto;
+        }
+
+        .iframe-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: var(--bg-main);
+        }
+
+        /* TELAS CENTRAIS (HOME E EM CONSTRUÇÃO) */
+        .center-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 45px;
+            border-radius: 12px;
+            max-width: 680px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .content-card.aviso::before {
+            background-color: var(--warning-color);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.aviso {
+            background-color: rgba(240, 136, 62, 0.15);
+            color: var(--warning-color);
+        }
+
+        .content-card h1 {
+            font-size: 1.9rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .content-card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .welcome-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .highlight-item {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .highlight-item span {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR LATERAL ESQUERDA -->
+    <sidebar>
+        <div class="sidebar-brand">
+            <span>⚡ BYTECLASS</span>
+            <div class="sidebar-date" id="dataAtualSidebar">
+                <!-- Preenchido dinamicamente pelo JavaScript -->
+            </div>
+        </div>
+
+        <a href="#" class="home-btn" onclick="voltarHome(event)">
+            🏠 Início / Home
+        </a>
+
+        <ul class="sidebar-menu" id="menuList">
+            <!-- Renderizado dinamicamente pelo cursos.js -->
+        </ul>
+    </sidebar>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main>
+        <!-- Home / Apresentação do Projeto -->
+        <div id="welcomeView" class="center-screen">
+            <div class="content-card">
+                <span class="badge">Ecossistema learnTECH</span>
+                <h1>Bem-vindo à ByteClass</h1>
+                <p>Este projeto de aulas de programação foi desenvolvido para te apresentar um conteúdo altamente
+                    organizado e ordenado, construído para te levar ao próximo nível na sua jornada de tecnologia e
+                    desenvolvimento de software.</p>
+                <p>Utilize o menu lateral esquerdo para navegar entre os módulos, acessar os blocos de estudo orientados
+                    por vídeo e executar as práticas guiadas passo a passo.</p>
+
+                <div class="welcome-highlights">
+                    <div class="highlight-item"><span>✔</span> Conteúdo Estruturado</div>
+                    <div class="highlight-item"><span>✔</span> Prática Guiada Real</div>
+                    <div class="highlight-item"><span>✔</span> Foco em Lógica e Código</div>
+                    <div class="highlight-item"><span>✔</span> Mentoria e Validação</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela "Em Construção" Dinâmica -->
+        <div id="construcaoView" class="center-screen" style="display: none;">
+            <div class="content-card aviso">
+                <span class="badge aviso">🚧 Módulo em Desenvolvimento</span>
+                <h1 id="tituloAulaConstrucao">Aula em Construção</h1>
+                <p>Esta aula está sendo elaborada com todo o rigor técnico e cuidado pedagógico pela coordenação e pelo
+                    instrutor. Em breve, os vídeos, blocos teóricos e o roteiro de 10 passos práticos estarão
+                    disponíveis aqui.</p>
+                <p>Fique atento aos cronogramas da turma para acompanhar os lançamentos de novos módulos!</p>
+            </div>
+        </div>
+
+        <!-- Iframe para carregar as aulas prontas -->
+        <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
+    </main>
+
+    <!-- Importa o arquivo de configuração da grade -->
+    <script src="cursos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuList = document.getElementById("menuList");
+            if (!menuList) return;
+
+            menuList.innerHTML = "";
+
+            gradeCurricular.forEach(modulo => {
+                const divCat = document.createElement("div");
+                divCat.className = "menu-category";
+                divCat.textContent = modulo.titulo;
+                menuList.appendChild(divCat);
+
+                modulo.aulas.forEach(aula => {
+                    const li = document.createElement("li");
+                    const a = document.createElement("a");
+                    a.href = "#";
+                    a.className = "menu-item";
+                    a.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
+
+                    if (aula.status === "construcao") {
+                        a.classList.add("em-construcao");
+                        a.onclick = (e) => {
+                            e.preventDefault();
+                            exibirTelaEmConstrucao(aula.numero, aula.titulo, a);
+                        };
+                    } else {
+                        const caminhoCompleto = `${aula.pasta}/index.html`;
+                        a.onclick = (e) => {
+                            e.preventDefault();
+                            carregarAula(caminhoCompleto, a);
+                        };
+                    }
+
+                    li.appendChild(a);
+                    menuList.appendChild(li);
+                });
+            });
+            renderizarDataAtual();
+        });
+
+        function renderizarDataAtual() {
+            const elementoData = document.getElementById('dataAtualSidebar');
+            if (!elementoData) return;
+
+            const agora = new Date();
+
+            // Pega o mês por extenso em português (ex: "agosto")
+            const mesExtenso = agora.toLocaleDateString('pt-BR', { month: 'long' });
+            // Capitaliza a primeira letra do mês
+            const mesFormatado = mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1);
+
+            const dia = agora.getDate();
+            const ano = agora.getFullYear();
+
+            // Injeta no formato desejado: Mês, Dia / Ano
+            elementoData.innerHTML = `${mesFormatado}, ${dia} <span class="ano">${ano}</span>`;
+        }
+
+        function carregarAula(caminhoArquivo, elementoMenu) {
+            document.getElementById('welcomeView').style.display = 'none';
+            document.getElementById('construcaoView').style.display = 'none';
+
+            const frame = document.getElementById('aulaFrame');
+            frame.style.display = 'block';
+            frame.src = caminhoArquivo;
+
+            atualizarMenuAtivo(elementoMenu);
+        }
+
+        function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
+            document.getElementById('welcomeView').style.display = 'none';
+            document.getElementById('aulaFrame').style.display = 'none';
+
+            document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
+            document.getElementById('construcaoView').style.display = 'flex';
+
+            atualizarMenuAtivo(elementoMenu);
+        }
+
+        function voltarHome(e) {
+            e.preventDefault();
+            document.getElementById('aulaFrame').style.display = 'none';
+            document.getElementById('construcaoView').style.display = 'none';
+            document.getElementById('welcomeView').style.display = 'flex';
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('ativo');
+            });
+        }
+
+        function atualizarMenuAtivo(elementoMenu) {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('ativo');
+            });
+            if (elementoMenu) {
+                elementoMenu.classList.add('ativo');
+            }
+        }
+    </script>
+</body>
+
+</html>
