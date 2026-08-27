@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap de Estudos | ByteClass</title>
+    <title>Aula 1 | ByteClass</title>
     <!-- Importando a fonte moderna Inter para UI -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -31,12 +31,13 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 40px 20px;
+            padding: 30px 15px;
+            overflow-x: hidden;
         }
 
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .logo-container {
@@ -45,27 +46,29 @@
             gap: 10px;
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .logo-text {
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary-color);
             letter-spacing: -0.5px;
         }
 
         header h1 {
             color: var(--text-main);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
+            padding: 0 10px;
         }
 
         .container {
@@ -83,7 +86,7 @@
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, border-color 0.2s ease;
             position: relative;
@@ -101,12 +104,11 @@
         }
 
         .card:hover {
-            transform: translateY(-3px);
             border-color: var(--primary-color);
         }
 
         .card h2 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             margin-bottom: 12px;
             color: var(--text-main);
             display: flex;
@@ -126,20 +128,21 @@
         }
 
         .links-list li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
         .links-list a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             display: inline-flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
+            word-break: break-word;
             transition: opacity 0.2s;
         }
 
@@ -149,27 +152,9 @@
         }
 
         .link-desc {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            padding-left: 22px;
-        }
-
-        .atividade-box {
-            background-color: rgba(22, 27, 34, 0.6);
-            border: 1px dashed var(--border-color);
-            padding: 16px 20px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .atividade-box span {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
+            padding-left: 24px;
         }
 
         .btn-concluir {
@@ -186,7 +171,6 @@
 
         .btn-concluir:hover {
             background-color: var(--primary-hover);
-            transform: scale(1.02);
         }
 
         .card.concluido {
@@ -197,12 +181,14 @@
             background-color: var(--success-color);
         }
 
-        .card.concluido .atividade-box {
+        .card.concluido .atividade-box-footer {
             background-color: var(--success-bg);
             border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
         }
 
-        .card.concluido .atividade-box span {
+        .card.concluido .atividade-box-footer span {
             color: #3fb950;
             font-weight: 600;
         }
@@ -214,23 +200,11 @@
 
         footer {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 50px;
             color: var(--text-muted);
             font-size: 0.85rem;
             border-top: 1px solid var(--border-color);
             padding-top: 25px;
-        }
-
-        @media (max-width: 600px) {
-            .atividade-box {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .btn-concluir {
-                width: 100%;
-                text-align: center;
-            }
         }
 
         /* Estilos do Acordeão de Atividade */
@@ -257,13 +231,15 @@
             align-items: center;
             color: var(--primary-color);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             cursor: pointer;
             text-align: left;
+            gap: 10px;
         }
 
         .atividade-toggle .seta {
             transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
 
         .atividade-container.ativo .seta {
@@ -289,15 +265,16 @@
         .passos-lista {
             padding-left: 20px;
             color: var(--text-main);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         .passos-lista li {
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .passos-lista code {
@@ -306,7 +283,7 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
         }
 
         .atividade-box-footer {
@@ -316,13 +293,48 @@
             border-top: 1px solid var(--border-color);
             padding-top: 15px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .atividade-box-footer span {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
             font-weight: 500;
+        }
+
+        /* RESPONSIVIDADE PARA TELAS PEQUENAS (MOBILE) */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -386,12 +398,12 @@
                         <ol class="passos-lista">
                             <li><strong>Configuração do Ambiente:</strong> Crie um arquivo <code>index.html</code> e um
                                 arquivo <code>script.js</code> vinculados na sua máquina.</li>
-                            <li><strong>Estrutura HTML Base:</strong> Adicione um campo de texto (`&lt;input&gt;`), um
-                                botão de adicionar e uma lista (`&lt;ul&gt;`) vazia na tela.</li>
+                            <li><strong>Estrutura HTML Base:</strong> Adicione um campo de texto
+                                (<code>&lt;input&gt;</code>), um botão de adicionar e uma lista
+                                (<code>&lt;ul&gt;</code>) vazia na tela.</li>
                             <li><strong>Seleção de Elementos (DOM):</strong> Utilize o
                                 <code>document.querySelector</code> para capturar os elementos criados no HTML dentro do
-                                seu JavaScript.
-                            </li>
+                                seu JavaScript.</li>
                             <li><strong>Criação da Estrutura de Dados:</strong> Declare uma variável do tipo Array
                                 (vetor) vazia chamada <code>atividades</code> para armazenar os itens.</li>
                             <li><strong>Aplicação de Variáveis e Tipos:</strong> Crie constantes e variáveis (usando
@@ -438,7 +450,7 @@
                     </li>
                     <li>
                         <a href="https://www.youtube.com/watch?v=ilv2U7jRArQ" target="_blank">▶️ SelectionSort,
-                            demonstração do algoritmo de ordenação por seleção em JavaScript | Ordenação de Dados</a>
+                            demonstração do algoritmo de ordenação por seleção em JavaScript</a>
                         <span class="link-desc">Demonstração aplicada em código JavaScript puro de como buscar o menor
                             elemento a cada ciclo e posicioná-lo corretamente.</span>
                     </li>
@@ -462,8 +474,7 @@
                             <li><strong>Função de Troca (Swap):</strong> Desenvolva uma lógica auxiliar ou função para
                                 alternar as posições de dois elementos dentro de um vetor.</li>
                             <li><strong>Estrutura de Repetição Aninhada:</strong> Configure laços de repetição (como
-                                <code>for</code> cruzados) para varrer os elementos comparando vizinhos.
-                            </li>
+                                <code>for</code> cruzados) para varrer os elementos comparando vizinhos.</li>
                             <li><strong>Implementação do BubbleSort:</strong> Aplique a lógica do algoritmo da bolha
                                 empurrando os maiores valores para o final da matriz a cada passada.</li>
                             <li><strong>Isolamento do SelectionSort:</strong> Crie uma função separada para encontrar o
@@ -473,7 +484,7 @@
                             <li><strong>Exibição no Console:</strong> Utilize <code>console.log()</code> antes e depois
                                 da execução de cada algoritmo para validar o estado inicial e final do array.</li>
                             <li><strong>Interface Visual Opcional:</strong> Conecte os arrays ordenados a elementos HTML
-                                de lista (`&lt;ul&gt;`) para exibir a ordenação em tela.</li>
+                                de lista (<code>&lt;ul&gt;</code>) para exibir a ordenação em tela.</li>
                             <li><strong>Validação de Performance:</strong> Teste diferentes tamanhos de arrays e analise
                                 o comportamento de execução de cada método estudado.</li>
                         </ol>
@@ -500,8 +511,8 @@
                             iniciante precisa dominar no ecossistema React.</span>
                     </li>
                     <li>
-                        <a href="https://www.youtube.com/watch?v=Vo13m75XpIU" target="_blank">▶️ #41 - Ciclo de vida de
-                            um componente React e useState | MERN STACK</a>
+                        <a href="https://www.youtube.com/watch?v=Vo13m75XpIU" target="_blank">▶️ Ciclo de vida de um
+                            componente React e useState</a>
                         <span class="link-desc">Estudo detalhado sobre o comportamento e ciclo de vida dos componentes
                             associados ao gerenciamento de estado com o Hook useState.</span>
                     </li>
@@ -583,7 +594,6 @@
 
             if (card.classList.contains('concluido')) {
                 botao.textContent = "Concluído ✔";
-                // Aqui está o segredo: ele puxa o número da atividade dinamicamente (idTema)
                 statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
             } else {
                 botao.textContent = "Marcar como Concluído";
@@ -591,7 +601,6 @@
             }
         }
 
-        // Função para abrir e fechar o acordeão de atividades
         function toggleAcordeon(idCard) {
             const card = document.getElementById(`card-${idCard}`);
             const container = card.querySelector('.atividade-container');

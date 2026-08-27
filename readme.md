@@ -19,3 +19,6 @@ A metodologia de ensino aplicada na ByteClass fundamenta-se nos seguintes pilare
 2. **Prática Ativa (10 Passos):** Cada bloco teórico é acompanhado por um roteiro prático estruturado em 10 etapas passo a passo, incentivando o aluno a codificar ativamente (desde a configuração do ambiente até o build).
 3. **Validação Humana (Mentoria):** O sistema incentiva o aluno a concluir as etapas e buscar a validação técnica diretamente com o instrutor, unindo o melhor do ensino digital com o suporte próximo.
 4. **Tratamento de Expectativa (Módulos em Construção):** A grade curricular exibe toda a jornada do aluno de ponta a ponta, oferecendo telas de aviso estilizadas para conteúdos futuros que estão sendo preparados pela coordenação.
+
+---
+🔗 **Acesse o Painel em Produção:** [ByteClass Dashboard](https://douglasabnovato.github.io/aula-de-programacao/)

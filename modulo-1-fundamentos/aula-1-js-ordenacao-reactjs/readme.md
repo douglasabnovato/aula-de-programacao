@@ -28,5 +28,19 @@ Esta ementa detalha o percurso técnico e prático da primeira aula do Módulo 1
 ---
 
 ## 🛠️ Aplicação Prática e Dinâmica
-* **Roadmap de 10 Passos:** Execução guiada de laboratórios práticos para fixar cada conceito abordado na teoria.
+* **Roadmap de 10 Passos:** Execution guiada de laboratórios práticos para fixar cada conceito abordado na teoria.
 * **Validação com o Instrutor:** Fechamento do ciclo prático com checagem individualizada dos resultados obtidos.
+
+---
+
+## 🔗 Respostas das Atividades - Links de Demonstração e Repositórios
+
+* **Atividade 1 (JS & DOM - Online):**  
+  [Acessar Demonstração da Atividade 1](https://douglasabnovato.github.io/aula-de-programacao/modulo-1-fundamentos/aula-1-js-ordenacao-reactjs/atividades/atividade-1.html)
+
+* **Atividade 2 (Algoritmos de Ordenação - Online):**  
+  [Acessar Demonstração da Atividade 2](https://douglasabnovato.github.io/aula-de-programacao/modulo-1-fundamentos/aula-1-js-ordenacao-reactjs/atividades/atividade-2.html)
+
+* **Atividade 3 (React.js & Vite - Repositório / Ambiente Local):**  
+  *Esta atividade requer ambiente Node.js configurado na máquina.*  
+  [Visualizar Código-Fonte no Repositório (App.jsx / main.jsx)](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-1-fundamentos/aula-1-js-ordenacao-reactjs/atividades/atividade-3)
