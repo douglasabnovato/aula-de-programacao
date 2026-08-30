@@ -36,19 +36,40 @@
         }
 
         /* BOTÃO HAMBÚRGUER (APENAS MOBILE) */
+        /* Garante que o header mobile SOMENTE aparece em telas pequenas */
         .mobile-header {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 70px;
             background-color: var(--bg-sidebar);
             border-bottom: 1px solid var(--border-color);
             padding: 0 20px;
             align-items: center;
             justify-content: space-between;
             z-index: 1001;
+        }
+
+        /* Controle limpo da logo da sidebar desktop */
+        .sidebar-brand {
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .sidebar-brand img {
+            width: 100%;
+            max-width: 160px;
+            /* Controla o tamanho ideal para não estourar a sidebar de 300px */
+            height: auto;
+            object-fit: contain;
+            display: block;
         }
 
         .menu-toggle-btn {
@@ -59,12 +80,6 @@
             padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-        }
-
-        .mobile-brand {
-            font-weight: 700;
-            color: var(--primary-color);
-            font-size: 1.1rem;
         }
 
         /* SIDEBAR LATERAL ESQUERDA */
@@ -79,18 +94,7 @@
             z-index: 1002;
         }
 
-        .sidebar-brand {
-            padding: 22px 20px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            letter-spacing: -0.5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 10px;
-        }
+
 
         .sidebar-date {
             font-size: 0.75rem;
@@ -98,12 +102,19 @@
             color: var(--text-muted);
             text-transform: capitalize;
             letter-spacing: 0px;
-            white-space: nowrap;
         }
 
         .sidebar-date .ano {
             color: var(--text-main);
             font-weight: 600;
+        }
+
+        /* Fundo da Home inteira com o banner .jpg */
+        #welcomeView.center-screen {
+            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), url('assets/byteclass-dev-3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .home-btn {
@@ -300,7 +311,21 @@
             }
 
             .mobile-header {
+                display: flex; 
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .mobile-brand {
                 display: flex;
+                align-items: center;
+                height: 100%;
+            }
+
+            .mobile-brand img {
+                height: 70px; 
+                width: auto;
+                object-fit: contain;
             }
 
             sidebar {
@@ -321,9 +346,8 @@
             }
 
             main {
-                margin-top: 60px;
-                /* Compensa a altura do header mobile */
-                height: calc(100vh - 60px);
+                margin-top: 70px;
+                height: calc(100vh - 70px);
             }
 
             .center-screen {
@@ -345,8 +369,10 @@
 
     <!-- CABEÇALHO MOBILE (HAMBÚRGUER) -->
     <div class="mobile-header">
-        <button class="menu-toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
-        <span class="mobile-brand">⚡ BYTECLASS</span>
+        <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+        <span class="mobile-brand">
+            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
+        </span>
     </div>
 
     <!-- OVERLAY ESCURO PARA MOBILE -->
@@ -355,7 +381,7 @@
     <!-- SIDEBAR LATERAL ESQUERDA -->
     <sidebar id="appSidebar">
         <div class="sidebar-brand">
-            <span>⚡ BYTECLASS</span>
+            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
             <div class="sidebar-date" id="dataAtualSidebar">
                 <!-- Preenchido dinamicamente pelo JavaScript -->
             </div>
@@ -508,7 +534,7 @@
             }
         }
 
-        /* CONTROLE DA SIDEBAR MOBILE */
+        /* CONTROLE DA SIDEBAR MOBILE / HAMBÚRGUER */
         function toggleSidebar() {
             const sidebar = document.getElementById('appSidebar');
             const overlay = document.getElementById('sidebarOverlay');
