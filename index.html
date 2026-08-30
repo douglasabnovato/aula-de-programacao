@@ -9,7 +9,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="manifest" href="assets/site.webmanifest">
-    <link rel="manifest" href="assets/site.webmanifest">
     <style>
         :root {
             --bg-main: #0D1117;
@@ -21,6 +20,7 @@
             --text-muted: #8B949E;
             --border-color: #30363D;
             --warning-color: #f0883e;
+            --transition-speed: 0.25s;
         }
 
         * {
@@ -38,7 +38,7 @@
             overflow: hidden;
         }
 
-        /* BOTÃO HAMBÚRGUER (APENAS MOBILE) */
+        /* CABEÇALHO MOBILE */
         .mobile-header {
             display: none;
             position: fixed;
@@ -82,7 +82,7 @@
             cursor: pointer;
         }
 
-        /* SIDEBAR LATERAL ESQUERDA (Aperfeiçoado para usar <aside> semântico) */
+        /* SIDEBAR LATERAL ESQUERDA */
         aside {
             width: 300px;
             background-color: var(--bg-sidebar);
@@ -90,8 +90,9 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            transition: transform 0.3s ease;
+            transition: transform var(--transition-speed) ease;
             z-index: 1002;
+            overflow-y: auto;
         }
 
         .sidebar-date {
@@ -99,20 +100,11 @@
             font-weight: 500;
             color: var(--text-muted);
             text-transform: capitalize;
-            letter-spacing: 0px;
         }
 
         .sidebar-date .ano {
             color: var(--text-main);
             font-weight: 600;
-        }
-
-        /* Fundo da Home inteira com o banner .jpg */
-        #welcomeView.center-screen {
-            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), url('assets/byteclass-dev-3.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
         }
 
         .home-btn {
@@ -128,8 +120,8 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.2s;
             cursor: pointer;
+            transition: all var(--transition-speed);
         }
 
         .home-btn:hover {
@@ -140,48 +132,87 @@
 
         .sidebar-menu {
             list-style: none;
-            overflow-y: auto;
-            padding: 15px 10px;
-            flex: 1;
+            padding: 10px 0;
+            margin: 0;
         }
 
-        .menu-category {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin: 20px 10px 8px 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .modulo-item {
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .menu-item {
-            display: block;
-            padding: 12px 15px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-            transition: all 0.2s;
-        }
-
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.03);
+        .modulo-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
-        .menu-item.ativo {
-            background-color: rgba(0, 255, 102, 0.1);
+        .modulo-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--primary-color);
+        }
+
+        .seta-modulo {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .aulas-sublist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .modulo-item.ativo .aulas-sublist {
+            max-height: 1200px;
+            padding: 6px 0 10px 0;
+        }
+
+        .modulo-item.ativo .seta-modulo {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .aulas-sublist a {
+            display: block;
+            padding: 10px 16px 10px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color var(--transition-speed), background-color var(--transition-speed);
+            border-left: 3px solid transparent;
+        }
+
+        .aulas-sublist a:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .aulas-sublist a.ativo {
             color: var(--primary-color);
             font-weight: 600;
-            border-left: 3px solid var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(0, 255, 102, 0.08);
         }
 
-        .menu-item.em-construcao {
-            opacity: 0.6;
+        .aulas-sublist a.em-construcao {
+            opacity: 0.5;
         }
 
-        /* OVERLAY PARA MOBILE */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -193,7 +224,7 @@
             z-index: 1000;
         }
 
-        /* ÁREA DE CONTEÚDO PRINCIPAL (DIREITA) */
+        /* ÁREA PRINCIPAL */
         main {
             flex: 1;
             display: flex;
@@ -210,7 +241,6 @@
             background-color: var(--bg-main);
         }
 
-        /* TELAS CENTRAIS (HOME E EM CONSTRUÇÃO) */
         .center-screen {
             flex: 1;
             display: flex;
@@ -221,13 +251,21 @@
             text-align: center;
         }
 
+        /* HOME COM BANNER .JPG VALIDADO */
+        #welcomeView.center-screen {
+            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), url('assets/byteclass-dev-3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
         .content-card {
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
             padding: 45px;
             border-radius: 12px;
-            max-width: 680px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            max-width: 720px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
             text-align: left;
@@ -257,10 +295,10 @@
             font-weight: 600;
             text-transform: uppercase;
             margin-bottom: 15px;
-            letter-spacing: 0.5px;
         }
 
-        .badge.aviso {
+        .badge.aviso,
+        .badge.experimental {
             background-color: rgba(240, 136, 62, 0.15);
             color: var(--warning-color);
         }
@@ -269,7 +307,6 @@
             font-size: 1.9rem;
             color: var(--text-main);
             margin-bottom: 15px;
-            letter-spacing: -0.5px;
         }
 
         .content-card p {
@@ -302,7 +339,157 @@
             font-size: 1.1rem;
         }
 
-        /* MEDIA QUERIES PARA RESPONSIVIDADE (MOBILE / TABLET) */
+        /* ESTILOS APRIMORADOS DO GRID DE PLAYLISTS E VÍDEOS */
+        .hub-container,
+        .playlist-detail-container,
+        .player-view-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .hub-header {
+            margin-bottom: 30px;
+        }
+
+        .hub-header h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .hub-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .playlists-grid,
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .playlist-card,
+        .video-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-card:hover,
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--warning-color);
+            box-shadow: 0 10px 25px rgba(240, 136, 62, 0.15);
+        }
+
+        .playlist-thumb,
+        .video-card-thumb {
+            width: 100%;
+            height: 160px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .playlist-thumb img,
+        .video-card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .playlist-card:hover .playlist-thumb img,
+        .video-card:hover .video-card-thumb img {
+            transform: scale(1.03);
+        }
+
+        .playlist-info,
+        .video-card-info {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .playlist-info h3,
+        .video-card-info h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .playlist-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .btn-playlist {
+            background: rgba(240, 136, 62, 0.15);
+            color: var(--warning-color);
+            padding: 9px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .playlist-card:hover .btn-playlist {
+            background: var(--warning-color);
+            color: #000;
+        }
+
+        .back-hub-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .back-hub-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .video-player-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
+        }
+
+        .video-player-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -365,38 +552,27 @@
 
 <body>
 
-    <!-- CABEÇALHO MOBILE (HAMBÚRGUER) -->
     <div class="mobile-header">
         <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
-        <span class="mobile-brand">
-            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
-        </span>
+        <span class="mobile-brand"><img src="assets/byteclass-dev-2.jpg" alt="Logo"></span>
     </div>
 
-    <!-- OVERLAY ESCURO PARA MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR LATERAL ESQUERDA (Aperfeiçoado para tag semântica <aside>) -->
     <aside id="appSidebar">
         <div class="sidebar-brand">
-            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
-            <div class="sidebar-date" id="dataAtualSidebar">
-                <!-- Preenchido dinamicamente pelo JavaScript -->
-            </div>
+            <img src="assets/byteclass-dev-2.jpg" alt="Logo">
+            <div class="sidebar-date" id="dataAtualSidebar"></div>
         </div>
 
-        <a href="#" class="home-btn" onclick="voltarHome(event)">
-            🏠 Início / Home
-        </a>
+        <a href="#" class="home-btn" onclick="voltarHome(event)">🏠 Início / Home</a>
 
         <ul class="sidebar-menu" id="menuList">
-            <!-- Renderizado dinamicamente pelo cursos.js -->
+            <!-- Renderizado dinamicamente pelo JavaScript (Aula Experimental no Topo) -->
         </ul>
     </aside>
 
-    <!-- ÁREA PRINCIPAL -->
-    <main>
-        <!-- Home / Apresentação do Projeto -->
+    <main><!-- Home / Apresentação -->
         <div id="welcomeView" class="center-screen">
             <div class="content-card">
                 <span class="badge">Ecossistema learnTECH</span>
@@ -416,136 +592,306 @@
             </div>
         </div>
 
-        <!-- Tela "Em Construção" Dinâmica -->
+        <!-- 1. HUB DE PLAYLISTS -->
+        <div id="hubExperimentalView" class="center-screen"
+            style="display: none; align-items: flex-start; justify-content: flex-start;">
+            <div class="hub-container">
+                <div class="hub-header">
+                    <span class="badge experimental">Central de Demonstração</span>
+                    <h1>Aulas Experimentais & Playlists</h1>
+                    <p>Selecione a playlist abaixo para abrir o grid de aulas.</p>
+                </div>
+                <div class="playlists-grid" id="playlistsGrid"></div>
+            </div>
+        </div>
+
+        <!-- 2. DETALHE DA PLAYLIST (GRID DE VÍDEOS) -->
+        <div id="playlistDetailView" class="center-screen"
+            style="display: none; align-items: flex-start; justify-content: flex-start;">
+            <div class="playlist-detail-container">
+                <button class="back-hub-btn" onclick="abrirHubExperimental(event)">← Voltar às Playlists</button>
+                <div class="hub-header">
+                    <span class="badge experimental" id="playlistBadgeDetail">Trilha Oficial</span>
+                    <h1 id="playlistTitleDetail"></h1>
+                    <p id="playlistDescDetail" style="color:var(--text-muted);"></p>
+                </div>
+                <div class="videos-grid" id="videosGrid"></div>
+            </div>
+        </div>
+
+        <!-- 3. PLAYER DE VÍDEO -->
+        <div id="playerView" class="center-screen" style="display: none;">
+            <div class="player-view-container">
+                <button class="back-hub-btn" onclick="voltarParaPlaylistDetail()">← Voltar para a Trilha</button>
+                <div class="content-card experimental" style="max-width: 100%;">
+                    <span class="badge experimental" id="playerAulaBadge">Aula</span>
+                    <h2 id="playerAulaTitle" style="margin-bottom:15px; color:#fff;"></h2>
+                    <div class="video-player-wrapper">
+                        <iframe id="youtubeIframe" src="" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela "Em Construção" -->
         <div id="construcaoView" class="center-screen" style="display: none;">
             <div class="content-card aviso">
                 <span class="badge aviso">🚧 Módulo em Desenvolvimento</span>
                 <h1 id="tituloAulaConstrucao">Aula em Construção</h1>
-                <p>Esta aula está sendo elaborada com todo o rigor técnico e cuidado pedagógico pela coordenação e pelo
-                    instrutor. Em breve, os vídeos, blocos teóricos e o roteiro de 10 passos práticos estarão
-                    disponíveis aqui.</p>
-                <p>Fique atento aos cronogramas da turma para acompanhar os lançamentos de novos módulos!</p>
+                <p>Esta aula está sendo elaborada. Em breve disponível.</p>
             </div>
         </div>
 
-        <!-- Iframe para carregar as aulas prontas -->
         <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
     </main>
 
-    <!-- Importa o arquivo de configuração da grade -->
     <script src="cursos.js"></script>
     <script>
+        // DADOS DA PLAYLIST 1 - HACK DEV
+        const playlistHackDev = {
+            id: "playlist-1",
+            titulo: "Playlist 1 - Hack Dev",
+            descricao: "Trilha completa de ambientação e setup de desenvolvimento com numeração independente (1 a 6).",
+            thumbnail: "assets/byteclass-dev-3.jpg",
+            aulas: [
+                { numero: 1, titulo: "Lista de Instalações e Softwares", youtubeId: "4WoPodx4GVQ" },
+                { numero: 2, titulo: "Configurando e Conhecendo o VS Code", youtubeId: "vT6M4gsIFUs" },
+                { numero: 3, titulo: "Primeiros passos no Git Bash", youtubeId: "LH-EbYOLRGg" },
+                { numero: 4, titulo: "Explorador de Arquivos do Windows", youtubeId: "-HZtZGro4O0" },
+                { numero: 5, titulo: "Google Chrome e Organização de Favoritos", youtubeId: "dvErSPNqgp0" },
+                { numero: 6, titulo: "Reunindo os Aplicativos no Ambiente de Estudo", youtubeId: "w50uctsX_Us" }
+            ]
+        };
+
+        let playlistAtualAtiva = null;
+
         document.addEventListener("DOMContentLoaded", () => {
+            renderizarSidebar();
+            renderizarDataAtual();
+            renderizarHubPlaylists();
+        });
+
+        function renderizarSidebar() {
             const menuList = document.getElementById("menuList");
             if (!menuList) return;
-
             menuList.innerHTML = "";
 
-            gradeCurricular.forEach(modulo => {
-                const divCat = document.createElement("div");
-                divCat.className = "menu-category";
-                divCat.textContent = modulo.titulo;
-                menuList.appendChild(divCat);
+            // 1. ADICIONAR "AULA EXPERIMENTAL" COMO O PRIMEIRO ITEM DO MENU LATERAL
+            const liExp = document.createElement("li");
+            liExp.className = "modulo-item";
+            liExp.id = "menu-experimental";
 
-                modulo.aulas.forEach(aula => {
-                    const li = document.createElement("li");
-                    const a = document.createElement("a");
-                    a.href = "#";
-                    a.className = "menu-item";
-                    a.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
+            const btnExp = document.createElement("button");
+            btnExp.className = "modulo-toggle";
+            btnExp.style.color = "var(--warning-color)";
+            btnExp.innerHTML = `<span>🎬 Aula Experimental</span><span class="seta-modulo">▼</span>`;
+            btnExp.onclick = () => {
+                toggleModulo("menu-experimental");
+            };
 
-                    if (aula.status === "construcao") {
-                        a.classList.add("em-construcao");
-                        a.onclick = (e) => {
-                            e.preventDefault();
-                            exibirTelaEmConstrucao(aula.numero, aula.titulo, a);
-                            fecharSidebarMobile();
-                        };
-                    } else {
-                        const caminhoCompleto = `${aula.pasta}/index.html`;
-                        a.onclick = (e) => {
-                            e.preventDefault();
-                            carregarAula(caminhoCompleto, a);
-                            fecharSidebarMobile();
-                        };
-                    }
+            const ulExp = document.createElement("ul");
+            ulExp.className = "aulas-sublist";
 
-                    li.appendChild(a);
-                    menuList.appendChild(li);
+            // Sub-item que abre a Playlist 1 - Hack Dev ao ser clicado no menu
+            const liSub = document.createElement("li");
+            const aSub = document.createElement("a");
+            aSub.href = "#";
+            aSub.textContent = "Playlist 1 - Hack Dev";
+            aSub.onclick = (e) => {
+                e.preventDefault();
+                abrirHubExperimental();
+                atualizarMenuAtivo(aSub);
+                fecharSidebarMobile();
+            };
+            liSub.appendChild(aSub);
+            ulExp.appendChild(liSub);
+
+            liExp.appendChild(btnExp);
+            liExp.appendChild(ulExp);
+            menuList.appendChild(liExp);
+
+            // 2. RENDERIZAR OS MÓDULOS OFICIAIS DA GRADE CURRICULAR LOGO ABAIXO
+            if (typeof gradeCurricular !== 'undefined') {
+                gradeCurricular.forEach(modulo => {
+                    const liModulo = document.createElement("li");
+                    liModulo.className = "modulo-item";
+                    liModulo.id = modulo.id;
+
+                    const btnToggle = document.createElement("button");
+                    btnToggle.className = "modulo-toggle";
+                    btnToggle.innerHTML = `<span>${modulo.titulo}</span><span class="seta-modulo">▼</span>`;
+                    btnToggle.onclick = () => toggleModulo(modulo.id);
+
+                    const ulAulas = document.createElement("ul");
+                    ulAulas.className = "aulas-sublist";
+
+                    modulo.aulas.forEach(aula => {
+                        const liAula = document.createElement("li");
+                        const aAula = document.createElement("a");
+                        aAula.href = "#";
+                        aAula.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
+
+                        if (aula.status === "construcao") {
+                            aAula.classList.add("em-construcao");
+                            aAula.onclick = (e) => {
+                                e.preventDefault();
+                                exibirTelaEmConstrucao(aula.numero, aula.titulo, aAula);
+                                fecharSidebarMobile();
+                            };
+                        } else {
+                            const caminhoCompleto = `${aula.pasta}/index.html`;
+                            aAula.onclick = (e) => {
+                                e.preventDefault();
+                                carregarAula(caminhoCompleto, aAula);
+                                fecharSidebarMobile();
+                            };
+                        }
+                        liAula.appendChild(aAula);
+                        ulAulas.appendChild(liAula);
+                    });
+
+                    liModulo.appendChild(btnToggle);
+                    liModulo.appendChild(ulAulas);
+                    menuList.appendChild(liModulo);
                 });
+            }
+        }
+
+        function renderizarHubPlaylists() {
+            const grid = document.getElementById("playlistsGrid");
+            if (!grid) return;
+            grid.innerHTML = "";
+
+            const card = document.createElement("div");
+            card.className = "playlist-card";
+            card.onclick = () => abrirDetalhePlaylist();
+            card.innerHTML = `
+                <div class="playlist-thumb">
+                    <img src="${playlistHackDev.thumbnail}" alt="${playlistHackDev.titulo}">
+                </div>
+                <div class="playlist-info">
+                    <div>
+                        <h3>${playlistHackDev.titulo}</h3>
+                        <p>${playlistHackDev.descricao}</p>
+                    </div>
+                    <div class="btn-playlist">Acessar Grid de Aulas →</div>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function abrirHubExperimental(e) {
+            if (e) e.preventDefault();
+            esconderTodasAsTelas();
+            document.getElementById("hubExperimentalView").style.display = "flex";
+        }
+
+        function abrirDetalhePlaylist() {
+            playlistAtualAtiva = playlistHackDev;
+            esconderTodasAsTelas();
+            document.getElementById("playlistBadgeDetail").textContent = playlistAtualAtiva.titulo;
+            document.getElementById("playlistTitleDetail").textContent = playlistAtualAtiva.titulo;
+            document.getElementById("playlistDescDetail").textContent = playlistAtualAtiva.descricao;
+
+            const videosGrid = document.getElementById("videosGrid");
+            videosGrid.innerHTML = "";
+
+            playlistAtualAtiva.aulas.forEach(aula => {
+                const card = document.createElement("div");
+                card.className = "video-card";
+                card.onclick = () => reproduzirVideoAula(aula);
+                card.innerHTML = `
+                    <div class="video-card-thumb">
+                        <img src="${playlistAtualAtiva.thumbnail}" alt="${aula.titulo}">
+                    </div>
+                    <div class="video-card-info">
+                        <span style="color:var(--warning-color); font-size:0.75rem; font-weight:600;">Aula ${aula.numero}</span>
+                        <h4>${aula.titulo}</h4>
+                    </div>
+                `;
+                videosGrid.appendChild(card);
             });
-            renderizarDataAtual();
-        });
+
+            document.getElementById("playlistDetailView").style.display = "flex";
+        }
+
+        function voltarParaPlaylistDetail() {
+            abrirDetalhePlaylist();
+        }
+
+        function reproduzirVideoAula(aula) {
+            esconderTodasAsTelas();
+            document.getElementById("playerAulaBadge").textContent = `Aula ${aula.numero}`;
+            document.getElementById("playerAulaTitle").textContent = aula.titulo;
+            document.getElementById("youtubeIframe").src = `https://www.youtube.com/embed/${aula.youtubeId}?autoplay=1`;
+            document.getElementById("playerView").style.display = "flex";
+        }
+
+        function esconderTodasAsTelas() {
+            document.getElementById("welcomeView").style.display = "none";
+            document.getElementById("hubExperimentalView").style.display = "none";
+            document.getElementById("playlistDetailView").style.display = "none";
+            document.getElementById("playerView").style.display = "none";
+            document.getElementById("construcaoView").style.display = "none";
+            document.getElementById("aulaFrame").style.display = "none";
+            document.getElementById("youtubeIframe").src = "";
+        }
+
+        function voltarHome(e) {
+            if (e) e.preventDefault();
+            esconderTodasAsTelas();
+            document.getElementById("welcomeView").style.display = "flex";
+            document.querySelectorAll('.aulas-sublist a').forEach(item => item.classList.remove('ativo'));
+            fecharSidebarMobile();
+        }
+
+        function toggleModulo(idModulo) {
+            const moduloElemento = document.getElementById(idModulo);
+            if (moduloElemento) moduloElemento.classList.toggle("ativo");
+        }
 
         function renderizarDataAtual() {
             const elementoData = document.getElementById('dataAtualSidebar');
             if (!elementoData) return;
-
             const agora = new Date();
             const mesExtenso = agora.toLocaleDateString('pt-BR', { month: 'long' });
             const mesFormatado = mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1);
-            const dia = agora.getDate();
-            const ano = agora.getFullYear();
-
-            elementoData.innerHTML = `${mesFormatado}, ${dia} <span class="ano">${ano}</span>`;
+            elementoData.innerHTML = `${mesFormatado}, ${agora.getDate()} <span class="ano">${agora.getFullYear()}</span>`;
         }
 
         function carregarAula(caminhoArquivo, elementoMenu) {
-            document.getElementById('welcomeView').style.display = 'none';
-            document.getElementById('construcaoView').style.display = 'none';
-
+            esconderTodasAsTelas();
             const frame = document.getElementById('aulaFrame');
             frame.style.display = 'block';
             frame.src = caminhoArquivo;
-
             atualizarMenuAtivo(elementoMenu);
         }
 
         function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
-            document.getElementById('welcomeView').style.display = 'none';
-            document.getElementById('aulaFrame').style.display = 'none';
-
+            esconderTodasAsTelas();
             document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
             document.getElementById('construcaoView').style.display = 'flex';
-
             atualizarMenuAtivo(elementoMenu);
         }
 
-        function voltarHome(e) {
-            e.preventDefault();
-            document.getElementById('aulaFrame').style.display = 'none';
-            document.getElementById('construcaoView').style.display = 'none';
-            document.getElementById('welcomeView').style.display = 'flex';
-
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('ativo');
-            });
-            fecharSidebarMobile();
-        }
-
         function atualizarMenuAtivo(elementoMenu) {
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('ativo');
-            });
+            document.querySelectorAll('.aulas-sublist a').forEach(item => item.classList.remove('ativo'));
             if (elementoMenu) {
                 elementoMenu.classList.add('ativo');
+                const moduloPai = elementoMenu.closest('.modulo-item');
+                if (moduloPai) moduloPai.classList.add('ativo');
             }
         }
 
-        /* CONTROLE DA SIDEBAR MOBILE / HAMBÚRGUER */
         function toggleSidebar() {
-            const sidebar = document.getElementById('appSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('ativo');
-            overlay.classList.toggle('ativo');
+            document.getElementById('appSidebar').classList.toggle('ativo');
+            document.getElementById('sidebarOverlay').classList.toggle('ativo');
         }
 
         function fecharSidebarMobile() {
             if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('appSidebar');
-                const overlay = document.getElementById('sidebarOverlay');
-                sidebar.classList.remove('ativo');
-                overlay.classList.remove('ativo');
+                document.getElementById('appSidebar').classList.remove('ativo');
+                document.getElementById('sidebarOverlay').classList.remove('ativo');
             }
         }
     </script>

@@ -1,67 +1,550 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula 12 | Props e Comunicação entre Componentes</title>
+    <title>Aula 12 | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
     <link rel="manifest" href="../../../assets/site.webmanifest">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --bg-main: #0D1117; --bg-surface: #161B22; --primary-color: #00FF66;
-            --primary-hover: #00cc52; --text-main: #FFFFFF; --text-muted: #8B949E; --border-color: #30363D;
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
         }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding: 40px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 { color: var(--primary-color); font-size: 2rem; margin-bottom: 10px; }
-        .subtitle { color: var(--text-muted); margin-bottom: 30px; font-size: 1.1rem; }
-        .card { background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 30px; border-radius: 12px; margin-bottom: 25px; }
-        h2 { font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        ul { padding-left: 20px; color: var(--text-muted); }
-        li { margin-bottom: 10px; }
-        a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
-        a:hover { text-decoration: underline; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            word-break: break-word;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 24px;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box-footer {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .card.concluido .atividade-box-footer span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-align: left;
+            gap: 10px;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
+
+    <header>
+        <div class="logo-container">
+            <img src="../../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
         <h1>Aula 12: Props e Comunicação entre Componentes</h1>
-        <p class="subtitle">Módulo 2: Frontend Moderno — Ecossistema ByteClass</p>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
 
-        <div class="card">
-            <h2>🎯 Objetivo Pedagógico</h2>
-            <p>Dominar a passagem de dados descendente (<em>props</em>) e a comunicação reversa por meio de funções de callback entre componentes no React.</p>
-        </div>
+    <div class="container">
+        <div class="roadmap-grid">
 
-        <div class="card">
-            <h2>🔗 Curadoria de Conteúdo (Links de Apoio)</h2>
-            <ul>
-                <li><strong>[FUNDAMENTOS]</strong> <a href="https://www.youtube.com/" target="_blank">O Fluxo de Dados Unidirecional no React explicado na prática</a></li>
-                <li><strong>[INICIANTE]</strong> <a href="https://www.youtube.com/" target="_blank">Desestruturação de Props e Tipagem Básica de Componentes</a></li>
-                <li><strong>[INTERMEDIÁRIO]</strong> <a href="https://www.youtube.com/" target="_blank">Comunicação Reversa: Passando Funções via Props para Filhos</a></li>
-                <li><strong>[AVANÇADO]</strong> <a href="https://www.youtube.com/" target="_blank">Composição Avançada com o padrão children e Componentes Genéricos</a></li>
-            </ul>
-        </div>
+            <!-- TEMA 1: O FLUXO DE DADOS UNIDIRECIONAL -->
+            <div class="card" id="card-1">
+                <h2>📦 1. O Fluxo de Dados Unidirecional no React explicado na prática</h2>
+                <p>Compreenda como as informações trafegam estruturalmente de cima para baixo na árvore de componentes utilizando propriedades (*props*).</p>
 
-        <div class="card">
-            <h2>🛠️ Roteiro Prático (10 Passos)</h2>
-            <ul>
-                <li>1. Criação do componente estrutural de lista de tarefas (<code>TaskList.jsx</code>).</li>
-                <li>2. Implementação do componente de formulário de entrada (<code>TaskInput.jsx</code>).</li>
-                <li>3. Definição do estado global de tarefas no componente principal <code>App.jsx</code>.</li>
-                <li>4. Passagem da lista de dados via <code>props</code> para o componente de exibição.</li>
-                <li>5. Desestruturação correta das propriedades recebidas no componente filho.</li>
-                <li>6. Criação de função de adição de itens no pai e envio via *callback props*.</li>
-                <li>7. Implementação da função de exclusão de tarefas mapeando por ID único.</li>
-                <li>8. Estilização dinâmica condicional de estados concluídos e pendentes.</li>
-                <li>9. Validação de integridade de dados e prevenção de comportamento padrão (<code>preventDefault</code>).</li>
-                <li>10. Testes integrados do fluxo completo de adição e remoção via comunicação de componentes.</li>
-            </ul>
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O Fluxo de Dados Unidirecional no React</a>
+                        <span class="link-desc">Visão conceitual e prática sobre a hierarquia de componentes e distribuição limpa de dados.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Passando Dados com Props em Componentes Funcionais</a>
+                        <span class="link-desc">Como injetar atributos personalizados e reutilizar blocos visuais de forma dinâmica.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Renderização de Listas e a Propriedade Key</a>
+                        <span class="link-desc">Estratégias para iterar coleções de dados com `.map()` e otimizar a reconciliação do DOM.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Componentes Inteligentes vs Componentes de Apresentação</a>
+                        <span class="link-desc">Padrões de arquitetura para separar lógica de negócio e estruturação visual pura.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Distribuindo Dados Descendentes com Props</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para estruturar a comunicação descendente em sua aplicação:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Estrutura Hierárquica:</strong> Crie uma estrutura básica de componentes pai (`App.jsx`) e filho (`UserCard.jsx`).</li>
+                            <li><strong>Definição de Mock de Dados:</strong> Defina um objeto de dados estáticos de usuário no componente pai.</li>
+                            <li><strong>Injeção de Propriedades:</strong> Passe o objeto de dados para o componente filho utilizando uma propriedade chamada <code>user</code>.</li>
+                            <li><strong>Recepção de Parâmetros:</strong> Receba os parâmetros de entrada na função do componente filho.</li>
+                            <li><strong>Renderização Dinâmica:</strong> Renderize dinamicamente as propriedades recebidas (nome, cargo, avatar) no JSX do filho.</li>
+                            <li><strong>Múltiplos Elementos:</strong> Crie uma lista com múltiplos objetos de usuários no componente pai.</li>
+                            <li><strong>Iteração com Map:</strong> Utilize o método `.map()` no pai para renderizar múltiplos componentes filhos iterativamente.</li>
+                            <li><strong>Atribuição de Key:</strong> Atribua a prop obrigatória <code>key</code> baseada em identificadores únicos para cada item mapeado.</li>
+                            <li><strong>Validação Visual:</strong> Valide no navegador a correta distribuição e exibição dos dados descendentes em tela.</li>
+                            <li><strong>Refatoração Modular:</strong> Separe componentes de apresentação pura de componentes de lógica central.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: DESESTRUTURAÇÃO E TIPAGEM DE PROPS -->
+            <div class="card" id="card-2">
+                <h2>📋 2. Desestruturação de Props e Tipagem Básica de Componentes</h2>
+                <p>Domine técnicas avançadas para extração limpa de propriedades e validação de contratos de dados em seus componentes.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Desestruturação de Objetos em JavaScript Aplicada ao React</a>
+                        <span class="link-desc">Como simplificar a extração de variáveis a partir do objeto props de forma limpa e moderna.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Valores Padrão em Componentes com Default Props</a>
+                        <span class="link-desc">Evitando falhas em runtime ao definir comportamentos de fallback para propriedades opcionais.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Validação de Tipos com PropTypes no React</a>
+                        <span class="link-desc">Introdução à verificação estática de tipos de dados passados entre componentes.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Boas Práticas de Contratos de Dados em Frontends Modulares</a>
+                        <span class="link-desc">Como manter componentes previsíveis através de tipagens claras e documentadas.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Aplicando Desestruturação e Validação de Tipos</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para refatorar e validar propriedades em componentes:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Localização de Componente:</strong> Localize um componente existente que receba múltiplas propriedades.</li>
+                            <li><strong>Desestruturação na Assinatura:</strong> Aplique a desestruturação do JavaScript diretamente na assinatura da função (ex: <code>({ title, description }) => ...</code>).</li>
+                            <li><strong>Remoção de Prefixo:</strong> Elimine a necessidade de acessar propriedades utilizando o prefixo <code>props.</code>.</li>
+                            <li><strong>Valores Fallback:</strong> Implemente valores padrão diretamente nos parâmetros desestruturados para propriedades opcionais.</li>
+                            <li><strong>Casos de Teste Incompletos:</strong> Crie um caso de teste passando dados parciais para o componente.</li>
+                            <li><strong>Validação de Fallback:</strong> Valide se os valores padrão assumem o controle corretamente sem gerar erros visuais.</li>
+                            <li><strong>Configuração de Tipagem:</strong> Instale ou configure validações de tipo básicas para o componente.</li>
+                            <li><strong>Contratos de Dados:</strong> Defina regras estritas de tipos de dados esperados (strings, números, booleans).</li>
+                            <li><strong>Auditoria de Console:</strong> Teste passar um tipo incorreto e analise o aviso gerado no console do desenvolvedor.</li>
+                            <li><strong>Documentação Limpa:</strong> Documente os contratos de propriedades utilizando comentários descritivos padronizados.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: COMUNICAÇÃO REVERSA E CHILDREN -->
+            <div class="card" id="card-3">
+                <h2>🔄 3. Comunicação Reversa e Padrões de Composição Avançada (children)</h2>
+                <p>Aprenda a enviar eventos dos filhos para os pais utilizando callbacks e a criar layouts genéricos flexíveis com a prop children.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Comunicação Reversa no React: Passando Funções via Props</a>
+                        <span class="link-desc">Como permitir que componentes filhos comuniquem ações e atualizem estados nos componentes pais.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O Poder da Prop Children na Composição de Componentes</a>
+                        <span class="link-desc">Criando contêineres e wrappers reutilizáveis para estruturar layouts complexos.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Padrões de Inversão de Controle e Callbacks</a>
+                        <span class="link-desc">Técnicas avançadas de engenharia frontend para desacoplar comportamentos de UI.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Arquitetura Escalável com Componentes Compostos</a>
+                        <span class="link-desc">Como organizar ecossistemas de componentes altamente reutilizáveis e limpos.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Implementando Callbacks e Layouts com Children</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para estruturar comunicação reversa e composição avançada:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Componente de Ação:</strong> Crie um componente de botão interativo filho chamado <code>CustomButton.jsx</code>.</li>
+                            <li><strong>Função de Manipulação Pai:</strong> Defina uma função no componente pai que altere um estado local.</li>
+                            <li><strong>Passagem de Callback:</strong> Passe essa função do pai para o filho utilizando uma propriedade chamada <code>onClick</code>.</li>
+                            <li><strong>Conexão de Evento Nativo:</strong> Conecte o evento do botão filho para disparar a função recebida via prop.</li>
+                            <li><strong>Validação Reversa:</strong> Valide a comunicação reversa alterando o estado do pai através da ação do filho.</li>
+                            <li><strong>Contêiner Genérico:</strong> Crie um componente de layout contêiner chamado <code>CardContainer.jsx</code>.</li>
+                            <li><strong>Utilização de Children:</strong> Utilize a propriedade especial <code>children</code> na estrutura interna do contêiner.</li>
+                            <li><strong>Injeção de Conteúdo:</strong> Envolva diferentes blocos de elementos visuais utilizando o componente contêiner criado.</li>
+                            <li><strong>Testes de Flexibilidade:</strong> Injete títulos, botões e textos variados dentro do container genérico validando o layout.</li>
+                            <li><strong>Integração Completa:</strong> Valide o funcionamento conjunto de eventos reversos com a composição baseada em <code>children</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
 </body>
+
 </html>
