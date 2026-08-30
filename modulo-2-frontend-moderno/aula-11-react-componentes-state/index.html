@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 11 | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../../assets/site.webmanifest">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            word-break: break-word;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 24px;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box-footer {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .card.concluido .atividade-box-footer span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-align: left;
+            gap: 10px;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 11: React.js Componentes & State</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: A FILOSOFIA DOS COMPONENTES E O DOM VIRTUAL -->
+            <div class="card" id="card-1">
+                <h2>⚛️ 1. A Filosofia do React: O que são Componentes e o DOM Virtual</h2>
+                <p>Compreenda os fundamentos da arquitetura baseada em componentes e como o React otimiza a renderização através do DOM virtual.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Introdução ao React e Arquitetura de Componentes</a>
+                        <span class="link-desc">Visão geral sobre a transição de SPAs imperativas para interfaces declarativas baseadas em componentes.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Como funciona o DOM Virtual do React</a>
+                        <span class="link-desc">Entenda o mecanismo de diffing e reconciliação que garante alta performance em aplicações web modernas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Pensando em React: Estruturando Interfaces Modulares</a>
+                        <span class="link-desc">Boas práticas para quebrar uma interface de usuário complexa em uma árvore limpa de componentes reutilizáveis.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O Ecossistema Moderno: Vite, JSX e Ferramentas de Build</a>
+                        <span class="link-desc">Configurando e compreendendo a ferramenta de build que alimenta o desenvolvimento com React atualmente.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Estruturando o Primeiro Componente Funcional</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para configurar seu ambiente e estruturar seus primeiros componentes:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração Inicial:</strong> Inicialize um novo projeto utilizando Vite e React no terminal com <code>npm create vite@latest</code>.</li>
+                            <li><strong>Instalação de Dependências:</strong> Execute <code>npm install</code> na raiz do projeto gerado para carregar os módulos.</li>
+                            <li><strong>Limpeza de Boilerplate:</strong> Remova arquivos de estilização e códigos padrões desnecessários da pasta <code>src</code>.</li>
+                            <li><strong>Organização de Diretórios:</strong> Crie uma pasta dedicada chamada <code>src/components</code> para armazenar os blocos modulares.</li>
+                            <li><strong>Criação do Arquivo JSX:</strong> Crie um arquivo chamado <code>WelcomeCard.jsx</code> dentro da pasta de componentes.</li>
+                            <li><strong>Sintaxe JSX Base:</strong> Escreva uma função JavaScript retornando uma estrutura HTML válida usando JSX.</li>
+                            <li><strong>Exportação do Módulo:</strong> Utilize <code>export default WelcomeCard</code> para liberar o componente para importação.</li>
+                            <li><strong>Importação na Raiz:</strong> Importe o componente recém-criado para dentro do arquivo principal <code>App.jsx</code>.</li>
+                            <li><strong>Renderização em Tela:</strong> Insira o componente na árvore JSX principal utilizando a tag <code>&lt;WelcomeCard /&gt;</code>.</li>
+                            <li><strong>Validação de Execução:</strong> Execute <code>npm run dev</code> e valide o carregamento correto da interface no navegador.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: GERENCIAMENTO DE ESTADO LOCAL COM USESTATE -->
+            <div class="card" id="card-2">
+                <h2>🔄 2. Gerenciamento de Estado Local com o Hook useState</h2>
+                <p>Aprenda a lidar com dados reativos que mudam ao longo do tempo e provocam atualizações automáticas na interface do usuário.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O que são Hooks no React e por que surgiram?</a>
+                        <span class="link-desc">Introdução conceitual à evolução dos componentes funcionais e ao poder dos ganchos nativos.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Dominando o Hook useState do Zero ao Avançado</a>
+                        <span class="link-desc">Explicação detalhada sobre a assinatura, retorno e re-renderização provocada pelo estado local.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Imutabilidade no Estado: Conceitos Críticos</a>
+                        <span class="link-desc">Por que nunca devemos alterar o estado diretamente e como utilizar funções atualizadoras corretamente.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Manipulando Múltiplos Estados em Componentes Funcionais</a>
+                        <span class="link-desc">Estratégias para organizar variáveis de estado independentes e manter o código limpo e previsível.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Construindo um Contador Dinâmico com useState</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para implementar reatividade local em um componente interativo:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Criação do Componente:</strong> Crie um novo arquivo chamado <code>Counter.jsx</code> dentro da pasta <code>src/components</code>.</li>
+                            <li><strong>Importação do Hook:</strong> Importe o gancho <code>useState</code> do pacote oficial do React na primeira linha do arquivo.</li>
+                            <li><strong>Declaração da Função:</strong> Defina o componente funcional <code>export default function Counter()</code>.</li>
+                            <li><strong>Inicialização do Estado:</strong> Declare a variável de estado utilizando destructuring: <code>const [count, setCount] = useState(0);</code>.</li>
+                            <li><strong>Estrutura Visual JSX:</strong> Retorne um bloco contendo um título, um parágrafo exibindo o valor atual de <code>count</code>.</li>
+                            <li><strong>Botão de Incremento:</strong> Adicione um botão com o evento <code>onClick={() => setCount(count + 1)}</code>.</li>
+                            <li><strong>Botão de Decremento:</strong> Adicione um botão para subtrair unidades do contador com validação de limite mínimo.</li>
+                            <li><strong>Botão de Reset:</strong> Crie uma ação rápida para reincidir o estado para o valor padrão de fábrica (0).</li>
+                            <li><strong>Integração com App:</strong> Importe e renderize o componente <code>&lt;Counter /&gt;</code> dentro de <code>App.jsx</code>.</li>
+                            <li><strong>Testes de Reatividade:</strong> Valide os cliques no navegador observando a atualização instantânea da interface sem reload.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: BOAS PRÁTICAS E FLUXO DE DADOS UNIDIRECIONAL -->
+            <div class="card" id="card-3">
+                <h2>🎯 3. Boas Práticas e Fluxo de Dados Unidirecional</h2>
+                <p>Consolide padrões de engenharia de software para escalabilidade de aplicações baseadas em árvore de componentes.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Fluxo de Dados Unidirecional: O Coração do React</a>
+                        <span class="link-desc">Compreenda como as informações trafegam exclusivamente de cima para baixo na árvore de componentes.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Organização de Pastas e Arquitetura Escalável em React</a>
+                        <span class="link-desc">Padrões de mercado para estruturar projetos de grande porte separando componentes, páginas e serviços.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Evitando Re-renderizações Desnecessárias</a>
+                        <span class="link-desc">Dicas avançadas de performance para manter componentes leves e responsivos sob alta carga de dados.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Lidando com Erros e Validação de Tipos Básicos</a>
+                        <span class="link-desc">Como identificar bugs comuns em tempo de desenvolvimento utilizando o console e ferramentas de auditoria.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Refatorando e Organizando um Projeto Reativo</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para refatorar e aplicar padrões limpos em sua aplicação:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Auditoria de Código:</strong> Revise o código atual da aplicação identificando trechos repetitivos ou mal estruturados.</li>
+                            <li><strong>Separação de Responsabilidades:</strong> Isole a lógica de apresentação da lógica de manipulação de estados.</li>
+                            <li><strong>Padronização de Nomes:</strong> Garanta que todos os componentes utilizem o padrão PascalCase (ex: <code>UserProfile.jsx</code>).</li>
+                            <li><strong>Limpeza de Imports:</strong> Remova qualquer importação ou biblioteca não utilizada nos arquivos da pasta <code>src</code>.</li>
+                            <li><strong>Estilização Modular:</strong> Centralize as variáveis de cores e layouts reutilizáveis em um arquivo CSS global ou modular.</li>
+                            <li><strong>Tratamento de Eventos:</strong> Organize as funções de manipulação de cliques em escopos limpos e legíveis.</li>
+                            <li><strong>Verificação de Imutabilidade:</strong> Assegure-se de que nenhum estado esteja sendo modificado por atribuição direta.</li>
+                            <li><strong>Testes de Cobertura Local:</strong> Valide se todos os componentes respondem corretamente a interações de usuário sem erros no console.</li>
+                            <li><strong>Build de Verificação:</strong> Execute o comando de empacotamento de produção (<code>npm run build</code>) para certificar zero falhas.</li>
+                            <li><strong>Versionamento Limpo:</strong> Valide o status do repositório Git preparando o terreno para a próxima etapa modular.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

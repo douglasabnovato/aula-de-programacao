@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aula de Programação | da ByteClass para o Aluno</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <link rel="manifest" href="assets/site.webmanifest">
     <style>
         :root {
             --bg-main: #0D1117;
@@ -36,7 +39,6 @@
         }
 
         /* BOTÃO HAMBÚRGUER (APENAS MOBILE) */
-        /* Garante que o header mobile SOMENTE aparece em telas pequenas */
         .mobile-header {
             display: none;
             position: fixed;
@@ -52,7 +54,6 @@
             z-index: 1001;
         }
 
-        /* Controle limpo da logo da sidebar desktop */
         .sidebar-brand {
             padding: 20px 15px;
             display: flex;
@@ -66,7 +67,6 @@
         .sidebar-brand img {
             width: 100%;
             max-width: 160px;
-            /* Controla o tamanho ideal para não estourar a sidebar de 300px */
             height: auto;
             object-fit: contain;
             display: block;
@@ -82,8 +82,8 @@
             cursor: pointer;
         }
 
-        /* SIDEBAR LATERAL ESQUERDA */
-        sidebar {
+        /* SIDEBAR LATERAL ESQUERDA (Aperfeiçoado para usar <aside> semântico) */
+        aside {
             width: 300px;
             background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-color);
@@ -93,8 +93,6 @@
             transition: transform 0.3s ease;
             z-index: 1002;
         }
-
-
 
         .sidebar-date {
             font-size: 0.75rem;
@@ -311,7 +309,7 @@
             }
 
             .mobile-header {
-                display: flex; 
+                display: flex;
                 justify-content: space-between;
                 align-items: center;
             }
@@ -323,12 +321,12 @@
             }
 
             .mobile-brand img {
-                height: 70px; 
+                height: 70px;
                 width: auto;
                 object-fit: contain;
             }
 
-            sidebar {
+            aside {
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -337,7 +335,7 @@
                 transform: translateX(-100%);
             }
 
-            sidebar.ativo {
+            aside.ativo {
                 transform: translateX(0);
             }
 
@@ -378,8 +376,8 @@
     <!-- OVERLAY ESCURO PARA MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR LATERAL ESQUERDA -->
-    <sidebar id="appSidebar">
+    <!-- SIDEBAR LATERAL ESQUERDA (Aperfeiçoado para tag semântica <aside>) -->
+    <aside id="appSidebar">
         <div class="sidebar-brand">
             <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
             <div class="sidebar-date" id="dataAtualSidebar">
@@ -394,7 +392,7 @@
         <ul class="sidebar-menu" id="menuList">
             <!-- Renderizado dinamicamente pelo cursos.js -->
         </ul>
-    </sidebar>
+    </aside>
 
     <!-- ÁREA PRINCIPAL -->
     <main>

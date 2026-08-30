@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 13 | Hooks Essenciais (useEffect e useRef)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../../assets/site.webmanifest">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg-main: #0D1117; --bg-surface: #161B22; --primary-color: #00FF66;
+            --primary-hover: #00cc52; --text-main: #FFFFFF; --text-muted: #8B949E; --border-color: #30363D;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2rem; margin-bottom: 10px; }
+        .subtitle { color: var(--text-muted); margin-bottom: 30px; font-size: 1.1rem; }
+        .card { background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 30px; border-radius: 12px; margin-bottom: 25px; }
+        h2 { font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        ul { padding-left: 20px; color: var(--text-muted); }
+        li { margin-bottom: 10px; }
+        a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aula 13: Hooks Essenciais (useEffect e useRef)</h1>
+        <p class="subtitle">Módulo 2: Frontend Moderno — Ecossistema ByteClass</p>
+
+        <div class="card">
+            <h2>🎯 Objetivo Pedagógico</h2>
+            <p>Dominar efeitos colaterais assíncronos, o ciclo de vida de componentes com o <code>useEffect</code> e a manipulação direta de nós do DOM com o <code>useRef</code>.</p>
+        </div>
+
+        <div class="card">
+            <h2>🔗 Curadoria de Conteúdo (Links de Apoio)</h2>
+            <ul>
+                <li><strong>[FUNDAMENTOS]</strong> <a href="https://www.youtube.com/" target="_blank">Entendendo o Ciclo de Vida e o Efeito Colateral no React</a></li>
+                <li><strong>[INICIANTE]</strong> <a href="https://www.youtube.com/" target="_blank">Controlando o Array de Dependências e Prevenindo Loops Infinitos</a></li>
+                <li><strong>[INTERMEDIÁRIO]</strong> <a href="https://www.youtube.com/" target="_blank">Persistência Local e Sincronização com o localStorage via useEffect</a></li>
+                <li><strong>[AVANÇADO]</strong> <a href="https://www.youtube.com/" target="_blank">Manipulando Referências Nativas do DOM com o Hook useRef</a></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🛠️ Roteiro Prático (10 Passos)</h2>
+            <ul>
+                <li>1. Adição de funcionalidade de persistência de dados em um gerenciador de tarefas existente.</li>
+                <li>2. Implementação do <code>useEffect</code> para carregar dados salvos do <code>localStorage</code> na montagem.</li>
+                <li>3. Configuração do array de dependências para salvar no <code>localStorage</code> sempre que a lista mudar.</li>
+                <li>4. Importação e inicialização do Hook <code>useRef</code> para capturar referência de um input.</li>
+                <li>5. Criação de função de foco automático programático (<code>inputRef.current.focus()</code>).</li>
+                <li>6. Utilização do <code>useRef</code> para rastrear contagem de renderizações sem re-renders.</li>
+                <li>7. Tratamento de funções de limpeza (<em>cleanup functions</em>) em timers ou listeners.</li>
+                <li>8. Otimização de performance evitando execuções redundantes de efeitos pesados.</li>
+                <li>9. Testes de persistência fechando e reabrindo a aba do navegador.</li>
+                <li>10. Validação de auditoria de código e limpeza de warnings no console.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

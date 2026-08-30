@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 3 | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            word-break: break-word;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 24px;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box-footer {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .card.concluido .atividade-box-footer span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        /* Estilos do Acordeão de Atividade */
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-align: left;
+            gap: 10px;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* RESPONSIVIDADE PARA TELAS PEQUENAS (MOBILE) */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Roadmap de Estudos Oficial</h1>
+        <p>Trilha prática recomendada para o desenvolvimento técnico no ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ESTRUTURAÇÃO DE SEÇÕES E CONTAINERS NO LAYOUT WEB -->
+            <div class="card" id="card-1">
+                <h2>📐 1. Estruturação de Seções e Containers no Layout Web</h2>
+                <p>Compreenda a anatomia de uma Landing Page de alta conversão e utilize tags semânticas do HTML5 para dividir e organizar o esqueleto da aplicação.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=kXpY6Wp7p4o" target="_blank">[FUNDAMENTOS] Anatomia de uma Landing Page de Alta Conversão</a>
+                        <span class="link-desc">Entendendo a disposição visual e estratégica dos elementos de topo, meio e rodapé.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3nYL_Stkfx8" target="_blank">[INICIANTE] Dividindo seções com tags de bloco e linha no HTML5</a>
+                        <span class="link-desc">O uso correto de containers estruturais como &lt;header&gt;, &lt;main&gt;, &lt;section&gt; e &lt;footer&gt;.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=5x0V9m3M8jg" target="_blank">[INTERMEDIÁRIO] Boas práticas de organização e legibilidade de código</a>
+                        <span class="link-desc">Manutenibilidade e clareza na construção da árvore DOM em projetos front-end.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=9j7l8V8g6l4" target="_blank">[AVANÇADO] Arquitetura de componentes estáticos orientados a páginas reais</a>
+                        <span class="link-desc">Padrões de mercado para estruturação e prototipagem de aplicações web corporativas.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Construção do Esqueleto HTML da Landing Page</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Criação de Pastas:</strong> Crie a pasta da Aula 3 (<code>modulo-1-fundamentos/aula-3/atividades</code>) e adicione os arquivos base.</li>
+                            <li><strong>Boilerplate HTML5:</strong> Configure a estrutura padrão com a tag <code>&lt;meta charset="UTF-8"&gt;</code> e lang <code>pt-BR</code>.</li>
+                            <li><strong>Cabeçalho Semântico:</strong> Adicione a tag <code>&lt;header&gt;</code> contendo o logotipo e o menu de navegação (<code>&lt;nav&gt;</code>).</li>
+                            <li><strong>Seção de Destaque:</strong> Crie uma seção principal de introdução utilizando a tag <code>&lt;section class="hero"&gt;</code>.</li>
+                            <li><strong>Conteúdo de Impacto:</strong> Insira o título principal (<code>&lt;h1&gt;</code>) e o subtítulo descritivo (<code>&lt;p&gt;</code>) no Hero.</li>
+                            <li><strong>Botão de Ação:</strong> Adicione uma chamada para ação (CTA) principal com link estruturado.</li>
+                            <li><strong>Seção de Recursos:</strong> Crie uma seção secundária (<code>&lt;section class="features"&gt;</code>) para acomodar os cards de diferenciais.</li>
+                            <li><strong>Rodapé Institucional:</strong> Insira o bloco <code>&lt;footer&gt;</code> contendo as informações de copyright e direitos reservados.</li>
+                            <li><strong>Vinculação CSS:</strong> Faça a ligação correta do arquivo <code>style.css</code> na seção <code>&lt;head&gt;</code> da página.</li>
+                            <li><strong>Validação Estrutural:</strong> Abra o arquivo no navegador e valide a organização limpa dos blocos de texto antes de aplicar estilos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: DOMÍNIO DO FLEXBOX PARA ALINHAMENTO E DISTRIBUIÇÃO -->
+            <div class="card" id="card-2">
+                <h2>📦 2. Domínio do Flexbox para Alinhamento e Distribuição</h2>
+                <p>Domine as propriedades avançadas do Flexible Box Layout para alinhar itens, controlar eixos e distribuir espaçamentos de forma fluida.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=1PnKehTfmXE" target="_blank">[FUNDAMENTOS] O Guia Definitivo do Flexbox no CSS</a>
+                        <span class="link-desc">Compreendendo o funcionamento dos eixos principal e transversal com `flex-direction`.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=fYq5PXgSsbE" target="_blank">[INICIANTE] Alinhando e Distribuindo com Justify-Content e Align-Items</a>
+                        <span class="link-desc">Técnicas visuais essenciais para alinhamento horizontal e vertical de containers.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=71w9zK1gGfI" target="_blank">[INTERMEDIÁRIO] Criando Grades Flexíveis com Flex-Wrap e Gap</a>
+                        <span class="link-desc">Como quebrar linhas de elementos de forma limpa e espaçadas sem margens complexas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3Kz81hX8a6c" target="_blank">[AVANÇADO] Controle com Flex-Grow, Flex-Shrink e Flex-Basis</a>
+                        <span class="link-desc">Ajustes finos de crescimento, encolhimento e dimensionamento proporcional em layouts flexíveis.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Alinhando a Landing Page com Flexbox</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Reset e Variáveis:</strong> Configure o seletor universal <code>*</code> e defina as variáveis de cores institucionais no <code>:root</code>.</li>
+                            <li><strong>Alinhamento do Header:</strong> Aplique <code>display: flex</code>, <code>justify-content: space-between</code> e <code>align-items: center</code> no cabeçalho.</li>
+                            <li><strong>Navegação Flexível:</strong> Formate o menu utilizando uma lista horizontal flexível com espaçamento otimizado via <code>gap</code>.</li>
+                            <li><strong>Centralização no Hero:</strong> Utilize propriedades Flexbox na seção de destaque para centralizar textos e botões com precisão.</li>
+                            <li><strong>Distribuição de Cards:</strong> Configure a seção de recursos com <code>display: flex</code> e <code>flex-wrap: wrap</code> para acomodação fluida.</li>
+                            <li><strong>Proporção e Espaçamento:</strong> Defina largura base flexível para os cards de recursos utilizando a propriedade moderna <code>gap</code>.</li>
+                            <li><strong>Estilização de Superfícies:</strong> Aplique cores de superfície, bordas discretas e cantos arredondados nos blocos de cards.</li>
+                            <li><strong>Alinhamento do Rodapé:</strong> Organize os elementos textuais e institucionais do rodapé com distribuição simétrica.</li>
+                            <li><strong>Unidades Relativas:</strong> Ajuste margens e paddings de todos os blocos utilizando unidades proporcionais.</li>
+                            <li><strong>Validação de Layout:</strong> Redimensione a largura da janela do navegador para testar a flexibilidade inicial dos blocos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: RESPONSIVIDADE E ADAPTAÇÃO PARA TELAS MOBILE -->
+            <div class="card" id="card-3">
+                <h2>📱 3. Responsividade e Adaptação para Telas Mobile</h2>
+                <p>Aprenda a utilizar Media Queries para transformar layouts horizontais complexos em experiências verticais otimizadas para smartphones.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=2r67u24x6h0" target="_blank">[FUNDAMENTOS] O que são Media Queries e Design Responsivo</a>
+                        <span class="link-desc">Introdução conceitual aos pontos de quebra (breakpoints) e adaptação de interfaces.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=Z5gW5G8hG3c" target="_blank">[INICIANTE] Adaptando colunas para linhas verticais no mobile</a>
+                        <span class="link-desc">Como alterar a direção dos eixos flexíveis utilizando regras de `@media`.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=8l87p5nK2oM" target="_blank">[INTERMEDIÁRIO] Técnicas de Adaptação de Menus e Blocos</a>
+                        <span class="link-desc">Ocultando, exibindo e reorganizando elementos utilitários em telas compactas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3g5Y3b9z11A" target="_blank">[AVANÇADO] Otimização de Performance e Usabilidade Mobile-First</a>
+                        <span class="link-desc">Boas práticas profissionais para garantir excelente experiência de navegação em dispositivos móveis.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Mini Landing Page Responsiva Completa</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Viewport:</strong> Garanta a meta tag de escala responsiva configurada corretamente no <code>&lt;head&gt;</code>.</li>
+                            <li><strong>Bloco de Media Query:</strong> Adicione a regra de ponto de quebra para telas menores no final do CSS (<code>@media (max-width: 768px)</code>).</li>
+                            <li><strong>Empilhamento do Header:</strong> Altere a direção do cabeçalho de linha para coluna (<code>flex-direction: column</code>) no mobile.</li>
+                            <li><strong>Ajuste de Navegação:</strong> Reduza espaçamentos e centralize os links do menu superior para telas compactas.</li>
+                            <li><strong>Proporção Tipográfica:</strong> Diminua o tamanho da fonte do título principal (<code>&lt;h1&gt;</code>) no Hero para evitar quebras excessivas.</li>
+                            <li><strong>Coluna Única de Recursos:</strong> Mude o comportamento dos cards de recursos para empilhamento vertical total.</li>
+                            <li><strong>Otimização de Padding:</strong> Reduza os espaçamentos internos das seções para aproveitar melhor a tela útil do smartphone.</li>
+                            <li><strong>Alinhamento do Rodapé:</strong> Centralize os textos institucionais do rodapé para manter a harmonia visual.</li>
+                            <li><strong>Simulação Responsiva:</strong> Utilize o modo responsivo das ferramentas de inspecionar do navegador para validar resoluções variadas.</li>
+                            <li><strong>Validação Final:</strong> Confirme a transição fluida entre desktop e mobile e conclua a implementação da Aula 3.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>
