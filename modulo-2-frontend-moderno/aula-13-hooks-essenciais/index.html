@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 13 | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../../assets/site.webmanifest">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            word-break: break-word;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 24px;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box-footer {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .card.concluido .atividade-box-footer span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-align: left;
+            gap: 10px;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 13: Hooks Essenciais (useEffect e useRef)</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: CICLO DE VIDA E EFEITO COLATEAL -->
+            <div class="card" id="card-1">
+                <h2>⚡ 1. Entendendo o Ciclo de Vida e o Efeito Colateral no React</h2>
+                <p>Domine o conceito de efeitos colaterais (*side effects*) e aprenda a controlar o ciclo de vida de componentes funcionais com o `useEffect`.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O que define um Efeito Colateral no Desenvolvimento Frontend</a>
+                        <span class="link-desc">Compreendendo interações com sistemas externos e o fluxo síncrono vs assíncrono.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Dominando o Hook useEffect na Prática</a>
+                        <span class="link-desc">Como disparar lógicas pós-renderização e gerenciar o ciclo de vida de componentes.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O Array de Dependências e Prevenção de Loops Infinitos</a>
+                        <span class="link-desc">Regras estritas para controlar quando o efeito deve ser executado pelo React.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Funções de Limpeza (Cleanup Functions) em Efeitos</a>
+                        <span class="link-desc">Removendo event listeners, cancelando timers e prevenindo vazamentos de memória.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Monitorando o Ciclo de Vida com useEffect</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para implementar e testar efeitos colaterais e funções de limpeza:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Criação do Componente:</strong> Crie um componente de teste de ciclo de vida chamado <code>LifecycleTracker.jsx</code>.</li>
+                            <li><strong>Importação do Hook:</strong> Importe o Hook <code>useEffect</code> do pacote principal do React.</li>
+                            <li><strong>Montagem Inicial:</strong> Implemente um <code>useEffect</code> com array de dependências vazio para registrar uma mensagem na montagem.</li>
+                            <li><strong>Estado de Monitoramento:</strong> Adicione uma variável de estado numérico monitorada por um botão de clique.</li>
+                            <li><strong>Array de Dependências:</strong> Inclua o estado no array de dependências do <code>useEffect</code> para observar execuções em atualizações.</li>
+                            <li><strong>Temporizador Assíncrono:</strong> Implemente um temporizador (<code>setInterval</code>) dentro do efeito para atualizar um contador de segundos.</li>
+                            <li><strong>Função de Limpeza:</strong> Retorne uma função de limpeza (*cleanup function*) utilizando <code>clearInterval</code>.</li>
+                            <li><strong>Teste de Desmontagem:</strong> Teste a desmontagem do componente verificando se o timer foi encerrado com sucesso.</li>
+                            <li><strong>Auditoria de Console:</strong> Analise o comportamento no console do navegador evitando loops indesejados.</li>
+                            <li><strong>Validação de Boas Práticas:</strong> Certifique-se de que os efeitos estão perfeitamente isolados no escopo modular.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PERSISTÊNCIA LOCAL COM LOCALSTORAGE -->
+            <div class="card" id="card-2">
+                <h2>💾 2. Persistência Local e Sincronização com o localStorage via useEffect</h2>
+                <p>Aprenda a sincronizar o estado reativo da aplicação com o armazenamento local do navegador para reter dados entre reloads.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ O Papel do Armazenamento Local na Experiência do Usuário</a>
+                        <span class="link-desc">Introdução conceitual ao uso do <code>localStorage</code> em aplicações web modernas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Inicialização Preguiçosa de Estados com LocalStorage</a>
+                        <span class="link-desc">Como carregar dados salvos de forma otimizada durante a montagem inicial.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Sincronizando Estados Complexos via useEffect</a>
+                        <span class="link-desc">Serialização e desserialização de objetos e arrays em formato JSON.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Resiliência e Tratamento de Exceções de Storage</a>
+                        <span class="link-desc">Protegendo sua aplicação contra falhas de cota excedida e dados corrompidos.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Persistindo Dados de Tarefas com useEffect e Storage</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para implementar persistência local de dados em sua aplicação:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Estrutura Base:</strong> Crie um gerenciador de tarefas simples utilizando estado local com <code>useState</code>.</li>
+                            <li><strong>Inicialização Preguiçosa:</strong> Implemente uma função no <code>useState</code> para ler dados salvos do <code>localStorage</code>.</li>
+                            <li><strong>Tratamento Condicional:</strong> Adicione uma checagem caso o armazenamento local esteja inicialmente vazio.</li>
+                            <li><strong>Monitoramento de Efeito:</strong> Crie um <code>useEffect</code> monitorando o array de tarefas como dependência.</li>
+                            <li><strong>Serialização JSON:</strong> Converta o array de dados em string utilizando <code>JSON.stringify</code> dentro do efeito.</li>
+                            <li><strong>Gravação no Storage:</strong> Salve os dados serializados no navegador utilizando <code>localStorage.setItem()</code>.</li>
+                            <li><strong>Adição e Reload:</strong> Adicione novas tarefas na interface e recarregue a aba completa do navegador.</li>
+                            <li><strong>Validação de Persistência:</strong> Valide se os dados foram mantidos intactos após o reload.</li>
+                            <li><strong>Blocos de Proteção:</strong> Implemente blocos de proteção <code>try/catch</code> para capturar falhas de acesso.</li>
+                            <li><strong>Testes de Stress:</strong> Realize testes limpando e populando dados recorrentes para garantir estabilidade.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: MANIPULAÇÃO DO DOM COM USEREF -->
+            <div class="card" id="card-3">
+                <h2>🎯 3. Manipulando Referências Nativas do DOM com o Hook useRef</h2>
+                <p>Compreenda a diferença entre o DOM Virtual e os nós reais, aprendendo a interagir imperativamente com elementos de tela.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ DOM Virtual vs DOM Real: O Papel das Referências</a>
+                        <span class="link-desc">Quando e por que precisamos acessar nós nativos diretamente em aplicações React.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Dominando o Hook useRef do Zero ao Avançado</a>
+                        <span class="link-desc">Associação de referências, foco automático e manipulação imperativa de inputs.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Rastreando Valores Mutáveis sem Re-renderizações</a>
+                        <span class="link-desc">Como utilizar o <code>useRef</code> para armazenar dados persistentes entre ciclos sem disparar novos renders.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank">▶️ Boas Práticas: Quando usar useState vs useRef</a>
+                        <span class="link-desc">Critérios arquiteturais para escolher a ferramenta correta de acordo com a necessidade de UI.</span>
+                    </li>
+                </ul>
+
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Foco Automático e Rastreamento com useRef</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para aplicar referências nativas e manipulação imperativa:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Criação do Formulário:</strong> Crie um formulário simples contendo um campo de texto e um botão de ação.</li>
+                            <li><strong>Inicialização da Ref:</strong> Importe e inicialize o Hook <code>useRef</code> criando uma constante <code>inputRef = useRef(null)</code>.</li>
+                            <li><strong>Associação JSX:</strong> Associe a referência ao elemento de input utilizando o atributo <code>ref={inputRef}</code>.</li>
+                            <li><strong>Função Imperativa:</strong> Crie uma função de manipulação para focar programaticamente no elemento.</li>
+                            <li><strong>Ação de Foco:</strong> Utilize a chamada imperativa <code>inputRef.current.focus()</code> dentro da função criada.</li>
+                            <li><strong>Conexão de Evento:</strong> Conecte a função a um evento de carregamento inicial ou clique de botão.</li>
+                            <li><strong>Segunda Referência:</strong> Crie uma referência voltada para rastrear a contagem de renderizações do componente.</li>
+                            <li><strong>Mutação sem Render:</strong> Incremente o valor <code>.current</code> da referência a cada ciclo sem chamar funções de estado.</li>
+                            <li><strong>Validação de Render:</strong> Valide que alterações em variáveis de <code>useRef</code> não provocam novas renderizações visuais.</li>
+                            <li><strong>Integração Completa:</strong> Teste o comportamento imperativo integrado com o fluxo reativo da aplicação.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

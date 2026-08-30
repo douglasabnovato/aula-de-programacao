@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática 2 | Aula 2 - ByteClass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Passo 1: Reset universal e Box-Sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        /* Passo 2: Fundo da página e tipografia base */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Passo 3: Container Flexbox principal */
+        .profile-container {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Passo 4, 5 e 6: Dimensões, Padding, Arredondamento e Box-Shadow */
+        .profile-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 380px;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Detalhe estético lateral em barra neon */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        /* Passo 7: Avatar circular */
+        .avatar-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        /* Passo 8: Hierarquia tipográfica */
+        .profile-info h2 {
+            font-size: 1.35rem;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .profile-info .role {
+            font-size: 0.88rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-info .bio {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Listagem de redes e contatos */
+        .social-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            padding: 6px 14px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Passo 9: Estilização do Botão CTA */
+        .profile-action .btn-follow {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-action .btn-follow:hover {
+            background-color: var(--primary-hover);
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="profile-container">
+        <article class="profile-card">
+
+            <div class="avatar-wrapper">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80"
+                    alt="Avatar da Aluna" class="profile-img">
+            </div>
+
+            <div class="profile-info">
+                <h2>Mariana Costa</h2>
+                <p class="role">Frontend Developer</p>
+                <p class="bio">Desenvolvedora especializada na criação de interfaces escaláveis, responsivas e focadas
+                    na experiência do usuário.</p>
+            </div>
+
+            <ul class="social-links">
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">Portfólio</a></li>
+            </ul>
+
+            <div class="profile-action">
+                <button class="btn-follow">Seguir Perfil</button>
+            </div>
+
+        </article>
+    </main>
+
+</body>
+
+</html>

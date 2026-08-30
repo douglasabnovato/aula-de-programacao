@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática 3 | Aula 3 - Responsividade Mobile</title>
+    
+    <!-- Importando a fonte moderna Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicons configurados com caminho relativo correto -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../../assets/site.webmanifest">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* CABEÇALHO COM FLEXBOX */
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* SEÇÃO HERO */
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(rgba(13, 17, 23, 0.9), rgba(13, 17, 23, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            max-width: 700px;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--primary-color);
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .btn-cta {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-cta:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* SEÇÃO DE RECURSOS (FEATURES) */
+        .features {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .feature-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 12px;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* RESPONSIVIDADE (MEDIA QUERIES) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            .hero {
+                padding: 50px 15px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-card {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO SEMÂNTICO -->
+    <header>
+        <a href="#" class="logo">⚡ BYTECLASS</a>
+        <nav>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Recursos</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SEÇÃO HERO -->
+        <section class="hero">
+            <h1>Construa o Futuro com Código de <span>Alta Performance</span></h1>
+            <p>Domine o desenvolvimento web moderno através de projetos práticos, estruturados e guiados passo a passo
+                para te levar ao nível profissional.</p>
+            <a href="#" class="btn-cta">Começar Agora</a>
+        </section>
+
+        <!-- SEÇÃO DE RECURSOS (Mantendo a tag <article> como ensinado na Atividade 1) -->
+        <section class="features">
+            <article class="feature-card">
+                <h3>Conteúdo Estruturado</h3>
+                <p>Módulos organizados de forma lógica para acelerar o seu aprendizado em engenharia de software.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Prática Guiada Real</h3>
+                <p>Laboratórios baseados em desafios de mercado com implementação de código limpo e moderno.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Ecossistema Integrado</h3>
+                <p>Ferramentas, padrões de arquitetura e metodologias utilizadas pelas principais empresas de
+                    tecnologia.</p>
+            </article>
+        </section>
+    </main>
+
+    <!-- RODAPÉ INSTITUCIONAL -->
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>

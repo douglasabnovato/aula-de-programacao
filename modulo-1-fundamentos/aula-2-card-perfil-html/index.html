@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 2 | ByteClass</title>
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --success-color: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --border-color: #30363D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .links-list li {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            word-break: break-word;
+            transition: opacity 0.2s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 24px;
+        }
+
+        .btn-concluir {
+            background-color: var(--primary-color);
+            color: var(--bg-main);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-concluir:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card.concluido {
+            border-color: var(--success-color);
+        }
+
+        .card.concluido::before {
+            background-color: var(--success-color);
+        }
+
+        .card.concluido .atividade-box-footer {
+            background-color: var(--success-bg);
+            border-color: var(--success-color);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .card.concluido .atividade-box-footer span {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .card.concluido .btn-concluir {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        /* Estilos do Acordeão de Atividade */
+        .atividade-container {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .atividade-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .atividade-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-align: left;
+            gap: 10px;
+        }
+
+        .atividade-toggle .seta {
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .atividade-container.ativo .seta {
+            transform: rotate(180deg);
+        }
+
+        .atividade-conteudo {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .atividade-container.ativo .atividade-conteudo {
+            display: block;
+        }
+
+        .atividade-intro {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 15px 0 10px 0;
+        }
+
+        .passos-lista {
+            padding-left: 20px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .passos-lista li {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .passos-lista code {
+            background-color: #21262d;
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .atividade-box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .atividade-box-footer span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* RESPONSIVIDADE PARA TELAS PEQUENAS (MOBILE) */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .atividade-toggle {
+                padding: 14px 15px;
+                font-size: 0.88rem;
+            }
+
+            .atividade-conteudo {
+                padding: 0 15px 15px 15px;
+            }
+
+            .atividade-box-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn-concluir {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Roadmap de Estudos Oficial</h1>
+        <p>Trilha prática recomendada para o desenvolvimento técnico no ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: HTML SEMÂNTICO E ESTRUTURAÇÃO DE CARDS -->
+            <div class="card" id="card-1">
+                <h2>🏷️ 1. Fundamentos de HTML Semântico e Estruturação de Tags</h2>
+                <p>Compreenda a importância da semântica web utilizando tags corretas para organizar o documento e
+                    construir componentes de perfil acessíveis e estruturados.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=kXpY6Wp7p4o" target="_blank">▶️ O que é HTML Semântico
+                            e por que você deve usar</a>
+                        <span class="link-desc">Introdução aos elementos semânticos essenciais (`&lt;header&gt;`,
+                            `&lt;main&gt;`, `&lt;article&gt;`, `&lt;section&gt;`) para uma web limpa.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3nYL_Stkfx8" target="_blank">▶️ Estruturando uma página
+                            web do zero com HTML5</a>
+                        <span class="link-desc">Organização correta de blocos de conteúdo e hierarquia de títulos em
+                            aplicações modernas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=5x0V9m3M8jg" target="_blank">▶️ Boas práticas de
+                            acessibilidade e SEO com tags semânticas</a>
+                        <span class="link-desc">Como motores de busca e leitores de tela interpretam a estrutura do seu
+                            código HTML.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=9j7l8V8g6l4" target="_blank">▶️ Arquitetura de
+                            Documentos e Padrões W3C na Web Moderna</a>
+                        <span class="link-desc">Profundidade em árvore de elementos e conformidade com os padrões
+                            oficiais da web.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Construção da Base HTML do Card de Perfil</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> Crie uma pasta para a Aula 2 e adicione os
+                                arquivos <code>index.html</code> e <code>style.css</code>.</li>
+                            <li><strong>Estrutura Boilerplate:</strong> Configure o documento HTML5 com a tag
+                                <code>&lt;meta charset="UTF-8"&gt;</code> e lang <code>pt-BR</code>.</li>
+                            <li><strong>Tag Semântica Principal:</strong> Adicione a tag semântica
+                                <code>&lt;main&gt;</code> para envolver o componente principal de perfil.</li>
+                            <li><strong>Container do Card:</strong> Crie um elemento <code>&lt;article&gt;</code> ou
+                                <code>&lt;div&gt;</code> que funcionará como o container visual do card.</li>
+                            <li><strong>Foto de Perfil:</strong> Insira uma tag <code>&lt;img&gt;</code> para a imagem
+                                de avatar do usuário.</li>
+                            <li><strong>Informações de Identidade:</strong> Utilize tags de cabeçalho
+                                (<code>&lt;h2&gt;</code>) para o nome e (<code>&lt;p&gt;</code>) para a profissão/bio.
+                            </li>
+                            <li><strong>Lista de Redes/Contatos:</strong> Adicione uma lista semântica
+                                (<code>&lt;ul&gt;</code> com <code>&lt;li&gt;</code>) para os links de contato.</li>
+                            <li><strong>Botão de Ação:</strong> Insira um botão de ação (<code>&lt;button&gt;</code>)
+                                com o texto "Seguir" ou "Entrar em Contato".</li>
+                            <li><strong>Vinculação de Estilos:</strong> Faça a ligação correta do arquivo
+                                <code>style.css</code> na tag <code>&lt;head&gt;</code> do HTML.</li>
+                            <li><strong>Validação Inicial:</strong> Abra o arquivo no navegador e valide a estrutura
+                                pura antes de iniciar a estilização CSS.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: BOX MODEL E ESTILIZAÇÃO DE CARDS -->
+            <div class="card" id="card-2">
+                <h2>📦 2. Box Model, Centralização e Layout de Cards no CSS</h2>
+                <p>Domine o Modelo de Caixa (Box Model), margens, preenchimentos e técnicas modernas de centralização
+                    para estilizar componentes profissionais.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=1PnKehTfmXE" target="_blank">▶️ Entendendo o CSS Box
+                            Model (Margin, Border, Padding)</a>
+                        <span class="link-desc">O conceito essencial de espaçamento, dimensões e cálculo de largura em
+                            elementos web.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=fYq5PXgSsbE" target="_blank">▶️ Como centralizar
+                            qualquer coisa no CSS com Flexbox</a>
+                        <span class="link-desc">Técnicas modernas e eficientes de alinhamento absoluto e flexível na
+                            tela.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=71w9zK1gGfI" target="_blank">▶️ Aplicando Sombreados,
+                            Arredondamento e Bordas Modernas</a>
+                        <span class="link-desc">Uso refinado de `border-radius`, sombras profundas com `box-shadow` e
+                            contornos.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3Kz81hX8a6c" target="_blank">▶️ Gerenciamento de
+                            Unidades Responsivas (px, %, rem, vh/vw)</a>
+                        <span class="link-desc">Como escolher a unidade ideal para garantir escalabilidade fluida de
+                            layouts.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Estilização Visual e Box Model do Card</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Reset e Box-Sizing:</strong> Configure o seletor universal <code>*</code> com
+                                <code>box-sizing: border-box</code> e margens zeradas.</li>
+                            <li><strong>Fundo da Página:</strong> Defina uma cor de fundo moderna para o corpo
+                                (<code>&lt;body&gt;</code>) da aplicação.</li>
+                            <li><strong>Centralização com Flexbox:</strong> Centralize o card na tela utilizando
+                                <code>display: flex</code>, <code>justify-content: center</code> e
+                                <code>align-items: center</code>.</li>
+                            <li><strong>Dimensões do Card:</strong> Estilize o container definindo largura máxima, cor
+                                de fundo contrastante e bordas estruturadas.</li>
+                            <li><strong>Preenchimento Interno:</strong> Aplique <code>padding</code> interno generoso
+                                para afastar os textos das bordas do componente.</li>
+                            <li><strong>Profundidade e Arredondamento:</strong> Arredonde os cantos com
+                                <code>border-radius: 12px</code> e adicione profundidade com <code>box-shadow</code>.
+                            </li>
+                            <li><strong>Avatar Circular:</strong> Ajuste a imagem de perfil com largura fixa, formato
+                                circular (<code>border-radius: 50%</code>) e margem inferior.</li>
+                            <li><strong>Tipografia Refinada:</strong> Trabalhe o peso (<code>font-weight</code>), cores
+                                e entrelinha (<code>line-height</code>) dos textos.</li>
+                            <li><strong>Estilização de Botões:</strong> Formate botões e links internos com alinhamento
+                                e respiros visuais adequados.</li>
+                            <li><strong>Validação de Layout:</strong> Teste o comportamento do card em diferentes
+                                larguras de tela para validar a estabilidade do Box Model.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ESTADOS INTERATIVOS, HOVER E TRANSIÇÕES -->
+            <div class="card" id="card-3">
+                <h2>✨ 3. Estados Interativos, Hover e Transições CSS</h2>
+                <p>Aprenda a utilizar pseudo-classes e propriedades de transição para adicionar micro-interações,
+                    dinamismo e feedback visual de excelência.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=2r67u24x6h0" target="_blank">▶️ O poder das
+                            Pseudo-classes no CSS (:hover, :focus, :active)</a>
+                        <span class="link-desc">Como alterar o estado visual de elementos com base na interação do
+                            usuário.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=Z5gW5G8hG3c" target="_blank">▶️ Criando Animações e
+                            Transições Suaves com CSS Transition</a>
+                        <span class="link-desc">Adicionando fluidez e elegância a mudanças de propriedades com
+                            transições nativas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=8l87p5nK2oM" target="_blank">▶️ Efeitos Visuais
+                            Avançados em Cards (Elevação e Escala)</a>
+                        <span class="link-desc">Uso de <code>transform: translateY()</code> e sombras dinâmicas para
+                            simular profundidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=3g5Y3b9z11A" target="_blank">▶️ Otimização de
+                            Performance em Animações CSS (GPU Acceleration)</a>
+                        <span class="link-desc">Boas práticas para garantir animações suaves a 60fps sem sobrecarregar o
+                            navegador.</span>
+                    </li>
+                </ul>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Adicionando Interatividade e Efeito Hover</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para executar a aplicação prática:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Transição Base:</strong> Adicione a propriedade
+                                <code>transition: all 0.3s ease</code> no seletor base do card para suavizar alterações.
+                            </li>
+                            <li><strong>Pseudo-classe Hover:</strong> Crie a regra de interação <code>.card:hover</code>
+                                no arquivo de estilos.</li>
+                            <li><strong>Elevação Visual:</strong> Aplique uma leve elevação vertical utilizando
+                                <code>transform: translateY(-6px)</code>.</li>
+                            <li><strong>Aprofundamento de Sombra:</strong> Intensifique sutilmente a propriedade
+                                <code>box-shadow</code> no hover para simular aproximação.</li>
+                            <li><strong>Destaque de Bordas:</strong> Configure transições nas bordas, alterando a cor de
+                                contorno ao passar o mouse.</li>
+                            <li><strong>Botão de Destaque:</strong> Estilize o botão de ação principal com uma cor
+                                vibrante alinhada à identidade visual.</li>
+                            <li><strong>Interação em Botões:</strong> Configure o <code>:hover</code> específico do
+                                botão com alteração de tom e micro-escala (<code>scale(1.02)</code>).</li>
+                            <li><strong>Links Dinâmicos:</strong> Adicione efeitos visuais interativos nos links e
+                                ícones das redes sociais.</li>
+                            <li><strong>Teste de Fluidez:</strong> Valide a experiência de uso passando o cursor sobre
+                                os elementos para garantir respostas sem travamentos.</li>
+                            <li><strong>Finalização:</strong> Salve os arquivos de código e confirme o encerramento do
+                                laboratório prático da Aula 2.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

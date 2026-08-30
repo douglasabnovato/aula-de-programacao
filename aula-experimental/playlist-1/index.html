@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula de Programação | da ByteClass para o Aluno</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --bg-sidebar: #010409;
+            --primary-color: #00FF66;
+            --primary-hover: #00cc52;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+            --warning-color: #f0883e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* CABEÇALHO MOBILE */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1001;
+        }
+
+        .sidebar-brand {
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .sidebar-brand img {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .menu-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR LATERAL ESQUERDA */
+        aside {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s ease;
+            z-index: 1002;
+            overflow-y: auto;
+        }
+
+        .sidebar-date {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
+
+        .sidebar-date .ano {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        #welcomeView.center-screen {
+            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), url('assets/byteclass-dev-3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .home-btn,
+        .experimental-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 15px 0 15px;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .home-btn:hover {
+            background-color: rgba(0, 255, 102, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .experimental-btn {
+            background-color: rgba(240, 136, 62, 0.1);
+            border-color: rgba(240, 136, 62, 0.3);
+            color: var(--warning-color);
+        }
+
+        .experimental-btn:hover {
+            background-color: rgba(240, 136, 62, 0.2);
+            border-color: var(--warning-color);
+        }
+
+        /* ACORDEON DA SIDEBAR */
+        .sidebar-menu {
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .modulo-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modulo-toggle {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .modulo-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--primary-color);
+        }
+
+        .seta-modulo {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .aulas-sublist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .modulo-item.ativo .aulas-sublist {
+            max-height: 1200px;
+            padding: 6px 0 10px 0;
+        }
+
+        .modulo-item.ativo .seta-modulo {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .aulas-sublist a {
+            display: block;
+            padding: 10px 16px 10px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s, background-color 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .aulas-sublist a:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .aulas-sublist a.ativo {
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left-color: var(--primary-color);
+            background-color: rgba(0, 255, 102, 0.08);
+        }
+
+        .aulas-sublist a.em-construcao {
+            opacity: 0.5;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+        }
+
+        /* ÁREA PRINCIPAL */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+            overflow-y: auto;
+        }
+
+        .iframe-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: var(--bg-main);
+        }
+
+        .center-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 45px;
+            border-radius: 12px;
+            max-width: 750px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .content-card.aviso::before {
+            background-color: var(--warning-color);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .badge.aviso,
+        .badge.experimental {
+            background-color: rgba(240, 136, 62, 0.15);
+            color: var(--warning-color);
+        }
+
+        .content-card h1 {
+            font-size: 1.9rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .content-card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        /* HUB DE PLAYLISTS E GRIDS */
+        .hub-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .hub-header {
+            margin-bottom: 30px;
+        }
+
+        .hub-header h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .hub-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .playlists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .playlist-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--warning-color);
+        }
+
+        .playlist-thumb {
+            width: 100%;
+            height: 180px;
+            background-color: #000;
+            position: relative;
+        }
+
+        .playlist-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .playlist-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: var(--text-main);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .playlist-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .playlist-info h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .playlist-info p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .btn-playlist {
+            background-color: rgba(240, 136, 62, 0.15);
+            color: var(--warning-color);
+            border: 1px solid rgba(240, 136, 62, 0.4);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .playlist-card:hover .btn-playlist {
+            background-color: var(--warning-color);
+            color: #000;
+        }
+
+        /* DETALHE DA PLAYLIST */
+        .playlist-detail-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .back-hub-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .back-hub-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+        }
+
+        .video-card-thumb {
+            width: 100%;
+            height: 150px;
+            background-color: #000;
+            position: relative;
+        }
+
+        .video-card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-card-info {
+            padding: 15px;
+        }
+
+        .video-card-info h4 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .video-card-info span {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* PLAYER DE VÍDEO */
+        .player-view-container {
+            width: 100%;
+            max-width: 950px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .video-player-wrapper {
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background-color: #000;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+
+        .video-player-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .welcome-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .highlight-item {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .highlight-item span {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .mobile-brand img {
+                height: 70px;
+                width: auto;
+                object-fit: contain;
+            }
+
+            aside {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+
+            aside.ativo {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.ativo {
+                display: block;
+            }
+
+            main {
+                margin-top: 70px;
+                height: calc(100vh - 70px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mobile-header">
+        <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+        <span class="mobile-brand">
+            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
+        </span>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside id="appSidebar">
+        <div class="sidebar-brand">
+            <img src="assets/byteclass-dev-2.jpg" alt="ByteClass Logo">
+            <div class="sidebar-date" id="dataAtualSidebar"></div>
+        </div>
+
+        <a href="#" class="home-btn" onclick="voltarHome(event)">
+            🏠 Início / Home
+        </a>
+
+        <a href="#" class="experimental-btn" onclick="abrirHubExperimental(event)">
+            🎬 Aula Experimental
+        </a>
+
+        <ul class="sidebar-menu" id="menuList"></ul>
+    </aside>
+
+    <main>
+        <!-- Home / Apresentação -->
+        <div id="welcomeView" class="center-screen">
+            <div class="content-card">
+                <span class="badge">Ecossistema learnTECH</span>
+                <h1>Bem-vindo à ByteClass</h1>
+                <p>Este projeto de aulas de programação foi desenvolvido para te apresentar um conteúdo altamente
+                    organizado e ordenado, construído para te levar ao próximo nível na sua jornada de tecnologia e
+                    desenvolvimento de software.</p>
+                <p>Utilize o menu lateral esquerdo para navegar entre os módulos ou acesse as Aulas Experimentais para
+                    iniciar sua jornada.</p>
+
+                <div class="welcome-highlights">
+                    <div class="highlight-item"><span>✔</span> Conteúdo Estruturado</div>
+                    <div class="highlight-item"><span>✔</span> Prática Guiada Real</div>
+                    <div class="highlight-item"><span>✔</span> Foco em Lógica e Código</div>
+                    <div class="highlight-item"><span>✔</span> Mentoria e Validação</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. HUB DE PLAYLISTS -->
+        <div id="hubExperimentalView" class="center-screen"
+            style="display: none; align-items: flex-start; justify-content: flex-start;">
+            <div class="hub-container">
+                <div class="hub-header">
+                    <span class="badge experimental">Central de Demonstração</span>
+                    <h1>Aulas Experimentais & Playlists</h1>
+                    <p>Selecione uma trilha abaixo para acessar os vídeos e iniciar seus estudos práticos.</p>
+                </div>
+                <div class="playlists-grid" id="playlistsGrid"></div>
+            </div>
+        </div>
+
+        <!-- 2. DETALHE DA PLAYLIST (GRID DE VÍDEOS) -->
+        <div id="playlistDetailView" class="center-screen"
+            style="display: none; align-items: flex-start; justify-content: flex-start;">
+            <div class="playlist-detail-container">
+                <button class="back-hub-btn" onclick="abrirHubExperimental(event)">← Voltar às Playlists</button>
+                <div class="hub-header">
+                    <span class="badge experimental" id="playlistBadgeDetail">Trilha Oficial</span>
+                    <h1 id="playlistTitleDetail">Nome da Playlist</h1>
+                    <p id="playlistDescDetail">Descrição da playlist...</p>
+                </div>
+                <div class="videos-grid" id="videosGrid"></div>
+            </div>
+        </div>
+
+        <!-- 3. PLAYER DE VÍDEO ATIVO -->
+        <div id="playerView" class="center-screen" style="display: none;">
+            <div class="player-view-container">
+                <button class="back-hub-btn" onclick="voltarParaPlaylistDetail()">← Voltar para a Trilha</button>
+                <div class="content-card experimental" style="max-width: 100%;">
+                    <span class="badge experimental" id="playerAulaBadge">Aula</span>
+                    <h1 id="playerAulaTitle">Título da Aula</h1>
+                    <div class="video-player-wrapper">
+                        <iframe id="youtubeIframe" src="" title="Aula Experimental ByteClass"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela "Em Construção" -->
+        <div id="construcaoView" class="center-screen" style="display: none;">
+            <div class="content-card aviso">
+                <span class="badge aviso">🚧 Módulo em Desenvolvimento</span>
+                <h1 id="tituloAulaConstrucao">Aula em Construção</h1>
+                <p>Esta aula está sendo elaborada com todo o rigor técnico pela coordenação. Em breve disponível.</p>
+            </div>
+        </div>
+
+        <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
+    </main>
+
+    <script src="cursos.js"></script>
+    <script>
+        // BASE DE DADOS COM OS 6 VÍDEOS REAIS DA TRILHA EXPERIMENTAL
+        const playlistsExperimentais = [
+            {
+                id: "playlist-1",
+                titulo: "Trilha 01: Ambientação e Setup de Desenvolvimento",
+                descricao: "Domine as ferramentas essenciais (VS Code, Git Bash, Windows Explorer e Chrome) para começar a programar do zero com alta performance.",
+                thumbnail: "assets/byteclass-dev-3.jpg",
+                aulas: [
+                    { numero: 1, titulo: "Lista de Instalações e Softwares", youtubeId: "4WoPodx4GVQ" },
+                    { numero: 2, titulo: "Configurando e Conhecendo o VS Code", youtubeId: "vT6M4gsIFUs" },
+                    { numero: 3, titulo: "Primeiros passos no Git Bash", youtubeId: "LH-EbYOLRGg" },
+                    { numero: 4, titulo: "Explorador de Arquivos do Windows", youtubeId: "-HZtZGro4O0" },
+                    { numero: 5, titulo: "Google Chrome e Organização de Favoritos", youtubeId: "dvErSPNqgp0" },
+                    { numero: 6, titulo: "Reunindo os Aplicativos no Ambiente de Estudo", youtubeId: "w50uctsX_Us" }
+                ]
+            }
+        ];
+
+        let playlistAtualAtiva = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderizarSidebar();
+            renderizarDataAtual();
+            renderizarHubPlaylists();
+        });
+
+        function renderizarHubPlaylists() {
+            const grid = document.getElementById("playlistsGrid");
+            if (!grid) return;
+
+            grid.innerHTML = "";
+            playlistsExperimentais.forEach(playlist => {
+                const card = document.createElement("div");
+                card.className = "playlist-card";
+                card.onclick = () => abrirDetalhePlaylist(playlist.id);
+                card.innerHTML = `
+                    <div class="playlist-thumb">
+                        <img src="${playlist.thumbnail}" alt="${playlist.titulo}">
+                        <div class="playlist-badge">${playlist.aulas.length} Aulas</div>
+                    </div>
+                    <div class="playlist-info">
+                        <div>
+                            <h3>${playlist.titulo}</h3>
+                            <p>${playlist.descricao}</p>
+                        </div>
+                        <div class="btn-playlist">Assistir Trilha Completa →</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function abrirHubExperimental(e) {
+            if (e) e.preventDefault();
+            esconderTodasAsTelas();
+            document.getElementById("hubExperimentalView").style.display = "flex";
+            fecharSidebarMobile();
+        }
+
+        function abrirDetalhePlaylist(playlistId) {
+            playlistAtualAtiva = playlistsExperimentais.find(p => p.id === playlistId);
+            if (!playlistAtualAtiva) return;
+
+            esconderTodasAsTelas();
+            document.getElementById("playlistBadgeDetail").textContent = playlistAtualAtiva.titulo;
+            document.getElementById("playlistTitleDetail").textContent = playlistAtualAtiva.titulo;
+            document.getElementById("playlistDescDetail").textContent = playlistAtualAtiva.descricao;
+
+            const videosGrid = document.getElementById("videosGrid");
+            videosGrid.innerHTML = "";
+
+            playlistAtualAtiva.aulas.forEach(aula => {
+                const card = document.createElement("div");
+                card.className = "video-card";
+                card.onclick = () => reproduzirVideoAula(aula);
+                card.innerHTML = `
+                    <div class="video-card-thumb">
+                        <img src="${playlistAtualAtiva.thumbnail}" alt="${aula.titulo}">
+                    </div>
+                    <div class="video-card-info">
+                        <span>Aula ${aula.numero}</span>
+                        <h4>${aula.titulo}</h4>
+                    </div>
+                `;
+                videosGrid.appendChild(card);
+            });
+
+            document.getElementById("playlistDetailView").style.display = "flex";
+        }
+
+        function voltarParaPlaylistDetail() {
+            if (playlistAtualAtiva) {
+                abrirDetalhePlaylist(playlistAtualAtiva.id);
+            } else {
+                abrirHubExperimental();
+            }
+        }
+
+        function reproduzirVideoAula(aula) {
+            esconderTodasAsTelas();
+            document.getElementById("playerAulaBadge").textContent = `Aula ${aula.numero} da Trilha`;
+            document.getElementById("playerAulaTitle").textContent = aula.titulo;
+
+            const iframe = document.getElementById("youtubeIframe");
+            iframe.src = `https://www.youtube.com/embed/${aula.youtubeId}?autoplay=1`;
+
+            document.getElementById("playerView").style.display = "flex";
+        }
+
+        function esconderTodasAsTelas() {
+            document.getElementById("welcomeView").style.display = "none";
+            document.getElementById("hubExperimentalView").style.display = "none";
+            document.getElementById("playlistDetailView").style.display = "none";
+            document.getElementById("playerView").style.display = "none";
+            document.getElementById("construcaoView").style.display = "none";
+            document.getElementById("aulaFrame").style.display = "none";
+
+            const iframe = document.getElementById("youtubeIframe");
+            if (iframe) iframe.src = "";
+        }
+
+        function renderizarSidebar() {
+            const menuList = document.getElementById("menuList");
+            if (!menuList) return;
+
+            menuList.innerHTML = "";
+
+            gradeCurricular.forEach(modulo => {
+                const liModulo = document.createElement("li");
+                liModulo.className = "modulo-item";
+                liModulo.id = modulo.id;
+
+                const btnToggle = document.createElement("button");
+                btnToggle.className = "modulo-toggle";
+                btnToggle.innerHTML = `
+                    <span>${modulo.titulo}</span>
+                    <span class="seta-modulo">▼</span>
+                `;
+                btnToggle.onclick = () => toggleModulo(modulo.id);
+
+                const ulAulas = document.createElement("ul");
+                ulAulas.className = "aulas-sublist";
+
+                modulo.aulas.forEach(aula => {
+                    const liAula = document.createElement("li");
+                    const aAula = document.createElement("a");
+                    aAula.href = "#";
+                    aAula.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
+
+                    if (aula.status === "construcao") {
+                        aAula.classList.add("em-construcao");
+                        aAula.onclick = (e) => {
+                            e.preventDefault();
+                            exibirTelaEmConstrucao(aula.numero, aula.titulo, aAula);
+                            fecharSidebarMobile();
+                        };
+                    } else {
+                        const caminhoCompleto = `${aula.pasta}/index.html`;
+                        aAula.onclick = (e) => {
+                            e.preventDefault();
+                            carregarAula(caminhoCompleto, aAula);
+                            fecharSidebarMobile();
+                        };
+                    }
+
+                    liAula.appendChild(aAula);
+                    ulAulas.appendChild(liAula);
+                });
+
+                liModulo.appendChild(btnToggle);
+                liModulo.appendChild(ulAulas);
+                menuList.appendChild(liModulo);
+            });
+        }
+
+        function toggleModulo(idModulo) {
+            const moduloElemento = document.getElementById(idModulo);
+            if (moduloElemento) {
+                moduloElemento.classList.toggle("ativo");
+            }
+        }
+
+        function renderizarDataAtual() {
+            const elementoData = document.getElementById('dataAtualSidebar');
+            if (!elementoData) return;
+
+            const agora = new Date();
+            const mesExtenso = agora.toLocaleDateString('pt-BR', { month: 'long' });
+            const mesFormatado = mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1);
+            const dia = agora.getDate();
+            const ano = agora.getFullYear();
+
+            elementoData.innerHTML = `${mesFormatado}, ${dia} <span class="ano">${ano}</span>`;
+        }
+
+        function carregarAula(caminhoArquivo, elementoMenu) {
+            esconderTodasAsTelas();
+            const frame = document.getElementById('aulaFrame');
+            frame.style.display = 'block';
+            frame.src = caminhoArquivo;
+            atualizarMenuAtivo(elementoMenu);
+        }
+
+        function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
+            esconderTodasAsTelas();
+            document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
+            document.getElementById('construcaoView').style.display = 'flex';
+            atualizarMenuAtivo(elementoMenu);
+        }
+
+        function voltarHome(e) {
+            if (e) e.preventDefault();
+            esconderTodasAsTelas();
+            document.getElementById('welcomeView').style.display = 'flex';
+
+            document.querySelectorAll('.aulas-sublist a').forEach(item => {
+                item.classList.remove('ativo');
+            });
+            fecharSidebarMobile();
+        }
+
+        function atualizarMenuAtivo(elementoMenu) {
+            document.querySelectorAll('.aulas-sublist a').forEach(item => {
+                item.classList.remove('ativo');
+            });
+            if (elementoMenu) {
+                elementoMenu.classList.add('ativo');
+                const moduloPai = elementoMenu.closest('.modulo-item');
+                if (moduloPai) {
+                    moduloPai.classList.add('ativo');
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('appSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('ativo');
+            overlay.classList.toggle('ativo');
+        }
+
+        function fecharSidebarMobile() {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('appSidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                sidebar.classList.remove('ativo');
+                overlay.classList.remove('ativo');
+            }
+        }
+    </script>
+</body>
+
+</html>
