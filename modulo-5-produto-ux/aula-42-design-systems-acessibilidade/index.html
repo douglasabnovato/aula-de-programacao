@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 42 | ByteClass</title>
+    <meta name="description" content="Esta ementa mostra como transformar decisões visuais repetidas em um sistema com tokens e componentes, e como garantir que a interface funcione para quem navega por teclado, leitor de tela ou com baixa visão.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 42: Design Systems e Interfaces Acessíveis</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: TOKENS: O DESIGN VIRA VARIÁVEL -->
+            <div class="card" id="card-1">
+                <h2>🎨 1. Tokens: o Design Vira Variável</h2>
+                <p>Um design system começa muito antes de uma biblioteca de componentes. Começa quando a cor deixa de ser escrita à mão em 40 lugares e passa a ter nome.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://m3.material.io/foundations/design-tokens/overview" target="_blank" rel="noopener noreferrer">📄 Design Tokens — Material Design 3</a>
+                        <span class="link-desc">A definição e a hierarquia de tokens, com exemplos de nomenclatura.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS/Using_CSS_custom_properties" target="_blank" rel="noopener noreferrer">📄 Propriedades Customizadas CSS — MDN</a>
+                        <span class="link-desc">A mecânica das variáveis CSS: escopo, herança e fallback.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS/@media/prefers-color-scheme" target="_blank" rel="noopener noreferrer">📄 prefers-color-scheme — MDN</a>
+                        <span class="link-desc">Como respeitar a preferência de tema do sistema operacional do usuário.</span>
+                    </li>
+                    <li>
+                        <a href="https://web.dev/learn/design" target="_blank" rel="noopener noreferrer">📄 web.dev — Learn Responsive Design</a>
+                        <span class="link-desc">Curso gratuito do Google sobre design responsivo, com foco em CSS moderno.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Extraindo os Tokens de um Projeto Seu</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um projeto do catálogo com CSS próprio e abra o arquivo de estilo.</li>
+                            <li><strong>Medindo o Ponto de Partida:</strong> conte quantas cores literais existem no arquivo e anote o número.</li>
+                            <li><strong>Listando as Cores:</strong> extraia todas para uma lista e agrupe as que são quase iguais.</li>
+                            <li><strong>Criando Tokens Primitivos:</strong> nomeie por valor — <code>--verde-500</code>, <code>--cinza-900</code>.</li>
+                            <li><strong>Criando Tokens Semânticos:</strong> nomeie por função — <code>--cor-acao</code>, <code>--cor-superficie</code>.</li>
+                            <li><strong>Apontando um para o Outro:</strong> faça o semântico apontar para o primitivo, nunca o contrário.</li>
+                            <li><strong>Substituindo no CSS:</strong> troque todas as cores literais pelas variáveis semânticas.</li>
+                            <li><strong>Medindo de Novo:</strong> conte as cores literais restantes — devem estar todas dentro do <code>:root</code>.</li>
+                            <li><strong>Tema Alternativo:</strong> redefina só os tokens semânticos num bloco <code>prefers-color-scheme</code>.</li>
+                            <li><strong>Validação e Testes:</strong> alterne o tema do sistema operacional e confirme que a página inteira acompanha.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ACESSIBILIDADE: O MÍNIMO QUE NÃO É OPCIONAL -->
+            <div class="card" id="card-2">
+                <h2>♿ 2. Acessibilidade: o Mínimo que Não é Opcional</h2>
+                <p>Acessibilidade tem fama de tema difícil e caro. A maior parte do ganho vem de quatro coisas simples que já deveriam estar no código: HTML semântico, foco visível, rótulo e contraste.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank" rel="noopener noreferrer">📄 WCAG 2.1 — Referência Rápida</a>
+                        <span class="link-desc">Todos os critérios de sucesso filtráveis por nível, com técnica de implementação.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener noreferrer">📄 ARIA Authoring Practices — Padrões</a>
+                        <span class="link-desc">Como construir modal, acordeão, abas e menu de forma acessível, com exemplo de código.</span>
+                    </li>
+                    <li>
+                        <a href="https://web.dev/learn/accessibility" target="_blank" rel="noopener noreferrer">📄 web.dev — Learn Accessibility</a>
+                        <span class="link-desc">Curso gratuito e completo, módulo a módulo, com exercício em cada um.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Learn/Accessibility/HTML" target="_blank" rel="noopener noreferrer">📄 HTML Acessível — MDN</a>
+                        <span class="link-desc">A base: como a marcação correta resolve a maior parte dos problemas.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Tornando uma Tela Navegável Só pelo Teclado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra uma tela sua e guarde o mouse longe — a prática inteira é sem ele.</li>
+                            <li><strong>Diagnóstico com Tab:</strong> percorra a tela só com Tab e anote onde o foco some ou pula.</li>
+                            <li><strong>Corrigindo o Foco Visível:</strong> remova qualquer <code>outline: none</code> e use <code>:focus-visible</code>.</li>
+                            <li><strong>Conferindo a Ordem:</strong> garanta que a ordem de foco segue a ordem visual da tela.</li>
+                            <li><strong>Trocando por Semântica:</strong> substitua <code>&lt;div onclick&gt;</code> por <code>&lt;button&gt;</code> onde houver ação.</li>
+                            <li><strong>Rotulando Campos:</strong> ligue cada <code>input</code> a um <code>label</code> por <code>for</code> e <code>id</code>.</li>
+                            <li><strong>Texto Alternativo:</strong> descreva as imagens informativas e deixe <code>alt=\"\"</code> nas decorativas.</li>
+                            <li><strong>Testando com Leitor de Tela:</strong> ligue o Narrador no Windows ou o VoiceOver no Mac e percorra a tela.</li>
+                            <li><strong>Medindo o Contraste:</strong> use o DevTools para conferir a razão de cada texto sobre seu fundo.</li>
+                            <li><strong>Validação e Testes:</strong> complete a tarefa principal da tela do começo ao fim sem tocar no mouse.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: DO TOKEN AO COMPONENTE REUTILIZÁVEL -->
+            <div class="card" id="card-3">
+                <h2>🧩 3. Do Token ao Componente Reutilizável</h2>
+                <p>Com tokens definidos e acessibilidade no lugar, o componente deixa de ser um pedaço de HTML copiado e vira uma peça com contrato: o que recebe, o que faz, quais estados tem.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://m3.material.io/components" target="_blank" rel="noopener noreferrer">📄 Catálogo de Componentes — Material 3</a>
+                        <span class="link-desc">Cada componente com anatomia, estados e regras de uso — bom modelo de documentação.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/ARIA/apg/patterns/button/" target="_blank" rel="noopener noreferrer">📄 Padrão de Botão Acessível — ARIA APG</a>
+                        <span class="link-desc">O que um botão precisa ter para funcionar com teclado e leitor de tela.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS/:focus-visible" target="_blank" rel="noopener noreferrer">📄 :focus-visible — MDN</a>
+                        <span class="link-desc">Como mostrar o foco para quem navega por teclado sem poluir para quem usa mouse.</span>
+                    </li>
+                    <li>
+                        <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer">📄 Storybook — documentação oficial</a>
+                        <span class="link-desc">A ferramenta padrão para catalogar componentes isolados com seus estados.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Construindo um Botão com Todos os Estados</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>componentes.html</code> importando os tokens do bloco 1.</li>
+                            <li><strong>Definindo o Contrato:</strong> escreva num comentário quais variações e tamanhos o botão terá.</li>
+                            <li><strong>Estado Padrão:</strong> implemente a variação primária com os tokens semânticos, sem cor literal.</li>
+                            <li><strong>Hover e Ativo:</strong> acrescente as duas mudanças de estado, com transição curta.</li>
+                            <li><strong>Foco Visível:</strong> use <code>:focus-visible</code> com contorno de ao menos 3:1 de contraste.</li>
+                            <li><strong>Desabilitado:</strong> use o atributo <code>disabled</code> e estilize por <code>[disabled]</code>, não por classe.</li>
+                            <li><strong>Estado de Carregando:</strong> acrescente indicador e <code>aria-busy=\"true\"</code> enquanto processa.</li>
+                            <li><strong>Variação Secundária:</strong> crie a segunda variação trocando apenas tokens, sem duplicar as regras.</li>
+                            <li><strong>Página de Catálogo:</strong> monte uma grade mostrando as duas variações em todos os seis estados.</li>
+                            <li><strong>Validação e Testes:</strong> percorra o catálogo só com Tab e confirme que todo estado é perceptível sem mouse.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

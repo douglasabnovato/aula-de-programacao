@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlador Magro: Antes e Depois | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Controlador Magro: Antes e Depois</h1>
+        <p class="subtitulo">Aula 23 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>Antes — tudo no controlador</h2>
+        <pre>const criar = (req, res) =&gt; {
+  const { titulo, prazo } = req.body;
+  if (!titulo || titulo.trim() === '') return res.status(400).json({ erro: 'Título obrigatório' });
+  if (prazo &amp;&amp; new Date(prazo) &lt; new Date()) return res.status(400).json({ erro: 'Prazo no passado' });
+
+  const existe = tarefas.find(t =&gt; t.titulo.toLowerCase() === titulo.trim().toLowerCase());
+  if (existe) return res.status(409).json({ erro: 'Já existe tarefa com esse título' });
+
+  const nova = { id: proximoId++, titulo: titulo.trim(), prazo: prazo || null, feita: false };
+  tarefas.push(nova);
+  res.status(201).json(nova);
+};</pre>
+        <p>Nove linhas com quatro responsabilidades: ler HTTP, validar, decidir regra de negócio e gravar dado.</p>
+
+        <h2>Depois — três arquivos, um motivo cada</h2>
+        <pre>// controllers/tarefas.controller.js — só HTTP
+const criar = (req, res, proximo) =&gt; {
+  try {
+    const tarefa = servico.criar(req.body);
+    res.status(201).json(tarefa);
+  } catch (erro) {
+    if (erro.codigo === 'VALIDACAO') return res.status(400).json({ erro: erro.message });
+    if (erro.codigo === 'DUPLICADO') return res.status(409).json({ erro: erro.message });
+    proximo(erro);
+  }
+};</pre>
+
+        <pre>// services/tarefas.service.js — só regra de negócio
+const criar = ({ titulo, prazo }) =&gt; {
+  if (!titulo || !titulo.trim()) throw erroDe('VALIDACAO', 'Título obrigatório');
+  if (prazo &amp;&amp; new Date(prazo) &lt; new Date()) throw erroDe('VALIDACAO', 'Prazo no passado');
+  if (repositorio.buscarPorTitulo(titulo.trim())) throw erroDe('DUPLICADO', 'Já existe tarefa com esse título');
+
+  return repositorio.salvar({ titulo: titulo.trim(), prazo: prazo || null, feita: false });
+};</pre>
+
+        <pre>// repositories/tarefas.repository.js — só dado
+let tarefas = [];
+let proximoId = 1;
+
+const buscarPorTitulo = (titulo) =&gt;
+  tarefas.find(t =&gt; t.titulo.toLowerCase() === titulo.toLowerCase());
+
+const salvar = (dados) =&gt; {
+  const registro = { id: proximoId++, ...dados };
+  tarefas.push(registro);
+  return registro;
+};</pre>
+
+        <h2>O teste que só o "depois" permite</h2>
+        <pre>// Sem subir servidor, sem HTTP, sem porta:
+const servico = require('./src/services/tarefas.service');
+
+try {
+  servico.criar({ titulo: '   ' });
+} catch (e) {
+  console.log(e.codigo === 'VALIDACAO' ? '✔ recusou título vazio' : '✘ falhou');
+}</pre>
+        <p>É esse o ganho concreto. O resto é consequência.</p>
+    </div>
+</body>
+
+</html>

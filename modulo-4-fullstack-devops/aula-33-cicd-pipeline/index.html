@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 33 | ByteClass</title>
+    <meta name="description" content="Esta ementa transforma o ritual manual de publicar — rodar teste na mão, buildar, arrastar arquivo — numa esteira que dispara sozinha a cada push e recusa o que está quebrado antes de chegar ao usuário.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 33: CI/CD e Pipeline de Implantação Contínua</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: INTEGRAÇÃO CONTÍNUA: O QUE É E O QUE NÃO É -->
+            <div class="card" id="card-1">
+                <h2>🔁 1. Integração Contínua: o que é e o que não é</h2>
+                <p>CI não é ter um arquivo YAML no repositório. É a prática de integrar cedo e com frequência, com uma verificação automática que dá o veredito em minutos.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/articles/continuousIntegration.html" target="_blank" rel="noopener noreferrer">📄 Continuous Integration — Martin Fowler</a>
+                        <span class="link-desc">O artigo de referência que define a prática, com as condições que precisam existir.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/about-github-actions/understanding-github-actions" target="_blank" rel="noopener noreferrer">📄 Entendendo o GitHub Actions</a>
+                        <span class="link-desc">Os conceitos de workflow, job, step e runner, na documentação oficial em português.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/DeploymentPipeline.html" target="_blank" rel="noopener noreferrer">📄 Deployment Pipeline — Martin Fowler</a>
+                        <span class="link-desc">Por que a esteira é organizada em estágios e o que cada um deve provar.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/writing-workflows/quickstart" target="_blank" rel="noopener noreferrer">📄 GitHub Actions — Início Rápido</a>
+                        <span class="link-desc">O menor workflow possível, para ver a esteira rodando em cinco minutos.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Sua Primeira Esteira Verde</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> confirme que o projeto da API está num repositório no GitHub.</li>
+                            <li><strong>Criando a Pasta:</strong> crie <code>.github/workflows/</code> na raiz do repositório.</li>
+                            <li><strong>Arquivo do Workflow:</strong> crie <code>ci.yml</code> com um nome descritivo no campo <code>name</code>.</li>
+                            <li><strong>Definindo o Gatilho:</strong> configure <code>on: [push, pull_request]</code> para disparar nos dois casos.</li>
+                            <li><strong>Escolhendo o Runner:</strong> declare <code>runs-on: ubuntu-latest</code> no job.</li>
+                            <li><strong>Baixando o Código:</strong> use a ação <code>actions/checkout@v4</code> como primeiro passo.</li>
+                            <li><strong>Preparando o Node:</strong> use <code>actions/setup-node@v4</code> fixando a versão 20.</li>
+                            <li><strong>Instalando:</strong> rode <code>npm ci</code> — não <code>npm install</code> — para instalação reproduzível.</li>
+                            <li><strong>Disparando:</strong> faça commit e push, e acompanhe a execução na aba Actions.</li>
+                            <li><strong>Validação e Testes:</strong> quebre o código de propósito, faça push e confirme que a esteira ficou vermelha.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: OS PORTÕES DE QUALIDADE DA ESTEIRA -->
+            <div class="card" id="card-2">
+                <h2>🧪 2. Os Portões de Qualidade da Esteira</h2>
+                <p>Uma esteira que só instala dependência não protege ninguém. Os portões são o que fazem o commit ruim parar antes do usuário: lint, teste, build e auditoria.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://nodejs.org/api/test.html" target="_blank" rel="noopener noreferrer">📄 Test Runner nativo do Node</a>
+                        <span class="link-desc">O executor de testes que vem junto com o Node, sem instalar nada.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/writing-workflows/choosing-what-your-workflow-does/using-jobs-in-a-workflow" target="_blank" rel="noopener noreferrer">📄 Jobs em um Workflow — GitHub</a>
+                        <span class="link-desc">Como paralelizar e encadear etapas, e o que o needs faz.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.npmjs.com/cli/v10/commands/npm-audit" target="_blank" rel="noopener noreferrer">📄 npm audit — documentação oficial</a>
+                        <span class="link-desc">Como a checagem de vulnerabilidade funciona e como interpretar o relatório.</span>
+                    </li>
+                    <li>
+                        <a href="https://eslint.org/docs/latest/use/getting-started" target="_blank" rel="noopener noreferrer">📄 ESLint — primeiros passos</a>
+                        <span class="link-desc">Configuração mínima do linter e integração com a esteira.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Acrescentando Portões que Barram o Commit Ruim</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>test</code> na API e um arquivo <code>tarefas.test.js</code>.</li>
+                            <li><strong>Primeiro Teste:</strong> use o test runner nativo para verificar que criar tarefa sem título lança erro.</li>
+                            <li><strong>Script de Teste:</strong> acrescente <code>\"test\": \"node --test\"</code> nos scripts do <code>package.json</code>.</li>
+                            <li><strong>Rodando Local:</strong> execute <code>npm test</code> e confirme que passa antes de levar para a esteira.</li>
+                            <li><strong>Portão de Teste:</strong> acrescente o passo <code>npm test</code> no workflow, depois do <code>npm ci</code>.</li>
+                            <li><strong>Portão de Lint:</strong> instale o ESLint, configure e acrescente <code>npm run lint</code> à esteira.</li>
+                            <li><strong>Portão de Auditoria:</strong> acrescente <code>npm audit --audit-level=high</code> como passo.</li>
+                            <li><strong>Separando em Jobs:</strong> divida lint e teste em dois jobs para rodarem em paralelo.</li>
+                            <li><strong>Provando o Portão:</strong> escreva um teste que falha de propósito e confirme que a esteira barra.</li>
+                            <li><strong>Validação e Testes:</strong> abra um Pull Request e confirme que o GitHub mostra o resultado dos portões nele.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: IMPLANTAÇÃO AUTOMÁTICA E O DIREITO DE VOLTAR ATRÁS -->
+            <div class="card" id="card-3">
+                <h2>🎯 3. Implantação Automática e o Direito de Voltar Atrás</h2>
+                <p>Publicar automático só é seguro quando voltar atrás também é rápido. O bloco fecha com a etapa de deploy, os segredos fora do código e o plano de reversão.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions" target="_blank" rel="noopener noreferrer">📄 Segredos no GitHub Actions</a>
+                        <span class="link-desc">Como armazenar e usar credenciais sem que apareçam no log da execução.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/writing-workflows/choosing-when-your-workflow-runs/using-conditions-to-control-job-execution" target="_blank" rel="noopener noreferrer">📄 Condições de Execução — GitHub Actions</a>
+                        <span class="link-desc">O if que faz o deploy rodar só no branch principal.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener noreferrer">📄 Publicando com GitHub Pages</a>
+                        <span class="link-desc">Configurar a origem de publicação e o deploy por Actions.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/release-engineering/" target="_blank" rel="noopener noreferrer">📄 Google SRE — Engenharia de Release</a>
+                        <span class="link-desc">O capítulo gratuito sobre publicar com segurança e reverter rápido.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Publicando Automaticamente, com Volta Garantida</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> em Settings › Secrets, crie um segredo de teste chamado <code>TOKEN_DEPLOY</code>.</li>
+                            <li><strong>Job de Deploy:</strong> acrescente um segundo job com <code>needs: [teste, lint]</code> para depender dos portões.</li>
+                            <li><strong>Condição de Branch:</strong> use <code>if: github.ref == 'refs/heads/main'</code> para publicar só do principal.</li>
+                            <li><strong>Usando o Segredo:</strong> leia com <code>${{ secrets.TOKEN_DEPLOY }}</code> e confirme que o log mostra apenas asteriscos.</li>
+                            <li><strong>Passo de Build:</strong> rode o build do frontend dentro do job de deploy.</li>
+                            <li><strong>Publicando:</strong> configure a publicação no GitHub Pages a partir do artefato gerado.</li>
+                            <li><strong>Marcando a Versão:</strong> crie uma tag Git a cada publicação bem-sucedida.</li>
+                            <li><strong>Ensaiando a Volta:</strong> pratique <code>git revert</code> do último commit e veja a esteira republicar a versão anterior.</li>
+                            <li><strong>Medindo o Tempo:</strong> cronometre quanto leva do <code>revert</code> até o site voltar ao ar.</li>
+                            <li><strong>Validação e Testes:</strong> registre no README o tempo medido e o passo a passo de reversão de emergência.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

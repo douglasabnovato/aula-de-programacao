@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback SCI — Modelo e Exemplos | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Feedback SCI — Modelo e Exemplos</h1>
+        <p class="subtitulo">Aula 52 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>Situação, Comportamento, Impacto</h2>
+        <div class="painel"><p>Três partes. Falta uma, o feedback não funciona: sem situação vira
+        generalização; sem comportamento vira julgamento; sem impacto vira opinião sem peso.</p></div>
+
+        <h2>Feedback positivo — específico, não genérico</h2>
+        <pre>✘ "Você foi muito bem nessa sprint, parabéns!"
+
+✔ "Na review de quinta (situação), você explicou a decisão do cache
+   mostrando o número antes e depois (comportamento). Isso encerrou
+   uma discussão que já ia para a terceira reunião (impacto)."</pre>
+        <p>O primeiro agrada por dez segundos. O segundo ensina o que repetir.</p>
+
+        <h2>Feedback de ajuste — mesma estrutura, mesmo tom</h2>
+        <pre>✔ "Nos dois últimos PRs (situação), os commits vieram com mensagem
+   'ajustes' (comportamento). Quando preciso achar onde algo mudou,
+   levo uns 20 minutos rolando o diff (impacto).
+
+   Consegue escrever o que mudou na mensagem? Uma linha resolve."
+                                                      (pedido)</pre>
+
+        <h2>Por que não usar o sanduíche</h2>
+        <pre>✘ "Seu código está ótimo! Só que a estrutura precisa mudar inteira.
+   Mas o commit ficou bem organizado!"</pre>
+        <p>Três problemas: a pessoa não sabe se foi elogiada ou criticada, aprende a desconfiar de
+        todo elogio seu, e a mensagem do meio — a que importava — some. Feedback de ajuste
+        se entrega direto, com respeito e sem embrulho.</p>
+
+        <h2>Pedindo feedback de um jeito que funcione</h2>
+        <pre>✘ "Como estou indo?"                → resposta: "tá indo bem"
+✘ "Tem algum feedback para mim?"    → resposta: "não, tá tranquilo"
+
+✔ "Na apresentação de ontem, o que você cortaria se eu tivesse
+   metade do tempo?"
+✔ "No meu último PR, teve algum ponto em que você hesitou em
+   comentar?"
+✔ "Se você fosse melhorar uma coisa na minha forma de documentar,
+   qual seria?"</pre>
+        <p>A pergunta específica dá licença para a resposta específica. A genérica convida à gentileza vazia.</p>
+
+        <h2>Modelo em branco</h2>
+        <pre>Para:          ___
+Situação:      (quando e onde, específico)
+Comportamento: (o que observei — verbo, não adjetivo)
+Impacto:       (o efeito concreto em mim, no trabalho ou no time)
+Pedido:        (ação verificável, se for ajuste)</pre>
+    </div>
+</body>
+
+</html>

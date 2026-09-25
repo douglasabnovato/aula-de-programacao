@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 43 | ByteClass</title>
+    <meta name="description" content="Esta ementa separa o que é princípio ágil do que é ritual de empresa, apresenta Scrum e Kanban pelas fontes originais e mostra como escolher entre os dois pelo tipo de trabalho, não pela moda.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 43: Metodologias Ágeis (Scrum, Kanban e Lean)</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: O MANIFESTO E O QUE FOI DISTORCIDO -->
+            <div class="card" id="card-1">
+                <h2>📜 1. O Manifesto e o que Foi Distorcido</h2>
+                <p>O manifesto ágil tem quatro valores e doze princípios, cabe numa página, e quase ninguém leu. Ler o original explica por que tanta empresa &#x27;ágil&#x27; entrega devagar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://agilemanifesto.org/iso/ptbr/manifesto.html" target="_blank" rel="noopener noreferrer">📄 Manifesto Ágil — versão em português</a>
+                        <span class="link-desc">Os quatro valores no original, em uma página. Leitura de dois minutos.</span>
+                    </li>
+                    <li>
+                        <a href="https://agilemanifesto.org/iso/ptbr/principles.html" target="_blank" rel="noopener noreferrer">📄 Os 12 Princípios do Manifesto Ágil</a>
+                        <span class="link-desc">O detalhamento dos valores, também em português e também curtíssimo.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/articles/agile-aus-2018.html" target="_blank" rel="noopener noreferrer">📄 The State of Agile Software in 2018 — Fowler</a>
+                        <span class="link-desc">Um dos signatários do manifesto avaliando o que deu certo e o que virou indústria.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/FlaccidScrum.html" target="_blank" rel="noopener noreferrer">📄 Flaccid Scrum — Martin Fowler</a>
+                        <span class="link-desc">O texto curto sobre adotar o ritual do Scrum sem a prática técnica que o sustenta.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Confrontando o Manifesto com a Prática Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o manifesto em português e leia os quatro valores em voz alta.</li>
+                            <li><strong>Registrando o Original:</strong> escreva os quatro valores numa tabela com duas colunas.</li>
+                            <li><strong>Lendo os Princípios:</strong> leia os doze princípios e marque os três que mais te surpreenderam.</li>
+                            <li><strong>Escolhendo o Alvo:</strong> pense num projeto de que você participou — de trabalho, faculdade ou pessoal.</li>
+                            <li><strong>Avaliando Valor a Valor:</strong> para cada valor, escreva um fato que mostre se ele foi honrado ou não.</li>
+                            <li><strong>Buscando o Ritual Vazio:</strong> identifique uma cerimônia que acontecia sem gerar decisão nenhuma.</li>
+                            <li><strong>Buscando o Princípio Ignorado:</strong> aponte qual dos doze princípios era o mais violado.</li>
+                            <li><strong>Propondo Uma Mudança:</strong> escolha um único princípio e proponha uma mudança concreta para honrá-lo.</li>
+                            <li><strong>Escrevendo o Custo:</strong> registre o que essa mudança tornaria mais difícil — toda escolha tem preço.</li>
+                            <li><strong>Validação e Testes:</strong> apresente a proposta ao instrutor defendendo-a pelo princípio, não pela opinião.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: SCRUM PELO GUIA OFICIAL -->
+            <div class="card" id="card-2">
+                <h2>🏉 2. Scrum pelo Guia Oficial</h2>
+                <p>O Scrum Guide tem 13 páginas e é a única definição oficial. Tudo que uma empresa faz além disso é escolha dela — e vale saber distinguir uma coisa da outra.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener noreferrer">📄 The Scrum Guide — versão oficial</a>
+                        <span class="link-desc">A definição normativa completa, mantida pelos criadores do framework.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.scrum.org/resources/what-is-scrum" target="_blank" rel="noopener noreferrer">📄 O que é Scrum — Scrum.org</a>
+                        <span class="link-desc">Resumo oficial com diagrama do fluxo e links para cada elemento.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.scrum.org/resources/what-is-a-product-owner" target="_blank" rel="noopener noreferrer">📄 O papel do Product Owner — Scrum.org</a>
+                        <span class="link-desc">A responsabilidade de maximizar valor, explicada sem o folclore de &#x27;dono do backlog&#x27;.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/br/agile/scrum" target="_blank" rel="noopener noreferrer">📄 Guia de Scrum — Atlassian</a>
+                        <span class="link-desc">Material prático e gratuito, em português, com exemplos de aplicação.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Simulando uma Sprint de Uma Semana</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> leia o Scrum Guide inteiro — são treze páginas, leva vinte minutos.</li>
+                            <li><strong>Escolhendo o Produto:</strong> use um projeto seu do catálogo como produto da simulação.</li>
+                            <li><strong>Montando o Backlog:</strong> escreva oito itens de trabalho, cada um com o valor que entrega.</li>
+                            <li><strong>Ordenando por Valor:</strong> ordene o backlog e escreva o critério que usou para ordenar.</li>
+                            <li><strong>Definindo o Objetivo:</strong> escreva o Sprint Goal em uma frase — o que a sprint torna possível.</li>
+                            <li><strong>Estimando:</strong> marque cada item como pequeno, médio ou grande, sem inventar hora.</li>
+                            <li><strong>Selecionando o Escopo:</strong> escolha só o que cabe numa semana real de estudo sua.</li>
+                            <li><strong>Definindo o Pronto:</strong> escreva a Definition of Done com no mínimo quatro critérios objetivos.</li>
+                            <li><strong>Executando:</strong> trabalhe a semana registrando diariamente o que fez e o que travou.</li>
+                            <li><strong>Validação e Testes:</strong> faça a Review mostrando o incremento e a Retrospectiva listando uma melhoria concreta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: KANBAN, FLUXO E A ESCOLHA ENTRE OS DOIS -->
+            <div class="card" id="card-3">
+                <h2>📊 3. Kanban, Fluxo e a Escolha entre os Dois</h2>
+                <p>Kanban não é quadro com post-it. É um sistema de limitar trabalho em andamento para o fluxo acelerar — e é frequentemente a escolha certa onde o Scrum é forçado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://kanbanguides.org/portuguese/" target="_blank" rel="noopener noreferrer">📄 Guia Kanban — versão em português</a>
+                        <span class="link-desc">A definição oficial e curta, com as três práticas essenciais do método.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/br/agile/kanban" target="_blank" rel="noopener noreferrer">📄 Guia de Kanban — Atlassian</a>
+                        <span class="link-desc">Material prático em português, com quadro de exemplo e explicação de WIP.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/br/agile/project-management/metrics" target="_blank" rel="noopener noreferrer">📄 Métricas Ágeis — Atlassian</a>
+                        <span class="link-desc">As métricas de fluxo explicadas com gráfico e o que cada uma indica.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/KanbanBoard.html" target="_blank" rel="noopener noreferrer">📄 Kanban Board — Martin Fowler</a>
+                        <span class="link-desc">A explicação curta do que o quadro faz e do porquê do limite de coluna.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Montando um Quadro Kanban com Limite Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> use o quadro de Projects do GitHub no seu repositório, ou um quadro em papel.</li>
+                            <li><strong>Mapeando as Etapas:</strong> escreva as colunas que o seu trabalho realmente tem, não as do modelo pronto.</li>
+                            <li><strong>Tornando o Trabalho Visível:</strong> crie um cartão para cada item em andamento hoje — inclusive os esquecidos.</li>
+                            <li><strong>Contando o Andamento:</strong> conte quantos cartões estão fora de 'a fazer' e de 'pronto'.</li>
+                            <li><strong>Definindo o Limite:</strong> estabeleça um limite de WIP menor que esse número atual.</li>
+                            <li><strong>Sentindo o Aperto:</strong> respeite o limite por uma semana: para começar algo novo, algo precisa sair.</li>
+                            <li><strong>Marcando o Tempo:</strong> anote data de entrada e de saída de cada cartão.</li>
+                            <li><strong>Calculando o Cycle Time:</strong> ao fim da semana, calcule a média de dias entre entrada e conclusão.</li>
+                            <li><strong>Identificando o Gargalo:</strong> aponte a coluna onde os cartões passaram mais tempo parados.</li>
+                            <li><strong>Validação e Testes:</strong> proponha uma mudança que ataque esse gargalo e defenda-a com o número medido.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

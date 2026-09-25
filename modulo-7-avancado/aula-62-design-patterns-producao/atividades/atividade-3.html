@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caça à Abstração que Não se Pagou | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Caça à Abstração que Não se Pagou</h1>
+        <p class="subtitulo">Aula 62 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O erro previsível de quem acabou de estudar padrões</h2>
+        <div class="painel"><p>Ver padrão em tudo. Uma interface por classe, uma fábrica por objeto,
+        um evento por chamada. O código fica "bonito" segundo o livro e insuportável de seguir.</p></div>
+
+        <h2>Os três sinais de excesso</h2>
+
+        <h2 style="font-size:.78rem">1. Interface com uma implementação só, sem previsão de segunda</h2>
+        <pre>interface RepositorioDeUsuario { ... }
+class RepositorioDeUsuarioPostgres implements RepositorioDeUsuario { ... }
+// ... e nada mais, há dois anos</pre>
+        <p>A interface custa um arquivo e uma indireção. Se não há segunda implementação nem intenção de
+        ter uma, e o teste usa o banco de verdade, ela não se pagou.</p>
+
+        <h2 style="font-size:.78rem">2. Método que só repassa</h2>
+        <pre>class ServicoDeUsuario {
+  constructor(repo) { this.repo = repo; }
+  buscarPorId(id) { return this.repo.buscarPorId(id); }   // não decide nada
+  listar()        { return this.repo.listar(); }          // idem
+}</pre>
+        <p>Essa camada não acrescenta comportamento — acrescenta um arquivo a abrir.</p>
+
+        <h2 style="font-size:.78rem">3. Seis arquivos para achar um if</h2>
+        <pre>rota → controlador → caso de uso → serviço → repositório → adaptador
+                                                          ↑
+                                              o if está aqui</pre>
+        <p>Acima de quatro saltos para encontrar a lógica, o custo de manutenção já superou o de organização.</p>
+
+        <h2>A regra dos três</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:6px 0"><strong>1ª vez</strong></td><td>escreva direto</td></tr>
+            <tr><td style="padding:6px 0"><strong>2ª vez</strong></td><td>duplique e incomode-se</td></tr>
+            <tr><td style="padding:6px 0"><strong>3ª vez</strong></td><td>agora abstraia — você já conhece as três variações</td></tr>
+        </table>
+        <p>Abstrair na primeira é chute sobre o futuro. Na terceira, é generalização baseada em evidência —
+        e costuma ser uma abstração melhor, porque nasce do caso real e não da imaginação.</p>
+
+        <h2>Ficha de auditoria</h2>
+        <pre>Interface / contrato: ___
+  Implementações reais hoje:        ___
+  Há previsão concreta de outra?    ( ) sim, qual: ___  ( ) não
+  O teste usa um dublê dela?        ( ) sim  ( ) não
+  Arquivos entre a chamada e a lógica: ___
+
+  Veredito:  ( ) mantém  ( ) funde com a vizinha  ( ) remove</pre>
+
+        <h2>Como remover com segurança</h2>
+        <ol>
+            <li>Confirme que os testes passam antes de tocar em qualquer coisa.</li>
+            <li>Remova a abstração e ligue o chamador direto à implementação.</li>
+            <li>Rode os testes. Se passarem, a abstração não estava sustentando nada.</li>
+            <li>Escreva um ADR registrando a remoção — inclusive para saber que já foi tentado.</li>
+        </ol>
+    </div>
+</body>
+
+</html>

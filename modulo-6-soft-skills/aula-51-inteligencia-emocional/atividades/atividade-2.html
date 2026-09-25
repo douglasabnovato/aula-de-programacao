@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respondendo a Comentários de Code Review | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Respondendo a Comentários de Code Review</h1>
+        <p class="subtitulo">Aula 51 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>A separação que precisa ser treinada</h2>
+        <div class="painel"><p>"Este código está confuso" é uma afirmação sobre um arquivo.
+        A leitura automática costuma ser "você é confuso". A distância entre as duas é o trabalho
+        desta atividade.</p></div>
+
+        <h2>Classifique antes de responder</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:6px 0"><strong>Pedido de mudança</strong></td><td>"Isso quebra quando a lista vem vazia." → é fato, verifique</td></tr>
+            <tr><td style="padding:6px 0"><strong>Pergunta</strong></td><td>"Por que aqui e não no serviço?" → querem entender, explique</td></tr>
+            <tr><td style="padding:6px 0"><strong>Sugestão</strong></td><td>"Talvez desse para simplificar." → avalie, pode recusar</td></tr>
+            <tr><td style="padding:6px 0"><strong>Opinião de estilo</strong></td><td>"Eu faria diferente." → se não há regra, é preferência</td></tr>
+        </table>
+
+        <h2>Três respostas prontas</h2>
+
+        <h2 style="font-size:.78rem">Concordando — curta, sem se penitenciar</h2>
+        <pre>✔ "Boa, não tinha pensado no caso da lista vazia. Corrigido em abc123."
+
+✘ "Nossa, desculpa, que erro bobo, eu deveria ter visto isso,
+   vou revisar tudo de novo, foi mal mesmo."</pre>
+        <p>A segunda gasta o tempo de quem lê e transforma um ajuste técnico em evento emocional.</p>
+
+        <h2 style="font-size:.78rem">Discordando — com motivo técnico</h2>
+        <pre>✔ "Considerei mover para o serviço, mas essa validação depende do
+   formato do corpo HTTP, que o serviço não deveria conhecer.
+   Faz sentido ou você vê de outro jeito?"
+
+✘ "Prefiro assim."</pre>
+        <p>Discordar é legítimo. Discordar sem argumento transfere a decisão para quem insiste mais.</p>
+
+        <h2 style="font-size:.78rem">Pedindo esclarecimento — sem defensiva</h2>
+        <pre>✔ "Não entendi bem o ponto — você está falando da performance
+   ou da legibilidade? Se for performance, posso medir antes."
+
+✘ "Mas por quê? Tá funcionando."</pre>
+
+        <h2>Quando o tom foi realmente ruim</h2>
+        <p>Acontece. A sequência que funciona:</p>
+        <ol>
+            <li><strong>Separe.</strong> O apontamento estaria certo se viesse de outra pessoa? Se sim, ele é válido, independente do tom.</li>
+            <li><strong>Responda ao conteúdo</strong> normalmente, na thread pública.</li>
+            <li><strong>Trate o tom em particular</strong>, com fato: "no PR de ontem, o comentário sobre a arquitetura veio bem direto e eu fiquei em dúvida se havia algo além do código. Tem?"</li>
+        </ol>
+        <p>Responder ao tom na thread pública transforma revisão técnica em disputa, e quem assiste
+        escolhe lado.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 23 | ByteClass</title>
+    <meta name="description" content="Esta ementa mostra por que separar o código em camadas não é preciosismo: é o que permite trocar o banco, testar a regra de negócio sem subir servidor e deixar cada arquivo com um motivo só para mudar.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 23: Arquitetura MVC e Clean Architecture no Backend</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MVC: A SEPARAÇÃO QUE TODO FRAMEWORK ASSUME -->
+            <div class="card" id="card-1">
+                <h2>🗂️ 1. MVC: a Separação que Todo Framework Assume</h2>
+                <p>Model, View e Controller nasceram em interface gráfica nos anos 70 e viraram o vocabulário padrão do backend. Entender o original evita o erro mais comum: chamar de MVC qualquer pasta com três nomes.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Glossary/MVC" target="_blank" rel="noopener noreferrer">📄 MVC — Glossário da MDN</a>
+                        <span class="link-desc">A definição curta e correta das três camadas, sem o folclore que se acumulou em volta.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/eaaCatalog/" target="_blank" rel="noopener noreferrer">📄 Catálogo de Padrões — Martin Fowler</a>
+                        <span class="link-desc">O catálogo do Patterns of Enterprise Application Architecture, com os padrões que sustentam o MVC.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/PresentationDomainDataLayering.html" target="_blank" rel="noopener noreferrer">📄 Presentation Domain Data Layering</a>
+                        <span class="link-desc">Por que a separação em três camadas aparece em praticamente todo sistema que cresceu.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/pt-br/guide/routing.html" target="_blank" rel="noopener noreferrer">📄 Roteamento no Express</a>
+                        <span class="link-desc">Onde o roteador se encaixa: ele é a porta, não o controlador.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Diagnosticando e Separando um Controlador Inchado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o controlador da aula 22 e conte quantas responsabilidades diferentes há nele.</li>
+                            <li><strong>Mapeando as Misturas:</strong> marque com comentário cada trecho que é validação, regra de negócio ou acesso a dado.</li>
+                            <li><strong>Estrutura de Pastas:</strong> confirme que existem <code>controllers</code>, <code>services</code> e crie <code>repositories</code>.</li>
+                            <li><strong>Extraindo o Acesso a Dado:</strong> mova toda manipulação do array para <code>tarefas.repository.js</code>.</li>
+                            <li><strong>Definindo o Contrato:</strong> o repositório expõe <code>buscarTodos</code>, <code>buscarPorId</code>, <code>salvar</code> e <code>remover</code>.</li>
+                            <li><strong>Movendo a Regra:</strong> deixe no serviço as decisões — o que é válido, o que pode, o que acontece depois.</li>
+                            <li><strong>Emagrecendo o Controlador:</strong> ele deve apenas ler a requisição, chamar o serviço e montar a resposta.</li>
+                            <li><strong>Testando o Isolamento:</strong> escreva um script que chama o serviço direto, sem HTTP, e imprime o resultado.</li>
+                            <li><strong>Medindo o Resultado:</strong> compare as linhas do controlador antes e depois da refatoração.</li>
+                            <li><strong>Validação e Testes:</strong> rode todas as rotas e confirme que o comportamento externo continua idêntico.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CLEAN ARCHITECTURE: A REGRA DE DEPENDÊNCIA -->
+            <div class="card" id="card-2">
+                <h2>🎯 2. Clean Architecture: a Regra de Dependência</h2>
+                <p>A ideia central cabe numa frase: as dependências apontam para dentro. O caso de uso não sabe que existe Express, e a regra de negócio não sabe que existe Postgres.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener noreferrer">📄 The Clean Architecture — artigo original</a>
+                        <span class="link-desc">O texto de Robert C. Martin que nomeou o padrão, com o diagrama dos círculos concêntricos.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/DomainDrivenDesign.html" target="_blank" rel="noopener noreferrer">📄 Domain-Driven Design — Martin Fowler</a>
+                        <span class="link-desc">A base conceitual de modelar o domínio antes da tecnologia.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener noreferrer">📄 Inversão de Controle e Injeção de Dependência</a>
+                        <span class="link-desc">O mecanismo concreto que permite inverter a seta da dependência.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/backing-services" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Serviços de Apoio</a>
+                        <span class="link-desc">Banco, cache e fila como recursos anexados, trocáveis sem mudar o código.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Invertendo a Dependência do Repositório</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>src/core</code> ao lado de <code>src/infra</code>.</li>
+                            <li><strong>Criando a Entidade:</strong> em <code>core/entities/Tarefa.js</code>, escreva a classe com as regras que valem sempre.</li>
+                            <li><strong>Regra na Entidade:</strong> impeça no construtor a criação de tarefa com título vazio.</li>
+                            <li><strong>Definindo o Contrato:</strong> documente em <code>core/ports/TarefaRepository.js</code> os métodos que o caso de uso espera.</li>
+                            <li><strong>Escrevendo o Caso de Uso:</strong> em <code>core/usecases/CriarTarefa.js</code>, receba o repositório por parâmetro do construtor.</li>
+                            <li><strong>Proibindo o Import:</strong> confirme que nenhum arquivo de <code>core</code> importa Express ou qualquer biblioteca de banco.</li>
+                            <li><strong>Adaptador em Memória:</strong> implemente o contrato em <code>infra/repositories/TarefaMemoriaRepository.js</code>.</li>
+                            <li><strong>Ligando na Borda:</strong> no controlador, instancie o caso de uso passando o adaptador concreto.</li>
+                            <li><strong>Trocando a Implementação:</strong> escreva um segundo adaptador que grava em arquivo JSON e troque só a linha de instanciação.</li>
+                            <li><strong>Validação e Testes:</strong> rode a API com os dois adaptadores e confirme que nenhuma linha de <code>core</code> precisou mudar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: QUANDO NÃO VALE A PENA: O CUSTO DA CAMADA -->
+            <div class="card" id="card-3">
+                <h2>⚖️ 3. Quando Não Vale a Pena: o Custo da Camada</h2>
+                <p>Arquitetura é escolha com preço. Cinco camadas numa API de três rotas é tão ruim quanto nenhuma camada numa API de cinquenta. O bloco fecha com o critério de quando parar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/YagniDefinition.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — You Aren&#x27;t Gonna Need It</a>
+                        <span class="link-desc">O argumento contra construir a abstração antes de precisar dela.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/DesignStaminaHypothesis.html" target="_blank" rel="noopener noreferrer">📄 Design Stamina Hypothesis</a>
+                        <span class="link-desc">O ponto em que investir em desenho passa a render mais do que custa.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/TechnicalDebt.html" target="_blank" rel="noopener noreferrer">📄 Dívida Técnica — Martin Fowler</a>
+                        <span class="link-desc">Como pensar o atalho de hoje como empréstimo com juros, e não como erro.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/standard.html" target="_blank" rel="noopener noreferrer">📄 Google — O padrão de um code review</a>
+                        <span class="link-desc">O critério que o Google usa: melhora a saúde do sistema, mesmo sem ser perfeito.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Avaliando a Arquitetura do Próprio Projeto</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o projeto das práticas anteriores e liste todos os arquivos de <code>src</code>.</li>
+                            <li><strong>Contando Repasses:</strong> marque cada arquivo cujo método só chama outro método sem decidir nada.</li>
+                            <li><strong>Contando Implementações:</strong> para cada contrato criado, conte quantas implementações reais existem.</li>
+                            <li><strong>Medindo a Distância:</strong> conte quantos arquivos você precisa abrir para seguir uma requisição do início ao fim.</li>
+                            <li><strong>Buscando Repetição:</strong> procure trechos de validação duplicados em mais de um lugar.</li>
+                            <li><strong>Registrando a Decisão:</strong> crie <code>docs/DECISOES.md</code> e escreva por que cada camada existe.</li>
+                            <li><strong>Propondo uma Fusão:</strong> escolha uma camada que só repassa e proponha juntá-la com a vizinha.</li>
+                            <li><strong>Propondo uma Divisão:</strong> escolha um arquivo com mais de uma responsabilidade e proponha o corte.</li>
+                            <li><strong>Escrevendo o Custo:</strong> para cada proposta, escreva o que piora — toda escolha tem contrapartida.</li>
+                            <li><strong>Validação e Testes:</strong> apresente as duas propostas ao instrutor e defenda cada uma com o critério que usou.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

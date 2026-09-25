@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de API e Cliente HTTP | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Contrato de API e Cliente HTTP</h1>
+        <p class="subtitulo">Aula 31 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>CONTRATO.md — o documento que evita retrabalho</h2>
+        <pre>## GET /tarefas
+Resposta 200: [{ "id": 1, "titulo": "Estudar", "feita": false }]
+
+## GET /tarefas/:id
+Resposta 200: { "id": 1, "titulo": "Estudar", "feita": false }
+Resposta 404: { "erro": "Tarefa não encontrada" }
+
+## POST /tarefas
+Corpo:       { "titulo": "Nova tarefa" }
+Resposta 201: { "id": 3, "titulo": "Nova tarefa", "feita": false }
+Resposta 400: { "erro": "O campo titulo é obrigatório" }
+
+## DELETE /tarefas/:id
+Resposta 204: sem corpo
+Resposta 404: { "erro": "Tarefa não encontrada" }</pre>
+
+        <h2>src/api/cliente.js</h2>
+        <pre>const BASE = import.meta.env.VITE_API_URL;
+
+async function requisitar(caminho, opcoes = {}) {
+  const resposta = await fetch(`${BASE}${caminho}`, {
+    headers: { 'Content-Type': 'application/json' },
+    ...opcoes
+  });
+
+  // fetch nao rejeita em 4xx nem 5xx. Sem esta checagem, erro vira sucesso.
+  if (!resposta.ok) {
+    const corpo = await resposta.json().catch(() =&gt; ({}));
+    throw new Error(corpo.erro || `Falha ${resposta.status}`);
+  }
+
+  return resposta.status === 204 ? null : resposta.json();
+}
+
+export const listarTarefas = () =&gt; requisitar('/tarefas');
+export const criarTarefa = (titulo) =&gt;
+  requisitar('/tarefas', { method: 'POST', body: JSON.stringify({ titulo }) });
+export const removerTarefa = (id) =&gt;
+  requisitar(`/tarefas/${id}`, { method: 'DELETE' });</pre>
+
+        <h2>A armadilha do fetch</h2>
+        <div class="painel"><p>O <code>fetch</code> só rejeita a promessa quando a requisição <strong>não sai</strong> —
+        rede caída, DNS errado. Um 404 ou um 500 chegam como resposta normal. Sem
+        <code>if (!resposta.ok)</code>, o <code>catch</code> nunca dispara e o erro passa como se fosse dado.</p></div>
+    </div>
+</body>
+
+</html>
