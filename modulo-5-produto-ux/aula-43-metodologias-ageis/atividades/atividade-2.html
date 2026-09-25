@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Sprint — Artefatos Preenchidos | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Simulação de Sprint — Artefatos Preenchidos</h1>
+        <p class="subtitulo">Aula 43 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>Backlog do produto, ordenado por valor</h2>
+        <pre>#  Item                                      Valor que entrega          Tam.
+1  Busca no catálogo de projetos             acha em 5s, não em 5min     M
+2  Filtro por tecnologia                     reduz 59 para ~8 opções     M
+3  Estado vazio na listagem                  para de parecer erro        P
+4  Progresso por módulo no menu              aluno sabe onde tem aula    P
+5  Página de case por projeto                explica a decisão técnica   G
+6  Modo claro                                estudo diurno               M
+7  Exportar progresso em PDF                 comprova conclusão          G
+8  Comentário por aula                       dúvida no contexto          G</pre>
+
+        <h2>Sprint Goal — uma frase, não uma lista</h2>
+        <div class="painel"><p><strong>"Ao fim desta sprint, o aluno consegue encontrar um projeto específico
+        em menos de 15 segundos."</strong></p></div>
+        <p>Repare que o objetivo não é "fazer os itens 1, 2 e 3". É o resultado que esses itens produzem
+        juntos. Se na quarta-feira ficar claro que o item 2 não é necessário para o objetivo, ele sai —
+        e a sprint continua válida.</p>
+
+        <h2>Definition of Done</h2>
+        <pre>Um item só está pronto quando:
+  [ ] funciona no Chrome e no Firefox, desktop e celular
+  [ ] navegável só por teclado, com foco visível
+  [ ] sem erro no console
+  [ ] o README foi atualizado se o comportamento mudou
+  [ ] o commit está no branch principal</pre>
+        <p>DoD é um contrato da equipe com ela mesma, e vale para todos os itens. "Quase pronto" não existe.</p>
+
+        <h2>Retrospectiva — três colunas, uma ação</h2>
+        <pre>MANTER                    MUDAR                      EXPERIMENTAR
+testar no celular         estimar em horas           limitar a 3 itens
+antes de fechar           (sempre erra)              simultâneos
+
+AÇÃO PARA A PRÓXIMA SPRINT (uma só, com responsável):
+  Trocar estimativa em horas por tamanho P/M/G — responsável: ___</pre>
+
+        <div class="painel"><p>Retrospectiva que gera cinco ações não gera nenhuma. <strong>Uma ação,
+        com responsável e prazo</strong>, é o que muda o comportamento da próxima sprint.</p></div>
+    </div>
+</body>
+
+</html>

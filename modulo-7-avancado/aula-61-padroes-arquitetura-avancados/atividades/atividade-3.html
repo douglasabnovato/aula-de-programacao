@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atributos de Qualidade e Registro de Decisão | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Atributos de Qualidade e Registro de Decisão</h1>
+        <p class="subtitulo">Aula 61 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>As trocas, escritas</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Cache</strong></td>
+                <td>↑ desempenho · ↓ consistência (o dado pode estar velho)</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Réplica de leitura</strong></td>
+                <td>↑ escalabilidade · ↓ consistência (atraso de replicação)</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Mais camadas</strong></td>
+                <td>↑ manutenibilidade · ↓ simplicidade e desempenho</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Fila assíncrona</strong></td>
+                <td>↑ disponibilidade · ↓ previsibilidade (quando terminou?)</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Criptografia em repouso</strong></td>
+                <td>↑ segurança · ↓ desempenho e facilidade de depurar</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Índice em coluna</strong></td>
+                <td>↑ leitura · ↓ escrita e espaço em disco</td></tr>
+        </table>
+        <div class="painel"><p>Não existe decisão de arquitetura que só melhora. Quando alguém apresenta
+        uma sem custo, o custo existe e não foi identificado.</p></div>
+
+        <h2>Modelo de ADR</h2>
+        <pre># ADR 003 — Cache de leitura no catálogo de produtos
+
+Data: 2026-09-25
+Situação: aceita
+
+## Contexto
+A listagem do catálogo faz 4 consultas por requisição e responde em
+~800ms no p95. O catálogo muda no máximo 2 vezes por dia.
+
+## Alternativas consideradas
+1. Otimizar as consultas com índice
+   — ganho estimado de 30%; não resolve o volume de chamadas.
+2. Réplica de leitura
+   — resolve escala, custa uma instância a mais e não reduz latência.
+3. Cache em memória com expiração de 10 minutos
+   — reduz para ~40ms; o dado pode ficar até 10 min desatualizado.
+
+## Decisão
+Alternativa 3.
+
+## Custo aceito
+Após uma alteração no catálogo, a listagem pode mostrar o dado
+antigo por até 10 minutos. Aceitável porque o catálogo muda duas
+vezes por dia e a equipe de conteúdo foi avisada.
+
+## Como saber que erramos
+Se aparecer reclamação de produto desatualizado, ou se a frequência
+de alteração do catálogo passar de 2 por dia, esta decisão precisa
+ser revista.</pre>
+
+        <h2>A seção que quase ninguém escreve</h2>
+        <p><strong>"Como saber que erramos"</strong> é a mais valiosa. Ela transforma a decisão em hipótese
+        testável e dá a quem vier depois — inclusive você daqui a seis meses — o gatilho para revisar,
+        em vez de conviver com uma escolha que já não se aplica.</p>
+
+        <h2>Decisão revista não se apaga</h2>
+        <pre># ADR 007 — Substituir o cache em memória por Redis
+Substitui: ADR 003
+
+## Contexto
+Com três instâncias da aplicação, cada uma tem seu próprio cache.
+O usuário vê dados diferentes dependendo de qual instância atende.</pre>
+        <p>O ADR antigo continua no repositório, marcado como substituído. O histórico da decisão é o
+        que ensina — apagá-lo é jogar fora o aprendizado.</p>
+    </div>
+</body>
+
+</html>

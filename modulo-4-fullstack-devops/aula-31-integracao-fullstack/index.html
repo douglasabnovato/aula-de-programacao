@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 31 | ByteClass</title>
+    <meta name="description" content="Esta ementa liga as duas metades que o aluno aprendeu separadas: o React do Módulo 2 conversando com a API do Módulo 3, incluindo os três estados que todo consumo de rede tem e quase ninguém trata.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 31: Integração Fullstack (Frontend + Backend)</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: O CONTRATO ENTRE FRONTEND E BACKEND -->
+            <div class="card" id="card-1">
+                <h2>🔌 1. O Contrato entre Frontend e Backend</h2>
+                <p>Antes de escrever o fetch, decidir o contrato: que rota, que formato, que status. Integração quebra muito mais por combinação malfeita do que por código errado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="noopener noreferrer">📄 Usando a Fetch API — MDN</a>
+                        <span class="link-desc">O método padrão do navegador para falar com o servidor, com exemplos de cada verbo.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">📄 Códigos de Status HTTP — MDN</a>
+                        <span class="link-desc">O que o frontend deve fazer em cada faixa de resposta.</span>
+                    </li>
+                    <li>
+                        <a href="https://swagger.io/specification/" target="_blank" rel="noopener noreferrer">📄 OpenAPI Specification</a>
+                        <span class="link-desc">O formato padrão para descrever um contrato de API de maneira que máquina e pessoa leiam.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS" target="_blank" rel="noopener noreferrer">📄 CORS — MDN</a>
+                        <span class="link-desc">O erro que aparece na primeira integração local e o que realmente o causa.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Definindo e Documentando o Contrato da API</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> deixe a API da aula 23 rodando em <code>localhost:3000</code> e crie um projeto React com Vite.</li>
+                            <li><strong>Mapeando as Rotas:</strong> escreva num arquivo <code>CONTRATO.md</code> as quatro rotas com método e caminho.</li>
+                            <li><strong>Definindo a Entrada:</strong> para cada rota, documente o formato do corpo com um exemplo em JSON.</li>
+                            <li><strong>Definindo a Saída:</strong> documente o corpo de resposta de sucesso, com exemplo real copiado da API.</li>
+                            <li><strong>Padronizando o Erro:</strong> defina um formato único de erro — <code>{ erro: string }</code> — e aplique em todas as rotas.</li>
+                            <li><strong>Listando os Status:</strong> registre quais status cada rota pode devolver e o que cada um significa.</li>
+                            <li><strong>Variável de Ambiente:</strong> crie <code>.env</code> no frontend com <code>VITE_API_URL=http://localhost:3000</code>.</li>
+                            <li><strong>Camada de Acesso:</strong> crie <code>src/api/cliente.js</code> lendo a URL base de <code>import.meta.env</code>.</li>
+                            <li><strong>Primeira Chamada:</strong> escreva uma função <code>listarTarefas()</code> que faz o GET e devolve o JSON.</li>
+                            <li><strong>Validação e Testes:</strong> chame a função no console do navegador e confirme que o dado chega — e o CORS não bloqueia.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: OS TRÊS ESTADOS DE TODA CHAMADA DE REDE -->
+            <div class="card" id="card-2">
+                <h2>⏳ 2. Os Três Estados de Toda Chamada de Rede</h2>
+                <p>Carregando, erro e sucesso. A maior parte das telas trata só o terceiro, e é por isso que o usuário vê tela branca quando a rede demora e nada quando a API cai.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/reference/react/useEffect" target="_blank" rel="noopener noreferrer">📄 useEffect — documentação do React</a>
+                        <span class="link-desc">Onde a busca de dado acontece e como evitar chamada duplicada e vazamento.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/synchronizing-with-effects" target="_blank" rel="noopener noreferrer">📄 Sincronizando com Efeitos — React</a>
+                        <span class="link-desc">O guia oficial sobre efeitos, com a seção de busca de dados e limpeza.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/AbortController" target="_blank" rel="noopener noreferrer">📄 AbortController — MDN</a>
+                        <span class="link-desc">Como cancelar uma requisição quando o componente sai da tela.</span>
+                    </li>
+                    <li>
+                        <a href="https://web.dev/articles/optimize-lcp" target="_blank" rel="noopener noreferrer">📄 web.dev — Otimizando o LCP</a>
+                        <span class="link-desc">Por que o tempo até a primeira resposta visível define a percepção de qualidade.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Tela de Tarefas com os Três Estados Tratados</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o componente <code>ListaTarefas.jsx</code> no projeto React.</li>
+                            <li><strong>Estrutura de Dados:</strong> declare três estados com useState — <code>dados</code>, <code>carregando</code> e <code>erro</code>.</li>
+                            <li><strong>Disparando a Busca:</strong> use useEffect com array de dependências vazio para chamar a API na montagem.</li>
+                            <li><strong>Ligando o Carregando:</strong> inicie <code>carregando</code> como <code>true</code> e desligue no bloco <code>finally</code>.</li>
+                            <li><strong>Capturando a Falha:</strong> no catch, guarde uma mensagem em <code>erro</code> em vez de deixar quebrar.</li>
+                            <li><strong>Diferenciando o Erro:</strong> verifique <code>resposta.ok</code> — status 4xx não cai no catch do fetch sozinho.</li>
+                            <li><strong>Renderização Condicional:</strong> devolva cedo a tela de carregando e a de erro, antes da lista.</li>
+                            <li><strong>Tela de Vazio:</strong> quando a lista vier certa e sem itens, mostre um convite à primeira ação.</li>
+                            <li><strong>Cancelando na Saída:</strong> use AbortController e cancele no retorno do useEffect.</li>
+                            <li><strong>Validação e Testes:</strong> derrube a API e recarregue a tela; suba de novo e confirme os quatro cenários.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PUBLICANDO AS DUAS METADES -->
+            <div class="card" id="card-3">
+                <h2>🚀 3. Publicando as Duas Metades</h2>
+                <p>Na máquina tudo funciona. O bloco fecha com o que muda quando a API sai do localhost: URL de produção, variável de ambiente no provedor e o CORS que volta a aparecer.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://vitejs.dev/guide/build.html" target="_blank" rel="noopener noreferrer">📄 Vite — Construindo para Produção</a>
+                        <span class="link-desc">O que o build gera e como servir os arquivos estáticos resultantes.</span>
+                    </li>
+                    <li>
+                        <a href="https://vitejs.dev/guide/env-and-mode.html" target="_blank" rel="noopener noreferrer">📄 Vite — Variáveis de Ambiente e Modos</a>
+                        <span class="link-desc">Por que a variável precisa do prefixo VITE_ e em que momento ela é substituída.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener noreferrer">📄 GitHub Pages — documentação oficial</a>
+                        <span class="link-desc">Como publicar o frontend estático direto do repositório.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/config" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Configuração</a>
+                        <span class="link-desc">O princípio de que a mesma imagem roda em qualquer ambiente, mudando só a configuração.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Do Localhost ao Endereço Público</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> rode <code>npm run build</code> no frontend e observe a pasta <code>dist</code> gerada.</li>
+                            <li><strong>Inspecionando o Build:</strong> abra o JS gerado e procure a URL da API — ela foi embutida no arquivo.</li>
+                            <li><strong>Entendendo a Consequência:</strong> registre no README que trocar a URL exige um build novo, não só reiniciar.</li>
+                            <li><strong>Servindo Localmente:</strong> use <code>npx serve dist</code> e confirme que a aplicação construída funciona.</li>
+                            <li><strong>Publicando a API:</strong> suba a API num serviço de sua escolha e anote a URL pública resultante.</li>
+                            <li><strong>Variável de Produção:</strong> crie <code>.env.production</code> com a URL pública da API.</li>
+                            <li><strong>Ajustando o CORS:</strong> na API, inclua a origem do frontend publicado na configuração de CORS.</li>
+                            <li><strong>Novo Build:</strong> rode o build de novo e confirme no arquivo gerado que a URL agora é a de produção.</li>
+                            <li><strong>Publicando o Frontend:</strong> envie a pasta <code>dist</code> para o GitHub Pages ou serviço equivalente.</li>
+                            <li><strong>Validação e Testes:</strong> abra o endereço público num celular, teste o fluxo completo e confira a aba Rede.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

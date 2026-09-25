@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dockerfile da API — com a Ordem Certa | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Dockerfile da API — com a Ordem Certa</h1>
+        <p class="subtitulo">Aula 32 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>Dockerfile</h2>
+        <pre>FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar só o manifesto primeiro: enquanto as dependências não mudarem,
+# o Docker reaproveita esta camada e pula o npm ci inteiro.
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]</pre>
+
+        <h2>.dockerignore</h2>
+        <pre>node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+dist
+coverage
+*.md</pre>
+
+        <h2>O experimento que prova o cache</h2>
+        <ol>
+            <li><code>docker build -t minha-api .</code> — cronometre.</li>
+            <li>Altere uma linha em <code>app.js</code>.</li>
+            <li><code>docker build -t minha-api .</code> de novo — cronometre.</li>
+        </ol>
+        <p>O segundo build deve ser muito mais rápido: o <code>npm ci</code> veio do cache.</p>
+
+        <h2>Agora inverta a ordem e refaça</h2>
+        <pre># Versão errada, para você sentir a diferença:
+COPY . .
+RUN npm ci --omit=dev</pre>
+        <p>Com <code>COPY . .</code> antes, qualquer alteração de uma vírgula no código invalida a camada
+        seguinte e o <code>npm ci</code> roda de novo, toda vez.</p>
+
+        <h2>Por que CMD em array</h2>
+        <div class="painel"><p><code>CMD ["node", "app.js"]</code> executa o processo diretamente.
+        <code>CMD node app.js</code> passa por um shell, e aí o sinal de parada do Docker chega no shell
+        em vez de chegar no Node — o contêiner demora dez segundos para morrer e não desliga direito.</p></div>
+    </div>
+</body>
+
+</html>

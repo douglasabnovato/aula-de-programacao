@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadro Kanban, WIP e Métricas de Fluxo | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Quadro Kanban, WIP e Métricas de Fluxo</h1>
+        <p class="subtitulo">Aula 43 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>Por que limitar o trabalho em andamento acelera</h2>
+        <div class="painel"><p>Cinco itens começados e nenhum terminado entregam <strong>zero</strong> valor.
+        Dois itens começados e três terminados entregam três. O limite de WIP não é burocracia:
+        é o que força terminar antes de começar.</p></div>
+
+        <h2>Um quadro honesto</h2>
+        <pre>A FAZER      │ FAZENDO (3) │ REVISÃO (2) │ PRONTO
+─────────────┼─────────────┼─────────────┼────────
+ item 5      │  item 1     │  item 8     │ item 2
+ item 6      │  item 4     │             │ item 3
+ item 7      │             │             │
+             │             │             │
+             │  ← limite   │  ← limite   │
+             │    3        │    2        │</pre>
+        <p>O número na coluna é o limite. Para puxar um item novo para "Fazendo", um dos que estão lá
+        precisa sair.</p>
+
+        <h2>As três métricas e o que cada uma responde</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Lead time</strong></td>
+                <td>Do pedido à entrega. É o que o cliente sente.</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Cycle time</strong></td>
+                <td>Do início do trabalho à entrega. É o que a equipe controla.</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Throughput</strong></td>
+                <td>Quantos itens saem por semana. É o que permite prever.</td></tr>
+        </table>
+        <p>A diferença entre lead time e cycle time é o tempo de fila. Quando ela é grande, o problema
+        não é a equipe ser lenta — é ter coisa demais esperando.</p>
+
+        <h2>Planilha mínima de medição</h2>
+        <pre>Item          Entrou      Começou     Terminou    Lead  Cycle
+Busca         02/09       05/09       09/09        7d     4d
+Filtro        02/09       09/09       11/09        9d     2d
+Estado vazio  06/09       11/09       11/09        5d     0d</pre>
+
+        <h2>Scrum ou Kanban: o critério</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Scrum serve quando</strong></td>
+                <td>o trabalho é planejável em ciclos, dá para proteger a equipe de interrupção,
+                e existe alguém no papel de priorizar.</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Kanban serve quando</strong></td>
+                <td>a demanda chega o tempo todo e com urgências reais — suporte, sustentação,
+                time de plataforma.</td></tr>
+        </table>
+        <div class="painel"><p>Forçar Scrum num time de sustentação produz o pior dos dois mundos:
+        a sprint é furada toda semana por urgência, e a equipe conclui que "ágil não funciona aqui".
+        Não era ágil que não funcionava — era o framework errado para o tipo de trabalho.</p></div>
+    </div>
+</body>
+
+</html>

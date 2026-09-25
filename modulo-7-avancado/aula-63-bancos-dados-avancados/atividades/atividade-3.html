@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relacional, Documento e o Meio-Termo | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Relacional, Documento e o Meio-Termo</h1>
+        <p class="subtitulo">Aula 63 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>A pergunta que decide</h2>
+        <div class="painel"><p>Não é "qual banco é melhor". É <strong>"como a aplicação lê este dado?"</strong>
+        No relacional, modela-se pela estrutura do domínio. No documento, modela-se pela consulta.</p></div>
+
+        <h2>O mesmo domínio, dois modelos</h2>
+
+        <h2 style="font-size:.78rem">Relacional — normalizado</h2>
+        <pre>pedidos(id, cliente_id, total, criado_em)
+itens_pedido(id, pedido_id, produto_id, qtd, preco)
+produtos(id, nome, preco_atual)
+clientes(id, nome, email)
+
+-- Montar a tela do pedido:
+SELECT p.*, c.nome, i.qtd, pr.nome
+FROM pedidos p
+JOIN clientes c   ON c.id = p.cliente_id
+JOIN itens_pedido i ON i.pedido_id = p.id
+JOIN produtos pr  ON pr.id = i.produto_id
+WHERE p.id = 42;                              -- 3 JOINs</pre>
+
+        <h2 style="font-size:.78rem">Documento — modelado pelo acesso</h2>
+        <pre>{
+  "_id": 42,
+  "criado_em": "2026-09-25T10:00:00Z",
+  "total": 289.90,
+  "cliente": { "id": 7, "nome": "Maria Souza", "email": "..." },
+  "itens": [
+    { "produto_id": 15, "nome": "Teclado", "qtd": 1, "preco": 189.90 },
+    { "produto_id": 22, "nome": "Mouse",   "qtd": 2, "preco": 50.00 }
+  ]
+}
+
+// Montar a tela do pedido: uma leitura, zero JOIN
+db.pedidos.findOne({ _id: 42 })</pre>
+
+        <h2>O que cada modelo cobra</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Relacional</strong></td>
+                <td>JOIN em toda leitura · dado sem duplicação · atualizar o nome do cliente é um UPDATE</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Documento</strong></td>
+                <td>leitura direta · dado duplicado · atualizar o nome do cliente exige varrer os pedidos</td></tr>
+        </table>
+
+        <h2>Mas atenção: nem toda duplicação é erro</h2>
+        <div class="painel"><p>O <code>preco</code> dentro do item <strong>deve</strong> ser copiado, não
+        referenciado. Ele é o preço <em>daquela compra</em>. Se apontasse para <code>produtos.preco_atual</code>,
+        o pedido de janeiro mudaria de valor quando o produto subisse em março. Isso vale nos dois
+        modelos — e é erro de modelagem, não de banco.</p></div>
+
+        <h2>A consulta que o documento atende mal</h2>
+        <pre>-- Relacional: direto
+SELECT pr.nome, SUM(i.qtd)
+FROM itens_pedido i JOIN produtos pr ON pr.id = i.produto_id
+GROUP BY pr.nome ORDER BY 2 DESC LIMIT 10;
+
+-- Documento: precisa varrer todos os pedidos e desmontar os arrays</pre>
+        <p>Consulta analítica que atravessa muitos documentos é onde o modelo embutido custa caro.</p>
+
+        <h2>O meio-termo que quase ninguém considera</h2>
+        <pre>CREATE TABLE pedidos (
+  id         serial PRIMARY KEY,
+  cliente_id int NOT NULL REFERENCES clientes(id),
+  total      numeric(10,2) NOT NULL,
+  snapshot   jsonb NOT NULL,          -- o documento para a tela
+  criado_em  timestamptz DEFAULT now()
+);
+
+CREATE INDEX idx_snapshot ON pedidos USING gin (snapshot);
+
+-- Leitura direta da tela:
+SELECT snapshot FROM pedidos WHERE id = 42;
+
+-- E o relatório continua funcionando com SQL e transação.</pre>
+        <div class="painel"><p>PostgreSQL com <code>jsonb</code> entrega boa parte da flexibilidade de documento
+        <strong>sem abrir mão de transação, JOIN e integridade referencial</strong>. Antes de trocar de banco,
+        vale testar se o que você tem já resolve.</p></div>
+    </div>
+</body>
+
+</html>

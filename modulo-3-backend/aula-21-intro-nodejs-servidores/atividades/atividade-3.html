@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API em Camadas com .env — Código de Referência | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>API em Camadas com .env — Código de Referência</h1>
+        <p class="subtitulo">Aula 21 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>Estrutura final de pastas</h2>
+        <pre>projeto/
+├── .env                    PORT=3000
+├── .gitignore              .env e node_modules
+├── app.js                  só monta o servidor
+└── src/
+    ├── routes/tarefas.routes.js
+    ├── controllers/tarefas.controller.js
+    ├── services/tarefas.service.js
+    └── middlewares/erro.middleware.js</pre>
+
+        <h2>app.js</h2>
+        <pre>require('dotenv').config();
+const express = require('express');
+const rotasTarefas = require('./src/routes/tarefas.routes');
+const tratarErro = require('./src/middlewares/erro.middleware');
+
+const app = express();
+app.use(express.json());
+
+app.use((req, res, proximo) =&gt; {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  proximo();
+});
+
+app.use('/tarefas', rotasTarefas);
+app.use(tratarErro);
+
+const PORTA = process.env.PORT || 3000;
+app.listen(PORTA, () =&gt; console.log(`API em http://localhost:${PORTA}`));</pre>
+
+        <h2>src/services/tarefas.service.js</h2>
+        <pre>let tarefas = [{ id: 1, titulo: 'Estudar camadas', feita: false }];
+let proximoId = 2;
+
+const listar = () =&gt; tarefas;
+
+const buscarPorId = (id) =&gt; tarefas.find(t =&gt; t.id === Number(id));
+
+const criar = (titulo) =&gt; {
+  const nova = { id: proximoId++, titulo, feita: false };
+  tarefas.push(nova);
+  return nova;
+};
+
+module.exports = { listar, buscarPorId, criar };</pre>
+
+        <h2>src/controllers/tarefas.controller.js</h2>
+        <pre>const servico = require('../services/tarefas.service');
+
+const listar = (req, res) =&gt; res.json(servico.listar());
+
+const detalhar = (req, res) =&gt; {
+  const tarefa = servico.buscarPorId(req.params.id);
+  if (!tarefa) return res.status(404).json({ erro: 'Tarefa não encontrada' });
+  res.json(tarefa);
+};
+
+const criar = (req, res) =&gt; {
+  const { titulo } = req.body;
+  if (!titulo || !titulo.trim()) {
+    return res.status(400).json({ erro: 'O campo titulo é obrigatório' });
+  }
+  res.status(201).json(servico.criar(titulo.trim()));
+};
+
+module.exports = { listar, detalhar, criar };</pre>
+
+        <h2>src/middlewares/erro.middleware.js</h2>
+        <pre>// Quatro argumentos: é isso que faz o Express reconhecer como middleware de erro.
+module.exports = (erro, req, res, proximo) =&gt; {
+  console.error(erro);
+  res.status(500).json({ erro: 'Erro interno no servidor' });
+};</pre>
+
+        <h2>Por que o serviço não conhece req nem res</h2>
+        <div class="painel">
+            <p>O serviço recebe e devolve dado puro. Isso permite chamá-lo de um teste, de um script de
+            linha de comando ou de outra rota, sem simular uma requisição HTTP. É a diferença entre
+            código organizado e código só espalhado em mais arquivos.</p>
+        </div>
+    </div>
+</body>
+
+</html>

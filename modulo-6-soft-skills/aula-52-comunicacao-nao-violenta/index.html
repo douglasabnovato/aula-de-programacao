@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 52 | ByteClass</title>
+    <meta name="description" content="Esta ementa apresenta os quatro passos da CNV aplicados ao dia a dia técnico — daily, revisão de código e conversa difícil — e a diferença entre feedback que muda comportamento e feedback que só desabafa.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 52: Comunicação Não-Violenta e Feedback Efetivo</h1>
+        <p>Módulo 6: Soft Skills, Carreira e Inteligência Emocional — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: OS QUATRO PASSOS DA CNV -->
+            <div class="card" id="card-1">
+                <h2>🗣️ 1. Os Quatro Passos da CNV</h2>
+                <p>Observação, sentimento, necessidade e pedido. Parece simples até a primeira tentativa — o passo que quase todo mundo pula é o primeiro, e é justamente ele que evita a briga.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.cnvc.org/learn-nvc/what-is-nvc" target="_blank" rel="noopener noreferrer">📄 O que é CNV — Center for Nonviolent Communication</a>
+                        <span class="link-desc">A fonte oficial, da organização fundada por Marshall Rosenberg.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.cnvc.org/training/resource/feelings-inventory" target="_blank" rel="noopener noreferrer">📄 Inventário de Sentimentos — CNVC</a>
+                        <span class="link-desc">A lista de referência que separa sentimento real de pensamento disfarçado.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.cnvc.org/training/resource/needs-inventory" target="_blank" rel="noopener noreferrer">📄 Inventário de Necessidades — CNVC</a>
+                        <span class="link-desc">As necessidades humanas por trás do que pedimos, na lista oficial.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/team-playbook/plays" target="_blank" rel="noopener noreferrer">📄 Plays de Equipe — Atlassian</a>
+                        <span class="link-desc">Roteiros prontos para conversas de alinhamento e retrospectiva.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Traduzindo Cinco Frases Reais para CNV</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra os inventários de sentimentos e de necessidades da CNVC.</li>
+                            <li><strong>Coletando o Material:</strong> escreva cinco frases que você já disse ou ouviu no trabalho e que geraram atrito.</li>
+                            <li><strong>Isolando a Observação:</strong> para cada frase, escreva só o que uma câmera teria registrado.</li>
+                            <li><strong>Eliminando o Sempre e o Nunca:</strong> troque generalizações por quantidade e data específicas.</li>
+                            <li><strong>Nomeando o Sentimento:</strong> escolha na lista oficial, verificando que não é pensamento disfarçado.</li>
+                            <li><strong>Testando o Disfarce:</strong> se a palavra implica o que o outro fez, não é sentimento — refaça.</li>
+                            <li><strong>Identificando a Necessidade:</strong> escreva o que estava em jogo para você, sem citar a outra pessoa.</li>
+                            <li><strong>Formulando o Pedido:</strong> escreva uma ação concreta, no presente, que a pessoa possa aceitar ou recusar.</li>
+                            <li><strong>Testando o Pedido:</strong> verifique se dá para responder sim ou não — se não dá, é exigência ou é vago.</li>
+                            <li><strong>Validação e Testes:</strong> leia as cinco versões em voz alta e avalie se você as receberia bem.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: FEEDBACK QUE MUDA COMPORTAMENTO -->
+            <div class="card" id="card-2">
+                <h2>🎯 2. Feedback que Muda Comportamento</h2>
+                <p>Feedback vago não muda nada e ainda gasta a relação. O que funciona é específico, recente, sobre comportamento observável e com efeito declarado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-feedbacktip/" target="_blank" rel="noopener noreferrer">📄 Situação-Comportamento-Impacto — CCL</a>
+                        <span class="link-desc">O modelo SCI apresentado pelo Center for Creative Leadership, que o formulou.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/comments.html" target="_blank" rel="noopener noreferrer">📄 Google — Como escrever comentários de revisão</a>
+                        <span class="link-desc">Regras concretas de tom e conteúdo para feedback técnico escrito.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.cnvc.org/learn-nvc/what-is-nvc" target="_blank" rel="noopener noreferrer">📄 CNV aplicada ao feedback — CNVC</a>
+                        <span class="link-desc">Como os quatro passos se encaixam numa conversa de retorno.</span>
+                    </li>
+                    <li>
+                        <a href="https://amycedmondson.com/psychological-safety/" target="_blank" rel="noopener noreferrer">📄 Segurança Psicológica — Amy Edmondson</a>
+                        <span class="link-desc">Por que sem ela o feedback honesto simplesmente não acontece.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Escrevendo Três Feedbacks no Formato SCI</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha três pessoas com quem você trabalha ou estuda.</li>
+                            <li><strong>Feedback Positivo:</strong> escolha algo específico que uma delas fez e que ajudou de fato.</li>
+                            <li><strong>Situação:</strong> escreva quando e onde — 'na reunião de terça', não 'às vezes'.</li>
+                            <li><strong>Comportamento:</strong> descreva a ação observável, sem adjetivo sobre a pessoa.</li>
+                            <li><strong>Impacto:</strong> escreva o efeito concreto em você ou no trabalho, não um elogio genérico.</li>
+                            <li><strong>Feedback de Ajuste:</strong> repita a estrutura para algo que precisa mudar, com a mesma objetividade.</li>
+                            <li><strong>Removendo o Sanduíche:</strong> não embrulhe a crítica entre dois elogios — isso confunde a mensagem.</li>
+                            <li><strong>Acrescentando o Pedido:</strong> termine com uma ação concreta e verificável.</li>
+                            <li><strong>Pedindo Feedback:</strong> formule uma pergunta específica sobre você, em vez de 'como estou indo?'.</li>
+                            <li><strong>Validação e Testes:</strong> entregue ao menos um dos feedbacks positivos de verdade e registre a reação.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: A CONVERSA DIFÍCIL, PREPARADA -->
+            <div class="card" id="card-3">
+                <h2>💬 3. A Conversa Difícil, Preparada</h2>
+                <p>A conversa que se adia piora sozinha. O bloco fecha com a preparação escrita: o que se quer, o que se está disposto a ceder e como abrir sem que o outro feche.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.pon.harvard.edu/" target="_blank" rel="noopener noreferrer">📄 Program on Negotiation — Harvard Law School</a>
+                        <span class="link-desc">O programa de referência em negociação e resolução de conflito, com artigos gratuitos.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.cnvc.org/learn-nvc/what-is-nvc" target="_blank" rel="noopener noreferrer">📄 Escuta empática na CNV — CNVC</a>
+                        <span class="link-desc">A outra metade da CNV: ouvir observação, sentimento e necessidade no que o outro diz.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/team-playbook/plays/health-monitor" target="_blank" rel="noopener noreferrer">📄 Health Monitor — Atlassian</a>
+                        <span class="link-desc">Formato estruturado para a equipe falar do que não vai bem sem virar desabafo.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/" target="_blank" rel="noopener noreferrer">📄 Artigos do Center for Creative Leadership</a>
+                        <span class="link-desc">Material gratuito sobre conversas difíceis, delegação e conflito.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Preparando uma Conversa Difícil Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha uma conversa que você está adiando há pelo menos uma semana.</li>
+                            <li><strong>Nomeando o Objetivo:</strong> escreva em uma frase o que você quer que seja diferente depois da conversa.</li>
+                            <li><strong>Separando o Inegociável:</strong> liste o que você não pode ceder e o que pode.</li>
+                            <li><strong>Escrevendo a Observação:</strong> descreva o fato em uma frase, sem 'sempre', 'nunca' e sem adjetivo.</li>
+                            <li><strong>Antecipando a Versão do Outro:</strong> escreva como a mesma situação parece do ponto de vista dele.</li>
+                            <li><strong>Formulando a Abertura:</strong> escreva os primeiros quinze segundos, palavra por palavra.</li>
+                            <li><strong>Testando a Abertura:</strong> verifique se ela contém acusação — se contiver, reescreva.</li>
+                            <li><strong>Preparando a Escuta:</strong> escreva uma pergunta aberta para fazer logo depois de abrir.</li>
+                            <li><strong>Escolhendo Momento e Canal:</strong> defina onde e quando — nunca por escrito, nunca em público.</li>
+                            <li><strong>Validação e Testes:</strong> ensaie a abertura em voz alta três vezes e ajuste o que soar acusatório.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

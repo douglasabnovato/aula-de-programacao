@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lendo o Plano de Execução | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Lendo o Plano de Execução</h1>
+        <p class="subtitulo">Aula 63 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>Preparando a massa de teste</h2>
+        <pre>CREATE TABLE pedidos (
+  id          serial PRIMARY KEY,
+  cliente_id  int NOT NULL,
+  status      text NOT NULL,
+  total       numeric(10,2) NOT NULL,
+  criado_em   timestamptz NOT NULL DEFAULT now()
+);
+
+INSERT INTO pedidos (cliente_id, status, total, criado_em)
+SELECT
+  (random() * 5000)::int,
+  (ARRAY['novo','pago','enviado','cancelado'])[1 + (random()*3)::int],
+  (random() * 900 + 10)::numeric(10,2),
+  now() - (random() * 365 || ' days')::interval
+FROM generate_series(1, 100000);</pre>
+
+        <h2>Antes do índice</h2>
+        <pre>EXPLAIN ANALYZE
+SELECT * FROM pedidos WHERE cliente_id = 4217;</pre>
+        <pre>Seq Scan on pedidos  (cost=0.00..2334.00 rows=19 width=45)
+                     (actual time=0.412..18.903 rows=22 loops=1)
+  Filter: (cliente_id = 4217)
+  Rows Removed by Filter: 99978
+Execution Time: 18.964 ms</pre>
+
+        <h2>Como ler isso</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:6px 0"><strong>Seq Scan</strong></td><td>leu a tabela inteira, linha por linha</td></tr>
+            <tr><td style="padding:6px 0"><strong>Rows Removed: 99978</strong></td><td>descartou 99.978 para devolver 22 — o desperdício</td></tr>
+            <tr><td style="padding:6px 0"><strong>cost=</strong></td><td>a estimativa do planejador, antes de rodar</td></tr>
+            <tr><td style="padding:6px 0"><strong>actual time=</strong></td><td>o que realmente aconteceu (só com ANALYZE)</td></tr>
+        </table>
+        <div class="painel"><p>Quando <code>rows</code> estimado e <code>rows</code> real divergem muito,
+        as estatísticas estão velhas. Rode <code>ANALYZE pedidos;</code> antes de concluir qualquer coisa.</p></div>
+
+        <h2>Depois do índice</h2>
+        <pre>CREATE INDEX idx_pedidos_cliente ON pedidos (cliente_id);
+
+EXPLAIN ANALYZE
+SELECT * FROM pedidos WHERE cliente_id = 4217;</pre>
+        <pre>Index Scan using idx_pedidos_cliente on pedidos
+  (cost=0.29..8.51 rows=22 width=45)
+  (actual time=0.031..0.048 rows=22 loops=1)
+  Index Cond: (cliente_id = 4217)
+Execution Time: 0.071 ms</pre>
+        <p>De ~19 ms para ~0,07 ms. Duas ordens de grandeza, com uma linha.</p>
+
+        <h2>Seq Scan nem sempre é problema</h2>
+        <p>Se a consulta devolve 60% da tabela, ler tudo em sequência é <strong>mais rápido</strong> que pular
+        de página em página pelo índice. O planejador sabe disso e escolhe certo. Seq Scan só é sintoma
+        quando <code>Rows Removed by Filter</code> é muito maior que as linhas devolvidas.</p>
+
+        <h2>O N+1, em código</h2>
+        <pre>// 101 idas ao banco
+const pedidos = await db.query('SELECT * FROM pedidos LIMIT 100');
+for (const p of pedidos) {
+  p.cliente = await db.query('SELECT * FROM clientes WHERE id = $1', [p.cliente_id]);
+}
+
+// 1 ida ao banco
+const pedidos = await db.query(`
+  SELECT p.*, c.nome AS cliente_nome
+  FROM pedidos p
+  JOIN clientes c ON c.id = p.cliente_id
+  LIMIT 100
+`);</pre>
+        <p>Cada ida ao banco custa a ida e a volta pela rede. Cem consultas de 1 ms com 2 ms de rede
+        cada dão 300 ms; uma consulta de 5 ms dá 7 ms.</p>
+    </div>
+</body>
+
+</html>

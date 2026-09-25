@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory e Builder em JavaScript | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Factory e Builder em JavaScript</h1>
+        <p class="subtitulo">Aula 62 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>Factory: o problema que ela resolve</h2>
+        <pre>// ANTES — a decisão de qual usar está espalhada pelo código
+function enviarNotificacao(tipo, destino, mensagem) {
+  if (tipo === 'email')    { return new ServicoEmail().enviar(destino, mensagem); }
+  if (tipo === 'sms')      { return new ServicoSms().enviar(destino, mensagem); }
+  if (tipo === 'whatsapp') { return new ServicoWhats().enviar(destino, mensagem); }
+  throw new Error('tipo desconhecido');
+}</pre>
+        <p>Esse bloco se repete em cada lugar que notifica. Acrescentar push exige achar todos.</p>
+
+        <pre>// DEPOIS — uma fábrica, um lugar para mudar
+const FABRICAS = {
+  email:    () =&gt; new ServicoEmail(),
+  sms:      () =&gt; new ServicoSms(),
+  whatsapp: () =&gt; new ServicoWhats()
+};
+
+function criarNotificador(tipo) {
+  const fabrica = FABRICAS[tipo];
+  if (!fabrica) throw new Error(`Notificador desconhecido: ${tipo}`);
+  return fabrica();
+}
+
+// Uso — quem chama não sabe qual implementação veio:
+criarNotificador(config.canal).enviar(destino, mensagem);</pre>
+
+        <h2>Builder: quando o construtor tem parâmetros demais</h2>
+        <pre>// ANTES — o que é o terceiro true?
+const relatorio = new Relatorio('vendas', '2026-09', true, false, true, 'pdf', 30);</pre>
+
+        <pre>// DEPOIS
+class ConstrutorDeRelatorio {
+  constructor() { this.config = { formato: 'pdf', diasDeRetencao: 30 }; }
+
+  doTipo(tipo)            { this.config.tipo = tipo; return this; }
+  noPeriodo(periodo)      { this.config.periodo = periodo; return this; }
+  comGraficos()           { this.config.graficos = true; return this; }
+  comDetalhamento()       { this.config.detalhado = true; return this; }
+  noFormato(f)            { this.config.formato = f; return this; }
+
+  construir() {
+    if (!this.config.tipo)    throw new Error('Relatório exige tipo');
+    if (!this.config.periodo) throw new Error('Relatório exige período');
+    return new Relatorio(this.config);
+  }
+}
+
+// Uso — legível sem consultar a assinatura:
+const relatorio = new ConstrutorDeRelatorio()
+  .doTipo('vendas')
+  .noPeriodo('2026-09')
+  .comGraficos()
+  .construir();</pre>
+
+        <h2>Singleton: em JavaScript, o módulo já é um</h2>
+        <pre>// Não precisa de classe com getInstance: o módulo é avaliado
+// uma vez e o mesmo objeto é devolvido em todo require/import.
+let conexao = null;
+
+function obterConexao() {
+  if (!conexao) conexao = criarConexao(process.env.DATABASE_URL);
+  return conexao;
+}
+
+module.exports = { obterConexao };</pre>
+        <div class="painel"><p>O Singleton é criticado com razão: ele introduz estado global e dificulta
+        teste, porque não dá para substituir por um dublê. Quando puder, prefira <strong>injetar</strong>
+        a dependência em vez de buscá-la de um lugar único.</p></div>
+    </div>
+</body>
+
+</html>

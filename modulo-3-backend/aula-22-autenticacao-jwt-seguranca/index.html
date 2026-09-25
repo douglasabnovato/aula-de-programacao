@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 22 | ByteClass</title>
+    <meta name="description" content="Esta ementa trata do que separa uma API de estudo de uma API que pode ir para produção: guardar senha do jeito certo, emitir e verificar token, e fechar as portas que ficam abertas por padrão.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 22: Autenticação, JWT e Segurança de APIs</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: AUTENTICAÇÃO, AUTORIZAÇÃO E SENHA EM REPOUSO -->
+            <div class="card" id="card-1">
+                <h2>🔑 1. Autenticação, Autorização e Senha em Repouso</h2>
+                <p>Duas palavras que parecem sinônimo e não são: autenticar é saber quem é; autorizar é saber o que essa pessoa pode. E antes das duas vem a pergunta que derruba projeto: como a senha está guardada.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Authentication Cheat Sheet</a>
+                        <span class="link-desc">A referência mais prática sobre o que fazer e o que nunca fazer em autenticação.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Password Storage Cheat Sheet</a>
+                        <span class="link-desc">Qual algoritmo usar para guardar senha e por que MD5 e SHA não servem.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Authentication" target="_blank" rel="noopener noreferrer">📄 Autenticação HTTP — MDN</a>
+                        <span class="link-desc">Como o cabeçalho Authorization funciona e o que o navegador faz com ele.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/crypto.html" target="_blank" rel="noopener noreferrer">📄 Módulo Crypto do Node</a>
+                        <span class="link-desc">O que o Node oferece de forma nativa para hash e geração de valores aleatórios seguros.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Cadastro e Login com Senha em Hash</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> na API da aula 21, instale <code>npm install bcryptjs</code>.</li>
+                            <li><strong>Estrutura de Dados:</strong> crie um array <code>usuarios</code> no serviço, guardando <code>email</code> e <code>senhaHash</code>.</li>
+                            <li><strong>Rota de Cadastro:</strong> crie <code>POST /auth/registrar</code> recebendo email e senha no corpo.</li>
+                            <li><strong>Validação de Entrada:</strong> recuse email sem <code>@</code> e senha com menos de 8 caracteres, com status <code>400</code>.</li>
+                            <li><strong>Gerando o Hash:</strong> use <code>bcrypt.hash(senha, 10)</code> e guarde apenas o resultado — nunca a senha original.</li>
+                            <li><strong>Evitando Duplicidade:</strong> se o email já existir, responda <code>409</code> em vez de sobrescrever.</li>
+                            <li><strong>Rota de Login:</strong> crie <code>POST /auth/login</code> buscando o usuário pelo email.</li>
+                            <li><strong>Comparação Segura:</strong> use <code>bcrypt.compare(senha, senhaHash)</code> em vez de comparar strings.</li>
+                            <li><strong>Mensagem Genérica:</strong> para email inexistente e senha errada, devolva a mesma resposta <code>401</code>.</li>
+                            <li><strong>Validação e Testes:</strong> cadastre, faça login certo e errado, e confirme no console que a senha em texto puro nunca foi armazenada.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: JSON WEB TOKEN: EMISSÃO E VERIFICAÇÃO -->
+            <div class="card" id="card-2">
+                <h2>🎫 2. JSON Web Token: Emissão e Verificação</h2>
+                <p>O token resolve o problema de o servidor não precisar lembrar de ninguém. Mas ele é assinado, não escondido: o que você põe dentro, qualquer um lê.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://jwt.io/introduction" target="_blank" rel="noopener noreferrer">📄 JWT — Introdução Oficial</a>
+                        <span class="link-desc">As três partes do token explicadas com exemplo visual e decodificação ao vivo.</span>
+                    </li>
+                    <li>
+                        <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" rel="noopener noreferrer">📄 RFC 7519 — a especificação do JWT</a>
+                        <span class="link-desc">O documento normativo: claims registradas, formato e regras de validação.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Riscos comuns com JWT</a>
+                        <span class="link-desc">Os erros clássicos: algoritmo none, chave fraca e token sem expiração.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/en/guide/using-middleware.html" target="_blank" rel="noopener noreferrer">📄 Middlewares no Express</a>
+                        <span class="link-desc">Onde o verificador de token entra no ciclo da requisição.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Emitindo e Validando o Token de Acesso</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install jsonwebtoken</code> e crie <code>JWT_SECRET</code> no <code>.env</code>.</li>
+                            <li><strong>Gerando a Chave:</strong> use <code>node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"</code> como segredo.</li>
+                            <li><strong>Emitindo no Login:</strong> após validar a senha, chame <code>jwt.sign({ sub: usuario.id }, process.env.JWT_SECRET)</code>.</li>
+                            <li><strong>Definindo a Expiração:</strong> acrescente <code>{ expiresIn: '1h' }</code> como terceiro argumento.</li>
+                            <li><strong>Devolvendo o Token:</strong> responda <code>200</code> com o token no corpo, nunca na URL.</li>
+                            <li><strong>Inspecionando o Payload:</strong> cole o token em jwt.io e confirme que o conteúdo é legível — por isso não se põe senha ali.</li>
+                            <li><strong>Middleware de Proteção:</strong> crie <code>auth.middleware.js</code> que lê <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+                            <li><strong>Verificando a Assinatura:</strong> use <code>jwt.verify</code> dentro de try/catch e responda <code>401</code> na falha.</li>
+                            <li><strong>Anexando o Usuário:</strong> coloque o id decodificado em <code>req.usuarioId</code> e chame <code>proximo()</code>.</li>
+                            <li><strong>Validação e Testes:</strong> chame a rota protegida sem token, com token inválido e com token válido, conferindo os três status.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: SUPERFÍCIE DE ATAQUE: CORS, INJEÇÃO E RATE LIMIT -->
+            <div class="card" id="card-3">
+                <h2>🛡️ 3. Superfície de Ataque: CORS, Injeção e Rate Limit</h2>
+                <p>Com a autenticação de pé, sobram as portas que ninguém fechou: origem liberada para todo mundo, entrada concatenada direto na consulta e login sem limite de tentativa.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">📄 OWASP Top 10</a>
+                        <span class="link-desc">As dez categorias de falha mais comuns em aplicações web, atualizadas pela comunidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS" target="_blank" rel="noopener noreferrer">📄 CORS — MDN</a>
+                        <span class="link-desc">Como a política de mesma origem funciona e o que cada cabeçalho de CORS libera.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Prevenção de Injeção</a>
+                        <span class="link-desc">Consulta parametrizada e validação de entrada como defesa principal.</span>
+                    </li>
+                    <li>
+                        <a href="https://helmetjs.github.io/" target="_blank" rel="noopener noreferrer">📄 Helmet — cabeçalhos de segurança no Express</a>
+                        <span class="link-desc">O que cada cabeçalho que ele adiciona protege, em uma página curta.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Fechando as Portas Abertas da API</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install cors helmet express-rate-limit</code>.</li>
+                            <li><strong>Diagnóstico Inicial:</strong> chame sua API de um HTML em outra porta e observe o erro de CORS no console do navegador.</li>
+                            <li><strong>Liberando o Necessário:</strong> registre <code>app.use(cors({ origin: 'http://localhost:5500' }))</code> — uma origem, não o curinga.</li>
+                            <li><strong>Cabeçalhos de Defesa:</strong> registre <code>app.use(helmet())</code> e compare os cabeçalhos antes e depois na aba Rede.</li>
+                            <li><strong>Limite de Requisição:</strong> aplique <code>rateLimit</code> só na rota de login, com 5 tentativas a cada 15 minutos.</li>
+                            <li><strong>Testando o Limite:</strong> erre a senha seis vezes seguidas e confirme o status <code>429</code> na sexta.</li>
+                            <li><strong>Validação de Tipo:</strong> garanta que o corpo recebido é objeto e que os campos são string antes de usar.</li>
+                            <li><strong>Limite de Tamanho:</strong> configure <code>express.json({ limit: '10kb' })</code> para recusar corpo gigante.</li>
+                            <li><strong>Mensagem de Erro Sóbria:</strong> remova qualquer stack trace da resposta em produção, deixando-a só no log.</li>
+                            <li><strong>Validação e Testes:</strong> refaça os testes das práticas 1 e 2 e confirme que nada quebrou com as defesas ligadas.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>
