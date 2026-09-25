@@ -1,8 +1,8 @@
-# ⚡ Aula de Programação | da ByteClass para o Aluno
+# ⚡ Aula de Programação | para o Aluno
 
 ## 📖 Descrição do Projeto
 
-O **Aula de Programação** é o painel de ensino da **ByteClass** (ecossistema learnTECH). Reúne, num só lugar, as duas metades da jornada do aluno: a **grade curricular** — teoria e prática guiada, módulo a módulo — e o **catálogo de projetos** — 59 projetos práticos organizados por tecnologia, para o aluno ver código de verdade funcionando.
+O **Aula de Programação** é o painel de ensino (ecossistema learnTECH). Reúne, num só lugar, as duas metades da jornada do aluno: a **grade curricular** — teoria e prática guiada, módulo a módulo — e o **catálogo de projetos** — 59 projetos práticos organizados por tecnologia, para o aluno ver código de verdade funcionando.
 
 ## 🎯 Objetivo
 
