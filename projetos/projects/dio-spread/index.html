@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus | Market Intelligence</title>
+    <style>
+      :root {
+        --spread-purple: #2d0a31;
+        --spread-accent: #f5821f;
+        --dio-neon-blue: #3ce2fa;
+        --bg-dark: #0f111a;
+        --card-bg: rgba(45, 10, 49, 0.6);
+        --border-ui: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-dark);
+        color: white;
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Sidebar Fixa */
+      .sidebar {
+        width: 280px;
+        background: linear-gradient(
+          180deg,
+          var(--spread-purple) 0%,
+          #110413 100%
+        );
+        border-right: 1px solid var(--border-ui);
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+      }
+
+      .brand {
+        padding: 0 25px 30px;
+        font-weight: bold;
+        color: var(--dio-neon-blue);
+        font-size: 1.2rem;
+        border-bottom: 1px solid var(--border-ui);
+        margin-bottom: 20px;
+      }
+
+      .nav-group {
+        margin-bottom: 30px;
+      }
+
+      .nav-label {
+        padding: 0 25px 10px;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        color: var(--spread-accent);
+        letter-spacing: 2px;
+      }
+
+      .nav-item {
+        padding: 12px 25px;
+        display: block;
+        color: #a9adc1;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 0.9rem;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+      }
+      .nav-item.active {
+        background: rgba(245, 130, 31, 0.1);
+        color: white;
+        border-right: 4px solid var(--spread-accent);
+      }
+
+      /* Main Content */
+      .main {
+        flex: 1;
+        padding: 40px;
+        overflow-y: auto;
+        background: radial-gradient(circle at top right, #1a051d, #0f111a);
+      }
+
+      .content-header {
+        border-bottom: 1px solid var(--border-ui);
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+      .content-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        color: var(--dio-neon-blue);
+      }
+
+      .data-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+        border: 1px solid var(--border-ui);
+        line-height: 1.6;
+        animation: fadeIn 0.4s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">λ NEXUS INTEL</div>
+
+      <!-- Menu Empresas -->
+      <div class="nav-group">
+        <div class="nav-label">Empresas Tech Brasil</div>
+        <a class="nav-item" onclick="showContent('nubank')">Nubank (Fintech)</a>
+        <a class="nav-item" onclick="showContent('totvs')">TOTVS (Software)</a>
+        <a class="nav-item" onclick="showContent('ifood')">iFood (Logística)</a>
+      </div>
+
+      <!-- Menu Instituições -->
+      <div class="nav-group">
+        <div class="nav-label">Instituições de Ensino</div>
+        <a class="nav-item" onclick="showContent('usp')">USP - ICMC</a>
+        <a class="nav-item" onclick="showContent('unicamp')">UNICAMP - IC</a>
+        <a class="nav-item" onclick="showContent('itau')">ITA (Engenharia)</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="display-area">
+        <div class="content-header">
+          <h1>Selecione um Módulo</h1>
+        </div>
+        <p>
+          Selecione uma empresa ou instituição no menu lateral para visualizar
+          os dados de mercado e inovação.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      // Database de conteúdo real
+      const db = {
+        nubank: {
+          title: "Nubank: Revolução Fintech",
+          text: "O Nubank é a maior fintech da América Latina. Sua infraestrutura é baseada em <strong>Clojure</strong> e microsserviços, focada em escalabilidade e design centrado no usuário. É referência em inovação financeira global.",
+          bu: "BU Finanças Digitais",
+        },
+        totvs: {
+          title: "TOTVS: Gigante do ERP",
+          text: "Líder absoluta em software de gestão no Brasil, a TOTVS detém mais de 50% do market share nacional. Foca em IA aplicada a negócios e plataformas de produtividade para empresas de todos os tamanhos.",
+          bu: "BU Enterprise Systems",
+        },
+        ifood: {
+          title: "iFood: Inteligência Logística",
+          text: "O iFood utiliza algoritmos avançados de <strong>Machine Learning</strong> para otimizar rotas de entrega e prever demanda. É o maior case de plataforma de delivery e logística urbana no país.",
+          bu: "BU Volta Express (Logística)",
+        },
+        usp: {
+          title: "USP - São Carlos (ICMC)",
+          text: "O Instituto de Ciências Matemáticas e de Computação da USP é o principal celeiro de pesquisadores e desenvolvedores de alta performance no Brasil, com foco em Ciência de Dados e IA.",
+          bu: "Research & Development",
+        },
+        unicamp: {
+          title: "UNICAMP - Inst. de Computação",
+          text: "O IC-Unicamp é reconhecido mundialmente pela excelência em Engenharia de Software e Hardware, sendo responsável por grandes inovações no ecossistema de tecnologia de Campinas.",
+          bu: "Advanced Engineering",
+        },
+        itau: {
+          title: "ITA - Computação",
+          text: "O Instituto Tecnológico de Aeronáutica (ITA) forma a elite da engenharia brasileira. Seu curso de Computação foca em sistemas críticos, segurança cibernética e aeroespacial.",
+          bu: "Defense & Critical Systems",
+        },
+      };
+
+      function showContent(id) {
+        const area = document.getElementById("display-area");
+        const data = db[id];
+
+        // Atualiza o HTML no MAIN
+        area.innerHTML = `
+                <div class="content-header">
+                    <span style="color: var(--spread-accent); font-size: 0.8rem; font-weight: bold;">${data.bu}</span>
+                    <h1>${data.title}</h1>
+                </div>
+                <div class="data-card">
+                    <p>${data.text}</p>
+                    <hr style="border: 0; border-top: 1px solid var(--border-ui); margin: 20px 0;">
+                    <button onclick="window.open('https://google.com/search?q=${data.title}')" 
+                            style="background: var(--spread-accent); border: none; padding: 10px 20px; color: white; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        Saiba Mais sobre ${id.toUpperCase()}
+                    </button>
+                </div>
+            `;
+
+        // Gerencia classe Active
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((el) => el.classList.remove("active"));
+        event.target.classList.add("active");
+      }
+    </script>
+  </body>
+</html>

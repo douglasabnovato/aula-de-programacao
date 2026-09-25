@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Lab | Operadores JS</title>
+    <style>
+        :root {
+            --nexus-primary: #04aa6d;
+            --nexus-bg: #f4f7f6;
+            --nexus-card: #ffffff;
+            --nexus-text: #2d3436;
+            --nexus-secondary: #636e72;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Lato', sans-serif; 
+            background: var(--nexus-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Card de Atividade Centralizado */
+        .operator-card {
+            background: var(--nexus-card);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        header h1 { 
+            font-size: 1.8rem; 
+            color: var(--nexus-text); 
+            margin-bottom: 10px;
+        }
+
+        header p { 
+            color: var(--nexus-secondary); 
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .input-group { 
+            margin-bottom: 20px; 
+            text-align: left;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            color: var(--nexus-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%; 
+            padding: 14px; 
+            border: 2px solid #edf2f7;
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--nexus-primary); }
+
+        button {
+            width: 100%; 
+            padding: 16px; 
+            background: var(--nexus-primary);
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: bold;
+            transition: transform 0.1s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            color: #166534;
+            border-radius: 8px;
+            display: none;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="operator-card">
+        <header>
+            <h1>Operadores Nexus</h1>
+            <p>Análise lógica de igualdade e intervalos.</p>
+        </header>
+        
+        <div class="input-group">
+            <label for="num1">Primeiro Número</label>
+            <input type="number" id="num1" placeholder="Digite um valor">
+        </div>
+
+        <div class="input-group">
+            <label for="num2">Segundo Número</label>
+            <input type="number" id="num2" placeholder="Digite outro valor">
+        </div>
+
+        <button onclick="handleComparison()">Analisar Números</button>
+
+        <div id="result"></div>
+    </main>
+
+    <script>
+        /**
+         * Lógica de Operadores - ByteClass Pattern
+         */
+        function handleComparison() {
+            const n1 = Number(document.getElementById('num1').value);
+            const n2 = Number(document.getElementById('num2').value);
+            const resultDiv = document.getElementById('result');
+
+            // Validação simples
+            if (document.getElementById('num1').value === "" || document.getElementById('num2').value === "") {
+                alert("Por favor, preencha ambos os campos.");
+                return;
+            }
+
+            resultDiv.innerHTML = compareNumbers(n1, n2);
+            resultDiv.style.display = 'block';
+        }
+
+        function compareNumbers(a, b) {
+            const saoIguais = (a === b);
+            const soma = a + b;
+            
+            const parte1 = `Os números ${a} e ${b} ${saoIguais ? "" : "não"} são iguais.`;
+            const parte2 = `Sua soma é ${soma}, que é ${soma > 10 ? "maior" : "menor"} que 10 e ${soma < 20 ? "menor" : "maior"} que 20.`;
+
+            return `${parte1} ${parte2}`;
+        }
+    </script>
+</body>
+</html>

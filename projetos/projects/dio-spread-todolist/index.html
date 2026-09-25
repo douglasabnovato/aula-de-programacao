@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Lab | To-Do List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nexus-primary: #04aa6d;
+            --nexus-bg: #f4f7f6;
+            --nexus-card: #ffffff;
+            --nexus-text: #2d3436;
+            --nexus-secondary: #636e72;
+            --nexus-accent: #3498db;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Open Sans', sans-serif; 
+            background: var(--nexus-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Card Principal */
+        .todo-card {
+            background: var(--nexus-card);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 { 
+            font-family: 'Lato', sans-serif;
+            font-size: 1.8rem; 
+            color: var(--nexus-text); 
+            margin: 0;
+        }
+        header p { color: var(--nexus-secondary); font-size: 0.9rem; }
+
+        /* Formulário de Entrada */
+        .input-group { 
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px; 
+            border: 2px solid #edf2f7;
+            border-radius: 8px; 
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus { border-color: var(--nexus-accent); }
+
+        button {
+            padding: 12px 20px; 
+            background: var(--nexus-primary);
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            cursor: pointer; 
+            font-weight: bold;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+        button:active { transform: scale(0.95); }
+
+        /* Lista de Tarefas */
+        #tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid var(--nexus-accent);
+            transition: all 0.2s;
+        }
+
+        .task-item:hover { background: #f1f5f9; }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--nexus-primary);
+        }
+
+        label {
+            cursor: pointer;
+            color: var(--nexus-text);
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        /* Estado de Concluído */
+        :checked + label {
+            text-decoration: line-through;
+            color: var(--nexus-secondary);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="todo-card">
+        <header>
+            <h1>Nexus To-do</h1>
+            <p>Gerencie suas metas na ByteClass</p>
+        </header>
+        
+        <form id="task-form" class="input-group">
+            <input
+                id="task-input"
+                name="tarefa"
+                type="text"
+                placeholder="O que precisa ser feito?"
+                required
+            />
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <div id="tasks">
+            </div>
+    </main>
+
+    <script>
+        const form = document.getElementById("task-form");
+        const taskList = document.getElementById("tasks");
+
+        form.onsubmit = function (e) {
+            e.preventDefault();
+            const inputField = document.getElementById("task-input");
+            
+            if (inputField.value.trim() !== "") {
+                addTask(inputField.value);
+                form.reset();
+            }
+        };
+
+        function addTask(description) {
+            const taskContainer = document.createElement("div");
+            taskContainer.classList.add("task-item");
+
+            const id = "task-" + Date.now(); // ID único baseado no timestamp
+
+            const newTask = document.createElement("input");
+            newTask.setAttribute("type", "checkbox");
+            newTask.setAttribute("id", id);
+
+            const taskLabel = document.createElement("label");
+            taskLabel.setAttribute("for", id);
+            taskLabel.textContent = description;
+
+            taskContainer.appendChild(newTask);
+            taskContainer.appendChild(taskLabel);
+            taskList.appendChild(taskContainer);
+        }
+    </script>
+</body>
+</html>

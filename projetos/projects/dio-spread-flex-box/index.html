@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Lab | Flexbox Mastery</title>
+    <style>
+        /* Design System Nexus */
+        :root {
+            --nexus-primary: #04aa6d;
+            --nexus-bg: #f4f7f6;
+            --item-bg: #3498db;
+            --container-bg: #dfe6e9;
+        }
+
+        body { margin: 0; font-family: 'Lato', sans-serif; display: flex; }
+
+        /* Sidebar Customizada */
+        .sidebar {
+            width: 220px; background: #2d3436; height: 100vh;
+            position: fixed; color: white; overflow-y: auto;
+        }
+        .sidebar a {
+            padding: 15px; text-decoration: none; color: #b2bec3;
+            display: block; border-bottom: 1px solid #636e72;
+        }
+        .sidebar a.active { background: var(--nexus-primary); color: white; }
+
+        /* Área de Conteúdo */
+        .content { margin-left: 220px; padding: 40px; flex-grow: 1; background: var(--nexus-bg); }
+
+        /* Classes Utilitárias Flexbox (Onde a mágica acontece) */
+        .flex-container {
+            display: flex; background: var(--container-bg);
+            padding: 15px; border-radius: 8px; margin-bottom: 30px; gap: 10px;
+        }
+        .item {
+            background: var(--item-bg); color: white; padding: 20px;
+            border-radius: 4px; text-align: center; font-weight: bold;
+        }
+
+        /* Variações do Laboratório */
+        .direction-column { flex-direction: column; }
+        .justify-center { justify-content: center; }
+        .align-center { align-items: center; }
+        .wrap { flex-wrap: wrap; }
+        
+        /* Flex Grow/Shrink helpers */
+        .fg-1 { flex-grow: 1; }
+        .fg-2 { flex-grow: 2; }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <a href="#flex-direction">Flex Direction</a>
+        <a href="#flex-grow">Flex Grow & Basis</a>
+        <a href="#justify-content">Justify Content</a>
+        <a href="#align-items">Align Items</a>
+    </nav>
+
+    <main class="content">
+        <h1>Flexbox Mastery Lab</h1>
+        <p>Explore os comportamentos dos elementos no eixo principal e transversal.</p>
+
+        <section id="flex-direction">
+            <h2>1. Flex Direction (Column)</h2>
+            <div class="flex-container direction-column">
+                <div class="item">Item 1</div>
+                <div class="item">Item 2</div>
+                <div class="item">Item 3</div>
+            </div>
+        </section>
+
+        <section id="flex-grow">
+            <h2>2. Flex Grow (Distribuição de Espaço)</h2>
+            <div class="flex-container">
+                <div class="item fg-1">Grow 1</div>
+                <div class="item fg-2">Grow 2</div>
+                <div class="item fg-1">Grow 1</div>
+            </div>
+        </section>
+
+        <section id="justify-content">
+            <h2>3. Justify Content (Eixo Principal - Horizontal)</h2>
+            <p>Distribuição de espaço usando <code>space-between</code>:</p>
+            <div class="flex-container" style="justify-content: space-between;">
+                <div class="item">Início</div>
+                <div class="item">Meio</div>
+                <div class="item">Fim</div>
+            </div>
+            <p>Alinhamento centralizado com <code>justify-content: center</code>:</p>
+            <div class="flex-container justify-center">
+                <div class="item">Item A</div>
+                <div class="item">Item B</div>
+            </div>
+        </section>
+
+        <section id="align-items">
+            <h2>4. Align Items (Eixo Transversal - Vertical)</h2>
+            <p>Alinhamento ao centro vertical em um container com altura definida:</p>
+            <div class="flex-container align-center" style="min-height: 200px;">
+                <div class="item">Item Centralizado</div>
+                <div class="item">Verticalmente</div>
+                <div class="item">No Nexus Lab</div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

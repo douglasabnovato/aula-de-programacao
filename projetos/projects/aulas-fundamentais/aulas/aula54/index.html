@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>learnTECH | MVP Projeto Final</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Nexus Management System v1.0</h1>
+      <div id="user-profile">CTO: Douglas Novato</div>
+    </header>
+
+    <main id="app">
+      <section class="module-selector">
+        <button onclick="app.switchBU('logistica')">Volta Express</button>
+        <button onclick="app.switchBU('saude')">MedTrem</button>
+      </section>
+
+      <section id="main-content" class="card"></section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

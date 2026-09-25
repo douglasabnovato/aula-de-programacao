@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aula de Programação | da ByteClass para o Aluno</title>
+
+    <meta name="description"
+        content="Painel de aulas da ByteClass: grade curricular em 7 módulos, com vídeo de apoio, prática guiada passo a passo e validação com o instrutor.">
+    <meta name="theme-color" content="#0D1117">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aula de Programação | ByteClass">
+    <meta property="og:description"
+        content="A grade curricular completa da ByteClass, com prática guiada e mentoria direta.">
+    <meta property="og:image" content="assets/byteclass-dev-3.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
@@ -27,6 +38,37 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        .grade-progresso {
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .grade-progresso__barra {
+            height: 6px;
+            border-radius: 999px;
+            background: var(--border-color);
+            overflow: hidden;
+        }
+
+        .grade-progresso__barra span {
+            display: block;
+            height: 100%;
+            border-radius: 999px;
+            background: var(--primary-color);
+            transition: width .6s ease;
+        }
+
+        .grade-progresso__texto {
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: .88rem;
+        }
+
+        .grade-progresso__texto strong {
+            color: var(--primary-color);
         }
 
         body {
@@ -589,6 +631,11 @@
                     <div class="highlight-item"><span>✔</span> Foco em Lógica e Código</div>
                     <div class="highlight-item"><span>✔</span> Mentoria e Validação</div>
                 </div>
+
+                <div class="grade-progresso" id="gradeProgresso" hidden>
+                    <div class="grade-progresso__barra"><span id="gradeProgressoBarra"></span></div>
+                    <p class="grade-progresso__texto" id="gradeProgressoTexto"></p>
+                </div>
             </div>
         </div>
 
@@ -669,7 +716,42 @@
             renderizarSidebar();
             renderizarDataAtual();
             renderizarHubPlaylists();
+            renderizarProgressoDaGrade();
+            ligarAtalhosDeSaida();
         });
+
+        // Conta quantas aulas da grade já estão publicadas e mostra a proporção na home.
+        function renderizarProgressoDaGrade() {
+            if (typeof gradeCurricular === "undefined") return;
+            const todas = gradeCurricular.flatMap(m => m.aulas);
+            const publicadas = todas.filter(a => a.status === "disponivel").length;
+            if (todas.length === 0) return;
+
+            const pct = Math.round((publicadas / todas.length) * 100);
+            document.getElementById("gradeProgressoBarra").style.width = pct + "%";
+            document.getElementById("gradeProgressoTexto").innerHTML =
+                `<strong>${publicadas} de ${todas.length} aulas publicadas</strong> — as demais estão em preparação pela coordenação e já aparecem na grade para você ver a jornada inteira.`;
+            document.getElementById("gradeProgresso").hidden = false;
+        }
+
+        // Esc e o botão Voltar do navegador devolvem o aluno para a home do painel.
+        function ligarAtalhosDeSaida() {
+            document.addEventListener("keydown", (evento) => {
+                if (evento.key !== "Escape") return;
+                const emAula = document.getElementById("aulaFrame").style.display === "block";
+                const emVideo = document.getElementById("playerView").style.display === "flex";
+                const emConstrucao = document.getElementById("construcaoView").style.display === "flex";
+                if (emAula || emVideo || emConstrucao) voltarHome();
+            });
+
+            window.addEventListener("popstate", () => voltarHome());
+        }
+
+        // Guarda a tela aberta no histórico, para o Voltar ter o que desfazer.
+        function marcarNoHistorico(rotulo) {
+            if (location.hash === "#" + rotulo) return;
+            history.pushState({ tela: rotulo }, "", "#" + rotulo);
+        }
 
         function renderizarSidebar() {
             const menuList = document.getElementById("menuList");
@@ -767,7 +849,7 @@
             card.onclick = () => abrirDetalhePlaylist();
             card.innerHTML = `
                 <div class="playlist-thumb">
-                    <img src="${playlistHackDev.thumbnail}" alt="${playlistHackDev.titulo}">
+                    <img src="${playlistHackDev.thumbnail}" alt="${playlistHackDev.titulo}" loading="lazy" decoding="async">
                 </div>
                 <div class="playlist-info">
                     <div>
@@ -802,7 +884,7 @@
                 card.onclick = () => reproduzirVideoAula(aula);
                 card.innerHTML = `
                     <div class="video-card-thumb">
-                        <img src="${playlistAtualAtiva.thumbnail}" alt="${aula.titulo}">
+                        <img src="${playlistAtualAtiva.thumbnail}" alt="${aula.titulo}" loading="lazy" decoding="async">
                     </div>
                     <div class="video-card-info">
                         <span style="color:var(--warning-color); font-size:0.75rem; font-weight:600;">Aula ${aula.numero}</span>
@@ -843,6 +925,7 @@
             document.getElementById("welcomeView").style.display = "flex";
             document.querySelectorAll('.aulas-sublist a').forEach(item => item.classList.remove('ativo'));
             fecharSidebarMobile();
+            if (location.hash) history.replaceState(null, "", location.pathname);
         }
 
         function toggleModulo(idModulo) {
@@ -865,6 +948,7 @@
             frame.style.display = 'block';
             frame.src = caminhoArquivo;
             atualizarMenuAtivo(elementoMenu);
+            marcarNoHistorico("aula");
         }
 
         function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
@@ -872,6 +956,7 @@
             document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
             document.getElementById('construcaoView').style.display = 'flex';
             atualizarMenuAtivo(elementoMenu);
+            marcarNoHistorico("em-construcao");
         }
 
         function atualizarMenuAtivo(elementoMenu) {

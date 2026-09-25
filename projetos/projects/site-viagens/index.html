@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>learnTECH | Travel Master 2.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="./src/assets/css/style.css" />
+
+    <script src="./src/assets/js/script.js" defer></script>
+  </head>
+
+  <body>
+    <header class="app-header">
+      <div class="header-main">
+        <div class="brand">
+          <h1>learn<span>TECH</span></h1>
+        </div>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="main-search"
+            placeholder="Buscar destino ou destaque..."
+          />
+          <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div class="user-profile">
+          <i class="fa-regular fa-circle-user"></i>
+          <span>Douglas Novato</span>
+        </div>
+      </div>
+
+      <nav class="mega-menu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="#">NACIONAL</a>
+            <ul class="dropdown">
+              <li><a href="#">Rio de Janeiro</a></li>
+              <li><a href="#">Ceará</a></li>
+              <li><a href="#">Bahia</a></li>
+              <li><a href="#">Santa Catarina</a></li>
+              <li><a href="#">Minas Gerais</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#">INTERNACIONAL</a>
+            <ul class="dropdown">
+              <li><a href="#">Argentina</a></li>
+              <li><a href="#">Portugal</a></li>
+              <li><a href="#">França</a></li>
+              <li><a href="#">Chile</a></li>
+              <li><a href="#">EUA</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#">AVENTURA</a>
+            <ul class="dropdown">
+              <li><a href="#">Peru</a></li>
+              <li><a href="#">Islândia</a></li>
+              <li><a href="#">Nova Zelândia</a></li>
+              <li><a href="#">Canadá</a></li>
+              <li><a href="#">Brasil Aventura</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="content-wrapper">
+      <div class="destinations-grid" id="destinations-container"></div>
+
+      <section class="form-section">
+        <div class="surface-card feedback-container">
+          <div class="form-header">
+            <h2>Sua experiência importa</h2>
+            <p>
+              Conte-nos sobre sua viagem ou tire suas dúvidas com nossos
+              especialistas.
+            </p>
+          </div>
+
+          <form id="form">
+            <div class="input-group">
+              <div class="input-field">
+                <input type="text" id="nome" placeholder=" " required />
+                <label for="nome">Nome Completo</label>
+              </div>
+              <div class="input-field">
+                <input type="email" id="email" placeholder=" " required />
+                <label for="email">E-mail</label>
+              </div>
+            </div>
+
+            <div class="radio-group">
+              <p>Qual seu objetivo?</p>
+              <div class="radio-options">
+                <label class="radio-label">
+                  <input type="radio" name="perfil" value="feedback" checked />
+                  <span>Já viajei e quero contar</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="perfil" value="pergunta" />
+                  <span>Quero tirar dúvidas / Elogiar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-field">
+              <textarea id="mensagem" placeholder=" " required></textarea>
+              <label for="mensagem">Escreva aqui sua mensagem...</label>
+            </div>
+
+            <button type="submit" id="btn-submit" class="btn-card main-btn">
+              Enviar Mensagem <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-container">
+        <div class="footer-column brand-info">
+          <div class="brand">
+            <h1>learn<span>TECH</span></h1>
+          </div>
+          <p>
+            Transformando a educação tecnológica através de experiências reais
+            de desenvolvimento e arquitetura de sistemas.
+          </p>
+          <div class="social-links">
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3>Ecossistema</h3>
+          <ul>
+            <li><a href="#">learnTECH Hub</a></li>
+            <li><a href="#">ByteClass School</a></li>
+            <li><a href="#">Volta Express</a></li>
+            <li><a href="#">Trilhas Dev</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Suporte</h3>
+          <ul>
+            <li><a href="#">Central de Ajuda</a></li>
+            <li><a href="#">Termos de Uso</a></li>
+            <li><a href="#">Privacidade</a></li>
+            <li><a href="#">Contato BU</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column newsletter">
+          <h3>Newsletter</h3>
+          <p>Receba atualizações do ecossistema.</p>
+          <div class="subscribe-box">
+            <input type="email" placeholder="seu@email.com" />
+            <button><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; 2026 learnTECH Ecosystem. Designed by
+          <strong>Douglas A B Novato</strong>.
+        </p>
+        <div class="tech-stack-badges">
+          <span>React</span>
+          <span>Node.js</span>
+          <span>Material 3</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

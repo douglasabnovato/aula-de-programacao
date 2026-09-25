@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon" />
+    <title>Nexus | HTML Challenges</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1abc9c;
+            --secondary-color: #3498db;
+            --bg-body: #e9ecef;
+            --text-dark: #2c3e50;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Global Container --- */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header & Navigation --- */
+        header.nexus-header {
+            background: var(--white);
+            border-radius: 12px 12px 0 0;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        nav.main-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: var(--white);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav.main-nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: 0.3s;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        nav.main-nav a:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        /* --- Sections --- */
+        .content-card {
+            background: var(--white);
+            margin-top: 20px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        section { padding-bottom: 40px; margin-bottom: 40px; border-bottom: 1px solid #eee; }
+        section:last-child { border-bottom: none; }
+
+        h2 { 
+            color: var(--secondary-color); 
+            margin-bottom: 25px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+
+        /* --- Quiz & Form Elements --- */
+        .quiz-list { list-style: none; padding: 0; }
+        .quiz-item { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+        .quiz-item h3 { font-size: 1.1rem; margin-bottom: 15px; }
+        
+        .option-group { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; }
+        .option-group input { margin-right: 12px; transform: scale(1.2); }
+
+        .nexus-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .nexus-form .full-width { grid-column: span 2; }
+        
+        .nexus-form input, .nexus-form select, .nexus-form textarea {
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .btn-send {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-send:hover { background: #16a085; transform: translateY(-2px); }
+
+        /* --- Setup Cards --- */
+        .setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .setup-card { border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: 0.3s; }
+        .setup-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .setup-card img { width: 100%; height: 200px; object-fit: cover; }
+        .setup-info { padding: 15px; }
+
+        /* --- Footer --- */
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #7f8c8d; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .nexus-form { grid-template-columns: 1fr; }
+            .nexus-form .full-width { grid-column: span 1; }
+            .content-card { padding: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="nexus-header">
+            <h1><i class="fas fa-code-branch"></i> Project Nexus</h1>
+            <p>Challenge Collection | Web Fundamentals 2026</p>
+        </header>
+
+        <nav class="main-nav">
+            <a href="#intro"><i class="fas fa-info-circle"></i> Intro</a>
+            <a href="#quiz"><i class="fas fa-tasks"></i> Quiz</a>
+            <a href="#setups"><i class="fas fa-desktop"></i> Setups</a>
+            <a href="#contato"><i class="fas fa-envelope"></i> Contato</a>
+        </nav>
+
+        <div class="content-card">
+            <section id="intro">
+                <h2><i class="fas fa-lightbulb"></i> Glossário & Intro</h2>
+                <p>Neste módulo do <strong>ByteClass</strong>, exploramos a semântica do HTML5 e a importância de estruturas bem definidas para o ecossistema <strong>learnTECH</strong>.</p>
+                <dl style="background: #fff8e1; padding: 15px; border-left: 5px solid #ffc107; border-radius: 4px;">
+                    <dt><strong>Clean Code</strong></dt>
+                    <dd>Prática de escrever código que seja fácil de ler e manter por outros desenvolvedores.</dd>
+                </dl>
+            </section>
+
+            <section id="quiz">
+                <h2><i class="fas fa-check-double"></i> Verificação de Conhecimento</h2>
+                <div class="quiz-list">
+                    <div class="quiz-item">
+                        <h3>1. Qual elemento define o título principal da página?</h3>
+                        <label class="option-group"><input type="radio" name="q1"> &lt;head&gt;</label>
+                        <label class="option-group"><input type="radio" name="q1"> &lt;header&gt;</label>
+                        <label class="option-group"><input type="radio" name="q1"> &lt;h1&gt;</label>
+                    </div>
+                </div>
+            </section>
+
+            <section id="setups">
+                <h2><i class="fas fa-laptop-code"></i> Workspace Reference</h2>
+                <div class="setup-grid">
+                    <article class="setup-card">
+                        <img src="./assets/setup-1.jpeg" alt="Setup Minimalista">
+                        <div class="setup-info">
+                            <strong>Setup High-End</strong>
+                            <p>Foco em produtividade com monitores ultra-wide.</p>
+                        </div>
+                    </article>
+                    <article class="setup-card">
+                        <img src="./assets/setup-2.jpeg" alt="Setup Dev">
+                        <div class="setup-info">
+                            <strong>Mobile First Workstation</strong>
+                            <p>Otimizado para testes em múltiplos dispositivos.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="contato">
+                <h2><i class="fas fa-paper-plane"></i> Central de Atendimento</h2>
+                <form class="nexus-form">
+                    <input type="text" placeholder="Nome" required>
+                    <input type="email" placeholder="E-mail" required>
+                    <select class="full-width">
+                        <option value="suporte">Suporte Técnico</option>
+                        <option value="vagas">Oportunidades ByteClass</option>
+                    </select>
+                    <textarea class="full-width" rows="4" placeholder="Como podemos ajudar?"></textarea>
+                    <button type="button" class="btn-send full-width" onclick="alert('Nexus: Dados enviados!')">
+                        Enviar para LearnTECH
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Douglas Novato | ByteClass & LearnTECH Ecosystem</p>
+        </footer>
+    </div>
+
+</body>
+</html>
