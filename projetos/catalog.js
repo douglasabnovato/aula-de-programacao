@@ -1,50 +1,42 @@
-/* catalog.js — o Hub de Projetos.
-   Lê projects.json, monta a grade de cards e controla o visor que abre
-   cada projeto num iframe. Extraído do <script> embutido no index.html. */
+/* catalog.js — catálogo de projetos práticos da ByteClass.
+   Lê projects.json, monta os filtros por tecnologia, a busca e a grade.
 
-const Hub = {
-  caminhoJson: "./projects.json",
-  grade: null,
-  contador: null,
-  visor: null,
-  iframe: null,
-  progresso: null,
-  tituloVisor: null,
-  projetos: [],
+   O visor em modal saiu. Antes o projeto abria num iframe dentro desta
+   página, que por sua vez já roda dentro do iframe do painel — três níveis,
+   e o botão Voltar do navegador ficava imprevisível porque cada navegação
+   interna empilha entrada no histórico do topo. Agora o card avisa o painel,
+   e quem troca de página é ele: a pilha para em dois níveis e o caminho de
+   volta (o rastro "Projetos ›") mora fora do iframe, onde nada o alcança.
+   Aberto fora do painel, o card navega normalmente. */
+
+const ARQUIVO = "./projects.json";
+const TODOS = "Todos";
+
+/* Um ícone por tecnologia, desenhado aqui dentro. Antes eram 56 ícones
+   diferentes vindos de um CDN: quando a rede falhava, os 59 cards viravam
+   retângulos vazios, e 56 ícones distintos não classificavam nada. */
+const ICONES = {
+  "HTML & CSS": '<path d="M9 5 3 12l6 7M15 5l6 7-6 7"/>',
+  "JavaScript & DOM":
+    '<path d="M9 4H8a2 2 0 0 0-2 2v3a2 2 0 0 1-2 2 2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h1M15 4h1a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2 2 2 0 0 0-2 2v3a2 2 0 0 1-2 2h-1"/>',
+  Jogos:
+    '<rect x="2.5" y="6.5" width="19" height="11" rx="5"/><path d="M6.5 11h3.5M8.25 9.25v3.5M15 12.5h.01M17.5 10.5h.01"/>',
+  "Lógica & Algoritmos":
+    '<circle cx="6" cy="5.5" r="2.5"/><circle cx="18" cy="5.5" r="2.5"/><circle cx="12" cy="18.5" r="2.5"/><path d="M6 8v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>',
+  "Landing Pages":
+    '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 12.5h7M7 16h4"/>',
+  "APIs & Dados":
+    '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/>',
+  Formulários:
+    '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/>',
+  "Multimídia": '<circle cx="12" cy="12" r="9"/><path d="M10.2 8.4 16 12l-5.8 3.6z"/>',
 };
 
-/* Busca os elementos uma vez, depois que o DOM existe. */
-function mapearElementos() {
-  Hub.grade = document.getElementById("main-grid");
-  Hub.contador = document.getElementById("project-count-text");
-  Hub.visor = document.getElementById("project-viewer");
-  Hub.iframe = document.getElementById("project-iframe");
-  Hub.progresso = document.getElementById("viewer-progress");
-  Hub.tituloVisor = document.getElementById("project-title-display");
-}
-
-/* Carrega o catálogo e desenha a grade. */
-async function iniciarHub() {
-  mapearElementos();
-  ligarEventos();
-
-  try {
-    const resposta = await fetch(Hub.caminhoJson);
-    if (!resposta.ok) throw new Error("Falha ao buscar projects.json");
-
-    Hub.projetos = await resposta.json();
-
-    Hub.contador.innerHTML = `Conheça nossos <span class="contador-numero">${Hub.projetos.length}</span> projetos`;
-    Hub.grade.innerHTML = Hub.projetos.map(montarCard).join("");
-
-    restaurarEstado();
-  } catch (erro) {
-    console.error("Hub:", erro);
-    Hub.contador.textContent = "Não foi possível carregar o catálogo";
-    Hub.grade.innerHTML =
-      '<p class="grade-erro">Erro ao sincronizar os projetos. Recarregue a página.</p>';
-  }
-}
+const Hub = {
+  itens: [],
+  filtro: TODOS,
+  busca: "",
+};
 
 /* Neutraliza marcação antes de interpolar dado do catálogo em HTML. */
 function escapar(texto) {
@@ -54,123 +46,169 @@ function escapar(texto) {
   );
 }
 
-/* Monta um card. O clique é tratado por delegação, via data-id. */
+/* Tira acento e caixa, para a busca achar "logica" quando o título diz "Lógica". */
+function normalizar(texto) {
+  return String(texto ?? "")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+/* Devolve o SVG da tecnologia, ou um marcador neutro se a categoria for nova. */
+function iconeDe(categoria) {
+  const miolo = ICONES[categoria] || '<circle cx="12" cy="12" r="8"/>';
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${miolo}</svg>`;
+}
+
+/* Monta um card. É um button porque dispara ação, não navega por href:
+   quem navega é o painel, quando existe. */
 function montarCard(projeto) {
-  const destaque = projeto.featured && projeto.image;
-  const fundo = destaque ? ` style="background-image: url('${escapar(projeto.image)}');"` : "";
+  const fundo =
+    projeto.featured && projeto.image
+      ? ` style="background-image:url('${escapar(projeto.image)}');"`
+      : "";
 
   return `
-    <button type="button" class="project-card ${projeto.featured ? "featured" : ""}"
-            data-id="${escapar(projeto.id)}"
+    <button type="button" class="project-card${projeto.featured ? " featured" : ""}"
+            data-slug="${escapar(projeto.slug)}"
             aria-label="Abrir ${escapar(projeto.title)}"${fundo}>
-      <i class="${escapar(projeto.icon)} card-icon" aria-hidden="true"></i>
-      <span class="badge">${escapar(projeto.category)}</span>
-      <div class="card-content">
-        <h3>${escapar(projeto.title)}</h3>
-        <p>${escapar(projeto.description)}</p>
-      </div>
-    </button>
-  `;
+      <span class="project-card__topo">
+        <span class="project-card__icone">${iconeDe(projeto.category)}</span>
+        <span class="badge">${escapar(projeto.category)}</span>
+      </span>
+      <h3>${escapar(projeto.title)}</h3>
+      <p>${escapar(projeto.description)}</p>
+    </button>`;
 }
 
-/* Abre o projeto no visor.
-   O endereço é trocado com replaceState, não pushState: o projeto roda num
-   iframe e as navegações internas dele já empilham entradas no histórico do
-   topo. Empilhar mais uma nossa deixaria o botão Voltar imprevisível — o
-   usuário teria de apertar várias vezes para sair. Com replaceState o
-   endereço continua compartilhável e o Voltar se comporta como em qualquer
-   página: sai do hub. Fechar o visor é papel do Esc e do botão. */
-function abrirProjeto(titulo, url) {
-  Hub.tituloVisor.textContent = titulo;
-  Hub.iframe.src = url;
-  Hub.visor.style.display = "flex";
-  document.body.style.overflow = "hidden";
-
-  Hub.progresso.style.width = "40%";
-  Hub.iframe.onload = () => {
-    Hub.progresso.style.width = "100%";
-    setTimeout(() => (Hub.progresso.style.width = "0%"), 300);
-  };
-
-  gravar("hub_ultimo_projeto", JSON.stringify({ titulo, url }));
-  history.replaceState({ projeto: titulo }, "", `#${encodeURIComponent(titulo)}`);
+/* Aplica filtro de tecnologia e busca textual, nessa ordem. */
+function filtrar() {
+  const termo = normalizar(Hub.busca);
+  return Hub.itens.filter((p) => {
+    if (Hub.filtro !== TODOS && p.category !== Hub.filtro) return false;
+    if (!termo) return true;
+    return normalizar(`${p.title} ${p.description} ${p.category}`).includes(termo);
+  });
 }
 
-/* Fecha o visor e devolve a página ao estado normal. */
-function fecharProjeto() {
-  if (Hub.visor.style.display === "none" || !Hub.visor.style.display) return;
+/* Desenha a grade e atualiza o contador. */
+function renderizarGrade() {
+  const grade = document.getElementById("main-grid");
+  const contador = document.getElementById("contador");
+  const lista = filtrar();
 
-  Hub.visor.style.display = "none";
-  Hub.iframe.src = "";
-  document.body.style.overflow = "";
-  remover("hub_ultimo_projeto");
-  history.replaceState(null, "", location.pathname);
-  document.querySelector(`[data-id]`)?.focus?.();
-}
-
-/* Reabre o último projeto visto, ou o que veio no endereço. */
-function restaurarEstado() {
-  const alvoHash = location.hash ? decodeURIComponent(location.hash.substring(1)) : null;
-  if (alvoHash) {
-    const achado = Hub.projetos.find((p) => p.title === alvoHash);
-    if (achado) return abrirProjeto(achado.title, achado.path);
+  if (lista.length === 0) {
+    grade.innerHTML = `<p class="grade-vazia">Nenhum projeto encontrado para <strong>${escapar(
+      Hub.busca
+    )}</strong>.</p>`;
+  } else {
+    grade.innerHTML = lista.map(montarCard).join("");
   }
 
-  const salvo = ler("hub_ultimo_projeto");
-  if (!salvo) return;
-  try {
-    const { titulo, url } = JSON.parse(salvo);
-    abrirProjeto(titulo, url);
-  } catch (e) {
-    void e;
-    remover("hub_ultimo_projeto");
-  }
+  const total = Hub.itens.length;
+  contador.innerHTML =
+    lista.length === total
+      ? `Conheça nossos <strong>${total}</strong> projetos`
+      : `<strong>${lista.length}</strong> de ${total} projetos`;
 }
 
-/* Liga os eventos da página: clique nos cards, fechar, Esc e botão Voltar. */
+/* Desenha as pastilhas de tecnologia, com a contagem de cada uma. */
+function renderizarFiltros() {
+  const alvo = document.getElementById("filtros");
+  const conta = new Map();
+  Hub.itens.forEach((p) => conta.set(p.category, (conta.get(p.category) || 0) + 1));
+  const ordenadas = [...conta.keys()].sort((a, b) => conta.get(b) - conta.get(a));
+
+  const pastilha = (rotulo, n) =>
+    `<button type="button" class="filtro${rotulo === Hub.filtro ? " is-ativo" : ""}"
+             data-filtro="${escapar(rotulo)}" aria-pressed="${rotulo === Hub.filtro}">
+       ${escapar(rotulo)} <span class="filtro__n">${n}</span>
+     </button>`;
+
+  alvo.innerHTML =
+    pastilha(TODOS, Hub.itens.length) + ordenadas.map((c) => pastilha(c, conta.get(c))).join("");
+}
+
+/* Abre o projeto. Dentro do painel, pede a ele que troque de página;
+   fora dele, navega esta própria janela. */
+function abrirProjeto(slug) {
+  const projeto = Hub.itens.find((p) => p.slug === slug);
+  if (!projeto) return;
+
+  const dentroDoPainel = window.parent && window.parent !== window;
+  if (dentroDoPainel) {
+    try {
+      window.parent.postMessage(
+        { tipo: "abrir-projeto", url: projeto.path, titulo: projeto.title },
+        window.location.origin
+      );
+      return;
+    } catch (e) {
+      void e;
+    }
+  }
+  window.location.href = projeto.path;
+}
+
+/* Liga os eventos da página num lugar só. */
 function ligarEventos() {
-  Hub.grade.addEventListener("click", (evento) => {
-    const card = evento.target.closest("[data-id]");
-    if (!card) return;
-    const projeto = Hub.projetos.find((p) => String(p.id) === card.dataset.id);
-    if (projeto) abrirProjeto(projeto.title, projeto.path);
+  document.getElementById("filtros").addEventListener("click", (evento) => {
+    const pastilha = evento.target.closest("[data-filtro]");
+    if (!pastilha) return;
+    Hub.filtro = pastilha.dataset.filtro;
+    renderizarFiltros();
+    renderizarGrade();
   });
 
-  document.querySelector(".back-btn")?.addEventListener("click", () => fecharProjeto());
+  document.getElementById("main-grid").addEventListener("click", (evento) => {
+    const card = evento.target.closest("[data-slug]");
+    if (card) abrirProjeto(card.dataset.slug);
+  });
+
+  const campo = document.getElementById("campoBusca");
+  campo.addEventListener("input", () => {
+    Hub.busca = campo.value;
+    renderizarGrade();
+  });
 
   document.addEventListener("keydown", (evento) => {
-    if (evento.key === "Escape") fecharProjeto();
+    if (evento.key === "/" && document.activeElement !== campo) {
+      evento.preventDefault();
+      campo.focus();
+      return;
+    }
+    if (evento.key === "Escape" && document.activeElement === campo) {
+      campo.value = "";
+      Hub.busca = "";
+      renderizarGrade();
+      campo.blur();
+    }
   });
-
-  window.addEventListener("popstate", () => fecharProjeto());
 }
 
-/* Acesso ao armazenamento local tolerante a bloqueio do navegador. */
-function ler(chave) {
+/* Ponto de partida. */
+async function iniciar() {
+  const grade = document.getElementById("main-grid");
+
   try {
-    return localStorage.getItem(chave);
-  } catch (e) {
-    void e;
-    return null;
+    const resposta = await fetch(ARQUIVO);
+    if (!resposta.ok) throw new Error("Falha ao buscar projects.json");
+    Hub.itens = await resposta.json();
+  } catch (erro) {
+    console.error("Catálogo:", erro);
+    document.getElementById("contador").textContent = "Não foi possível carregar o catálogo";
+    grade.innerHTML =
+      '<p class="grade-erro">Erro ao sincronizar os projetos. Recarregue a página.</p>';
+    return;
   }
+
+  renderizarFiltros();
+  renderizarGrade();
+  ligarEventos();
 }
 
-function gravar(chave, valor) {
-  try {
-    localStorage.setItem(chave, valor);
-  } catch (e) {
-    void e;
-  }
-}
-
-function remover(chave) {
-  try {
-    localStorage.removeItem(chave);
-  } catch (e) {
-    void e;
-  }
-}
-
-document.addEventListener("DOMContentLoaded", iniciarHub);
+document.addEventListener("DOMContentLoaded", iniciar);
 
 /* Fim de catalog.js */

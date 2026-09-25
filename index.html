@@ -20,6 +20,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="manifest" href="assets/site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <style>
         :root {
             --bg-main: #0D1117;
@@ -273,6 +278,66 @@
             flex-direction: column;
             background-color: var(--bg-main);
             overflow-y: auto;
+        }
+
+        .rastro {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            flex: none;
+            padding: 12px 22px;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            font-size: .88rem;
+            color: var(--text-muted);
+        }
+
+        .rastro.ativo {
+            display: flex;
+        }
+
+        .rastro button {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--primary-color);
+            font-family: inherit;
+            font-size: .85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        .rastro button:hover {
+            background-color: rgba(0, 255, 102, .1);
+            border-color: var(--primary-color);
+        }
+
+        .rastro button:focus-visible,
+        .home-btn:focus-visible,
+        .modulo-toggle:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .rastro__sep {
+            opacity: .5;
+        }
+
+        .rastro__atual {
+            color: var(--text-main);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .rastro {
+                padding: 10px 14px;
+                font-size: .82rem;
+            }
         }
 
         .iframe-container {
@@ -689,6 +754,12 @@
             </div>
         </div>
 
+        <div class="rastro" id="rastroProjetos">
+            <button type="button" onclick="abrirProjetos()">📁 Projetos</button>
+            <span class="rastro__sep" id="rastroSep" hidden>›</span>
+            <span class="rastro__atual" id="rastroAtual"></span>
+        </div>
+
         <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
     </main>
 
@@ -718,6 +789,7 @@
             renderizarHubPlaylists();
             renderizarProgressoDaGrade();
             ligarAtalhosDeSaida();
+            ligarPonteComOCatalogo();
         });
 
         // Conta quantas aulas da grade já estão publicadas e mostra a proporção na home.
@@ -792,7 +864,25 @@
             liExp.appendChild(ulExp);
             menuList.appendChild(liExp);
 
-            // 2. RENDERIZAR OS MÓDULOS OFICIAIS DA GRADE CURRICULAR LOGO ABAIXO
+            // 2. ADICIONAR "PROJETOS" — abre o catálogo de projetos práticos
+            const liProj = document.createElement("li");
+            liProj.className = "modulo-item";
+            liProj.id = "menu-projetos";
+
+            const btnProj = document.createElement("button");
+            btnProj.className = "modulo-toggle";
+            btnProj.style.color = "var(--primary-color)";
+            btnProj.innerHTML = `<span>📁 Projetos</span><span class="seta-modulo">→</span>`;
+            btnProj.onclick = (e) => {
+                e.preventDefault();
+                abrirProjetos();
+                fecharSidebarMobile();
+            };
+
+            liProj.appendChild(btnProj);
+            menuList.appendChild(liProj);
+
+            // 3. RENDERIZAR OS MÓDULOS OFICIAIS DA GRADE CURRICULAR LOGO ABAIXO
             if (typeof gradeCurricular !== 'undefined') {
                 gradeCurricular.forEach(modulo => {
                     const liModulo = document.createElement("li");
@@ -917,6 +1007,46 @@
             document.getElementById("construcaoView").style.display = "none";
             document.getElementById("aulaFrame").style.display = "none";
             document.getElementById("youtubeIframe").src = "";
+            document.getElementById("rastroProjetos").classList.remove("ativo");
+            document.getElementById("menu-projetos")?.classList.remove("ativo");
+        }
+
+        // Abre o catálogo de projetos no frame do painel. O rastro fica fora do
+        // iframe de propósito: é ele que garante a volta, sem depender do
+        // histórico do navegador, que a navegação interna do frame polui.
+        function abrirProjetos() {
+            esconderTodasAsTelas();
+            const frame = document.getElementById("aulaFrame");
+            frame.style.display = "block";
+            frame.src = "projetos/index.html";
+            document.getElementById("rastroProjetos").classList.add("ativo");
+            document.getElementById("rastroSep").hidden = true;
+            document.getElementById("rastroAtual").textContent = "";
+            document.getElementById("menu-projetos")?.classList.add("ativo");
+            document.querySelectorAll(".aulas-sublist a").forEach((i) => i.classList.remove("ativo"));
+            marcarNoHistorico("projetos");
+        }
+
+        // O catálogo roda dentro do frame e pede ao painel para abrir o projeto.
+        // Quem troca de página é o painel, então a pilha de iframes não cresce.
+        function abrirProjetoDoCatalogo(url, titulo) {
+            const frame = document.getElementById("aulaFrame");
+            frame.style.display = "block";
+            frame.src = `projetos/${url.replace(/^\.\//, "")}`;
+            document.getElementById("rastroProjetos").classList.add("ativo");
+            document.getElementById("rastroSep").hidden = false;
+            document.getElementById("rastroAtual").textContent = titulo;
+            document.getElementById("menu-projetos")?.classList.add("ativo");
+        }
+
+        // Escuta o catálogo. Só aceita mensagem da própria origem.
+        function ligarPonteComOCatalogo() {
+            window.addEventListener("message", (evento) => {
+                if (evento.origin !== window.location.origin) return;
+                const dado = evento.data;
+                if (!dado || dado.tipo !== "abrir-projeto") return;
+                abrirProjetoDoCatalogo(String(dado.url || ""), String(dado.titulo || ""));
+            });
         }
 
         function voltarHome(e) {

@@ -1,454 +1,339 @@
-/* style.css — estilos do Hub de Projetos.
-   Extraido do <style> embutido no index.html em set/2026. */
+/* style.css — catálogo de projetos práticos da ByteClass.
+   Roda dentro do painel Aula de Programação e herda os tokens dele:
+   verde neon sobre o cinza-azulado do GitHub dark. Uma camada de tokens
+   em :root e nada de cor escrita fora dela.
+   O cabeçalho e o rodapé antigos saíram: a marca e a navegação já vivem
+   no painel que embute esta página. */
 
-/* ==========================================================================
-       PROJECT: Nexus Hub | LearnTECH (Pai de Todos)
-       DESIGN: Modern Bento Grid + Extreme Responsiveness
-       AUTHOR: Douglas A B Novato
-       ========================================================================== */
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+:root {
+  --primary: #00ff66;
+  --primary-dark: #00cc52;
+  --primary-suave: rgba(0, 255, 102, 0.12);
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #161b22;
+  --card-hover: #1c2330;
+  --sidebar: #010409;
+  --text-main: #ffffff;
+  --text-dim: #8b949e;
+  --border: #30363d;
+  --border-forte: rgba(0, 255, 102, 0.45);
+  --aviso: #f0883e;
+  --transicao: 0.22s ease;
+  --raio: 14px;
+}
 
-  :root {
-    --primary: #ff5722;
-    --primary-dark: #d84315;
-    --bg: #080808;
-    --surface: #121212;
-    --card: #1c1c1c;
-    --text-main: #f0f0f0;
-    --text-dim: #a0a0a0;
-    --border-glass: rgba(255, 255, 255, 0.05);
-    --shadow-neon: 0 0 20px rgba(255, 87, 34, 0.12);
-    --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --header-height: 70px;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Inter", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
 
-  body {
-    background-color: var(--bg);
-    color: var(--text-main);
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
+[hidden] {
+  display: none !important;
+}
 
-  /* Scrollbar Customizada */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--bg);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-glass);
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
-  }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-  /* Header Flutuante Senior (Glassmorphism + Neon Base) */
-  .app-header {
-    background: rgba(13, 13, 13, 0.85); /* Profundidade escura */
-    backdrop-filter: blur(15px); /* Efeito de vidro */
-    padding: 0 2rem; /* Alinhamento lateral padrão */
-    border-bottom: 1px solid var(--border-glass);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: var(--header-height); /* Defina a altura no :root, ex: 70px */
-    z-index: 100;
-    display: flex;
-    align-items: center; /* Centraliza tudo verticalmente */
-  }
-  /* Container da Brand: Alinhamento da Logo com Texto */
-  .brand {
-    display: flex;
-    align-items: center; /* Alinha logo e texto verticalmente */
-    gap: 1rem; /* Espaço estratégico entre logo e texto */
-  }
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
 
-  /* Estilização da Logo Placeholder (CSS-Core) */
-  .header-logo {
-    height: 40px; /* Altura ideal para o menu flutuante */
-    width: auto; /* Mantém a proporção */
-    display: block;
-  }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
 
-  /* Texto do Header (Preservado) */
-  .brand h1 {
-    font-size: 1.3rem; /* Tamanho Sênior, legível mas sutil */
-    font-weight: 800;
-    letter-spacing: -1px;
-  }
-  .brand span {
-    color: var(--primary); /* Laranja vibrante */
-    font-weight: 800;
-  } /* RESPONSIVIDADE (Conforme análise anterior) */
-  @media (max-width: 768px) {
-    .app-header {
-      padding: 0 1rem;
-    } /* Menos respiro lateral */
-    .header-logo {
-      height: 32px;
-    } /* Logo menor no mobile */
-    .brand h1 {
-      font-size: 1.1rem;
-    } /* Texto menor no mobile */
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
 
-  /* Conteúdo Principal */
-  .hub-content {
-    padding: calc(var(--header-height) + 2.5rem) 2rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+/* --- Barra de controle: contador, busca e filtros --- */
+.hub-content {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 26px 24px 48px;
+}
 
-  /* Contador Dinâmico */
-  #nexus-counter-container {
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
-  }
-  #project-count-text {
-    font-size: 1rem;
-    color: var(--text-dim);
-    font-weight: 500;
-  }
+.controle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
 
-  /* Grid Bento Responsiva */
-  .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 280px;
-    gap: 1.5rem;
-  }
+.controle__titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  border-left: 3px solid var(--primary);
+  padding-left: 11px;
+  line-height: 1.3;
+}
 
-  /* Card Base */
-  .project-card {
-    background: var(--card);
-    border: 1px solid var(--border-glass);
-    border-radius: 24px;
-    padding: 2rem;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
+.controle__titulo strong {
+  color: var(--primary);
+}
 
-  .project-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-neon);
-  }
+.busca {
+  position: relative;
+  flex: 1 1 260px;
+  max-width: 360px;
+}
 
-  /* Lógica de Cards Destaque (Featured) */
-  .project-card.featured {
-    grid-column: span 2;
-    grid-row: span 2;
-    background-size: cover;
-    background-position: center;
-  }
+.busca input {
+  width: 100%;
+  padding: 10px 38px 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: border-color var(--transicao), background-color var(--transicao);
+}
 
-  .project-card.featured::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      to bottom,
-      rgba(8, 8, 8, 0.1) 0%,
-      rgba(8, 8, 8, 0.95) 90%
-    );
-    z-index: 1;
-  }
+.busca input::placeholder {
+  color: var(--text-dim);
+}
 
-  .project-card.featured .card-content,
-  .project-card.featured .card-icon,
-  .project-card.featured .badge {
-    z-index: 2;
-  }
+.busca input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--bg);
+}
 
-  /* Elementos Internos do Card */
-  .card-icon {
-    font-size: 2.2rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-  }
-  .project-card h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .project-card p {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    max-width: 90%;
-  }
-  .badge {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-dim);
-    padding: 5px 14px;
-    border-radius: 30px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-  }
+.busca__atalho {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  padding: 1px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 700;
+  pointer-events: none;
+}
 
-  /* Viewer Imersivo */
-  #project-viewer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg);
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-  }
+.busca input:focus ~ .busca__atalho {
+  opacity: 0;
+}
 
-  .viewer-header {
-    height: 70px;
-    padding: 0 2rem;
-    background: var(--surface);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-glass);
-  }
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 24px;
+}
 
-  /* Loader de Carregamento (UX) */
-  #viewer-progress {
-    position: absolute;
-    top: 69px;
-    left: 0;
-    height: 2px;
-    background: var(--primary);
-    width: 0%;
-    transition: 0.3s;
-    z-index: 1001;
-  }
+.filtro {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--transicao), border-color var(--transicao), background-color var(--transicao);
+}
 
-  .back-btn {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.filtro:hover {
+  color: var(--text-main);
+  border-color: var(--primary-dark);
+}
 
-  iframe {
-    flex-grow: 1;
-    border: none;
-    width: 100%;
-    background: #fff;
-  }
+.filtro.is-ativo {
+  background-color: var(--primary-suave);
+  border-color: var(--primary);
+  color: var(--primary);
+}
 
-  /* Custom Footer de 3 Colunas */
-  .app-footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border-glass);
-    padding: 4rem 2rem 2rem;
-    margin-top: auto;
-  }
+.filtro__n {
+  font-size: 0.75rem;
+  font-weight: 800;
+  opacity: 0.65;
+}
 
-  .footer-grid {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 4rem;
-  }
+/* --- Grade e cards --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 14px;
+}
 
-  /* Coluna 1: Encantamento */
-  .footer-brand img {
-    width: 120px;
-    margin-bottom: 1.5rem;
-    filter: grayscale(1);
-    transition: 0.5s;
-  }
-  .footer-brand:hover img {
-    filter: grayscale(0);
-  }
-
-  .power-phrase {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--text-dim);
-    line-height: 1.6;
-    border-left: 3px solid var(--primary);
-    padding-left: 1rem;
-  }
-
-  /* Colunas 2 e 3: Links */
-  .footer-column h4 {
-    color: var(--text-main);
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    margin-bottom: 1.5rem;
-  }
-
-  .footer-links {
-    list-style: none;
-  }
-  .footer-links li {
-    margin-bottom: 0.8rem;
-  }
-  .footer-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: 0.3s;
-  }
-  .footer-links a:hover {
-    color: var(--primary);
-    padding-left: 5px;
-  }
-
-  .social-icons {
-    display: flex;
-    gap: 1.5rem;
-  }
-  .social-icons a {
-    font-size: 1.5rem;
-    color: var(--text-dim);
-    transition: 0.3s;
-  }
-  .social-icons a:hover {
-    color: var(--primary);
-    transform: translateY(-5px);
-  }
-
-  /* Rodapé de Copyright */
-  .footer-bottom {
-    max-width: 1400px;
-    margin: 3rem auto 0;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-glass);
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-  }
-
-  /* Responsividade do Footer */
-  @media (max-width: 992px) {
-    .footer-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-    .footer-brand {
-      grid-column: span 2;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .footer-grid {
-      grid-template-columns: 1fr;
-    }
-    .footer-brand {
-      grid-column: span 1;
-    }
-  }
-
-  /* ==========================================================================
-       RESPONSIVIDADE (MOBILE-FIRST STRATEGY)
-       ========================================================================== */
-  @media (max-width: 1024px) {
-    .bento-grid {
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
-  }
-
-  @media (max-width: 768px) {
-    .app-header {
-      padding: 0 1.2rem;
-    }
-    .hub-content {
-      padding: calc(var(--header-height) + 1.5rem) 1.2rem 3rem;
-    }
-    .project-card.featured {
-      grid-column: span 1;
-      grid-row: span 1;
-      height: 320px;
-    }
-    .bento-grid {
-      grid-template-columns: 1fr;
-      grid-auto-rows: auto;
-      min-height: 250px;
-    }
-    .project-card {
-      padding: 1.5rem;
-      height: 280px;
-    }
-    .card-icon {
-      font-size: 1.8rem;
-      top: 1.5rem;
-      left: 1.5rem;
-    }
-    .badge {
-      top: 1.5rem;
-      right: 1.5rem;
-    }
-  }
-
-  /* Ajuste para telas muito pequenas */
-  @media (max-width: 480px) {
-    .brand h1 {
-      font-size: 1.1rem;
-    }
-    .back-btn span {
-      display: none;
-    } /* Esconde texto do botão no mobile ultra-small */
-  }
-
-/* Fim de style.css */
-
-/* Acrescentado em set/2026: o card virou <button> (delegação de evento no
-   lugar de onclick inline) e o contador ganhou classe própria. */
-
-button.project-card {
-  font: inherit;
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-height: 152px;
+  padding: 16px 18px 18px;
+  border-radius: var(--raio);
+  border: 1px solid var(--border);
+  background-color: var(--card);
   color: inherit;
   text-align: left;
-  border: none;
+  font: inherit;
   cursor: pointer;
-  width: 100%;
-  appearance: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transicao), border-color var(--transicao), background-color var(--transicao);
 }
 
-button.project-card:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 4px;
+.project-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-forte);
+  background-color: var(--card-hover);
 }
 
-.contador-numero {
+.project-card__topo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.project-card__icone {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background-color: var(--primary-suave);
   color: var(--primary);
-  font-weight: 800;
 }
 
-.grade-erro {
+.project-card__icone svg {
+  width: 17px;
+  height: 17px;
+}
+
+.badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-main);
+  transition: color var(--transicao);
+}
+
+.project-card:hover h3 {
+  color: var(--primary);
+}
+
+.project-card p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Projeto em destaque: a imagem entra como fundo, sem quebrar a leitura. */
+.project-card.featured {
+  min-height: 186px;
+  background-size: cover;
+  background-position: center;
+  border-color: var(--border-forte);
+}
+
+.project-card.featured::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 17, 23, 0.72) 0%, rgba(13, 17, 23, 0.94) 72%);
+}
+
+.project-card.featured > * {
+  position: relative;
+  z-index: 1;
+}
+
+.grade-erro,
+.grade-vazia {
   grid-column: 1 / -1;
+  padding: 2.6rem 1rem;
   text-align: center;
-  color: var(--primary);
-  padding: 3rem 1rem;
+  color: var(--text-dim);
 }
+
+.grade-vazia strong {
+  color: var(--text-main);
+}
+
+/* --- Foco visível por teclado --- */
+.project-card:focus-visible,
+.filtro:focus-visible,
+.busca input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* --- Responsivo --- */
+@media (max-width: 768px) {
+  .hub-content {
+    padding: 18px 14px 36px;
+  }
+
+  .controle {
+    gap: 10px;
+  }
+
+  .busca {
+    max-width: none;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+
+  .project-card {
+    min-height: 0;
+  }
+
+  .busca__atalho {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover {
+    transform: none;
+  }
+}
+
+/* Fim de style.css */
