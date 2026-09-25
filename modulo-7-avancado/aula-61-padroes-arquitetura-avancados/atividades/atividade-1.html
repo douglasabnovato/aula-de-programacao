@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monolito ou Microsserviços — Ficha de Decisão | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Monolito ou Microsserviços — Ficha de Decisão</h1>
+        <p class="subtitulo">Aula 61 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O prêmio do microsserviço</h2>
+        <div class="painel"><p>Microsserviços cobram um <strong>custo fixo antes de entregar qualquer
+        benefício</strong>: esteira de CI por serviço, observabilidade distribuída, contrato entre
+        serviços, plantão, rastreamento de requisição entre processos. Equipe pequena paga o custo
+        e não colhe o benefício — porque o benefício é organizacional, não técnico.</p></div>
+
+        <h2>Os sinais de cada lado</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Monolito modular serve quando</strong></td>
+                <td>a equipe cabe em duas pizzas; o deploy é semanal ou menos frequente;
+                os domínios ainda estão sendo descobertos; não existe time de plataforma.</td></tr>
+            <tr><td style="padding:8px 0;vertical-align:top"><strong>Microsserviço começa a compensar quando</strong></td>
+                <td>times diferentes travam uns aos outros no mesmo deploy; um domínio precisa
+                escalar de forma muito diferente dos outros; há autonomia organizacional real.</td></tr>
+        </table>
+
+        <h2>Ficha</h2>
+        <pre>Sistema: ___
+
+1. Quantas pessoas trabalham nele?              ___
+2. Quantos times independentes?                 ___
+3. Com que frequência publica hoje?             ___
+4. Quantos domínios de negócio distintos?       ___
+5. Algum domínio escala de forma muito diferente? ___
+6. Existe CI automatizada hoje?                 ( ) sim ( ) não
+7. Existe monitoramento com alerta?             ( ) sim ( ) não
+8. Existe plantão definido?                     ( ) sim ( ) não
+
+Se 6, 7 ou 8 for "não", microsserviço vai custar mais do que entrega.</pre>
+
+        <h2>O caminho do meio, quase sempre certo</h2>
+        <pre>src/
+├── modulos/
+│   ├── pedidos/       ← domínio isolado, com sua própria camada de dados
+│   ├── estoque/
+│   └── pagamento/
+└── compartilhado/</pre>
+        <p>Regra: um módulo <strong>nunca</strong> importa arquivo interno de outro — só a interface pública.
+        Isso dá a fronteira do microsserviço sem pagar o preço da rede. E se um dia a fronteira precisar
+        virar serviço, o corte já está feito.</p>
+
+        <h2>Lei de Conway, na prática</h2>
+        <p>Se três times precisam se reunir para publicar uma alteração, a arquitetura tem uma fronteira
+        no lugar errado — ou os times têm. Os dois se corrigem juntos, nunca só um.</p>
+    </div>
+</body>
+
+</html>

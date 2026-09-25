@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 21 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno do primeiro servidor HTTP escrito à mão até uma API organizada em Express, entendendo o que acontece entre o clique do usuário e a resposta que volta do servidor.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 21: Introdução ao Node.js e Arquitetura de Servidores</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: O QUE É NODE.JS E O MODELO DE EXECUÇÃO -->
+            <div class="card" id="card-1">
+                <h2>🟢 1. O que é Node.js e o Modelo de Execução</h2>
+                <p>Antes de escrever um servidor, entender por que o Node existe: JavaScript fora do navegador, um processo só, e um laço de eventos que não trava esperando o disco ou a rede.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" target="_blank" rel="noopener noreferrer">📄 Introdução ao Node.js — documentação oficial</a>
+                        <span class="link-desc">O que o Node é, de onde vem e por que o modelo assíncrono define tudo que se escreve nele.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/http.html" target="_blank" rel="noopener noreferrer">📄 Módulo HTTP — API oficial do Node</a>
+                        <span class="link-desc">O módulo nativo que cria servidores: é ele que o Express embrulha por baixo do capô.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/modules.html" target="_blank" rel="noopener noreferrer">📄 Sistema de Módulos do Node</a>
+                        <span class="link-desc">Como o require e o import resolvem arquivos, e por que a estrutura de pastas importa.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Methods" target="_blank" rel="noopener noreferrer">📄 Métodos HTTP — MDN</a>
+                        <span class="link-desc">GET, POST, PUT, PATCH e DELETE: o vocabulário que o cliente usa para pedir coisas ao servidor.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Seu Primeiro Servidor HTTP Sem Framework</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> confirme a instalação com <code>node --version</code> e crie a pasta <code>meu-servidor</code> na sua máquina.</li>
+                            <li><strong>Iniciando o Projeto:</strong> rode <code>npm init -y</code> e abra o <code>package.json</code> gerado para entender cada campo.</li>
+                            <li><strong>Arquivo de Entrada:</strong> crie <code>server.js</code> e importe o módulo nativo com <code>const http = require('http')</code>.</li>
+                            <li><strong>Criando o Servidor:</strong> use <code>http.createServer((req, res) =&gt; {})</code> e guarde o retorno numa constante.</li>
+                            <li><strong>A Primeira Resposta:</strong> dentro do callback, escreva o cabeçalho com <code>res.writeHead(200)</code> e finalize com <code>res.end('Olá')</code>.</li>
+                            <li><strong>Escutando a Porta:</strong> chame <code>servidor.listen(3000)</code> e abra <code>http://localhost:3000</code> no navegador.</li>
+                            <li><strong>Lendo a Requisição:</strong> imprima <code>req.url</code> e <code>req.method</code> no console e observe o que chega a cada acesso.</li>
+                            <li><strong>Roteamento Manual:</strong> escreva um <code>if</code> que responda algo diferente para <code>/</code> e para <code>/sobre</code>.</li>
+                            <li><strong>Respondendo JSON:</strong> troque o cabeçalho para <code>application/json</code> e devolva um objeto com <code>JSON.stringify</code>.</li>
+                            <li><strong>Validação e Testes:</strong> teste as duas rotas no navegador, confirme o status 200 na aba Rede e registre o que aprendeu no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: EXPRESS, ROTAS E O CICLO REQUISIÇÃO-RESPOSTA -->
+            <div class="card" id="card-2">
+                <h2>🚏 2. Express, Rotas e o Ciclo Requisição-Resposta</h2>
+                <p>O servidor à mão mostra o mecanismo; o Express mostra por que ninguém escreve assim em produção. Rotas, parâmetros e o objeto de resposta como contrato com o cliente.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/pt-br/starter/hello-world.html" target="_blank" rel="noopener noreferrer">📄 Express — Hello World oficial</a>
+                        <span class="link-desc">O menor servidor possível em Express, com a documentação em português.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/pt-br/guide/routing.html" target="_blank" rel="noopener noreferrer">📄 Guia de Roteamento do Express</a>
+                        <span class="link-desc">Como declarar rotas, capturar parâmetros e encadear manipuladores.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">📄 Códigos de Status HTTP — MDN</a>
+                        <span class="link-desc">A lista completa com o significado de cada faixa: o que você devolve comunica intenção.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Messages" target="_blank" rel="noopener noreferrer">📄 Anatomia de uma Mensagem HTTP — MDN</a>
+                        <span class="link-desc">Linha de início, cabeçalhos e corpo: o que exatamente viaja entre cliente e servidor.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: API de Tarefas com Express e Rotas REST</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> na pasta do projeto, instale o framework com <code>npm install express</code>.</li>
+                            <li><strong>Estrutura Base:</strong> crie <code>app.js</code>, importe o Express e inicialize com <code>const app = express()</code>.</li>
+                            <li><strong>Leitura de JSON:</strong> registre <code>app.use(express.json())</code> para que o servidor entenda corpo em JSON.</li>
+                            <li><strong>Estrutura de Dados:</strong> declare um array <code>tarefas</code> em memória com dois objetos de exemplo.</li>
+                            <li><strong>Rota de Listagem:</strong> crie <code>GET /tarefas</code> devolvendo o array com <code>res.json()</code>.</li>
+                            <li><strong>Rota de Detalhe:</strong> crie <code>GET /tarefas/:id</code> usando <code>req.params.id</code> para encontrar um item.</li>
+                            <li><strong>Tratando o Não Encontrado:</strong> quando o id não existir, responda <code>404</code> com uma mensagem clara.</li>
+                            <li><strong>Rota de Criação:</strong> crie <code>POST /tarefas</code> lendo <code>req.body</code> e respondendo <code>201</code>.</li>
+                            <li><strong>Validação de Entrada:</strong> recuse corpo sem título com status <code>400</code> e uma mensagem explicando o motivo.</li>
+                            <li><strong>Validação e Testes:</strong> teste as quatro rotas com o Thunder Client ou Insomnia e confira cada status devolvido.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ORGANIZAÇÃO DE PROJETO E VARIÁVEIS DE AMBIENTE -->
+            <div class="card" id="card-3">
+                <h2>🧱 3. Organização de Projeto e Variáveis de Ambiente</h2>
+                <p>Um arquivo de 300 linhas funciona até a segunda semana. Aqui o projeto ganha pastas com responsabilidade definida, configuração fora do código e tratamento de erro num lugar só.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/en/guide/using-middleware.html" target="_blank" rel="noopener noreferrer">📄 Middlewares no Express</a>
+                        <span class="link-desc">A peça que roda entre a requisição e a resposta: log, autenticação e validação vivem aqui.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/en/guide/error-handling.html" target="_blank" rel="noopener noreferrer">📄 Tratamento de Erros no Express</a>
+                        <span class="link-desc">Como capturar falhas num lugar só em vez de repetir try/catch em toda rota.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/process.html" target="_blank" rel="noopener noreferrer">📄 process.env — API oficial do Node</a>
+                        <span class="link-desc">De onde vêm as variáveis de ambiente e como o processo as enxerga.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/config" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App — Configuração</a>
+                        <span class="link-desc">O princípio de separar configuração de código, escrito de forma curta e direta.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Refatorando a API em Camadas com Configuração Externa</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install dotenv</code> e crie o arquivo <code>.env</code> na raiz.</li>
+                            <li><strong>Protegendo o Segredo:</strong> crie um <code>.gitignore</code> e adicione <code>.env</code> e <code>node_modules</code> nele.</li>
+                            <li><strong>Lendo a Configuração:</strong> carregue o dotenv no topo do <code>app.js</code> e leia a porta de <code>process.env.PORT</code>.</li>
+                            <li><strong>Criando as Pastas:</strong> monte <code>src/routes</code>, <code>src/controllers</code> e <code>src/services</code>.</li>
+                            <li><strong>Extraindo as Rotas:</strong> mova as declarações de rota para <code>src/routes/tarefas.routes.js</code> usando <code>express.Router()</code>.</li>
+                            <li><strong>Extraindo o Controlador:</strong> mova a lógica de cada rota para <code>src/controllers/tarefas.controller.js</code>.</li>
+                            <li><strong>Extraindo o Serviço:</strong> deixe no serviço tudo que manipula o array, sem conhecer <code>req</code> nem <code>res</code>.</li>
+                            <li><strong>Middleware de Log:</strong> escreva um middleware que imprime método, rota e horário de cada requisição.</li>
+                            <li><strong>Erro Centralizado:</strong> registre um middleware de quatro argumentos que devolve <code>500</code> com mensagem padronizada.</li>
+                            <li><strong>Validação e Testes:</strong> repita os testes da prática anterior e confirme que o comportamento não mudou — só a organização.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 61 | ByteClass</title>
+    <meta name="description" content="Esta ementa compara os principais estilos de arquitetura pelo que cada um cobra em troca do que entrega, e ensina a escolher pelo contexto em vez de pela tendência.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 61: Padrões de Arquitetura de Software Avançados</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MONOLITO, MODULAR E MICROSSERVIÇOS -->
+            <div class="card" id="card-1">
+                <h2>🏛️ 1. Monolito, Modular e Microsserviços</h2>
+                <p>Microsserviço não é evolução de monolito — é uma troca com preço alto. Entender o preço antes de pagar evita a reescrita que muita equipe faz duas vezes.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="noopener noreferrer">📄 Microservices — Martin Fowler</a>
+                        <span class="link-desc">O artigo de referência que define o estilo e lista suas características.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/MonolithFirst.html" target="_blank" rel="noopener noreferrer">📄 Monolith First — Martin Fowler</a>
+                        <span class="link-desc">O argumento de começar monolítico e extrair serviços só quando a fronteira ficar clara.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/MicroservicePremium.html" target="_blank" rel="noopener noreferrer">📄 Microservice Premium</a>
+                        <span class="link-desc">O custo fixo que microsserviços cobram antes de entregar qualquer benefício.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/ConwaysLaw.html" target="_blank" rel="noopener noreferrer">📄 Lei de Conway</a>
+                        <span class="link-desc">Por que o desenho do sistema acaba parecendo o organograma da empresa.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Avaliando a Arquitetura Certa para um Caso</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> descreva em cinco linhas um sistema real — o seu projeto ou um que você conheça.</li>
+                            <li><strong>Contando a Equipe:</strong> registre quantas pessoas trabalham nele e como estão divididas.</li>
+                            <li><strong>Medindo a Implantação:</strong> anote com que frequência o sistema é publicado hoje.</li>
+                            <li><strong>Mapeando os Domínios:</strong> liste as áreas de negócio distintas que o sistema atende.</li>
+                            <li><strong>Buscando o Acoplamento:</strong> para cada par de domínios, anote se um precisa do outro para funcionar.</li>
+                            <li><strong>Avaliando o Monolito Modular:</strong> escreva o que essa opção resolveria e o que não resolveria.</li>
+                            <li><strong>Avaliando Microsserviços:</strong> liste o que precisaria existir antes — CI, observabilidade, plantão.</li>
+                            <li><strong>Calculando o Prêmio:</strong> estime quantas semanas de trabalho não funcional a migração custaria.</li>
+                            <li><strong>Escolhendo e Registrando:</strong> escreva a decisão no formato de ADR, com o custo aceito.</li>
+                            <li><strong>Validação e Testes:</strong> defenda a escolha para o instrutor usando a contagem de equipe e a frequência de deploy.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: HEXAGONAL, CAMADAS E ORIENTAÇÃO A EVENTOS -->
+            <div class="card" id="card-2">
+                <h2>🔌 2. Hexagonal, Camadas e Orientação a Eventos</h2>
+                <p>Três estilos que resolvem problemas diferentes. Hexagonal isola o domínio; camadas organizam a dependência; eventos desacoplam o tempo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://alistair.cockburn.us/hexagonal-architecture/" target="_blank" rel="noopener noreferrer">📄 Arquitetura Hexagonal — Alistair Cockburn</a>
+                        <span class="link-desc">O texto original de quem criou o padrão de portas e adaptadores.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/articles/201701-event-driven.html" target="_blank" rel="noopener noreferrer">📄 What do you mean by Event-Driven? — Fowler</a>
+                        <span class="link-desc">Os quatro significados diferentes que as pessoas dão ao mesmo termo.</span>
+                    </li>
+                    <li>
+                        <a href="https://microservices.io/patterns/index.html" target="_blank" rel="noopener noreferrer">📄 Catálogo de Padrões — microservices.io</a>
+                        <span class="link-desc">Padrões de decomposição, dados, comunicação e observabilidade, cada um com trade-offs.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/CQRS.html" target="_blank" rel="noopener noreferrer">📄 CQRS — Martin Fowler</a>
+                        <span class="link-desc">Separar leitura de escrita: quando compensa e quando é complexidade gratuita.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Convertendo um Módulo para Portas e Adaptadores</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um módulo da API dos módulos anteriores.</li>
+                            <li><strong>Identificando o Domínio:</strong> marque o que é regra de negócio e sobreviveria à troca de framework.</li>
+                            <li><strong>Identificando as Bordas:</strong> liste tudo que fala com o mundo externo — HTTP, banco, e-mail, arquivo.</li>
+                            <li><strong>Desenhando o Hexágono:</strong> faça um diagrama com o domínio no centro e cada borda como porta.</li>
+                            <li><strong>Nomeando as Portas:</strong> escreva o contrato de cada porta com os métodos que o domínio precisa.</li>
+                            <li><strong>Implementando o Adaptador:</strong> crie a implementação concreta de uma porta de saída.</li>
+                            <li><strong>Invertendo a Dependência:</strong> garanta que o domínio importa a porta, e o adaptador importa o domínio.</li>
+                            <li><strong>Criando o Adaptador de Teste:</strong> implemente a mesma porta com um dublê em memória.</li>
+                            <li><strong>Testando sem Infra:</strong> escreva um teste do domínio usando o dublê, sem subir banco.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>grep</code> no domínio procurando import de framework — deve voltar vazio.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ATRIBUTOS DE QUALIDADE E O ADR -->
+            <div class="card" id="card-3">
+                <h2>⚖️ 3. Atributos de Qualidade e o ADR</h2>
+                <p>Toda decisão de arquitetura favorece um atributo e prejudica outro. O bloco fecha com o método de tornar essa troca explícita — e registrada.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://adr.github.io/" target="_blank" rel="noopener noreferrer">📄 Architecture Decision Records — site de referência</a>
+                        <span class="link-desc">O formato, exemplos e ferramentas para registrar decisão de arquitetura.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener noreferrer">📄 Arquitetura de Software — Martin Fowler</a>
+                        <span class="link-desc">A página-índice com os artigos fundamentais sobre o tema.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App — em português</a>
+                        <span class="link-desc">Doze princípios operacionais que valem para qualquer estilo arquitetural.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/service-level-objectives/" target="_blank" rel="noopener noreferrer">📄 Google SRE — Objetivos de Nível de Serviço</a>
+                        <span class="link-desc">Como transformar atributo de qualidade em número acordado e medido.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Escrevendo Três ADRs de um Projeto Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>docs/adr/</code> no seu projeto.</li>
+                            <li><strong>Listando os Atributos:</strong> escreva os cinco atributos de qualidade e ordene por importância para o projeto.</li>
+                            <li><strong>Justificando a Ordem:</strong> para os dois primeiros, escreva por que importam mais neste caso.</li>
+                            <li><strong>Escolhendo a Primeira Decisão:</strong> pegue uma decisão de arquitetura já tomada no projeto.</li>
+                            <li><strong>Reconstruindo o Contexto:</strong> escreva o que forçou aquela escolha na época.</li>
+                            <li><strong>Listando as Alternativas:</strong> escreva as que foram descartadas e o motivo de cada uma.</li>
+                            <li><strong>Declarando o Custo:</strong> escreva o que ficou pior por causa da decisão — sempre há algo.</li>
+                            <li><strong>Repetindo Duas Vezes:</strong> escreva mais dois ADRs, um deles de uma decisão que se mostrou errada.</li>
+                            <li><strong>Registrando a Revisão:</strong> para a decisão errada, escreva um ADR novo que a substitui, sem apagar o antigo.</li>
+                            <li><strong>Validação e Testes:</strong> peça a alguém que leia os três e diga se entenderia o raciocínio sem sua explicação.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

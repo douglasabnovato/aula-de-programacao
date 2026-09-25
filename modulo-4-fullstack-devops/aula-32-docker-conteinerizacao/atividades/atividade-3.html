@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volumes e Variáveis em Execução | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Volumes e Variáveis em Execução</h1>
+        <p class="subtitulo">Aula 32 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>A perda que todo mundo sofre uma vez</h2>
+        <pre>docker run -d -p 3000:3000 --name api minha-api
+# criar tarefas pela API...
+docker stop api &amp;&amp; docker rm api
+docker run -d -p 3000:3000 --name api minha-api
+# as tarefas sumiram</pre>
+        <p>O sistema de arquivos do contêiner morre com ele. Isso é projeto, não defeito.</p>
+
+        <h2>Com volume nomeado</h2>
+        <pre>docker volume create dados-api
+
+docker run -d \
+  --name api \
+  -p 3000:3000 \
+  -v dados-api:/app/dados \
+  --env-file .env \
+  minha-api</pre>
+        <p>Agora o ciclo parar / remover / subir preserva o que estiver em <code>/app/dados</code>.</p>
+
+        <h2>Bind mount, para desenvolver</h2>
+        <pre>docker run -it --rm \
+  -p 3000:3000 \
+  -v "$(pwd)":/app \
+  -v /app/node_modules \
+  minha-api npm run dev</pre>
+        <p>O segundo <code>-v</code> protege o <code>node_modules</code> da imagem de ser encoberto
+        pelo da sua máquina — que pode ter sido instalado em outro sistema operacional.</p>
+
+        <h2>Diagnóstico</h2>
+        <pre>docker logs -f api           # acompanhar a saída
+docker exec -it api sh       # entrar no contêiner em execução
+docker inspect api           # configuração completa em JSON
+docker volume inspect dados-api</pre>
+
+        <h2>A pegadinha do localhost</h2>
+        <div class="painel"><p>Dentro do contêiner, <code>localhost</code> é o próprio contêiner —
+        não a sua máquina nem outro contêiner. Um serviço falar com o outro por
+        <code>localhost</code> é o erro número um de quem está começando. A solução vem na
+        aula 34, com Docker Compose e rede nomeada.</p></div>
+    </div>
+</body>
+
+</html>

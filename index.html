@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula de Programação | para o Aluno</title>
+    <title>Aula de Programação | da ByteClass para o Aluno</title>
 
     <meta name="description"
-        content="Painel de aulas: grade curricular em 7 módulos, com vídeo de apoio, prática guiada passo a passo e validação com o instrutor.">
+        content="Painel de aulas da ByteClass: grade curricular em 7 módulos, com vídeo de apoio, prática guiada passo a passo e validação com o instrutor.">
     <meta name="theme-color" content="#0D1117">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Aula de Programação | para o Aluno">
+    <meta property="og:title" content="Aula de Programação | ByteClass">
     <meta property="og:description"
-        content="A grade curricular completa com prática guiada e mentoria direta.">
+        content="A grade curricular completa da ByteClass, com prática guiada e mentoria direta.">
     <meta property="og:image" content="assets/byteclass-dev-3.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
@@ -132,6 +132,7 @@
         /* SIDEBAR LATERAL ESQUERDA */
         aside {
             width: 300px;
+            flex: none;
             background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -140,6 +141,137 @@
             transition: transform var(--transition-speed) ease;
             z-index: 1002;
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        aside::-webkit-scrollbar,
+        main::-webkit-scrollbar,
+        .aulas-sublist::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        aside::-webkit-scrollbar-track,
+        main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        aside::-webkit-scrollbar-thumb,
+        main::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 999px;
+        }
+
+        aside::-webkit-scrollbar-thumb:hover,
+        main::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+
+        main {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        .sidebar-busca {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            padding: 12px 15px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-busca input {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-busca input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .sidebar-busca input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: rgba(0, 255, 102, 0.06);
+        }
+
+        .sidebar-busca input:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 1px;
+        }
+
+        .sidebar-vazio {
+            display: none;
+            padding: 18px 16px;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            text-align: center;
+        }
+
+        .modulo-toggle__rotulo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .modulo-toggle__nome {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modulo-medidor {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .modulo-medidor__barra {
+            flex: 1;
+            height: 3px;
+            border-radius: 999px;
+            background-color: var(--border-color);
+            overflow: hidden;
+        }
+
+        .modulo-medidor__barra span {
+            display: block;
+            height: 100%;
+            border-radius: 999px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .modulo-item.vazio .modulo-medidor {
+            color: var(--warning-color);
+        }
+
+        .modulo-item.vazio .modulo-toggle__nome {
+            opacity: 0.72;
+        }
+
+        .seta-ir {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: transform var(--transition-speed) ease, color var(--transition-speed);
+        }
+
+        .modulo-item.ativo .seta-ir {
+            transform: translateX(3px);
+            color: var(--primary-color);
         }
 
         .sidebar-date {
@@ -168,7 +300,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all var(--transition-speed);
+            transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
         }
 
         .home-btn:hover {
@@ -225,8 +357,9 @@
         }
 
         .modulo-item.ativo .aulas-sublist {
-            max-height: 1200px;
+            max-height: 620px;
             padding: 6px 0 10px 0;
+            overflow-y: auto;
         }
 
         .modulo-item.ativo .seta-modulo {
@@ -672,18 +805,23 @@
             <div class="sidebar-date" id="dataAtualSidebar"></div>
         </div>
 
+        <div class="sidebar-busca">
+            <input type="search" id="buscaAula" placeholder="Buscar aula…" autocomplete="off"
+                aria-label="Buscar aula no menu" oninput="filtrarMenu(this.value)">
+        </div>
+
         <a href="#" class="home-btn" onclick="voltarHome(event)">🏠 Início / Home</a>
 
-        <ul class="sidebar-menu" id="menuList">
-            <!-- Renderizado dinamicamente pelo JavaScript (Aula Experimental no Topo) -->
-        </ul>
+        <!-- Renderizado dinamicamente pelo JavaScript (Experimental, Projetos e os módulos) -->
+        <ul class="sidebar-menu" id="menuList"></ul>
+        <p class="sidebar-vazio" id="menuVazio">Nenhuma aula encontrada.</p>
     </aside>
 
     <main><!-- Home / Apresentação -->
         <div id="welcomeView" class="center-screen">
             <div class="content-card">
                 <span class="badge">Ecossistema learnTECH</span>
-                <h1>Bem-vindo à esse Universo</h1>
+                <h1>Bem-vindo à ByteClass</h1>
                 <p>Este projeto de aulas de programação foi desenvolvido para te apresentar um conteúdo altamente
                     organizado e ordenado, construído para te levar ao próximo nível na sua jornada de tecnologia e
                     desenvolvimento de software.</p>
@@ -872,7 +1010,7 @@
             const btnProj = document.createElement("button");
             btnProj.className = "modulo-toggle";
             btnProj.style.color = "var(--primary-color)";
-            btnProj.innerHTML = `<span>📁 Projetos</span><span class="seta-modulo">→</span>`;
+            btnProj.innerHTML = `<span class="modulo-toggle__nome">📁 Projetos</span><span class="seta-ir">→</span>`;
             btnProj.onclick = (e) => {
                 e.preventDefault();
                 abrirProjetos();
@@ -889,9 +1027,24 @@
                     liModulo.className = "modulo-item";
                     liModulo.id = modulo.id;
 
+                    const publicadas = modulo.aulas.filter(a => a.status === "disponivel").length;
+                    const totalAulas = modulo.aulas.length;
+                    const proporcao = totalAulas ? Math.round((publicadas / totalAulas) * 100) : 0;
+                    if (publicadas === 0) liModulo.classList.add("vazio");
+
                     const btnToggle = document.createElement("button");
                     btnToggle.className = "modulo-toggle";
-                    btnToggle.innerHTML = `<span>${modulo.titulo}</span><span class="seta-modulo">▼</span>`;
+                    btnToggle.setAttribute("aria-label",
+                        `${modulo.titulo} — ${publicadas} de ${totalAulas} aulas publicadas`);
+                    btnToggle.innerHTML = `
+                        <span class="modulo-toggle__rotulo">
+                            <span class="modulo-toggle__nome">${modulo.titulo}</span>
+                            <span class="modulo-medidor">
+                                <span class="modulo-medidor__barra"><span style="width:${proporcao}%"></span></span>
+                                ${publicadas}/${totalAulas}
+                            </span>
+                        </span>
+                        <span class="seta-modulo">▼</span>`;
                     btnToggle.onclick = () => toggleModulo(modulo.id);
 
                     const ulAulas = document.createElement("ul");
@@ -1056,6 +1209,47 @@
             document.querySelectorAll('.aulas-sublist a').forEach(item => item.classList.remove('ativo'));
             fecharSidebarMobile();
             if (location.hash) history.replaceState(null, "", location.pathname);
+        }
+
+        // Filtra os links de aula do menu enquanto o aluno digita. Módulo com
+        // resultado abre sozinho; módulo sem resultado some da lista.
+        function filtrarMenu(termo) {
+            const busca = normalizarTexto(termo);
+            const modulos = document.querySelectorAll("#menuList .modulo-item");
+            let encontrados = 0;
+
+            modulos.forEach((modulo) => {
+                const links = modulo.querySelectorAll(".aulas-sublist a");
+                if (links.length === 0) {
+                    const nome = normalizarTexto(modulo.textContent);
+                    const bate = !busca || nome.includes(busca);
+                    modulo.hidden = !bate;
+                    if (bate) encontrados += 1;
+                    return;
+                }
+
+                let batemNoModulo = 0;
+                links.forEach((link) => {
+                    const bate = !busca || normalizarTexto(link.textContent).includes(busca);
+                    link.parentElement.hidden = !bate;
+                    if (bate) batemNoModulo += 1;
+                });
+
+                modulo.hidden = batemNoModulo === 0;
+                if (busca) modulo.classList.toggle("ativo", batemNoModulo > 0);
+                encontrados += batemNoModulo;
+            });
+
+            document.getElementById("menuVazio").style.display = encontrados === 0 ? "block" : "none";
+        }
+
+        // Tira acento e caixa para a busca achar "codigo" quando o titulo diz "Código".
+        function normalizarTexto(texto) {
+            return String(texto ?? "")
+                .normalize("NFD")
+                .replace(/[̀-ͯ]/g, "")
+                .toLowerCase()
+                .trim();
         }
 
         function toggleModulo(idModulo) {

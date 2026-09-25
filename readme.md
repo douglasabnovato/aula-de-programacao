@@ -1,8 +1,8 @@
-# ⚡ Aula de Programação | para o Aluno
+# ⚡ Aula de Programação | da ByteClass para o Aluno
 
 ## 📖 Descrição do Projeto
 
-O **Aula de Programação** é o painel de ensino (ecossistema learnTECH). Reúne, num só lugar, as duas metades da jornada do aluno: a **grade curricular** — teoria e prática guiada, módulo a módulo — e o **catálogo de projetos** — 59 projetos práticos organizados por tecnologia, para o aluno ver código de verdade funcionando.
+O **Aula de Programação** é o painel de ensino da **ByteClass** (ecossistema learnTECH). Reúne, num só lugar, as duas metades da jornada do aluno: a **grade curricular** — teoria e prática guiada, módulo a módulo — e o **catálogo de projetos** — 59 projetos práticos organizados por tecnologia, para o aluno ver código de verdade funcionando.
 
 ## 🎯 Objetivo
 
@@ -18,8 +18,8 @@ Entregar ao aluno um conteúdo ordenado e uma referência viva de projetos, unin
 | --- | --- |
 | Módulos da grade | 7 |
 | Aulas na grade | 70 |
-| **Aulas publicadas** | **6** — aulas 1 a 3 (Módulo 1) e 11 a 13 (Módulo 2) |
-| Aulas em preparação | 64 |
+| **Aulas publicadas** | **21** — três em cada um dos 7 módulos |
+| Aulas em preparação | 49 |
 | **Projetos no catálogo** | **59**, em 8 tecnologias |
 | Trilha experimental | 6 vídeos (Playlist 1 — Hack Dev) |
 
@@ -94,6 +94,28 @@ Antes eram 56 ícones diferentes vindos do Font Awesome por CDN. Dois problemas:
 | `image` | opcional; sem ela o card mostra só o ícone da tecnologia |
 
 ---
+
+### Aulas publicadas por módulo
+
+| Módulo | Aulas publicadas |
+| --- | --- |
+| 1 · Fundamentos | 1, 2, 3 |
+| 2 · Frontend Moderno | 11, 12, 13 |
+| 3 · Backend e Banco de Dados | 21, 22, 23 |
+| 4 · Fullstack, DevOps e Projeto Final | 31, 32, 33 |
+| 5 · Produto, UX e Agilidade | 41, 42, 43 |
+| 6 · Soft Skills, Carreira e IE | 51, 52, 53 |
+| 7 · Avançado | 61, 62, 63 |
+
+### O bloco de vídeo das aulas novas
+
+As 15 aulas dos módulos 3 a 7 trazem, em cada um dos três temas, **quatro links de
+documentação oficial** (MDN, Node, Docker, PostgreSQL, WCAG, Scrum Guide, CNVC, entre outros)
+e um bloco marcado **"Curadoria de vídeo pendente"**.
+
+A escolha foi deliberada: seriam cerca de 180 links de vídeo para as 15 aulas, e link de vídeo
+inventado vira 404 na mão do aluno. A documentação oficial é estável e verificável; o vídeo
+entra por curadoria do instrutor, no bloco reservado.
 
 ## 🧠 Estratégia pedagógica
 
@@ -182,7 +204,11 @@ aula-de-programacao/
 
 ## 🗺️ Próximos passos
 
+- [ ] Curar os vídeos de apoio das 15 aulas dos módulos 3 a 7 (bloco reservado em cada tema)
 - [ ] Publicar as aulas 4 a 10 do Módulo 1 e 14 a 20 do Módulo 2
+- [ ] **Corrigir o caminho dos assets nas 6 aulas antigas** — elas apontam para `../../../assets/`,
+      que fica acima da raiz do projeto, e por isso a logo do cabeçalho e o favicon não carregam.
+      O correto é `../../assets/`, já usado nas 15 aulas novas
 - [ ] **Apagar `projetos/assets/logo/`** — 2,0 MB de logos do antigo cabeçalho do hub, que saiu
 - [ ] **Apagar `projetos/readme.md`** — readme do repositório antigo, substituído por este
 - [ ] **171 MB em `projetos/projects/`** — o maior peso é mídia sem compressão: 37,5 MB de `.mp3` em `devcast-player` e 21 MB de `.jpg` em `curso-em-video` (um deles com 5 MB)

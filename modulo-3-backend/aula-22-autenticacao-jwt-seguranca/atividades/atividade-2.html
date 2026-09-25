@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token JWT: Emissão e Middleware — Código de Referência | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Token JWT: Emissão e Middleware — Código de Referência</h1>
+        <p class="subtitulo">Aula 22 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O ponto da atividade</h2>
+        <div class="painel"><p>O JWT é <strong>assinado, não escondido</strong>. Qualquer pessoa com o token lê o
+        payload. A assinatura garante que ninguém o alterou — não que ninguém o leu.</p></div>
+
+        <h2>Emissão, no login</h2>
+        <pre>const jwt = require('jsonwebtoken');
+
+const token = jwt.sign(
+  { sub: usuario.id, email: usuario.email },
+  process.env.JWT_SECRET,
+  { expiresIn: '1h' }
+);
+
+res.json({ token });</pre>
+
+        <h2>src/middlewares/auth.middleware.js</h2>
+        <pre>const jwt = require('jsonwebtoken');
+
+module.exports = (req, res, proximo) =&gt; {
+  const cabecalho = req.headers.authorization || '';
+  const [esquema, token] = cabecalho.split(' ');
+
+  if (esquema !== 'Bearer' || !token) {
+    return res.status(401).json({ erro: 'Token ausente' });
+  }
+
+  try {
+    const dados = jwt.verify(token, process.env.JWT_SECRET);
+    req.usuarioId = dados.sub;
+    proximo();
+  } catch (erro) {
+    // Expirado e adulterado caem os dois aqui, e recebem a mesma resposta.
+    return res.status(401).json({ erro: 'Token inválido ou expirado' });
+  }
+};</pre>
+
+        <h2>Usando em uma rota</h2>
+        <pre>const autenticar = require('../middlewares/auth.middleware');
+
+rotas.get('/tarefas', autenticar, controlador.listar);</pre>
+
+        <h2>Faça este teste</h2>
+        <ol>
+            <li>Copie o token gerado e cole em <a href="https://jwt.io" target="_blank" rel="noopener noreferrer">jwt.io</a>.</li>
+            <li>Leia o payload. Está tudo visível.</li>
+            <li>Altere um caractere do token e chame a rota protegida: <code>401</code>.</li>
+        </ol>
+        <p>Depois disso a regra fica óbvia: <strong>nada sensível dentro do payload.</strong></p>
+    </div>
+</body>
+
+</html>

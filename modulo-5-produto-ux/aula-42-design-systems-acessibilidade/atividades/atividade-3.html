@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Componente de Botão — Contrato e Seis Estados | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Componente de Botão — Contrato e Seis Estados</h1>
+        <p class="subtitulo">Aula 42 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O contrato, escrito antes do CSS</h2>
+        <pre>Botão
+  variações: primaria | secundaria
+  tamanhos:  md | sm
+  estados:   padrão, hover, foco, ativo, desabilitado, carregando
+  fora do escopo: ícone à direita, botão com menu (virá depois)</pre>
+        <p>Escrever o que fica <strong>fora</strong> evita que o componente vire um canivete suíço.</p>
+
+        <h2>CSS usando só tokens</h2>
+        <pre>.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-4);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: 700 var(--txt-sm)/1 inherit;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease;
+}
+
+.botao--primaria {
+  background-color: var(--cor-acao);
+  color: var(--cor-fundo);
+}
+
+.botao--primaria:hover  { background-color: var(--cor-acao-forte); }
+
+.botao--secundaria {
+  background-color: transparent;
+  border-color: var(--cor-borda);
+  color: var(--cor-texto);
+}
+
+.botao--secundaria:hover { border-color: var(--cor-acao); color: var(--cor-acao); }
+
+.botao:focus-visible {
+  outline: 3px solid var(--cor-acao);
+  outline-offset: 3px;
+}
+
+/* Atributo, não classe: assim o estado real do DOM e o visual não divergem. */
+.botao[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.botao[aria-busy="true"] { pointer-events: none; }</pre>
+
+        <h2>Por que [disabled] e não .desabilitado</h2>
+        <div class="painel"><p>Com uma classe, é possível o botão <em>parecer</em> desabilitado e continuar
+        clicável — ou o contrário. Estilizando pelo atributo, o visual é consequência do estado real:
+        não tem como divergir.</p></div>
+
+        <h2>A página de catálogo</h2>
+        <pre>&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;Primária&lt;/th&gt;&lt;th&gt;Secundária&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;padrão&lt;/td&gt;      &lt;td&gt;…&lt;/td&gt;&lt;td&gt;…&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;desabilitado&lt;/td&gt;&lt;td&gt;…&lt;/td&gt;&lt;td&gt;…&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;carregando&lt;/td&gt;  &lt;td&gt;…&lt;/td&gt;&lt;td&gt;…&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        <p>Hover, foco e ativo não cabem na tabela — são testados percorrendo com Tab e com o mouse.
+        Por isso o último passo da prática é justamente esse.</p>
+    </div>
+</body>
+
+</html>

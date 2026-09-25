@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Acessibilidade — o Mínimo Obrigatório | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Checklist de Acessibilidade — o Mínimo Obrigatório</h1>
+        <p class="subtitulo">Aula 42 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O teste que leva dois minutos</h2>
+        <div class="painel"><p>Guarde o mouse. Percorra a tela inteira com <kbd>Tab</kbd> e execute a tarefa
+        principal. Se você não conseguir, ninguém que depende do teclado vai conseguir.</p></div>
+
+        <h2>1. Foco visível — o erro mais comum</h2>
+        <pre>/* NUNCA: */
+*:focus { outline: none; }
+
+/* SEMPRE: */
+:focus-visible {
+  outline: 3px solid var(--cor-acao);
+  outline-offset: 3px;
+}</pre>
+        <p><code>:focus-visible</code> mostra o contorno para quem usa teclado e não mostra para quem clica
+        com o mouse — que é exatamente o motivo pelo qual as pessoas removiam o outline.</p>
+
+        <h2>2. A tag certa entrega acessibilidade de graça</h2>
+        <pre>&lt;!-- Não é focável, não responde a Enter nem Espaço,
+     não é anunciado como botão: --&gt;
+&lt;div class="botao" onclick="salvar()"&gt;Salvar&lt;/div&gt;
+
+&lt;!-- Focável, teclado funciona, leitor anuncia "botão Salvar": --&gt;
+&lt;button type="button" onclick="salvar()"&gt;Salvar&lt;/button&gt;</pre>
+
+        <h2>3. Rótulo ligado ao campo</h2>
+        <pre>&lt;label for="email"&gt;E-mail&lt;/label&gt;
+&lt;input id="email" type="email" autocomplete="email"&gt;
+
+&lt;!-- Ou, quando o label embrulha: --&gt;
+&lt;label&gt;E-mail &lt;input type="email"&gt;&lt;/label&gt;</pre>
+        <p>Placeholder <strong>não é rótulo</strong>: some quando a pessoa digita, e o leitor de tela pode
+        não anunciar.</p>
+
+        <h2>4. Texto alternativo com critério</h2>
+        <pre>&lt;!-- Informativa: descreva a informação, não a imagem --&gt;
+&lt;img src="grafico.png" alt="Vendas subiram de 120 para 340 no trimestre"&gt;
+
+&lt;!-- Decorativa: alt vazio, para o leitor pular --&gt;
+&lt;img src="ornamento.svg" alt=""&gt;
+
+&lt;!-- Errado: o leitor anuncia "imagem imagem-1-ponto-png" --&gt;
+&lt;img src="imagem-1.png"&gt;</pre>
+
+        <h2>Checklist de cinco itens antes de publicar</h2>
+        <ol>
+            <li>Consigo completar a tarefa só com teclado?</li>
+            <li>Vejo onde o foco está, o tempo todo?</li>
+            <li>Todo campo tem rótulo ligado?</li>
+            <li>Todo texto passa de 4.5:1 de contraste?</li>
+            <li>Cliquei em algum <code>&lt;div&gt;</code> que deveria ser <code>&lt;button&gt;</code>?</li>
+        </ol>
+    </div>
+</body>
+
+</html>

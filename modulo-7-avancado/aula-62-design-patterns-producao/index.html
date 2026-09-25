@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 62 | ByteClass</title>
+    <meta name="description" content="Esta ementa apresenta os padrões que de fato aparecem em código JavaScript de produção, com o critério de quando usar — e com a advertência sobre o excesso, que é o erro mais comum de quem acabou de estudá-los.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 62: Padrões de Projeto (Design Patterns) em Produção</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: PADRÕES DE CRIAÇÃO: FACTORY, BUILDER E SINGLETON -->
+            <div class="card" id="card-1">
+                <h2>🏭 1. Padrões de Criação: Factory, Builder e Singleton</h2>
+                <p>Os três resolvem a mesma pergunta por caminhos diferentes: como criar um objeto sem espalhar a decisão de construção por todo o código.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/creational-patterns" target="_blank" rel="noopener noreferrer">📄 Padrões Criacionais — Refactoring Guru (PT-BR)</a>
+                        <span class="link-desc">Cada padrão com problema, solução, diagrama e exemplo em várias linguagens.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/factory-method" target="_blank" rel="noopener noreferrer">📄 Factory Method — Refactoring Guru</a>
+                        <span class="link-desc">Quando usar, quando não usar, e a diferença para Abstract Factory.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/singleton" target="_blank" rel="noopener noreferrer">📄 Singleton — Refactoring Guru</a>
+                        <span class="link-desc">Inclui a seção honesta sobre por que muita gente o considera um antipadrão.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Modules" target="_blank" rel="noopener noreferrer">📄 Módulos JavaScript — MDN</a>
+                        <span class="link-desc">Por que em JS o módulo já resolve boa parte do que o Singleton resolveria.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Aplicando Factory e Builder no Seu Projeto</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra a API dos módulos anteriores e localize onde objetos são criados.</li>
+                            <li><strong>Buscando o Problema:</strong> encontre um <code>if</code> que escolhe entre implementações diferentes.</li>
+                            <li><strong>Criando a Factory:</strong> extraia essa escolha para uma função que devolve a implementação certa.</li>
+                            <li><strong>Simplificando o Chamador:</strong> confirme que quem usa não sabe mais qual implementação veio.</li>
+                            <li><strong>Buscando o Construtor Grande:</strong> encontre um objeto criado com mais de cinco parâmetros.</li>
+                            <li><strong>Criando o Builder:</strong> escreva uma classe com métodos encadeáveis que monta o objeto por partes.</li>
+                            <li><strong>Validando na Construção:</strong> no método final, verifique se os campos obrigatórios foram preenchidos.</li>
+                            <li><strong>Avaliando o Singleton:</strong> encontre um recurso que deveria ser único e teste se um módulo já resolve.</li>
+                            <li><strong>Registrando a Decisão:</strong> escreva um ADR curto para cada padrão aplicado, com o custo aceito.</li>
+                            <li><strong>Validação e Testes:</strong> confirme que o comportamento externo não mudou — padrão é refatoração, não recurso novo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PADRÕES ESTRUTURAIS E COMPORTAMENTAIS NO DIA A DIA -->
+            <div class="card" id="card-2">
+                <h2>🔧 2. Padrões Estruturais e Comportamentais no Dia a Dia</h2>
+                <p>Adapter, Strategy e Observer são os que mais aparecem em código JavaScript real — muitas vezes sem que a pessoa saiba que está usando um padrão nomeado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/structural-patterns" target="_blank" rel="noopener noreferrer">📄 Padrões Estruturais — Refactoring Guru</a>
+                        <span class="link-desc">Adapter, Decorator, Facade e Proxy, com exemplos aplicados.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/behavioral-patterns" target="_blank" rel="noopener noreferrer">📄 Padrões Comportamentais — Refactoring Guru</a>
+                        <span class="link-desc">Strategy, Observer, Command e os demais padrões de interação entre objetos.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/design-patterns/strategy" target="_blank" rel="noopener noreferrer">📄 Strategy — Refactoring Guru</a>
+                        <span class="link-desc">O padrão que substitui condicional grande por objetos intercambiáveis.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener noreferrer">📄 addEventListener — MDN</a>
+                        <span class="link-desc">O Observer embutido na plataforma web, que todo dev usa desde o primeiro dia.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Substituindo um Switch Gigante por Strategy</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> localize no seu código um <code>switch</code> ou cadeia de <code>if</code> com quatro ou mais ramos.</li>
+                            <li><strong>Documentando o Antes:</strong> conte as linhas do bloco e anote quantas razões ele tem para mudar.</li>
+                            <li><strong>Extraindo a Primeira Estratégia:</strong> mova um ramo para uma função ou classe com nome próprio.</li>
+                            <li><strong>Definindo o Contrato:</strong> garanta que todas as estratégias recebem e devolvem a mesma coisa.</li>
+                            <li><strong>Extraindo as Demais:</strong> repita para cada ramo restante, sem alterar comportamento.</li>
+                            <li><strong>Criando o Mapa:</strong> substitua o <code>switch</code> por um objeto que liga a chave à estratégia.</li>
+                            <li><strong>Tratando o Padrão:</strong> defina o que acontece quando a chave não existe no mapa.</li>
+                            <li><strong>Testando Isoladamente:</strong> escreva um teste para cada estratégia, separadamente.</li>
+                            <li><strong>Acrescentando uma Nova:</strong> adicione uma quinta estratégia e verifique que nada mais precisou mudar.</li>
+                            <li><strong>Validação e Testes:</strong> compare o antes e o depois e registre quantas linhas mudaram para acrescentar a quinta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: O EXCESSO: QUANDO O PADRÃO PIORA O CÓDIGO -->
+            <div class="card" id="card-3">
+                <h2>🚫 3. O Excesso: Quando o Padrão Piora o Código</h2>
+                <p>Quem acabou de estudar padrões vê padrão em tudo. O bloco fecha com o critério oposto: como reconhecer a abstração que não se pagou e como desfazê-la.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/YagniDefinition.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — Martin Fowler</a>
+                        <span class="link-desc">O argumento contra construir a abstração antes de ter a necessidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/refactoring/smells" target="_blank" rel="noopener noreferrer">📄 Code Smells — Refactoring Guru</a>
+                        <span class="link-desc">O catálogo de sinais de problema, incluindo os de excesso de abstração.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/TechnicalDebt.html" target="_blank" rel="noopener noreferrer">📄 Dívida Técnica — Martin Fowler</a>
+                        <span class="link-desc">Por que abstração desnecessária também é dívida, só que menos visível.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/standard.html" target="_blank" rel="noopener noreferrer">📄 Google — o padrão do revisor</a>
+                        <span class="link-desc">O critério de aprovar o que melhora o sistema, sem exigir perfeição.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Caçando Abstração que Não se Pagou</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha o projeto mais estruturado que você tem.</li>
+                            <li><strong>Listando as Interfaces:</strong> liste todo contrato, classe abstrata ou porta declarada.</li>
+                            <li><strong>Contando Implementações:</strong> para cada um, conte quantas implementações reais existem.</li>
+                            <li><strong>Marcando as Solitárias:</strong> separe as que têm exatamente uma e nunca tiveram outra.</li>
+                            <li><strong>Checando a Previsão:</strong> para cada solitária, verifique se há previsão concreta de uma segunda.</li>
+                            <li><strong>Medindo a Indireção:</strong> escolha um comportamento e conte os arquivos até achar a implementação.</li>
+                            <li><strong>Buscando o Repasse:</strong> marque métodos que só chamam outro método sem decidir nada.</li>
+                            <li><strong>Propondo a Remoção:</strong> escolha a abstração menos justificada e escreva como seria sem ela.</li>
+                            <li><strong>Executando a Remoção:</strong> remova uma delas e rode os testes.</li>
+                            <li><strong>Validação e Testes:</strong> compare a contagem de arquivos e linhas antes e depois, e registre o resultado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

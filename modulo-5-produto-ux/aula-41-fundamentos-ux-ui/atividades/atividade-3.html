@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro de Teste com Cinco Pessoas | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Roteiro de Teste com Cinco Pessoas</h1>
+        <p class="subtitulo">Aula 41 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>Antes de começar</h2>
+        <div class="painel"><p>Trinta minutos, cinco pessoas, uma tarefa. Você não precisa de laboratório,
+        nem de ferramenta paga, nem de autorização de ninguém.</p></div>
+
+        <h2>Roteiro, palavra por palavra</h2>
+        <pre>1. "Obrigado por ajudar. Estou testando a tela, não você —
+    se algo der errado, o problema é do que eu construí."
+
+2. "Vou pedir que você faça uma tarefa. Enquanto faz,
+    fale em voz alta o que está pensando e procurando."
+
+3. "Não vou poder ajudar durante a tarefa. Isso é de propósito:
+    preciso ver onde a tela não se explica sozinha."
+
+4. [A TAREFA — leia exatamente como escreveu, sem improvisar]
+
+5. Ao final: "O que você esperava que acontecesse quando clicou ali?"</pre>
+
+        <h2>Como escrever a tarefa</h2>
+        <ul>
+            <li>✔ "Descubra quanto custa o plano anual e adicione ao carrinho."</li>
+            <li>✘ "Clique em Planos e escolha o anual." — você entregou a resposta.</li>
+            <li>✘ "O que você acha desta tela?" — não é tarefa, é pesquisa de opinião.</li>
+        </ul>
+
+        <h2>Perguntas que não geram informação</h2>
+        <table style="width:100%;border-collapse:collapse">
+            <tr><td style="padding:6px 0">✘ "Ficou fácil?"</td><td>A pessoa vai dizer que sim, por educação.</td></tr>
+            <tr><td style="padding:6px 0">✘ "Você gostou do design?"</td><td>Gosto não prevê comportamento.</td></tr>
+            <tr><td style="padding:6px 0">✘ "Você usaria isso?"</td><td>Intenção declarada e uso real não se correlacionam.</td></tr>
+            <tr><td style="padding:6px 0">✔ "O que você está procurando agora?"</td><td>Revela o modelo mental.</td></tr>
+            <tr><td style="padding:6px 0">✔ "O que você esperava que acontecesse?"</td><td>Revela a expectativa quebrada.</td></tr>
+        </table>
+
+        <h2>Ficha de registro por pessoa</h2>
+        <pre>Pessoa:            #1
+Tarefa concluída:  sim / não
+Tempo:             ___
+Onde hesitou:      ___
+O que disse:       (frase literal, não paráfrase)
+Pediu ajuda?:      sim / não — em que ponto</pre>
+
+        <h2>O que fazer com os cinco resultados</h2>
+        <p>Problema que apareceu em <strong>uma</strong> pessoa pode ser dela.
+        Em <strong>três ou mais</strong>, é da tela. Comece por esses.</p>
+    </div>
+</body>
+
+</html>

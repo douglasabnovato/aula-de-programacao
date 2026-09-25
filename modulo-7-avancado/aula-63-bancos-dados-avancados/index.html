@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 63 | ByteClass</title>
+    <meta name="description" content="Esta ementa ensina a diagnosticar consulta lenta com o plano de execução em vez de palpite, a decidir índice pelo que a aplicação realmente consulta, e a escolher entre relacional e NoSQL pelo formato de acesso ao dado.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 63: Bancos de Dados Avançados: Performance e NoSQL</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: DIAGNÓSTICO: O PLANO DE EXECUÇÃO -->
+            <div class="card" id="card-1">
+                <h2>🔎 1. Diagnóstico: o Plano de Execução</h2>
+                <p>Consulta lenta não se resolve por tentativa. O banco diz exatamente o que fez e quanto custou cada etapa — basta perguntar com EXPLAIN ANALYZE.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/using-explain.html" target="_blank" rel="noopener noreferrer">📄 Usando EXPLAIN — documentação do PostgreSQL</a>
+                        <span class="link-desc">Como ler o plano de execução, com exemplos comentados linha a linha.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/performance-tips.html" target="_blank" rel="noopener noreferrer">📄 Dicas de Performance — PostgreSQL</a>
+                        <span class="link-desc">O capítulo oficial sobre o que afeta o desempenho de uma consulta.</span>
+                    </li>
+                    <li>
+                        <a href="https://use-the-index-luke.com/pt" target="_blank" rel="noopener noreferrer">📄 Use The Index, Luke! — em português</a>
+                        <span class="link-desc">Curso gratuito e completo sobre indexação, escrito para quem desenvolve.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/LazyLoad.html" target="_blank" rel="noopener noreferrer">📄 Lazy Load — Martin Fowler</a>
+                        <span class="link-desc">O padrão por trás do N+1, e por que ele aparece tanto com ORM.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Encontrando e Corrigindo a Consulta Lenta</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba um PostgreSQL em contêiner usando o que você aprendeu na aula 32.</li>
+                            <li><strong>Criando Volume de Dado:</strong> gere 100 mil registros com <code>generate_series</code> para que a lentidão apareça.</li>
+                            <li><strong>Medindo o Ponto de Partida:</strong> rode uma consulta com filtro e anote o tempo com <code>\\timing</code>.</li>
+                            <li><strong>Lendo o Plano:</strong> rode <code>EXPLAIN ANALYZE</code> na mesma consulta e identifique o nó mais caro.</li>
+                            <li><strong>Identificando a Varredura:</strong> procure por <code>Seq Scan</code> e veja quantas linhas foram lidas.</li>
+                            <li><strong>Criando o Índice:</strong> crie um índice na coluna do filtro e rode o <code>EXPLAIN ANALYZE</code> de novo.</li>
+                            <li><strong>Comparando:</strong> registre o tempo antes e depois e confirme a mudança para <code>Index Scan</code>.</li>
+                            <li><strong>Provocando o N+1:</strong> escreva um laço que faz uma consulta por item de uma lista de 100.</li>
+                            <li><strong>Corrigindo o N+1:</strong> substitua as 101 consultas por uma só, com <code>JOIN</code> ou <code>WHERE IN</code>.</li>
+                            <li><strong>Validação e Testes:</strong> meça as duas versões e registre a diferença de tempo e de número de consultas.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ÍNDICES: O QUE GANHA E O QUE CUSTA -->
+            <div class="card" id="card-2">
+                <h2>📇 2. Índices: o que Ganha e o que Custa</h2>
+                <p>Índice acelera leitura e desacelera escrita. Índice demais é tão ruim quanto índice de menos — e o segundo problema é mais fácil de perceber que o primeiro.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/indexes.html" target="_blank" rel="noopener noreferrer">📄 Índices — documentação do PostgreSQL</a>
+                        <span class="link-desc">O capítulo completo: tipos, índices compostos, parciais e de expressão.</span>
+                    </li>
+                    <li>
+                        <a href="https://use-the-index-luke.com/pt/sql/where-clause" target="_blank" rel="noopener noreferrer">📄 A cláusula WHERE e o índice — Use The Index, Luke!</a>
+                        <span class="link-desc">Por que o índice às vezes é ignorado, com exemplos de cada caso.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/indexes-multicolumn.html" target="_blank" rel="noopener noreferrer">📄 Índices Multicoluna — PostgreSQL</a>
+                        <span class="link-desc">A regra da ordem das colunas, explicada com o que o planejador consegue usar.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/indexes-partial.html" target="_blank" rel="noopener noreferrer">📄 Índices Parciais — PostgreSQL</a>
+                        <span class="link-desc">Indexar só o subconjunto que a aplicação consulta, economizando espaço e escrita.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Medindo o Custo Real de Cada Índice</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> use a tabela de 100 mil linhas da prática anterior.</li>
+                            <li><strong>Medindo a Escrita Base:</strong> cronometre a inserção de 10 mil linhas sem nenhum índice.</li>
+                            <li><strong>Criando Cinco Índices:</strong> crie índices em cinco colunas diferentes da tabela.</li>
+                            <li><strong>Medindo de Novo:</strong> cronometre a mesma inserção de 10 mil linhas e compare.</li>
+                            <li><strong>Medindo o Espaço:</strong> use <code>pg_relation_size</code> para comparar tabela e índices.</li>
+                            <li><strong>Índice Composto:</strong> crie um índice em duas colunas e teste consulta filtrando só pela segunda.</li>
+                            <li><strong>Entendendo a Ordem:</strong> confirme no plano que o índice não foi usado e explique por quê.</li>
+                            <li><strong>Índice Parcial:</strong> crie um índice <code>WHERE ativo = true</code> e compare o tamanho com o completo.</li>
+                            <li><strong>Removendo o Inútil:</strong> identifique índices nunca usados consultando <code>pg_stat_user_indexes</code>.</li>
+                            <li><strong>Validação e Testes:</strong> registre numa tabela o ganho de leitura e o custo de escrita de cada índice.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: RELACIONAL OU NOSQL: O CRITÉRIO É O ACESSO -->
+            <div class="card" id="card-3">
+                <h2>🗄️ 3. Relacional ou NoSQL: o Critério é o Acesso</h2>
+                <p>A pergunta certa não é qual banco é melhor. É como a aplicação lê e escreve o dado — e é isso que aponta a escolha.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.mongodb.com/docs/manual/core/data-modeling-introduction/" target="_blank" rel="noopener noreferrer">📄 Modelagem de Dados — documentação do MongoDB</a>
+                        <span class="link-desc">Embutir ou referenciar: o critério de decisão, com exemplos.</span>
+                    </li>
+                    <li>
+                        <a href="https://redis.io/docs/latest/develop/" target="_blank" rel="noopener noreferrer">📄 Guia de Desenvolvimento — Redis</a>
+                        <span class="link-desc">As estruturas de dados do Redis e o caso de uso de cada uma.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/datatype-json.html" target="_blank" rel="noopener noreferrer">📄 Tipos JSON no PostgreSQL</a>
+                        <span class="link-desc">Por que muitas vezes não é preciso trocar de banco para guardar documento.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/PolyglotPersistence.html" target="_blank" rel="noopener noreferrer">📄 Persistência Poliglota — Martin Fowler</a>
+                        <span class="link-desc">Usar mais de um banco no mesmo sistema, cada um no que faz bem.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Modelando o Mesmo Domínio nos Dois Paradigmas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um domínio seu — catálogo de projetos, aulas ou pedidos.</li>
+                            <li><strong>Listando os Acessos:</strong> escreva as cinco consultas que a aplicação mais faz nesse domínio.</li>
+                            <li><strong>Estimando a Proporção:</strong> anote quantas leituras existem para cada escrita.</li>
+                            <li><strong>Modelando Relacional:</strong> desenhe as tabelas normalizadas com chave estrangeira.</li>
+                            <li><strong>Escrevendo as Consultas:</strong> escreva o SQL das cinco consultas, contando quantos JOINs cada uma exige.</li>
+                            <li><strong>Modelando em Documento:</strong> desenhe o mesmo domínio com o dado embutido conforme o acesso.</li>
+                            <li><strong>Avaliando a Duplicação:</strong> identifique que dado ficou repetido e o que acontece ao atualizá-lo.</li>
+                            <li><strong>Testando o Caso Difícil:</strong> escolha uma consulta que o modelo em documento atende mal e descreva o problema.</li>
+                            <li><strong>Avaliando o Meio-Termo:</strong> teste guardar o documento numa coluna <code>jsonb</code> do PostgreSQL.</li>
+                            <li><strong>Validação e Testes:</strong> escreva um ADR com a escolha, os cinco acessos como evidência e o custo aceito.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

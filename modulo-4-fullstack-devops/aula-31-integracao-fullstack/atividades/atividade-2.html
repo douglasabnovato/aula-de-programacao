@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Componente com os Três Estados | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Componente com os Três Estados</h1>
+        <p class="subtitulo">Aula 31 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>ListaTarefas.jsx</h2>
+        <pre>import { useEffect, useState } from 'react';
+import { listarTarefas } from '../api/cliente';
+
+export function ListaTarefas() {
+  const [dados, setDados] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() =&gt; {
+    const controlador = new AbortController();
+
+    async function buscar() {
+      try {
+        setCarregando(true);
+        setErro(null);
+        const lista = await listarTarefas({ signal: controlador.signal });
+        setDados(lista);
+      } catch (e) {
+        if (e.name !== 'AbortError') setErro(e.message);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    buscar();
+    return () =&gt; controlador.abort();
+  }, []);
+
+  if (carregando) return &lt;p role="status"&gt;Carregando tarefas…&lt;/p&gt;;
+
+  if (erro) return (
+    &lt;div role="alert"&gt;
+      &lt;p&gt;Não foi possível carregar: {erro}&lt;/p&gt;
+      &lt;button onClick={() =&gt; window.location.reload()}&gt;Tentar de novo&lt;/button&gt;
+    &lt;/div&gt;
+  );
+
+  if (dados.length === 0) return (
+    &lt;p&gt;Nenhuma tarefa ainda. Crie a primeira para começar.&lt;/p&gt;
+  );
+
+  return (
+    &lt;ul&gt;
+      {dados.map(t =&gt; &lt;li key={t.id}&gt;{t.titulo}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}</pre>
+
+        <h2>Os quatro cenários para testar</h2>
+        <ol>
+            <li><strong>Sucesso com itens</strong> — a lista aparece.</li>
+            <li><strong>Sucesso sem itens</strong> — apague tudo no banco; deve aparecer o convite, não erro.</li>
+            <li><strong>API fora do ar</strong> — pare o servidor; deve aparecer a mensagem com botão.</li>
+            <li><strong>Rede lenta</strong> — no DevTools, escolha Slow 3G e veja o estado de carregando durar.</li>
+        </ol>
+
+        <div class="painel"><p><strong>Estado vazio não é erro.</strong> Confundir os dois é o defeito mais
+        comum em tela de listagem: o usuário acha que o sistema quebrou quando na verdade ele ainda
+        não cadastrou nada.</p></div>
+    </div>
+</body>
+
+</html>

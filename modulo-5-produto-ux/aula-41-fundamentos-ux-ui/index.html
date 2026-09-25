@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 41 | ByteClass</title>
+    <meta name="description" content="Esta ementa dá ao desenvolvedor o vocabulário e os critérios para avaliar uma interface antes de implementá-la — e para defender, com argumento, por que uma tela precisa mudar.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 41: Fundamentos de UX e UI para Desenvolvedores</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: UX NÃO É UI: O QUE CADA UMA DECIDE -->
+            <div class="card" id="card-1">
+                <h2>🧭 1. UX não é UI: o que cada uma decide</h2>
+                <p>Trocar a cor do botão é UI. Descobrir que o botão não deveria estar naquela etapa é UX. Confundir as duas é o que faz redesenho bonito não resolver problema nenhum.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/definition-user-experience/" target="_blank" rel="noopener noreferrer">📄 A definição de UX — Nielsen Norman Group</a>
+                        <span class="link-desc">O texto curto de Don Norman e Jakob Nielsen que separa experiência de interface.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener noreferrer">📄 As 10 Heurísticas de Usabilidade</a>
+                        <span class="link-desc">O checklist que permite avaliar qualquer interface sem precisar de usuário na sala.</span>
+                    </li>
+                    <li>
+                        <a href="https://lawsofux.com/pt-br/" target="_blank" rel="noopener noreferrer">📄 Leis de UX — em português</a>
+                        <span class="link-desc">Princípios de psicologia aplicados a interface, um por página, com exemplo.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/usability-101-introduction-to-usability/" target="_blank" rel="noopener noreferrer">📄 Usabilidade 101 — NN/g</a>
+                        <span class="link-desc">Os cinco componentes de usabilidade e como cada um é medido.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Auditoria Heurística de uma Tela Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha uma tela de um projeto seu do catálogo de Projetos e abra-a no navegador.</li>
+                            <li><strong>Montando o Instrumento:</strong> escreva as 10 heurísticas de Nielsen numa tabela, uma por linha.</li>
+                            <li><strong>Definindo a Tarefa:</strong> escreva a tarefa que o usuário vai realizar nessa tela, em uma frase.</li>
+                            <li><strong>Percorrendo a Tarefa:</strong> execute a tarefa e anote cada momento de hesitação, sem corrigir nada ainda.</li>
+                            <li><strong>Avaliando Heurística 1:</strong> a interface informa o que está acontecendo? Procure estado de carregamento e confirmação.</li>
+                            <li><strong>Avaliando o Erro:</strong> provoque um erro de propósito e avalie se a mensagem diz o que fazer.</li>
+                            <li><strong>Avaliando a Saída:</strong> verifique se há caminho de volta claro em cada etapa.</li>
+                            <li><strong>Classificando a Gravidade:</strong> dê nota de 0 a 4 para cada problema, de cosmético a impeditivo.</li>
+                            <li><strong>Priorizando:</strong> ordene os problemas por gravidade e escreva a correção proposta de cada um.</li>
+                            <li><strong>Validação e Testes:</strong> apresente os três problemas mais graves ao instrutor, com o argumento heurístico de cada um.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: HIERARQUIA VISUAL, ESPAÇO E TIPOGRAFIA -->
+            <div class="card" id="card-2">
+                <h2>📐 2. Hierarquia Visual, Espaço e Tipografia</h2>
+                <p>Três ferramentas explicam a maior parte da diferença entre uma tela amadora e uma profissional — e nenhuma delas é talento artístico. São regras que se aprendem.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://m3.material.io/styles/typography/type-scale-tokens" target="_blank" rel="noopener noreferrer">📄 Escala Tipográfica — Material Design 3</a>
+                        <span class="link-desc">Um sistema de tamanhos pronto, com o papel de cada nível na hierarquia.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/visual-hierarchy-organize-content/" target="_blank" rel="noopener noreferrer">📄 Hierarquia Visual — NN/g</a>
+                        <span class="link-desc">Como o olho percorre uma tela e o que faz um elemento ser visto primeiro.</span>
+                    </li>
+                    <li>
+                        <a href="https://web.dev/learn/css/spacing" target="_blank" rel="noopener noreferrer">📄 Espaçamento em CSS — web.dev</a>
+                        <span class="link-desc">Margin, padding e gap com o critério de quando usar cada um.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">📄 Contraste Mínimo — WCAG</a>
+                        <span class="link-desc">A razão de contraste exigida para texto, com a fórmula e os números.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Refazendo uma Tela com Escala e Hierarquia</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha uma tela sua com muito texto e copie o arquivo para trabalhar sem medo.</li>
+                            <li><strong>Diagnóstico Atual:</strong> liste todos os tamanhos de fonte usados na tela — provavelmente há mais de seis.</li>
+                            <li><strong>Definindo a Escala:</strong> escolha cinco tamanhos e escreva cada um como variável CSS em <code>:root</code>.</li>
+                            <li><strong>Aplicando a Escala:</strong> substitua todos os tamanhos avulsos pelas cinco variáveis.</li>
+                            <li><strong>Escala de Espaçamento:</strong> defina espaçamentos em múltiplos de 4px e crie variáveis para eles.</li>
+                            <li><strong>Aplicando o Espaço:</strong> troque cada margin e padding solto por uma das variáveis criadas.</li>
+                            <li><strong>Agrupando por Proximidade:</strong> aproxime o que é relacionado e afaste o que não é; observe a diferença.</li>
+                            <li><strong>Largura de Medida:</strong> limite blocos de texto a cerca de 70 caracteres com <code>max-width: 65ch</code>.</li>
+                            <li><strong>Conferindo o Contraste:</strong> meça a razão de contraste do texto secundário e ajuste se ficar abaixo de 4.5:1.</li>
+                            <li><strong>Validação e Testes:</strong> coloque as duas versões lado a lado e explique cada mudança por uma regra, não por gosto.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PESQUISA BARATA: DESCOBRIR ANTES DE CONSTRUIR -->
+            <div class="card" id="card-3">
+                <h2>🔍 3. Pesquisa Barata: Descobrir Antes de Construir</h2>
+                <p>Pesquisa com usuário parece coisa de empresa grande com orçamento. Não é: cinco pessoas e trinta minutos encontram a maior parte dos problemas de uma tela.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" target="_blank" rel="noopener noreferrer">📄 Por que testar com 5 usuários basta</a>
+                        <span class="link-desc">O artigo clássico de Nielsen com a curva que mostra o retorno decrescente.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/thinking-aloud-the-1-usability-tool/" target="_blank" rel="noopener noreferrer">📄 Thinking Aloud — NN/g</a>
+                        <span class="link-desc">O protocolo de pedir que a pessoa narre o pensamento enquanto usa.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/open-ended-questions/" target="_blank" rel="noopener noreferrer">📄 Perguntas Abertas em Pesquisa — NN/g</a>
+                        <span class="link-desc">Como formular a pergunta sem induzir a resposta.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/team-playbook" target="_blank" rel="noopener noreferrer">📄 Atlassian Team Playbook</a>
+                        <span class="link-desc">Dinâmicas de equipe prontas, gratuitas, com roteiro e tempo de cada uma.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Teste de Usabilidade com Cinco Pessoas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha a tela auditada no bloco 1 e deixe-a acessível num link.</li>
+                            <li><strong>Escrevendo a Tarefa:</strong> formule uma tarefa realista, sem dizer onde clicar. Ex: 'descubra o preço do plano anual'.</li>
+                            <li><strong>Montando o Roteiro:</strong> escreva as três perguntas de abertura e o pedido para a pessoa pensar em voz alta.</li>
+                            <li><strong>Combinando o Silêncio:</strong> anote o compromisso de não ajudar durante a tarefa, por mais difícil que seja.</li>
+                            <li><strong>Rodando o Primeiro Teste:</strong> aplique com uma pessoa e cronometre o tempo até concluir a tarefa.</li>
+                            <li><strong>Registrando o Fato:</strong> anote o que a pessoa fez, não o que você achou que ela quis fazer.</li>
+                            <li><strong>Repetindo:</strong> aplique com mais quatro pessoas, sem alterar a tarefa entre elas.</li>
+                            <li><strong>Agrupando:</strong> junte os problemas que apareceram em mais de uma pessoa — esses são os reais.</li>
+                            <li><strong>Priorizando:</strong> ordene por quantas pessoas travaram e pela gravidade do travamento.</li>
+                            <li><strong>Validação e Testes:</strong> escreva os cinco achados como itens de backlog, com o problema observado e a correção proposta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

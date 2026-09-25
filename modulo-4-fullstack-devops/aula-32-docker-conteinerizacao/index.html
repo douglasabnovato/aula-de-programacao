@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 32 | ByteClass</title>
+    <meta name="description" content="Esta ementa resolve a frase mais cara do desenvolvimento de software — &#x27;na minha máquina funciona&#x27; — empacotando a aplicação com tudo de que ela precisa para rodar igual em qualquer lugar.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 32: Docker e Conteinerização de Aplicações</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: IMAGEM, CONTÊINER E O PROBLEMA QUE ISSO RESOLVE -->
+            <div class="card" id="card-1">
+                <h2>📦 1. Imagem, Contêiner e o Problema que Isso Resolve</h2>
+                <p>Contêiner não é máquina virtual. Entender a diferença explica por que ele sobe em segundos e por que a imagem precisa ser construída de forma enxuta.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/get-started/docker-overview/" target="_blank" rel="noopener noreferrer">📄 Visão Geral do Docker — documentação oficial</a>
+                        <span class="link-desc">A arquitetura em uma página: cliente, daemon, imagem, contêiner e registro.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/" target="_blank" rel="noopener noreferrer">📄 O que é um Contêiner — Docker</a>
+                        <span class="link-desc">A explicação conceitual com comparação direta com máquina virtual.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/reference/cli/docker/" target="_blank" rel="noopener noreferrer">📄 Referência da CLI do Docker</a>
+                        <span class="link-desc">Todos os comandos, com as opções de cada um.</span>
+                    </li>
+                    <li>
+                        <a href="https://hub.docker.com/_/node" target="_blank" rel="noopener noreferrer">📄 Imagem oficial do Node no Docker Hub</a>
+                        <span class="link-desc">As variantes disponíveis e a diferença entre a tag padrão e a alpine.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Primeiro Contêiner e Exploração das Camadas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> confirme a instalação com <code>docker --version</code> e <code>docker run hello-world</code>.</li>
+                            <li><strong>Baixando uma Imagem:</strong> rode <code>docker pull node:20-alpine</code> e observe as camadas sendo baixadas.</li>
+                            <li><strong>Listando o que Existe:</strong> compare <code>docker images</code> com <code>docker ps -a</code> e anote a diferença.</li>
+                            <li><strong>Contêiner Interativo:</strong> entre com <code>docker run -it node:20-alpine sh</code> e rode <code>node --version</code> dentro.</li>
+                            <li><strong>Explorando o Isolamento:</strong> dentro do contêiner, rode <code>ls /</code> e compare com o seu sistema.</li>
+                            <li><strong>Saindo e Verificando:</strong> digite <code>exit</code> e confirme com <code>docker ps -a</code> que o contêiner parou mas existe.</li>
+                            <li><strong>Limpando:</strong> remova o contêiner parado com <code>docker rm</code> usando o id listado.</li>
+                            <li><strong>Comparando Tamanhos:</strong> baixe <code>node:20</code> e compare o tamanho com a variante alpine.</li>
+                            <li><strong>Registrando a Diferença:</strong> escreva no README quantos MB a escolha da tag economizou.</li>
+                            <li><strong>Validação e Testes:</strong> explique com suas palavras, por escrito, a diferença entre imagem e contêiner.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ESCREVENDO O DOCKERFILE DA SUA API -->
+            <div class="card" id="card-2">
+                <h2>📝 2. Escrevendo o Dockerfile da Sua API</h2>
+                <p>Cada linha do Dockerfile é uma camada em cache. A ordem das instruções decide se o build leva três segundos ou três minutos a cada alteração de código.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/reference/dockerfile/" target="_blank" rel="noopener noreferrer">📄 Referência do Dockerfile</a>
+                        <span class="link-desc">Cada instrução, com sintaxe e comportamento, na documentação oficial.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/build/building/best-practices/" target="_blank" rel="noopener noreferrer">📄 Boas Práticas de Build — Docker</a>
+                        <span class="link-desc">As recomendações oficiais sobre ordem, cache, tamanho e segurança.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/build/building/multi-stage/" target="_blank" rel="noopener noreferrer">📄 Builds Multi-estágio</a>
+                        <span class="link-desc">Como compilar num estágio e copiar só o resultado para a imagem final.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/build/concepts/context/" target="_blank" rel="noopener noreferrer">📄 Contexto de Build e .dockerignore</a>
+                        <span class="link-desc">O que é enviado ao daemon e como reduzir esse envio.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Empacotando a API do Módulo 3</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra a pasta da API da aula 23 e crie um arquivo chamado <code>Dockerfile</code>.</li>
+                            <li><strong>Imagem Base:</strong> declare <code>FROM node:20-alpine</code> como primeira linha.</li>
+                            <li><strong>Diretório de Trabalho:</strong> defina <code>WORKDIR /app</code> para não espalhar arquivos na raiz.</li>
+                            <li><strong>Aproveitando o Cache:</strong> copie só <code>package*.json</code> e rode <code>npm ci</code> antes de copiar o resto.</li>
+                            <li><strong>Copiando o Código:</strong> só então use <code>COPY . .</code> para trazer os arquivos da aplicação.</li>
+                            <li><strong>Ignorando o Desnecessário:</strong> crie <code>.dockerignore</code> com <code>node_modules</code>, <code>.env</code> e <code>.git</code>.</li>
+                            <li><strong>Declarando a Porta:</strong> acrescente <code>EXPOSE 3000</code> como documentação da imagem.</li>
+                            <li><strong>Comando de Início:</strong> finalize com <code>CMD [\"node\", \"app.js\"]</code> na forma de array.</li>
+                            <li><strong>Construindo:</strong> rode <code>docker build -t minha-api .</code> e acompanhe cada camada.</li>
+                            <li><strong>Validação e Testes:</strong> suba com <code>docker run -p 3000:3000 minha-api</code>, teste no navegador, altere uma linha do código e refaça o build cronometrando.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: VOLUMES, VARIÁVEIS E O CONTÊINER QUE NÃO PERDE DADO -->
+            <div class="card" id="card-3">
+                <h2>💾 3. Volumes, Variáveis e o Contêiner que Não Perde Dado</h2>
+                <p>Contêiner é descartável por natureza: quando ele morre, o que estava dentro vai junto. Volume e variável de ambiente são o que separa um brinquedo de algo utilizável.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/engine/storage/volumes/" target="_blank" rel="noopener noreferrer">📄 Volumes — documentação oficial</a>
+                        <span class="link-desc">Como criar, montar e inspecionar volumes, e quando usar cada tipo.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/engine/storage/bind-mounts/" target="_blank" rel="noopener noreferrer">📄 Bind Mounts — Docker</a>
+                        <span class="link-desc">Montar uma pasta do host dentro do contêiner, útil em desenvolvimento.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/reference/cli/docker/container/run/" target="_blank" rel="noopener noreferrer">📄 docker run — todas as opções</a>
+                        <span class="link-desc">A referência de -p, -v, -e, --name e o resto das flags.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/engine/network/" target="_blank" rel="noopener noreferrer">📄 Redes no Docker</a>
+                        <span class="link-desc">Como contêineres se enxergam e por que localhost dentro do contêiner não é o seu localhost.</span>
+                    </li>
+                </ul>
+
+                <p class="link-desc" style="margin-top:14px;opacity:.75;">
+                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
+                    selecionados pelo instrutor para o tema acima.
+                </p>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Persistência e Configuração sem Rebuild</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba a API em contêiner e crie três tarefas pela rota POST.</li>
+                            <li><strong>Provocando a Perda:</strong> pare e remova o contêiner, suba de novo e confirme que as tarefas sumiram.</li>
+                            <li><strong>Criando o Volume:</strong> rode <code>docker volume create dados-api</code>.</li>
+                            <li><strong>Montando o Volume:</strong> suba com <code>-v dados-api:/app/dados</code> e faça a API gravar nessa pasta.</li>
+                            <li><strong>Provando a Persistência:</strong> repita o ciclo de parar, remover e subir, e confirme que o dado permaneceu.</li>
+                            <li><strong>Passando Configuração:</strong> use <code>-e PORT=4000</code> e confirme que a porta mudou sem novo build.</li>
+                            <li><strong>Arquivo de Ambiente:</strong> troque as flags por <code>--env-file .env</code> e verifique o mesmo resultado.</li>
+                            <li><strong>Montando o Código:</strong> use <code>-v $(pwd):/app</code> para desenvolvimento e edite um arquivo com o contêiner no ar.</li>
+                            <li><strong>Nomeando e Inspecionando:</strong> use <code>--name api</code> e rode <code>docker logs api</code> e <code>docker inspect api</code>.</li>
+                            <li><strong>Validação e Testes:</strong> documente no README o comando completo de execução, com volume e env-file.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

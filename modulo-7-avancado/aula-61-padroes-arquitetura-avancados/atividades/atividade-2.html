@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexagonal: Portas, Adaptadores e o Teste sem Infra | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Hexagonal: Portas, Adaptadores e o Teste sem Infra</h1>
+        <p class="subtitulo">Aula 61 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O desenho</h2>
+        <pre>        ┌─────────── adaptadores de entrada ───────────┐
+        │   HTTP        CLI         Fila de mensagens  │
+        └──────┬──────────┬──────────────┬─────────────┘
+               ↓          ↓              ↓
+        ┌───── portas de entrada (casos de uso) ───────┐
+        │                                              │
+        │              DOMÍNIO                         │
+        │   (entidades e regras — nada de framework)   │
+        │                                              │
+        └───── portas de saída (interfaces) ───────────┘
+               ↓          ↓              ↓
+        ┌──────┴──────────┴──────────────┴─────────────┐
+        │  Postgres     E-mail        Armazenamento    │
+        └────────── adaptadores de saída ──────────────┘</pre>
+        <p>As setas entram e saem do domínio, mas o domínio não conhece ninguém de fora:
+        ele define as portas, e os adaptadores as implementam.</p>
+
+        <h2>A porta, definida pelo domínio</h2>
+        <pre>// core/ports/RepositorioDePedidos.js
+// Contrato. Quem implementa é a borda; quem define é o domínio.
+class RepositorioDePedidos {
+  salvar(pedido)      { throw new Error('não implementado'); }
+  buscarPorId(id)     { throw new Error('não implementado'); }
+  buscarPendentes()   { throw new Error('não implementado'); }
+}
+
+module.exports = RepositorioDePedidos;</pre>
+
+        <h2>Dois adaptadores para a mesma porta</h2>
+        <pre>// infra/PedidosEmMemoria.js — usado em teste
+class PedidosEmMemoria extends RepositorioDePedidos {
+  constructor() { super(); this.itens = []; }
+  salvar(p)     { this.itens.push(p); return p; }
+  buscarPorId(id) { return this.itens.find(p =&gt; p.id === id); }
+  buscarPendentes() { return this.itens.filter(p =&gt; !p.pago); }
+}
+
+// infra/PedidosPostgres.js — usado em produção
+class PedidosPostgres extends RepositorioDePedidos {
+  constructor(conexao) { super(); this.db = conexao; }
+  async salvar(p) { /* INSERT ... */ }
+  async buscarPorId(id) { /* SELECT ... */ }
+  async buscarPendentes() { /* SELECT ... WHERE pago = false */ }
+}</pre>
+
+        <h2>O ganho concreto: teste em milissegundos</h2>
+        <pre>const { test } = require('node:test');
+const assert = require('node:assert');
+
+test('pedido sem itens não pode ser fechado', () =&gt; {
+  const repo = new PedidosEmMemoria();       // sem banco, sem Docker
+  const caso = new FecharPedido(repo);
+
+  assert.throws(() =&gt; caso.executar({ itens: [] }));
+});</pre>
+        <p>Sem subir Postgres, sem seed, sem limpar tabela entre testes. O teste roda em milissegundos
+        e testa exatamente a regra de negócio — que é o que importa.</p>
+
+        <h2>A verificação automática</h2>
+        <pre>grep -rE "require\('(express|pg|mongoose|axios)'\)" src/core/</pre>
+        <p>Deve voltar vazio. Vale colocar como passo na esteira de CI: se alguém importar framework
+        no domínio, a esteira barra.</p>
+    </div>
+</body>
+
+</html>

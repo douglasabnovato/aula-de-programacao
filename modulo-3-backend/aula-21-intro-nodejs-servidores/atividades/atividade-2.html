@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Tarefas em Express — Código de Referência | ByteClass</title>
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>API de Tarefas em Express — Código de Referência</h1>
+        <p class="subtitulo">Aula 21 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma API com quatro rotas REST sobre uma lista em memória, com status HTTP corretos
+            e validação de entrada.</p>
+        </div>
+
+        <h2>app.js</h2>
+        <pre>const express = require('express');
+
+const app = express();
+app.use(express.json());
+
+let tarefas = [
+  { id: 1, titulo: 'Estudar Event Loop', feita: false },
+  { id: 2, titulo: 'Escrever a primeira rota', feita: true }
+];
+
+app.get('/tarefas', (req, res) =&gt; {
+  res.json(tarefas);
+});
+
+app.get('/tarefas/:id', (req, res) =&gt; {
+  const tarefa = tarefas.find(t =&gt; t.id === Number(req.params.id));
+  if (!tarefa) return res.status(404).json({ erro: 'Tarefa não encontrada' });
+  res.json(tarefa);
+});
+
+app.post('/tarefas', (req, res) =&gt; {
+  const { titulo } = req.body;
+  if (!titulo || titulo.trim() === '') {
+    return res.status(400).json({ erro: 'O campo titulo é obrigatório' });
+  }
+  const nova = { id: tarefas.length + 1, titulo: titulo.trim(), feita: false };
+  tarefas.push(nova);
+  res.status(201).json(nova);
+});
+
+app.delete('/tarefas/:id', (req, res) =&gt; {
+  const antes = tarefas.length;
+  tarefas = tarefas.filter(t =&gt; t.id !== Number(req.params.id));
+  if (tarefas.length === antes) return res.status(404).json({ erro: 'Tarefa não encontrada' });
+  res.status(204).end();
+});
+
+app.listen(3000, () =&gt; console.log('API em http://localhost:3000'));</pre>
+
+        <h2>Tabela de status usada</h2>
+        <ul>
+            <li><code>200</code> — listagem e detalhe devolvidos com sucesso</li>
+            <li><code>201</code> — recurso criado; devolve o objeto novo</li>
+            <li><code>204</code> — removido com sucesso, sem corpo de resposta</li>
+            <li><code>400</code> — o cliente mandou dado inválido</li>
+            <li><code>404</code> — o id pedido não existe</li>
+        </ul>
+
+        <h2>Ponto de atenção</h2>
+        <div class="painel">
+            <p><code>tarefas.length + 1</code> como gerador de id quebra assim que alguém apaga um item:
+            dois registros podem receber o mesmo número. É proposital — na aula 23 esse id sai
+            da mão do controlador e vai para a camada de dados.</p>
+        </div>
+    </div>
+</body>
+
+</html>
