@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeout, Retry com Jitter e Circuit Breaker — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Timeout, Retry com Jitter e Circuit Breaker — Código de Referência</h1>
+        <p class="subtitulo">Aula 64 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um módulo que envolve chamadas HTTP com timeout, retry exponencial com jitter e disjuntor, e um exemplo de uso que devolve frete estimado quando o fornecedor está fora do ar. Requer Node 18 ou superior (fetch nativo).</p>
+        </div>
+        <h2>resiliencia.js</h2>
+        <pre>// Início: utilitários de resiliência para chamadas HTTP a serviços externos
+const ESTADOS = { FECHADO: 'fechado', ABERTO: 'aberto', SEMIABERTO: 'semiaberto' };
+
+// Decide se vale a pena tentar de novo com base no tipo de falha
+function ehTransitorio(erro) {
+  if (erro.name === 'TimeoutError' || erro.name === 'AbortError') return true;
+  if (erro.status) return [429, 502, 503, 504].includes(erro.status);
+  return erro.code === 'ECONNREFUSED' || erro.code === 'ECONNRESET';
+}
+
+// Espera o tempo indicado em milissegundos
+function esperar(ms) {
+  return new Promise((resolve) =&gt; setTimeout(resolve, ms));
+}
+
+// Faz a requisição com limite de tempo e transforma status de erro em exceção
+async function fetchComTimeout(url, { timeoutMs = 2000, ...opcoes } = {}) {
+  const res = await fetch(url, { ...opcoes, signal: AbortSignal.timeout(timeoutMs) });
+  if (!res.ok) {
+    const erro = new Error(`HTTP ${res.status}`);
+    erro.status = res.status;
+    throw erro;
+  }
+  return res.json();
+}
+
+// Repete a operação com backoff exponencial e jitter completo
+async function comRetry(operacao, { tentativas = 3, baseMs = 200, maxMs = 3000 } = {}) {
+  let ultimoErro;
+  for (let i = 0; i &lt; tentativas; i++) {
+    try {
+      return await operacao();
+    } catch (erro) {
+      ultimoErro = erro;
+      if (!ehTransitorio(erro) || i === tentativas - 1) break;
+      const teto = Math.min(maxMs, baseMs * 2 ** i);
+      await esperar(Math.random() * teto);
+    }
+  }
+  throw ultimoErro;
+}
+
+class CircuitBreaker {
+  // Guarda os limites e começa no estado fechado
+  constructor({ limiteFalhas = 5, reaberturaMs = 10000 } = {}) {
+    this.limiteFalhas = limiteFalhas;
+    this.reaberturaMs = reaberturaMs;
+    this.estado = ESTADOS.FECHADO;
+    this.falhas = 0;
+    this.abertoEm = 0;
+  }
+
+  // Executa a operação respeitando o estado atual do disjuntor
+  async executar(operacao, alternativa) {
+    if (this.estado === ESTADOS.ABERTO) {
+      if (Date.now() - this.abertoEm &lt; this.reaberturaMs) return alternativa();
+      this.estado = ESTADOS.SEMIABERTO;
+    }
+    try {
+      const resultado = await operacao();
+      this.registrarSucesso();
+      return resultado;
+    } catch (erro) {
+      this.registrarFalha();
+      return alternativa(erro);
+    }
+  }
+
+  // Zera o contador e fecha o circuito depois de um sucesso
+  registrarSucesso() {
+    this.falhas = 0;
+    this.estado = ESTADOS.FECHADO;
+  }
+
+  // Conta a falha e abre o circuito ao atingir o limite ou ao falhar no teste semiaberto
+  registrarFalha() {
+    this.falhas += 1;
+    if (this.estado === ESTADOS.SEMIABERTO || this.falhas &gt;= this.limiteFalhas) {
+      this.estado = ESTADOS.ABERTO;
+      this.abertoEm = Date.now();
+    }
+  }
+}
+
+module.exports = { fetchComTimeout, comRetry, CircuitBreaker, ehTransitorio };
+// Fim de resiliencia.js</pre>
+        <h2>frete.service.js</h2>
+        <pre>// Início: serviço de frete da Casa Ipê protegido por timeout, retry e disjuntor
+const { fetchComTimeout, comRetry, CircuitBreaker } = require('./resiliencia');
+
+const FRETE_URL = process.env.FRETE_URL || 'http://localhost:4000/frete';
+const disjuntor = new CircuitBreaker({ limiteFalhas: 5, reaberturaMs: 10000 });
+
+// Valor padrão usado quando o fornecedor não responde
+function freteEstimado(cep) {
+  return { cep, valor: 29.9, prazoDias: 7, estimado: true };
+}
+
+// Consulta o frete real e cai para a estimativa se o fornecedor falhar
+async function calcularFrete(cep) {
+  return disjuntor.executar(
+    () =&gt; comRetry(() =&gt; fetchComTimeout(`${FRETE_URL}?cep=${encodeURIComponent(cep)}`, { timeoutMs: 2000 })),
+    () =&gt; freteEstimado(cep)
+  );
+}
+
+module.exports = { calcularFrete, disjuntor };
+// Fim de frete.service.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Suba um servidor falso de frete na porta 4000 que atrasa e falha aleatoriamente</li>
+            <li>Chame <code>calcularFrete('36000-000')</code> em um laço de 50 iterações e imprima <code>disjuntor.estado</code> a cada volta</li>
+            <li>Desligue o servidor falso no meio do laço e observe a troca para <code>aberto</code></li>
+            <li>Religue e espere 10 segundos para ver o estado <code>semiaberto</code> voltar a <code>fechado</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O retry fica dentro do disjuntor: uma chamada com três tentativas conta como uma falha só.</li>
+            <li>Status 400 e 404 não são repetidos, porque tentar de novo não muda uma requisição errada.</li>
+            <li>No estado aberto a resposta é imediata e marcada como <code>estimado: true</code>, o que permite à interface avisar o cliente.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

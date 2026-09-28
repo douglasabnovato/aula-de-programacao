@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Planilha de Fluxo Pessoal | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Planilha de Fluxo Pessoal</h1>
+        <p class="subtitulo">Aula 48 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Duas semanas de registro de fluxo do Rafa, com cycle time por tamanho, fator de correção de estimativa e a regra que ele passou a usar para prometer prazos.</p>
+        </div>
+        <h2>fluxo-pessoal.csv</h2>
+        <pre>tarefa,tamanho,estimativa_h,inicio,fim,real_h,interrupcoes
+integrar pix,G,8,2026-09-14,2026-09-17,13,9
+testes pagamento,M,4,2026-09-16,2026-09-18,5,4
+bug cupom,P,3,2026-09-15,2026-09-15,2,1
+filtro de pedidos,M,5,2026-09-21,2026-09-23,7,3
+exportar csv,P,2,2026-09-22,2026-09-22,2,0
+pagina de relatorio,G,10,2026-09-22,2026-09-25,14,5
+</pre>
+        <h2>analise.md</h2>
+        <pre># Análise — 2 semanas
+
+## Cycle time médio (dias corridos entre início e fim, contando o dia de início)
+| Tamanho | Tarefas | Média |
+|---------|---------|-------|
+| P       | 2       | 1     |
+| M       | 2       | 3     |
+| G       | 2       | 4     |
+
+## Fator de correção (real / estimativa)
+Semana 1: (13/8 + 5/4 + 2/3) / 3 = 1,18
+Semana 2: (7/5 + 2/2 + 14/10) / 3 = 1,27
+Média: 1,22 -&gt; estimo cerca de 20% a menos do que levo.
+
+## Dia sem limite de WIP (teste)
+Tarefas abertas: 6 | Terminadas: 1
+Dia com limite de 2: Terminadas: 3
+
+## Regra adotada
+- Nunca mais de 2 tarefas abertas.
+- Prazo = estimativa x 1,2, arredondado para o dia seguinte.
+- Tarefa G é quebrada em M antes de prometer data.
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Classifique o tamanho antes de estimar em horas.</li>
+            <li>Registre fim e horas reais no mesmo dia.</li>
+            <li>Depois de duas semanas, calcule o fator e crie sua regra.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>As tarefas G concentram o erro e as interrupções.</li>
+            <li>O dia sem limite parecia mais produtivo e terminou menos.</li>
+            <li>A regra de prazo nasce do dado, não da vontade de agradar.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

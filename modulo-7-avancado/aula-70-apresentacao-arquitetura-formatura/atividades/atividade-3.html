@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Entrega Final e Plano de 90 Dias — Modelo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Checklist de Entrega Final e Plano de 90 Dias — Modelo</h1>
+        <p class="subtitulo">Aula 70 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O checklist que o instrutor usa para conferir a entrega final do Módulo 7 e um plano de 90 dias preenchido como exemplo para a direção escolhida.</p>
+        </div>
+        <h2>Checklist de entrega final</h2>
+        <ul>
+            <li>README com problema, solução e decisões principais legíveis em 30 segundos.</li>
+            <li><code>docs/arquitetura.md</code> com diagramas C4 de contexto e contêineres.</li>
+            <li>Pelo menos três ADRs em <code>docs/adr/</code>, um deles de decisão revista.</li>
+            <li>Pipeline de CI verde com lint, testes, auditoria de dependências e varredura de segredos.</li>
+            <li>Teste de carga com resultado registrado e limite atual escrito.</li>
+            <li>SLO definido com orçamento de erro e política.</li>
+            <li>Modelo de ameaças com as cinco maiores ameaças mitigadas ou aceitas.</li>
+            <li>Suíte de avaliação com resultado registrado, se o projeto usar IA generativa.</li>
+            <li>Documentação publicada no GitHub Pages e link da gravação da defesa.</li>
+            <li>Issues abertas para o que ficou pendente, com rótulo e prioridade.</li>
+        </ul>
+        <h2>plano-90-dias.md</h2>
+        <pre>&lt;!-- Início: plano de 90 dias pós-formatura (exemplo para a direção consultoria) --&gt;
+# Plano de 90 Dias — Direção: Consultoria em Software
+
+## Objetivo
+Conduzir um diagnóstico técnico completo para um negócio real e publicar o processo.
+
+## Entregas
+| Mês | Entrega visível | Onde fica publicada | Data |
+|-----|-----------------|---------------------|------|
+| 1 | Roteiro de descoberta e escopo aplicados a um pequeno negócio da região | Repositório `diagnostico-caso-1` (dados anonimizados) | 30/10 |
+| 2 | Relatório de diagnóstico com notas por dimensão e resumo executivo | Mesmo repositório + artigo técnico | 30/11 |
+| 3 | Proposta de estratégia 30-60-90 apresentada ao dono do negócio | Gravação da apresentação + ADR da recomendação | 20/12 |
+
+## Hábitos semanais
+- 2 horas de prática técnica no tema mais fraco da rubrica da banca.
+- 1 revisão de código em projeto de outra pessoa (turma ou código aberto).
+
+## Acompanhamento
+Parceiro de acompanhamento: colega da turma. Conversa quinzenal de 20 minutos. Primeira revisão com o instrutor em 30 dias.
+&lt;!-- Fim de plano-90-dias.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Todo item do checklist corresponde a uma aula do módulo; a entrega final é a soma do que foi construído, não um trabalho novo.</li>
+            <li>Cada entrega do plano tem data e endereço público: sem isso, o plano vira intenção.</li>
+            <li>Dados de cliente real, mesmo pequeno, ficam anonimizados antes de qualquer publicação.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

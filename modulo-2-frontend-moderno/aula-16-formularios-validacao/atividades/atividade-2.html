@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação por Campo com Mensagens Acessíveis — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Validação por Campo com Mensagens Acessíveis — Resposta</h1>
+        <p class="subtitulo">Aula 16 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O formulário do Bicho Feliz com regras de validação numa função pura (<code>validar</code>), mensagens que só aparecem depois que a pessoa sai do campo, ligação entre campo e mensagem via <code>aria-describedby</code> e botão bloqueado enquanto houver pendência. O botão ainda não envia: o envio é a próxima prática.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+form.card { max-width: 460px; }
+.campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+fieldset.campo { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+fieldset.campo label { display: flex; gap: 8px; align-items: center; }
+label.check { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+input[aria-invalid=&quot;true&quot;] { border-color: var(--erro); }
+.erro { color: var(--erro); font-size: .85rem; }
+.sucesso { color: var(--primary); font-size: .9rem; }
+pre.resumo { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: .8rem; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+
+// Início: src/utils/validar.js — regras de validação do agendamento
+const TELEFONE = /^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/;
+
+// Recebe os valores do formulário e devolve um objeto só com os campos inválidos
+function validar(valores) {
+  const erros = {};
+  if (valores.tutor.trim().length &lt; 3) {
+    erros.tutor = &#x27;Informe o nome com pelo menos 3 letras.&#x27;;
+  }
+  if (!TELEFONE.test(valores.telefone.trim())) {
+    erros.telefone = &#x27;Use o formato (32) 99999-0000.&#x27;;
+  }
+  if (!valores.termos) {
+    erros.termos = &#x27;É preciso aceitar as regras para agendar.&#x27;;
+  }
+  return erros;
+}
+// Fim de validar.js
+
+// Início: src/components/CampoTexto.jsx — campo com rótulo, erro e atributos ARIA
+// Mostra o erro só quando o campo já foi visitado e liga a mensagem ao input
+function CampoTexto({ id, rotulo, valor, erro, visivel, onChange, onBlur, ...resto }) {
+  const mostrar = Boolean(visivel &amp;&amp; erro);
+  return (
+    &lt;div className=&quot;campo&quot;&gt;
+      &lt;label htmlFor={id}&gt;{rotulo}&lt;/label&gt;
+      &lt;input id={id} name={id} value={valor} onChange={onChange} onBlur={onBlur}
+        aria-invalid={mostrar} aria-describedby={mostrar ? `erro-${id}` : undefined} {...resto} /&gt;
+      {mostrar &amp;&amp; &lt;span id={`erro-${id}`} className=&quot;erro&quot;&gt;{erro}&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+}
+// Fim de CampoTexto.jsx
+
+// Início: src/components/FormAgendamento.jsx — validação por campo
+
+const inicial = { tutor: &#x27;&#x27;, telefone: &#x27;&#x27;, porte: &#x27;pequeno&#x27;, termos: false };
+
+// Formulário que recalcula os erros a cada mudança e só os exibe nos campos visitados
+function FormAgendamento() {
+  const [form, setForm] = useState(inicial);
+  const [tocados, setTocados] = useState({});
+  const erros = validar(form);
+  const pendentes = Object.keys(erros).length;
+
+  // Atualiza o valor do campo alterado
+  function atualizar(evento) {
+    const { name, value, type, checked } = evento.target;
+    setForm({ ...form, [name]: type === &#x27;checkbox&#x27; ? checked : value });
+  }
+
+  // Marca o campo como visitado quando ele perde o foco
+  function marcarTocado(evento) {
+    setTocados({ ...tocados, [evento.target.name]: true });
+  }
+
+  return (
+    &lt;form className=&quot;card&quot; noValidate&gt;
+      &lt;h2&gt;Agendar banho — Bicho Feliz&lt;/h2&gt;
+      &lt;CampoTexto id=&quot;tutor&quot; rotulo=&quot;Nome do tutor&quot; valor={form.tutor} erro={erros.tutor}
+        visivel={tocados.tutor} onChange={atualizar} onBlur={marcarTocado} /&gt;
+      &lt;CampoTexto id=&quot;telefone&quot; rotulo=&quot;Telefone&quot; type=&quot;tel&quot; placeholder=&quot;(32) 99999-0000&quot;
+        valor={form.telefone} erro={erros.telefone} visivel={tocados.telefone}
+        onChange={atualizar} onBlur={marcarTocado} /&gt;
+      &lt;div className=&quot;campo&quot;&gt;
+        &lt;label htmlFor=&quot;porte&quot;&gt;Porte do cachorro&lt;/label&gt;
+        &lt;select id=&quot;porte&quot; name=&quot;porte&quot; value={form.porte} onChange={atualizar}&gt;
+          &lt;option value=&quot;pequeno&quot;&gt;Pequeno&lt;/option&gt;
+          &lt;option value=&quot;medio&quot;&gt;Médio&lt;/option&gt;
+          &lt;option value=&quot;grande&quot;&gt;Grande&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;label className=&quot;check&quot;&gt;
+        &lt;input type=&quot;checkbox&quot; name=&quot;termos&quot; checked={form.termos} onChange={atualizar} onBlur={marcarTocado}
+          aria-invalid={Boolean(tocados.termos &amp;&amp; erros.termos)}
+          aria-describedby={tocados.termos &amp;&amp; erros.termos ? &#x27;erro-termos&#x27; : undefined} /&gt;
+        Li e aceito as regras do pet shop
+      &lt;/label&gt;
+      {tocados.termos &amp;&amp; erros.termos &amp;&amp; &lt;p id=&quot;erro-termos&quot; className=&quot;erro&quot;&gt;{erros.termos}&lt;/p&gt;}
+      &lt;button type=&quot;button&quot; disabled={pendentes &gt; 0}&gt;Agendar&lt;/button&gt;
+      &lt;p className=&quot;muted&quot;&gt;{pendentes === 0 ? &#x27;Tudo certo para agendar.&#x27; : `${pendentes} campo(s) pendente(s).`}&lt;/p&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de FormAgendamento.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;FormAgendamento /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/utils/validar.js</h2>
+        <pre>// Início: src/utils/validar.js — regras de validação do agendamento
+const TELEFONE = /^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/;
+
+// Recebe os valores do formulário e devolve um objeto só com os campos inválidos
+export function validar(valores) {
+  const erros = {};
+  if (valores.tutor.trim().length &lt; 3) {
+    erros.tutor = 'Informe o nome com pelo menos 3 letras.';
+  }
+  if (!TELEFONE.test(valores.telefone.trim())) {
+    erros.telefone = 'Use o formato (32) 99999-0000.';
+  }
+  if (!valores.termos) {
+    erros.termos = 'É preciso aceitar as regras para agendar.';
+  }
+  return erros;
+}
+// Fim de validar.js</pre>
+        <h2>src/components/CampoTexto.jsx</h2>
+        <pre>// Início: src/components/CampoTexto.jsx — campo com rótulo, erro e atributos ARIA
+// Mostra o erro só quando o campo já foi visitado e liga a mensagem ao input
+export default function CampoTexto({ id, rotulo, valor, erro, visivel, onChange, onBlur, ...resto }) {
+  const mostrar = Boolean(visivel &amp;&amp; erro);
+  return (
+    &lt;div className="campo"&gt;
+      &lt;label htmlFor={id}&gt;{rotulo}&lt;/label&gt;
+      &lt;input id={id} name={id} value={valor} onChange={onChange} onBlur={onBlur}
+        aria-invalid={mostrar} aria-describedby={mostrar ? `erro-${id}` : undefined} {...resto} /&gt;
+      {mostrar &amp;&amp; &lt;span id={`erro-${id}`} className="erro"&gt;{erro}&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+}
+// Fim de CampoTexto.jsx</pre>
+        <h2>src/components/FormAgendamento.jsx</h2>
+        <pre>// Início: src/components/FormAgendamento.jsx — validação por campo
+import { useState } from 'react';
+import CampoTexto from './CampoTexto.jsx';
+import { validar } from '../utils/validar.js';
+
+const inicial = { tutor: '', telefone: '', porte: 'pequeno', termos: false };
+
+// Formulário que recalcula os erros a cada mudança e só os exibe nos campos visitados
+export default function FormAgendamento() {
+  const [form, setForm] = useState(inicial);
+  const [tocados, setTocados] = useState({});
+  const erros = validar(form);
+  const pendentes = Object.keys(erros).length;
+
+  // Atualiza o valor do campo alterado
+  function atualizar(evento) {
+    const { name, value, type, checked } = evento.target;
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  }
+
+  // Marca o campo como visitado quando ele perde o foco
+  function marcarTocado(evento) {
+    setTocados({ ...tocados, [evento.target.name]: true });
+  }
+
+  return (
+    &lt;form className="card" noValidate&gt;
+      &lt;h2&gt;Agendar banho — Bicho Feliz&lt;/h2&gt;
+      &lt;CampoTexto id="tutor" rotulo="Nome do tutor" valor={form.tutor} erro={erros.tutor}
+        visivel={tocados.tutor} onChange={atualizar} onBlur={marcarTocado} /&gt;
+      &lt;CampoTexto id="telefone" rotulo="Telefone" type="tel" placeholder="(32) 99999-0000"
+        valor={form.telefone} erro={erros.telefone} visivel={tocados.telefone}
+        onChange={atualizar} onBlur={marcarTocado} /&gt;
+      &lt;div className="campo"&gt;
+        &lt;label htmlFor="porte"&gt;Porte do cachorro&lt;/label&gt;
+        &lt;select id="porte" name="porte" value={form.porte} onChange={atualizar}&gt;
+          &lt;option value="pequeno"&gt;Pequeno&lt;/option&gt;
+          &lt;option value="medio"&gt;Médio&lt;/option&gt;
+          &lt;option value="grande"&gt;Grande&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;label className="check"&gt;
+        &lt;input type="checkbox" name="termos" checked={form.termos} onChange={atualizar} onBlur={marcarTocado}
+          aria-invalid={Boolean(tocados.termos &amp;&amp; erros.termos)}
+          aria-describedby={tocados.termos &amp;&amp; erros.termos ? 'erro-termos' : undefined} /&gt;
+        Li e aceito as regras do pet shop
+      &lt;/label&gt;
+      {tocados.termos &amp;&amp; erros.termos &amp;&amp; &lt;p id="erro-termos" className="erro"&gt;{erros.termos}&lt;/p&gt;}
+      &lt;button type="button" disabled={pendentes &gt; 0}&gt;Agendar&lt;/button&gt;
+      &lt;p className="muted"&gt;{pendentes === 0 ? 'Tudo certo para agendar.' : `${pendentes} campo(s) pendente(s).`}&lt;/p&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de FormAgendamento.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>No projeto da prática anterior, crie <code>src/utils/validar.js</code> e <code>src/components/CampoTexto.jsx</code></li>
+            <li>Substitua o <code>FormAgendamento.jsx</code></li>
+            <li><code>npm run dev</code>, clique no nome e saia sem digitar</li>
+            <li>Teste os telefones <code>(32) 99999-0000</code>, <code>32999990000</code> e <code>1234</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Os erros não são estado: são calculados a partir do formulário em cada renderização, então nunca ficam desatualizados.</li>
+            <li>Com o leitor de tela ligado, ao focar um campo inválido a mensagem é lida junto com o rótulo.</li>
+            <li>A validação no navegador melhora a experiência, mas não protege os dados: o servidor precisa validar de novo.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

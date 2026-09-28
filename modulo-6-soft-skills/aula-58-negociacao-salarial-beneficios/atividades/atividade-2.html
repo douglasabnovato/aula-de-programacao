@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador Anual CLT x PJ — Modelo e Código | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Comparador Anual CLT x PJ — Modelo e Código</h1>
+        <p class="subtitulo">Aula 58 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma função que compara as duas propostas no ano recebendo todos os valores como parâmetro. Nenhuma alíquota fica escrita no código: INSS, IR, impostos da empresa e custos vêm das tabelas vigentes e das cotações que você pesquisar. O exemplo de uso tem valores hipotéticos só para mostrar o cálculo, sem qualquer relação com salários de mercado.</p>
+        </div>
+        <h2>comparador.js</h2>
+        <pre>// Início: comparador anual entre proposta CLT e proposta PJ, sem alíquotas fixas no código
+
+// calcula o valor anual disponível na CLT a partir do salário e dos descontos anuais informados
+function anualCLT({ salario, inssAnual, irAnual, aliquotaFgts, beneficiosMensais }) {
+  const brutoAnual = salario * 12 + salario + salario / 3;
+  const descontos = inssAnual + irAnual;
+  const fgts = brutoAnual * aliquotaFgts;
+  const beneficios = beneficiosMensais * 12;
+  return { disponivel: brutoAnual - descontos + beneficios, fgts };
+}
+
+// calcula o valor anual disponível no PJ a partir do faturamento e dos custos informados
+function anualPJ({ valorMensal, mesesFaturados, aliquotaImpostoEmpresa, custosMensais, reservaMeses }) {
+  const faturamento = valorMensal * mesesFaturados;
+  const impostos = faturamento * aliquotaImpostoEmpresa;
+  const custos = custosMensais * 12;
+  const reserva = valorMensal * reservaMeses;
+  return { disponivel: faturamento - impostos - custos - reserva, reserva };
+}
+
+// imprime as duas propostas lado a lado e a diferença percentual
+function comparar(clt, pj) {
+  const a = anualCLT(clt);
+  const b = anualPJ(pj);
+  const diferenca = ((b.disponivel - a.disponivel) / a.disponivel) * 100;
+  console.log('CLT disponível no ano:', a.disponivel.toFixed(2), '| FGTS depositado:', a.fgts.toFixed(2));
+  console.log('PJ  disponível no ano:', b.disponivel.toFixed(2), '| reserva separada:', b.reserva.toFixed(2));
+  console.log('Diferença do PJ em relação à CLT:', diferenca.toFixed(1) + '%');
+}
+
+comparar(
+  { salario: 1000, inssAnual: 0, irAnual: 0, aliquotaFgts: 0.08, beneficiosMensais: 0 },
+  { valorMensal: 1500, mesesFaturados: 11, aliquotaImpostoEmpresa: 0, custosMensais: 0, reservaMeses: 0 }
+);
+// Fim de comparador.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Salve o código em <code>comparador.js</code>.</li>
+            <li>Substitua os valores hipotéticos pelos das propostas que você recebeu.</li>
+            <li>Preencha <code>inssAnual</code> e <code>irAnual</code> somando os descontos dos 12 salários, do 13º e das férias, calculados nas tabelas vigentes do INSS e da Receita.</li>
+            <li>Preencha a alíquota e os custos do PJ com a informação do seu contador ou da legislação do regime escolhido.</li>
+            <li><code>node comparador.js</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A alíquota de FGTS do exemplo é a prevista no caput do artigo 15 da Lei 8.036; confira no texto se o seu caso segue a regra geral.</li>
+            <li>Com todos os custos zerados, o PJ sempre parece melhor: é exatamente o erro que a prática quer mostrar.</li>
+            <li>O FGTS aparece separado porque é patrimônio do trabalhador, mas não é dinheiro disponível no mês.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

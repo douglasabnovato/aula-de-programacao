@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 30 | ByteClass</title>
+    <meta name="description" content="Esta aula fecha o módulo com o aluno planejando, construindo, publicando em hospedagem gratuita e defendendo uma API completa com Node, Express, Supabase, testes, documentação e segurança.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 30: Apresentação do Projeto Final de Backend</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ESCOPO, CONTRATO E ARQUITETURA DO PROJETO -->
+            <div class="card" id="card-1">
+                <h2>🧭 1. Escopo, Contrato e Arquitetura do Projeto</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A cooperativa fictícia Colheita Viva precisa de uma API para registrar entregas dos produtores, com login, foto do produto e aviso em tempo real para o galpão. O prazo é de duas semanas e o time é você. Como decidir o que entra, o que fica para depois e desenhar a API antes de escrever a primeira rota?</p>
+                </div>
+
+                <p>Projeto final não é juntar tudo o que foi visto; é escolher. Esta etapa fixa o problema, o escopo mínimo, o contrato OpenAPI e o modelo de dados antes do código, porque mudar um desenho custa minutos e mudar código pronto custa dias.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://learn.openapis.org/specification/" target="_blank" rel="noopener noreferrer">📄 The OpenAPI Specification Explained — OpenAPI Initiative</a>
+                        <span class="link-desc">Guia do contrato que você escreve antes do código, parte por parte.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/database/overview" target="_blank" rel="noopener noreferrer">📄 Database — Supabase Docs</a>
+                        <span class="link-desc">O que o banco do projeto oferece e onde cada recurso é configurado.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/API-Security/editions/2023/en/0x00-toc/" target="_blank" rel="noopener noreferrer">📄 OWASP API Security Top 10 (2023)</a>
+                        <span class="link-desc">A lista de riscos para revisar o escopo antes de construir.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes" target="_blank" rel="noopener noreferrer">📄 About READMEs — GitHub Docs</a>
+                        <span class="link-desc">O que o README do repositório precisa comunicar a quem chega pela primeira vez.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=e_dS43hgaVw" target="_blank" rel="noopener noreferrer">▶️ Contrato de API REST na Prática | Node.js, Express, MySQL e CRUD</a>
+                            <span class="link-desc">Desvendando o Código · 38:22 — Mostra como definir o contrato de uma API REST antes de implementar o CRUD.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Lf1cF4khiUA" target="_blank" rel="noopener noreferrer">▶️ API REST na Prática — O Que É e Como Funciona? (Explicado com Projeto!)</a>
+                            <span class="link-desc">Hashtag Dev · 18:17 — Explica o que é uma API REST e como ela se organiza, com um projeto de exemplo.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Documento de Escopo e Contrato da API</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o repositório <code>projeto-final-backend</code> com <code>README.md</code>, <code>.gitignore</code> e <code>.env.example</code>.</li>
+                            <li><strong>Problema em Uma Frase:</strong> escreva quem usa, o que precisa e por que hoje não funciona — sem citar tecnologia.</li>
+                            <li><strong>Escopo Mínimo:</strong> liste no máximo seis rotas obrigatórias e mova o restante para uma seção <em>Depois da entrega</em>.</li>
+                            <li><strong>Modelo de Dados:</strong> desenhe tabelas, chaves e relações em <code>db/schema.sql</code>, como na aula 25.</li>
+                            <li><strong>Contrato Primeiro:</strong> escreva <code>docs/openapi.yaml</code> com todas as rotas do escopo, incluindo as respostas de erro.</li>
+                            <li><strong>Erro Provocado:</strong> escreva o exemplo de resposta de cada rota e procure uma que dependa de campo ou tabela que não está no modelo; registre o furo e corrija o modelo.</li>
+                            <li><strong>Camadas:</strong> decida quais camadas da aula 23 o projeto usa e justifique cada uma em uma linha.</li>
+                            <li><strong>Riscos:</strong> aponte, pela lista OWASP API Top 10, os três riscos mais prováveis do seu projeto e a defesa de cada um.</li>
+                            <li><strong>Plano de Entrega:</strong> crie uma issue no GitHub por etapa, com critério de pronto.</li>
+                            <li><strong>Validação e Testes:</strong> apresente o documento ao instrutor, ajuste o escopo com o retorno e registre no README a versão aprovada.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CONSTRUÇÃO, QUALIDADE E DEPLOY GRATUITO -->
+            <div class="card" id="card-2">
+                <h2>🏗️ 2. Construção, Qualidade e Deploy Gratuito</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A API da Colheita Viva roda na máquina do desenvolvedor, mas a banca vai acessá-la pelo celular, de outra cidade, no dia da apresentação. O que não estiver publicado, testado e documentado não existe para quem avalia. Como chegar ao dia com a API no ar e a prova de que ela funciona?</p>
+                </div>
+
+                <p>Construir é repetir o ciclo do módulo em ordem: esquema, caso de uso, repositório, teste. O deploy numa hospedagem gratuita fecha a entrega, com as variáveis cadastradas no painel do serviço e nunca no repositório.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener noreferrer">📄 Deploy a Node Express App — Render Docs</a>
+                        <span class="link-desc">O passo a passo oficial para publicar uma API Express a partir do GitHub.</span>
+                    </li>
+                    <li>
+                        <a href="https://render.com/docs/your-first-deploy" target="_blank" rel="noopener noreferrer">📄 Your First Render Deploy — Render Docs</a>
+                        <span class="link-desc">Conta, conexão com o repositório e primeiro serviço no ar.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank" rel="noopener noreferrer">📄 The Practical Test Pyramid — Martin Fowler</a>
+                        <span class="link-desc">Para decidir quantos testes de cada tipo o projeto final precisa.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities/" target="_blank" rel="noopener noreferrer">📄 Auditing package dependencies — npm Docs</a>
+                        <span class="link-desc">A checagem de dependências que entra no checklist antes do deploy.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=pmXfvd6Zqg4" target="_blank" rel="noopener noreferrer">▶️ A melhor opção p/ DEPLOY Node.js GRATUITO!</a>
+                            <span class="link-desc">Rocketseat · 25:53 — Compara opções de deploy gratuito para uma API Node.js e mostra a publicação.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=0v74FFEPcrU" target="_blank" rel="noopener noreferrer">▶️ Como Hospedar seu Servidor Node gratis no Render</a>
+                            <span class="link-desc">Fernando Leonid · 5:32 — Mostra como hospedar um servidor Node.js gratuitamente no Render.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Checklist de Construção e Publicação no Render</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> proteja a branch <code>main</code> e trabalhe com uma branch por issue, integrando por pull request.</li>
+                            <li><strong>Ordem de Construção:</strong> para cada rota, siga: esquema Zod, caso de uso, repositório Supabase e teste Supertest — nessa ordem.</li>
+                            <li><strong>Middlewares Globais:</strong> monte a cadeia: request id, log, CORS por lista, helmet, rate limit e erro em Problem Details.</li>
+                            <li><strong>Testes:</strong> garanta que <code>npm test</code> cobre o caminho feliz e pelo menos um erro de cada rota.</li>
+                            <li><strong>Auditoria:</strong> rode <code>npm run seguranca</code> e resolva tudo que for de gravidade alta.</li>
+                            <li><strong>Porta do Ambiente:</strong> confirme que a API lê <code>process.env.PORT</code>: quem define a porta em produção é a hospedagem.</li>
+                            <li><strong>Deploy:</strong> crie um <em>Web Service</em> no plano gratuito do Render ligado ao repositório, com build <code>npm install</code> e start <code>node server.js</code>.</li>
+                            <li><strong>Erro Provocado:</strong> publique sem cadastrar as variáveis no painel e leia no log do Render a recusa da validação de ambiente da aula 29; cadastre e publique de novo.</li>
+                            <li><strong>Pós-Deploy:</strong> atualize <code>servers</code> no OpenAPI com a URL pública e confira <code>/docs</code> no ar.</li>
+                            <li><strong>Validação e Testes:</strong> rode a coleção de chamadas contra a URL pública e registre no README o link, o status de cada rota e a limitação do plano gratuito: a instância hiberna sem uso e demora a responder na primeira chamada.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: APRESENTAÇÃO E DEFESA TÉCNICA -->
+            <div class="card" id="card-3">
+                <h2>🎤 3. Apresentação e Defesa Técnica</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na banca da Colheita Viva, o avaliador pergunta: e se dois produtores enviarem a mesma entrega ao mesmo tempo? Quem só decorou a demonstração trava; quem sabe por que tomou cada decisão responde com o código aberto. Como preparar dez minutos que mostrem funcionamento e raciocínio?</p>
+                </div>
+
+                <p>A apresentação prova duas coisas: que a API funciona e que o autor entende por que ela é assim. Um roteiro com problema, demonstração ao vivo, decisões e limites conhecidos, mais o ensaio das perguntas prováveis, separa quem entregou de quem sabe defender o que entregou.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/en/advanced/best-practice-security/" target="_blank" rel="noopener noreferrer">📄 Production Best Practices: Security — Express</a>
+                        <span class="link-desc">A lista oficial para conferir, antes da banca, o que a API já cobre.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/index.html" target="_blank" rel="noopener noreferrer">📄 OWASP Cheat Sheet Series</a>
+                        <span class="link-desc">O índice de referências para justificar cada defesa com fonte.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/testing" target="_blank" rel="noopener noreferrer">📄 Software Testing Guide — Martin Fowler</a>
+                        <span class="link-desc">Vocabulário para explicar a estratégia de testes com precisão.</span>
+                    </li>
+                    <li>
+                        <a href="https://render.com/docs/web-services" target="_blank" rel="noopener noreferrer">📄 Web Services — Render Docs</a>
+                        <span class="link-desc">Como o serviço publicado funciona, para responder perguntas sobre o ambiente de produção.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=pjtda7-2ryw" target="_blank" rel="noopener noreferrer">▶️ Como apresentar seu PROJETO de programação para os recrutadores?</a>
+                            <span class="link-desc">Labenu · 3:08 — Como apresentar um projeto de programação de forma objetiva para quem vai avaliar o seu trabalho.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=tkPRMNbLsY4" target="_blank" rel="noopener noreferrer">▶️ Como fazer uma apresentação PODEROSA | com Joel Jota</a>
+                            <span class="link-desc">Joel Jota · 9:38 — Estrutura e postura para uma apresentação oral clara, aplicável à defesa do projeto.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Roteiro de Apresentação e Ensaio de Perguntas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> deixe abertas, em ordem, as abas da URL pública, do <code>/docs</code>, do repositório e do log do Render, e faça uma chamada antes para acordar a instância.</li>
+                            <li><strong>Abertura:</strong> apresente o problema da cooperativa em 30 segundos, sem falar de tecnologia.</li>
+                            <li><strong>Demonstração:</strong> mostre o fluxo principal ponta a ponta: login, criação de entrega com foto e aviso em tempo real no painel.</li>
+                            <li><strong>Erro de Propósito na Demo:</strong> envie uma entrada inválida e mostre o <code>400</code> em Problem Details apontando o campo — prova de que o erro foi pensado.</li>
+                            <li><strong>Decisões:</strong> explique três decisões de arquitetura, cada uma com a alternativa que foi descartada e o motivo.</li>
+                            <li><strong>Qualidade:</strong> mostre os testes rodando e o resultado da auditoria de segurança.</li>
+                            <li><strong>Limites Conhecidos:</strong> diga o que não foi feito, por que, e o que seria o próximo passo.</li>
+                            <li><strong>Erro Provocado no Ensaio:</strong> peça a um colega três perguntas difíceis e anote as que você não conseguiu responder com o código aberto; estude essas partes.</li>
+                            <li><strong>Tempo:</strong> ensaie com cronômetro até caber em dez minutos, com dois minutos de folga para perguntas.</li>
+                            <li><strong>Validação e Testes:</strong> apresente, receba a rubrica preenchida e registre no README o retorno recebido e os próximos passos do projeto.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

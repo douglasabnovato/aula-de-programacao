@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pull Request e Revisão — Modelo e Roteiro | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Pull Request e Revisão — Modelo e Roteiro</h1>
+        <p class="subtitulo">Aula 38 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O modelo de pull request do repositório, o roteiro que o revisor segue e um exemplo de teste que transforma um critério de aceite em verificação automática.</p>
+        </div>
+        <h2>.github/pull_request_template.md</h2>
+        <pre>&lt;!-- Início: pull_request_template.md — modelo carregado automaticamente em todo PR --&gt;
+## O que muda
+&lt;!-- Uma ou duas frases, do ponto de vista de quem usa o sistema. --&gt;
+
+## Issue relacionada
+Fecha #
+
+## Como testar
+1.
+2.
+
+## Checklist do autor
+- [ ] PR com uma única intenção e menos de 300 linhas alteradas
+- [ ] Testes novos ou atualizados para o comportamento alterado
+- [ ] Contrato (`docs/openapi.yaml`) atualizado se a rota mudou
+- [ ] Nenhum segredo, `.env` ou `console.log` de depuração no diff
+- [ ] Esteira verde
+&lt;!-- Fim de pull_request_template.md --&gt;</pre>
+        <h2>api/test/agendamentos.test.js</h2>
+        <pre>// Início: agendamentos.test.js — critérios de aceite da história 3 como testes
+const { test, before, after } = require('node:test');
+const assert = require('node:assert');
+const app = require('../src/app');
+const { gerarTokenDeTeste } = require('./apoio');
+
+let servidor;
+let base;
+let token;
+
+// sobe a API numa porta livre antes dos testes
+before(async () =&gt; {
+  servidor = app.listen(0);
+  base = `http://localhost:${servidor.address().port}`;
+  token = gerarTokenDeTeste();
+});
+
+// derruba a API ao final
+after(() =&gt; servidor.close());
+
+// monta a requisição de criação com o token
+function criar(corpo, comToken = true) {
+  return fetch(`${base}/agendamentos`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(comToken ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify(corpo)
+  });
+}
+
+const horario = {
+  profissionalId: 1,
+  clienteNome: 'Cliente Teste',
+  inicio: '2026-12-01T14:00:00Z',
+  fim: '2026-12-01T15:00:00Z'
+};
+
+// dado um horário livre, quando crio, então recebo 201
+test('cria agendamento em horário livre', async () =&gt; {
+  const resposta = await criar(horario);
+  assert.strictEqual(resposta.status, 201);
+});
+
+// dado um horário ocupado, quando crio outro sobreposto, então recebo 409
+test('recusa agendamento sobreposto', async () =&gt; {
+  const resposta = await criar({ ...horario, inicio: '2026-12-01T14:30:00Z', fim: '2026-12-01T15:30:00Z' });
+  assert.strictEqual(resposta.status, 409);
+  const corpo = await resposta.json();
+  assert.strictEqual(corpo.erro, 'Horário indisponível');
+});
+
+// sem token, a rota protegida responde 401
+test('exige autenticação', async () =&gt; {
+  const resposta = await criar(horario, false);
+  assert.strictEqual(resposta.status, 401);
+});
+// Fim de agendamentos.test.js</pre>
+        <h2>Roteiro do revisor</h2>
+        <ol>
+            <li>Leia a descrição e a issue antes do código: você sabe o que deveria mudar?</li>
+            <li>Rode os passos de Como testar na sua máquina.</li>
+            <li>Confira se os testes cobrem o critério de aceite e o erro principal.</li>
+            <li>Procure regra de negócio só no frontend ou só na API quando deveria estar nos dois lados.</li>
+            <li>Deixe ao menos um comentário em forma de pergunta ("o que acontece se...").</li>
+            <li>Marque comentários opcionais com o prefixo <code>Sugestão:</code> para o autor saber o que não bloqueia.</li>
+            <li>Aprove quando a mudança deixa o código melhor do que estava, mesmo sem ser perfeita.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O teste usa <code>app.listen(0)</code>: o sistema escolhe uma porta livre e a suíte não conflita com a API rodando.</li>
+            <li>Os testes dependem do banco de teste limpo; a esteira sobe um PostgreSQL só para isso.</li>
+            <li>Os nomes dos testes repetem o Dado, Quando, Então do escopo: quem lê o relatório da esteira entende o que quebrou.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

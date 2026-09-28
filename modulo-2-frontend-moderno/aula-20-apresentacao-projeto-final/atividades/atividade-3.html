@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro de Pitch Cronometrado e Rubrica de Avaliação — Modelo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Roteiro de Pitch Cronometrado e Rubrica de Avaliação — Modelo</h1>
+        <p class="subtitulo">Aula 20 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um roteiro de apresentação de 7 minutos preenchido para o projeto fictício Reserva Fácil, com perguntas prováveis e plano B, a rubrica usada pela banca com pesos e níveis, e uma ferramenta de ensaio com cronômetro por blocos e cálculo da nota pela rubrica.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.grade2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .grade2 { grid-template-columns: 1fr; } }
+.campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+textarea { min-height: 54px; resize: vertical; }
+pre.md { white-space: pre-wrap; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: .8rem; max-height: 420px; overflow: auto; }
+.barra { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 6px 0 12px; }
+.barra div { height: 100%; background: var(--primary); transition: width .2s; }
+.item { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.item input[type=text] { grid-column: 2; font-size: .85rem; }
+.ok { color: var(--primary); }
+.estouro { color: var(--erro); }
+.relogio { font-size: 2.4rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.blocos { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.blocos span { border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: .8rem; }
+.blocos span.atual { border-color: var(--primary); color: var(--primary); }
+.blocos span.passou { opacity: .5; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+td, th { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); }
+.linha { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState, useEffect } = React;
+
+// Início: ensaio da apresentação — cronômetro por blocos e rubrica com nota calculada
+const BLOCOS = [
+  { nome: &#x27;Abertura&#x27;, segundos: 60 },
+  { nome: &#x27;Demonstração&#x27;, segundos: 180 },
+  { nome: &#x27;Decisão técnica&#x27;, segundos: 120 },
+  { nome: &#x27;Fechamento&#x27;, segundos: 60 },
+];
+const TOTAL = BLOCOS.reduce((s, b) =&gt; s + b.segundos, 0);
+
+const CRITERIOS = [
+  { nome: &#x27;Fluxo principal no link publicado&#x27;, peso: 3 },
+  { nome: &#x27;Requisitos do Módulo 2 presentes&#x27;, peso: 3 },
+  { nome: &#x27;Organização do código e do repositório&#x27;, peso: 2 },
+  { nome: &#x27;Clareza da apresentação no tempo&#x27;, peso: 1 },
+  { nome: &#x27;Defesa das decisões técnicas&#x27;, peso: 1 },
+];
+
+// Formata segundos como mm:ss
+function mmss(total) {
+  const s = Math.abs(total);
+  return `${total &lt; 0 ? &#x27;+&#x27; : &#x27;&#x27;}${String(Math.floor(s / 60)).padStart(2, &#x27;0&#x27;)}:${String(s % 60).padStart(2, &#x27;0&#x27;)}`;
+}
+
+// Descobre em qual bloco do roteiro o tempo decorrido está
+function blocoAtual(decorrido) {
+  let acumulado = 0;
+  for (let i = 0; i &lt; BLOCOS.length; i += 1) {
+    acumulado += BLOCOS[i].segundos;
+    if (decorrido &lt; acumulado) return i;
+  }
+  return BLOCOS.length;
+}
+
+// Cronômetro do ensaio, com opção de acelerar para testar o roteiro
+function Cronometro() {
+  const [decorrido, setDecorrido] = useState(0);
+  const [rodando, setRodando] = useState(false);
+  const [rapido, setRapido] = useState(false);
+
+  useEffect(() =&gt; {
+    if (!rodando) return undefined;
+    const id = setInterval(() =&gt; setDecorrido((d) =&gt; d + 1), rapido ? 100 : 1000);
+    return () =&gt; clearInterval(id);
+  }, [rodando, rapido]);
+
+  const atual = blocoAtual(decorrido);
+  const restante = TOTAL - decorrido;
+  return (
+    &lt;section className=&quot;card&quot;&gt;
+      &lt;h2&gt;Ensaio cronometrado (7 min)&lt;/h2&gt;
+      &lt;p className={`relogio ${restante &lt; 0 ? &#x27;estouro&#x27; : &#x27;&#x27;}`}&gt;{mmss(restante)}&lt;/p&gt;
+      &lt;div className=&quot;blocos&quot;&gt;
+        {BLOCOS.map((b, i) =&gt; (
+          &lt;span key={b.nome} className={i === atual ? &#x27;atual&#x27; : i &lt; atual ? &#x27;passou&#x27; : &#x27;&#x27;}&gt;{b.nome} · {b.segundos / 60} min&lt;/span&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;p&gt;{atual &lt; BLOCOS.length ? `Agora: ${BLOCOS[atual].nome}` : &#x27;Tempo esgotado: feche em uma frase.&#x27;}&lt;/p&gt;
+      &lt;div className=&quot;linha&quot;&gt;
+        &lt;button onClick={() =&gt; setRodando(!rodando)}&gt;{rodando ? &#x27;Pausar&#x27; : &#x27;Iniciar&#x27;}&lt;/button&gt;
+        &lt;button className=&quot;secundario&quot; onClick={() =&gt; { setRodando(false); setDecorrido(0); }}&gt;Zerar&lt;/button&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; checked={rapido} onChange={() =&gt; setRapido(!rapido)} /&gt; Ensaio acelerado (10×)&lt;/label&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+
+// Rubrica com pontuação de 0 a 4 por critério e nota final de 0 a 10
+function Rubrica() {
+  const [pontos, setPontos] = useState(CRITERIOS.map(() =&gt; 0));
+  const somaPesos = CRITERIOS.reduce((s, c) =&gt; s + c.peso, 0);
+  const obtido = CRITERIOS.reduce((s, c, i) =&gt; s + c.peso * pontos[i], 0);
+  const nota = ((obtido / (somaPesos * 4)) * 10).toFixed(1);
+
+  // Registra a pontuação de um critério
+  function pontuar(indice, valor) {
+    setPontos((atuais) =&gt; atuais.map((p, i) =&gt; (i === indice ? Number(valor) : p)));
+  }
+
+  return (
+    &lt;section className=&quot;card&quot;&gt;
+      &lt;h2&gt;Rubrica de avaliação&lt;/h2&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Critério&lt;/th&gt;&lt;th&gt;Peso&lt;/th&gt;&lt;th&gt;Pontos&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          {CRITERIOS.map((c, i) =&gt; (
+            &lt;tr key={c.nome}&gt;
+              &lt;td&gt;{c.nome}&lt;/td&gt;
+              &lt;td&gt;{c.peso}&lt;/td&gt;
+              &lt;td&gt;
+                &lt;select aria-label={`Pontos: ${c.nome}`} value={pontos[i]} onChange={(e) =&gt; pontuar(i, e.target.value)}&gt;
+                  {[0, 1, 2, 3, 4].map((v) =&gt; &lt;option key={v} value={v}&gt;{v}&lt;/option&gt;)}
+                &lt;/select&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          ))}
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      &lt;p style={{ marginTop: 12 }}&gt;&lt;strong&gt;Nota: {nota}&lt;/strong&gt; &lt;span className=&quot;muted&quot;&gt;(soma de peso × pontos ÷ {somaPesos * 4} × 10)&lt;/span&gt;&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+
+// Página de ensaio com cronômetro e rubrica lado a lado
+function App() {
+  return (
+    &lt;div className=&quot;grade2&quot;&gt;
+      &lt;Cronometro /&gt;
+      &lt;Rubrica /&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim do ensaio da apresentação
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>docs/roteiro-apresentacao.md</h2>
+        <pre>&lt;!-- Início: docs/roteiro-apresentacao.md — roteiro de 7 minutos (exemplo preenchido) --&gt;
+# Roteiro — Reserva Fácil
+
+## 1. Abertura (1 min)
+"O Ladeira Hub tem três salas e reservas por mensagem. Toda semana duas pessoas chegam para o mesmo horário.
+O Reserva Fácil mostra a agenda de cada sala e não deixa reservar um horário ocupado."
+
+## 2. Demonstração (3 min) — no link publicado
+1. Abrir a agenda da Sala 2 e mudar a data (mostrar a URL mudando)
+2. Tentar reservar um horário ocupado e mostrar a mensagem de conflito
+3. Reservar um horário livre e ver a reserva em Minhas reservas
+4. Recarregar a página numa rota interna
+
+## 3. Decisão técnica (2 min)
+Usuário logado em Context em vez de props: o dado era usado em quatro níveis e dois deles só repassavam.
+Alternativa descartada: elevar o estado e passar por props. Custo aceito: todo consumidor renderiza quando o usuário muda.
+
+## 4. Fechamento (1 min)
+Limitação: login simulado. Próximo passo: autenticação real e aviso por e-mail.
+
+## Perguntas prováveis
+- Por que Context e não props?
+- O que acontece se a API cair durante uma reserva?
+- Por que recarregar uma rota interna não dá 404?
+- Como uma pessoa que usa só teclado faz uma reserva?
+- O que você faria diferente se começasse hoje?
+
+## Plano B
+Vídeo de 2 minutos do fluxo principal e prints no README, caso a internet falhe.
+&lt;!-- Fim de roteiro-apresentacao.md --&gt;</pre>
+        <h2>docs/rubrica.md</h2>
+        <pre>&lt;!-- Início: docs/rubrica.md — rubrica de avaliação do projeto final --&gt;
+| Critério | Peso | 0 | 2 | 4 |
+|---|---|---|---|---|
+| Fluxo principal funcionando no link publicado | 3 | não abre | abre com falhas | ponta a ponta sem erro |
+| Requisitos do Módulo 2 presentes | 3 | até 2 | 3 ou 4 | os 5 |
+| Organização do código e do repositório | 2 | arquivo único | pastas sem padrão | pastas por responsabilidade, PRs e README |
+| Clareza da apresentação no tempo | 1 | passou de 9 min | entre 7 e 9 min | até 7 min com roteiro |
+| Defesa das decisões técnicas | 1 | não explica | explica sem alternativa | explica com alternativa e custo |
+
+Nota final = soma(peso × pontos) ÷ 40 × 10
+&lt;!-- Fim de rubrica.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Reescreva o roteiro com o seu projeto, mantendo os quatro blocos e os tempos</li>
+            <li>Ensaie com o cronômetro abaixo; use o modo acelerado só para conferir a sequência dos blocos</li>
+            <li>Peça a um colega para pontuar o ensaio na rubrica e anote a nota</li>
+            <li>Ajuste o roteiro e repita até terminar dentro do tempo com a nota que você quer</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A instalação do projeto não entra no roteiro: a banca vê o sistema no link publicado.</li>
+            <li>A decisão técnica tem três partes: o que escolheu, o que descartou e o custo aceito.</li>
+            <li>A rubrica é conhecida antes da apresentação; ensaiar contra ela tira a surpresa da nota.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

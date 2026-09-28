@@ -32,6 +32,10 @@
             <!-- TEMA 1: TOKENS: O DESIGN VIRA VARIÁVEL -->
             <div class="card" id="card-1">
                 <h2>🎨 1. Tokens: o Design Vira Variável</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O projeto fictício Painel Verde tem 43 cores diferentes escritas à mão no CSS, várias quase iguais, e o cliente pediu um modo escuro para a semana que vem. Trocar cor por cor levaria dias e esqueceria alguma. Como reorganizar as cores para que o tema inteiro mude alterando poucas linhas?</p>
+                </div>
                 <p>Um design system começa muito antes de uma biblioteca de componentes. Começa quando a cor deixa de ser escrita à mão em 40 lugares e passa a ter nome.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=N7qP_eBhXOg" target="_blank" rel="noopener noreferrer">▶️ O básico sobre Design Tokens</a>
+                            <span class="link-desc">Eduardo Amaral - UX Design · 21:47 — Explica o que são design tokens e como eles transformam decisões de design em variáveis.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=rHJ_xSUTx0Q" target="_blank" rel="noopener noreferrer">▶️ Utilizando variáveis do CSS para criar light e dark mode - WDEV</a>
+                            <span class="link-desc">WDEV · 23:42 — Mostra como usar variáveis CSS para centralizar cores e alternar entre tema claro e escuro.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: ACESSIBILIDADE: O MÍNIMO QUE NÃO É OPCIONAL -->
             <div class="card" id="card-2">
                 <h2>♿ 2. Acessibilidade: o Mínimo que Não é Opcional</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Uma aluna que navega só pelo teclado tentou se inscrever no site fictício da Feira Tech JF e ficou presa num botão feito com div: o foco sumia e o formulário não enviava. O time achava que acessibilidade era um projeto caro para depois. Quais correções simples no código tornam a tela usável sem mouse ainda hoje?</p>
+                </div>
                 <p>Acessibilidade tem fama de tema difícil e caro. A maior parte do ganho vem de quatro coisas simples que já deveriam estar no código: HTML semântico, foco visível, rótulo e contraste.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=zWARLxSSDHI" target="_blank" rel="noopener noreferrer">▶️ Como usar acessibilidade web no seu projeto front end na prática!</a>
+                            <span class="link-desc">Rafaella Ballerini · 12:43 — Mostra como aplicar acessibilidade web na prática num projeto front-end.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JS13yObcBG8" target="_blank" rel="noopener noreferrer">▶️ Acessibilidade - Visão Geral - WCAG - Chrome Lighthouse</a>
+                            <span class="link-desc">Thiago Jabur · 15:04 — Apresenta uma visão geral da WCAG e como auditar acessibilidade com o Lighthouse.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: DO TOKEN AO COMPONENTE REUTILIZÁVEL -->
             <div class="card" id="card-3">
                 <h2>🧩 3. Do Token ao Componente Reutilizável</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No sistema fictício Agenda Clínica, cada tela tem um botão "Salvar" copiado e colado com pequenas diferenças: um não tem foco visível, outro não mostra que está carregando, outro fica clicável quando deveria estar desabilitado. Como transformar esse botão num componente único, com todos os estados definidos e testáveis?</p>
+                </div>
                 <p>Com tokens definidos e acessibilidade no lugar, o componente deixa de ser um pedaço de HTML copiado e vira uma peça com contrato: o que recebe, o que faz, quais estados tem.</p>
 
                 <ul class="links-list">
@@ -164,7 +194,7 @@
                         <span class="link-desc">O que um botão precisa ter para funcionar com teclado e leitor de tela.</span>
                     </li>
                     <li>
-                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS/:focus-visible" target="_blank" rel="noopener noreferrer">📄 :focus-visible — MDN</a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible" target="_blank" rel="noopener noreferrer">📄 :focus-visible — MDN</a>
                         <span class="link-desc">Como mostrar o foco para quem navega por teclado sem poluir para quem usa mouse.</span>
                     </li>
                     <li>
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=90y5707fJbI" target="_blank" rel="noopener noreferrer">▶️ O DESIGN SYSTEM DA ROCKETSEAT (DA UI AO CÓDIGO)</a>
+                            <span class="link-desc">Rocketseat · 52:20 — Mostra como um design system sai da UI e vira componentes reutilizáveis em código.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=72B5msdJv48" target="_blank" rel="noopener noreferrer">▶️ BOTÕES em UI DESIGN – Componentes Design</a>
+                            <span class="link-desc">Willian Matiola · 5:11 — Explica a anatomia e os estados de um componente de botão num design system.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

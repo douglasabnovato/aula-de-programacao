@@ -32,6 +32,10 @@
             <!-- TEMA 1: IMAGEM, CONTÊINER E O PROBLEMA QUE ISSO RESOLVE -->
             <div class="card" id="card-1">
                 <h2>📦 1. Imagem, Contêiner e o Problema que Isso Resolve</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A escola fictícia CódigoMinas recebe alunos com Windows, macOS e Linux, e a mesma API funciona em uns e quebra em outros por versão diferente do Node. Instalar tudo à mão em cada máquina leva uma aula inteira. O que é um contêiner e por que ele sobe em segundos quando uma máquina virtual levaria minutos?</p>
+                </div>
                 <p>Contêiner não é máquina virtual. Entender a diferença explica por que ele sobe em segundos e por que a imagem precisa ser construída de forma enxuta.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ntbpIfS44Gw" target="_blank" rel="noopener noreferrer">▶️ O mínimo que você precisa saber sobre Docker!</a>
+                            <span class="link-desc">Diolinux · 13:57 — Explica o que é Docker, o que é um contêiner e por que ele não é uma máquina virtual.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=KNdVESwPhN8" target="_blank" rel="noopener noreferrer">▶️ Você NÃO sabe Docker se não entender isso: A Teoria Fundamental (Imagem vs Container) - Aula #04</a>
+                            <span class="link-desc">CFBCursos · 11:36 — Explica a diferença entre imagem e contêiner, a base teórica do Docker.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: ESCREVENDO O DOCKERFILE DA SUA API -->
             <div class="card" id="card-2">
                 <h2>📝 2. Escrevendo o Dockerfile da Sua API</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A equipe da CódigoMinas gera a imagem da API a cada alteração, e cada build leva três minutos porque reinstala todas as dependências mesmo quando só uma linha do código mudou. Como escrever o Dockerfile para que a mudança de código não refaça o que não mudou?</p>
+                </div>
                 <p>Cada linha do Dockerfile é uma camada em cache. A ordem das instruções decide se o build leva três segundos ou três minutos a cada alteração de código.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7rqavBlLFbg" target="_blank" rel="noopener noreferrer">▶️ Dockerizando aplicações Node.js 📦🚀</a>
+                            <span class="link-desc">Waldemar Neto - Dev Lab · 36:41 — Mostra como escrever um Dockerfile para uma aplicação Node.js e gerar a imagem.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=TvkgHtJNxFE" target="_blank" rel="noopener noreferrer">▶️ NodeJS Docker, como utilizar</a>
+                            <span class="link-desc">Programando Soluções · 11:04 — Demonstra como colocar uma aplicação Node.js para rodar dentro de um contêiner Docker.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: VOLUMES, VARIÁVEIS E O CONTÊINER QUE NÃO PERDE DADO -->
             <div class="card" id="card-3">
                 <h2>💾 3. Volumes, Variáveis e o Contêiner que Não Perde Dado</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A API da CódigoMinas roda em contêiner, mas toda vez que o contêiner é recriado as tarefas cadastradas desaparecem, e trocar a porta exige gerar uma imagem nova. Como guardar o dado fora do contêiner e mudar a configuração sem rebuild?</p>
+                </div>
                 <p>Contêiner é descartável por natureza: quando ele morre, o que estava dentro vai junto. Volume e variável de ambiente são o que separa um brinquedo de algo utilizável.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Hv5lsWqbVHI" target="_blank" rel="noopener noreferrer">▶️ 21 Volumes e Variáveis de Ambiente no Docker Compose</a>
+                            <span class="link-desc">Erudio · 5:47 — Mostra como declarar volumes e variáveis de ambiente para os serviços no Docker Compose.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=10YUI7KoBUg" target="_blank" rel="noopener noreferrer">▶️ O que são volumes Docker</a>
+                            <span class="link-desc">JLCP · 8:24 — Explica o que são volumes Docker e como eles mantêm os dados quando o contêiner é removido.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

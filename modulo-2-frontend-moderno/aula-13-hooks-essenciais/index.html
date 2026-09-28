@@ -7,10 +7,10 @@
     <title>Aula 13 | ByteClass</title>
     <!-- Importando a fonte moderna Inter para UI -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
-    <link rel="manifest" href="../../../assets/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
     <link rel="stylesheet" href="../../assets/aula.css" />
 </head>
 
@@ -18,7 +18,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="../../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
             <span class="logo-text">BYTECLASS</span>
         </div>
         <h1>Aula 13: Hooks Essenciais (useEffect e useRef)</h1>
@@ -31,6 +31,10 @@
             <!-- TEMA 1: CICLO DE VIDA E EFEITO COLATEAL -->
             <div class="card" id="card-1">
                 <h2>⚡ 1. Entendendo o Ciclo de Vida e o Efeito Colateral no React</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O painel fictício de atendimento da operadora Linha Viva mostra há quanto tempo a atendente está na tela da chamada atual. O cronômetro foi feito com setInterval solto no componente e, depois de abrir e fechar a tela algumas vezes, o tempo passa a contar em dobro. Como iniciar esse tipo de tarefa quando o componente aparece e encerrá-la quando ele sai?</p>
+                </div>
                 <p>Domine o conceito de efeitos colaterais (*side effects*) e aprenda a controlar o ciclo de vida de componentes funcionais com o `useEffect`.</p>
 
                 <ul class="links-list">
@@ -84,6 +88,10 @@
             <!-- TEMA 2: PERSISTÊNCIA LOCAL COM LOCALSTORAGE -->
             <div class="card" id="card-2">
                 <h2>💾 2. Persistência Local e Sincronização com o localStorage via useEffect</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A lista de tarefas das atendentes da Linha Viva some sempre que a página é recarregada ou o navegador fecha no meio do turno. Elas precisam que as pendências continuem lá na volta, sem servidor e sem login. Como guardar o estado no próprio navegador e recuperá-lo ao abrir a página?</p>
+                </div>
                 <p>Aprenda a sincronizar o estado reativo da aplicação com o armazenamento local do navegador para reter dados entre reloads.</p>
 
                 <ul class="links-list">
@@ -137,6 +145,10 @@
             <!-- TEMA 3: MANIPULAÇÃO DO DOM COM USEREF -->
             <div class="card" id="card-3">
                 <h2>🎯 3. Manipulando Referências Nativas do DOM com o Hook useRef</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No formulário de busca de clientes da Linha Viva, a atendente precisa clicar no campo antes de digitar a cada nova chamada, e a equipe quer contar as renderizações do componente sem que essa contagem cause novas renderizações. Nenhuma das duas coisas se resolve com useState. Como acessar o elemento real da página e guardar um valor que muda sem redesenhar a tela?</p>
+                </div>
                 <p>Compreenda a diferença entre o DOM Virtual e os nós reais, aprendendo a interagir imperativamente com elementos de tela.</p>
 
                 <ul class="links-list">

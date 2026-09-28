@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 69 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a conduzir a descoberta com um cliente, produzir um diagnóstico técnico baseado em evidências e transformar os achados numa estratégia priorizada com roadmap de 90 dias.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 69: Consultoria em Software: Diagnóstico e Estratégia Técnica</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ESCUTA E ESCOPO: ENTENDENDO O CLIENTE ANTES DO CÓDIGO -->
+            <div class="card" id="card-1">
+                <h2>🎧 1. Escuta e Escopo: Entendendo o Cliente Antes do Código</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O atacadista fictício Grupo Bom Grão contratou uma consultoria porque 'o sistema está lento e o time não entrega'. O diretor quer uma proposta de reescrita em duas semanas, o gerente de TI acha que o problema é falta de gente e os vendedores reclamam de pedidos duplicados. Antes de abrir qualquer repositório, como descobrir qual é o problema de negócio de verdade e combinar o que o diagnóstico vai e não vai cobrir?</p>
+                </div>
+
+                <p>Consultoria em software começa por escuta, não por opinião técnica. Entrevistas com papéis diferentes, perguntas sobre impacto no negócio e um escopo escrito evitam o erro mais caro da profissão: resolver com excelência o problema errado. Os frameworks de arquitetura bem estruturada servem de roteiro para não esquecer nenhuma dimensão.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener noreferrer">📄 Software Architecture Guide — Martin Fowler</a>
+                        <span class="link-desc">O que é arquitetura do ponto de vista de quem decide, útil para enquadrar a conversa com o cliente.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html" target="_blank" rel="noopener noreferrer">📄 Reliability Pillar — AWS Well-Architected</a>
+                        <span class="link-desc">Perguntas estruturadas sobre confiabilidade que viram roteiro de entrevista técnica.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/embracing-risk/" target="_blank" rel="noopener noreferrer">📄 Embracing Risk — Google SRE Book</a>
+                        <span class="link-desc">Como conversar com o negócio sobre quanto risco é aceitável, em vez de prometer perfeição.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App — em português</a>
+                        <span class="link-desc">Doze critérios operacionais que servem de checklist rápido na primeira visita.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=xEdGAC0qzgY" target="_blank" rel="noopener noreferrer">▶️ Levantamento de Requisitos: O Guia Definitivo para QUALQUER PROJETO na Programação</a>
+                            <span class="link-desc">O Novo Programador · 35:15 — Como conduzir o levantamento de requisitos com quem vai usar o sistema antes de propor qualquer solução.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=eeb4uuP7nhY" target="_blank" rel="noopener noreferrer">▶️ Curso Levantamento de Requisitos: Exemplo prático de entrevista | Aula demonsrativa</a>
+                            <span class="link-desc">DevMedia · 4:19 — Demonstra uma entrevista de levantamento de requisitos com um cliente.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Conduzindo a Descoberta de um Cliente Fictício</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> forme trios: um consultor, um cliente com o roteiro do Grupo Bom Grão e um observador que anota.</li>
+                            <li><strong>Mapa de Partes Interessadas:</strong> liste quem decide, quem usa, quem mantém e quem paga, e o que cada um considera sucesso.</li>
+                            <li><strong>Roteiro de Entrevista:</strong> escreva dez perguntas abertas, começando pelo negócio (o que custa caro hoje?) e terminando no técnico (como é feito um deploy?).</li>
+                            <li><strong>Primeira Entrevista:</strong> entreviste o diretor por 10 minutos sem sugerir nenhuma solução; o observador marca cada vez que o consultor opinar.</li>
+                            <li><strong>Erro Provocado:</strong> na segunda entrevista, com o gerente de TI, proponha uma solução no quinto minuto e observe como a conversa passa a girar em torno dela.</li>
+                            <li><strong>Separando Sintoma de Causa:</strong> para cada queixa (lentidão, duplicidade, atraso), escreva o sintoma, o impacto em dinheiro ou tempo e as causas possíveis.</li>
+                            <li><strong>Hipóteses:</strong> transforme as causas em hipóteses testáveis, cada uma com o dado que confirmaria ou descartaria.</li>
+                            <li><strong>Escopo Escrito:</strong> escreva o que o diagnóstico cobre, o que não cobre, as entregas, o prazo e o acesso necessário a código, logs e pessoas.</li>
+                            <li><strong>Validação com o Cliente:</strong> leia o escopo para o cliente e registre as correções que ele pedir.</li>
+                            <li><strong>Validação e Testes:</strong> compare as anotações do observador com o escopo final e registre no README quantas hipóteses vieram de cada papel entrevistado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: DIAGNÓSTICO TÉCNICO: ARQUITETURA, DÍVIDA E RISCOS -->
+            <div class="card" id="card-2">
+                <h2>🩺 2. Diagnóstico Técnico: Arquitetura, Dívida e Riscos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Com o escopo aprovado, a consultoria tem dez dias para avaliar o sistema do Grupo Bom Grão: um monolito PHP de oito anos, um banco MySQL sem réplica, deploy manual por FTP e três desenvolvedores. O relatório precisa convencer uma diretoria que não lê código. Como coletar evidências, dar nota a cada dimensão e apresentar riscos de forma que o negócio entenda o que está em jogo?</p>
+                </div>
+
+                <p>Um diagnóstico técnico confiável se apoia em evidência coletada (métricas, código, entrevistas, histórico de incidentes) e em critérios explícitos para cada dimensão: arquitetura, qualidade de código, entrega, operação, segurança e custo. O resultado é um relatório em que cada achado tem evidência, risco para o negócio e grau de urgência, reunindo o que foi estudado nas aulas 61 a 68.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/ConwaysLaw.html" target="_blank" rel="noopener noreferrer">📄 Conway's Law — Martin Fowler</a>
+                        <span class="link-desc">Por que o desenho do sistema reflete a organização, algo que todo diagnóstico precisa considerar.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/MicroservicePremium.html" target="_blank" rel="noopener noreferrer">📄 Microservice Premium — Martin Fowler</a>
+                        <span class="link-desc">O argumento para não recomendar microsserviços a uma equipe pequena sem a base operacional.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/well-architected/security/design-patterns" target="_blank" rel="noopener noreferrer">📄 Design patterns that support security — Azure Well-Architected</a>
+                        <span class="link-desc">Os padrões de arquitetura que sustentam a dimensão de segurança da avaliação.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/design-patterns" target="_blank" rel="noopener noreferrer">📄 Design patterns that support cost optimization — Azure Well-Architected</a>
+                        <span class="link-desc">Como avaliar custo como atributo de arquitetura e não só como fatura.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=kYx1QC1XZSo" target="_blank" rel="noopener noreferrer">▶️ Arquitetura de Software (Não é coisa de outro mundo) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 11:31 — Explica o que é arquitetura de software e quais aspectos observar ao avaliar um sistema.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=oedWxgAZc2A" target="_blank" rel="noopener noreferrer">▶️ Arquitetura de sistemas com Fabio Akita | #HipstersPontoTube</a>
+                            <span class="link-desc">Alura · 39:01 — Conversa sobre arquitetura de sistemas e as trocas envolvidas em decisões técnicas reais.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Produzindo o Relatório de Diagnóstico</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um projeto real da turma como sistema do cliente e crie <code>diagnostico/relatorio.md</code>.</li>
+                            <li><strong>Definindo as Dimensões:</strong> liste seis dimensões (arquitetura, código, entrega, operação, segurança, custo) e escreva o que significa nota 1, 3 e 5 em cada uma.</li>
+                            <li><strong>Coletando Evidência de Entrega:</strong> levante frequência de deploy, tempo entre commit e produção e quantos deploys causaram incidente.</li>
+                            <li><strong>Coletando Evidência de Código:</strong> rode o script de hotspots da aula 65 e a auditoria de dependências da aula 66 e salve as saídas.</li>
+                            <li><strong>Coletando Evidência de Operação:</strong> verifique se existem health checks, SLOs, alertas e backups testados, usando as aulas 64 e 67 como referência.</li>
+                            <li><strong>Erro Provocado:</strong> escreva um achado sem evidência, como 'o código é ruim', e peça a um colega que o conteste; reescreva com o dado que sustenta a afirmação.</li>
+                            <li><strong>Atribuindo Notas:</strong> dê a nota de cada dimensão citando a evidência e desenhe o resultado num gráfico de radar.</li>
+                            <li><strong>Traduzindo em Risco:</strong> para cada achado grave, escreva o impacto no negócio: dinheiro, cliente perdido, multa ou tempo parado.</li>
+                            <li><strong>Resumo Executivo:</strong> escreva uma página para a diretoria com os três riscos principais, sem jargão técnico.</li>
+                            <li><strong>Validação e Testes:</strong> entregue o resumo a alguém de fora da área e confirme que a pessoa consegue explicar os três riscos com as próprias palavras.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ESTRATÉGIA TÉCNICA E ROADMAP DE RECOMENDAÇÕES -->
+            <div class="card" id="card-3">
+                <h2>🧭 3. Estratégia Técnica e Roadmap de Recomendações</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O diagnóstico do Grupo Bom Grão mostrou onze problemas, e o diretor continua pedindo uma reescrita completa em microsserviços. O orçamento cobre seis meses de um time pequeno, e a operação não pode parar em nenhum dia. Como transformar os achados numa estratégia que entregue resultado a cada mês, com poucas apostas bem escolhidas, e defender por que a reescrita total não é o caminho?</p>
+                </div>
+
+                <p>Estratégia técnica é escolha: poucas iniciativas, ordenadas por impacto e esforço, com marcos que o negócio consegue verificar. Em sistemas legados, a substituição gradual (Strangler Fig) costuma vencer a reescrita total porque entrega valor cedo e reduz o risco de parar a operação. A recomendação final é registrada com as alternativas descartadas, como num ADR.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">📄 Strangler Fig Application — Martin Fowler</a>
+                        <span class="link-desc">A estratégia de substituir um sistema legado aos poucos, sem a grande reescrita.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig" target="_blank" rel="noopener noreferrer">📄 Strangler Fig pattern — Azure Architecture Center</a>
+                        <span class="link-desc">A implementação do padrão com uma fachada que desvia o tráfego parte por parte.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/well-architected/reliability/design-patterns" target="_blank" rel="noopener noreferrer">📄 Design patterns that support reliability — Azure Well-Architected</a>
+                        <span class="link-desc">Padrões que entram no roadmap quando o diagnóstico aponta risco de disponibilidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/design-patterns" target="_blank" rel="noopener noreferrer">📄 Design patterns that support operational excellence — Azure Well-Architected</a>
+                        <span class="link-desc">Padrões de automação e entrega que costumam ser as primeiras vitórias de um roadmap.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=mcJZeolpXLc" target="_blank" rel="noopener noreferrer">▶️ Strangler Fig Pattern (Padrão da Figueira Estranguladora)</a>
+                            <span class="link-desc">André Secco · 22:57 — Explica o padrão Strangler Fig para modernizar um sistema legado aos poucos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=92JBsFHC2Lw" target="_blank" rel="noopener noreferrer">▶️ Microservices Patterns na Prática -  Strangler Fig</a>
+                            <span class="link-desc">Giuliana Bezerra · 19:22 — Mostra na prática como aplicar o Strangler Fig na migração para microsserviços.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Montando a Proposta de Estratégia para o Cliente</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> use o relatório do tema anterior e crie <code>diagnostico/estrategia.md</code>.</li>
+                            <li><strong>Listando Iniciativas:</strong> para cada achado grave, escreva uma iniciativa que o resolva, com o resultado esperado em linguagem de negócio.</li>
+                            <li><strong>Estimando:</strong> dê a cada iniciativa uma nota de impacto e uma de esforço de 1 a 5, justificando as duas.</li>
+                            <li><strong>Matriz de Priorização:</strong> distribua as iniciativas na matriz impacto por esforço e marque as vitórias rápidas.</li>
+                            <li><strong>Avaliando a Reescrita:</strong> escreva a reescrita total como alternativa, com custo, prazo, risco e o momento em que entregaria o primeiro valor.</li>
+                            <li><strong>Erro Provocado:</strong> monte um roadmap com todas as onze iniciativas em paralelo e calcule quantas pessoas seriam necessárias; compare com o time real.</li>
+                            <li><strong>Escolhendo Poucas:</strong> reduza para no máximo quatro iniciativas no semestre e escreva por que as outras ficaram de fora.</li>
+                            <li><strong>Plano 30-60-90:</strong> distribua as escolhidas em marcos de 30, 60 e 90 dias, cada um com um indicador verificável pelo cliente.</li>
+                            <li><strong>Registro da Decisão:</strong> escreva a recomendação no formato ADR, com a reescrita total como alternativa descartada e o motivo.</li>
+                            <li><strong>Validação e Testes:</strong> apresente a proposta em 5 minutos para um colega no papel de diretor e registre as objeções que ele fizer e como você as respondeu.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

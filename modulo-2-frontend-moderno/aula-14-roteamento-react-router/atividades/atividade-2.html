@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo com Página de Detalhe e Filtro na URL — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Catálogo com Página de Detalhe e Filtro na URL — Resposta</h1>
+        <p class="subtitulo">Aula 14 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um catálogo em que <strong>uma única rota</strong> (<code>/livros/:id</code>) mostra qualquer livro, e o filtro de categoria fica guardado na query string (<code>?categoria=tecnico</code>), então o link filtrado pode ser copiado e compartilhado.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.endereco { background: var(--surface); border: 1px dashed var(--border); border-radius: 6px; padding: 6px 10px; font-size: .85rem; color: var(--muted); }
+.endereco code { color: var(--primary); }
+nav.menu { display: flex; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; flex-wrap: wrap; }
+nav.menu a { text-decoration: none; color: var(--text); }
+nav.menu a.ativo { color: var(--primary); font-weight: 700; border-bottom: 2px solid var(--primary); }
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filtros button.ativo { outline: 2px solid var(--text); }
+ul.lista { list-style: none; padding: 0; }
+ul.lista li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.conta { display: grid; grid-template-columns: 160px 1fr; gap: 16px; }
+.conta aside { display: flex; flex-direction: column; gap: 8px; border-right: 1px solid var(--border); padding-right: 12px; }
+.conta aside a { text-decoration: none; color: var(--text); }
+.conta aside a.ativo { color: var(--primary); font-weight: 700; }
+@media (max-width: 520px) { .conta { grid-template-columns: 1fr; } .conta aside { border-right: 0; flex-direction: row; } }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@remix-run/router@1.15.3/dist/router.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router@6.22.3/dist/umd/react-router.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router-dom@6.22.3/dist/umd/react-router-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+const { MemoryRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useParams, useNavigate, useSearchParams, useLocation } = ReactRouterDOM;
+
+// Início: src/data/livros.js — catálogo fictício da Livraria Ipê
+const livros = [
+  { id: 1, titulo: &#x27;O Rio das Mangueiras&#x27;, autora: &#x27;Clara Fontes&#x27;, categoria: &#x27;ficcao&#x27;, preco: 49.9 },
+  { id: 2, titulo: &#x27;JavaScript na Prática&#x27;, autora: &#x27;Renata Luz&#x27;, categoria: &#x27;tecnico&#x27;, preco: 89.0 },
+  { id: 3, titulo: &#x27;A Menina e o Tatu&#x27;, autora: &#x27;Inês Prado&#x27;, categoria: &#x27;infantil&#x27;, preco: 34.5 },
+  { id: 4, titulo: &#x27;Noites em Ibitipoca&#x27;, autora: &#x27;Marta Queiroz&#x27;, categoria: &#x27;ficcao&#x27;, preco: 52.0 },
+  { id: 5, titulo: &#x27;Banco de Dados sem Medo&#x27;, autora: &#x27;Paula Siqueira&#x27;, categoria: &#x27;tecnico&#x27;, preco: 95.0 },
+  { id: 6, titulo: &#x27;O Barco de Papel&#x27;, autora: &#x27;Lia Barros&#x27;, categoria: &#x27;infantil&#x27;, preco: 29.9 },
+];
+
+const categorias = [
+  { chave: &#x27;ficcao&#x27;, nome: &#x27;Ficção&#x27; },
+  { chave: &#x27;tecnico&#x27;, nome: &#x27;Técnicos&#x27; },
+  { chave: &#x27;infantil&#x27;, nome: &#x27;Infantis&#x27; },
+];
+// Fim de livros.js
+
+// Início: src/pages/Catalogo.jsx — lista com filtro guardado na URL
+
+// Lista os livros e filtra pela categoria lida da query string
+function Catalogo() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoria = searchParams.get(&#x27;categoria&#x27;);
+  const visiveis = categoria ? livros.filter((l) =&gt; l.categoria === categoria) : livros;
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Catálogo&lt;/h1&gt;
+      &lt;div className=&quot;filtros&quot;&gt;
+        &lt;button className={!categoria ? &#x27;ativo&#x27; : &#x27;&#x27;} onClick={() =&gt; setSearchParams({})}&gt;Todas&lt;/button&gt;
+        {categorias.map((c) =&gt; (
+          &lt;button key={c.chave} className={categoria === c.chave ? &#x27;ativo&#x27; : &#x27;&#x27;}
+            onClick={() =&gt; setSearchParams({ categoria: c.chave })}&gt;
+            {c.nome}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;ul className=&quot;lista&quot;&gt;
+        {visiveis.map((livro) =&gt; (
+          &lt;li key={livro.id}&gt;
+            &lt;Link to={`/livros/${livro.id}`}&gt;{livro.titulo}&lt;/Link&gt; — {livro.autora}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Catalogo.jsx
+
+// Início: src/pages/DetalheLivro.jsx — uma rota que atende qualquer livro
+
+// Lê o id da URL, busca o livro e trata o caso de id inexistente
+function DetalheLivro() {
+  const { id } = useParams();
+  const livro = livros.find((l) =&gt; l.id === Number(id));
+
+  if (!livro) {
+    return (
+      &lt;section&gt;
+        &lt;h1&gt;Livro não encontrado&lt;/h1&gt;
+        &lt;p&gt;Nenhum livro com o código {id}. &lt;Link to=&quot;/catalogo&quot;&gt;Voltar ao catálogo&lt;/Link&gt;&lt;/p&gt;
+      &lt;/section&gt;
+    );
+  }
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;{livro.titulo}&lt;/h1&gt;
+      &lt;p&gt;Autora: {livro.autora}&lt;/p&gt;
+      &lt;p&gt;Preço: {livro.preco.toLocaleString(&#x27;pt-BR&#x27;, { style: &#x27;currency&#x27;, currency: &#x27;BRL&#x27; })}&lt;/p&gt;
+      &lt;Link to={`/catalogo?categoria=${livro.categoria}`}&gt;Ver outros desta categoria&lt;/Link&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de DetalheLivro.jsx
+
+// Início: src/App.jsx — rotas do catálogo com segmento dinâmico
+
+// Componente raiz com a rota fixa do catálogo e a rota dinâmica do detalhe
+function App() {
+  return (
+    &lt;&gt;
+      &lt;nav className=&quot;menu&quot;&gt;
+        &lt;Link to=&quot;/catalogo&quot;&gt;Catálogo&lt;/Link&gt;
+        &lt;Link to=&quot;/livros/99&quot;&gt;Livro inexistente&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path=&quot;/catalogo&quot; element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path=&quot;/livros/:id&quot; element={&lt;DetalheLivro /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx
+
+// Barra que mostra o endereço atual (só no demo, porque o iframe não tem barra de endereço)
+function BarraEndereco() {
+  const local = useLocation();
+  return &lt;p className=&quot;endereco&quot;&gt;Endereço: &lt;code&gt;{local.pathname + local.search}&lt;/code&gt;&lt;/p&gt;;
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(
+  &lt;MemoryRouter initialEntries={[&#x27;/catalogo&#x27;]}&gt;
+    &lt;BarraEndereco /&gt;
+    &lt;App /&gt;
+  &lt;/MemoryRouter&gt;
+);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/data/livros.js</h2>
+        <pre>// Início: src/data/livros.js — catálogo fictício da Livraria Ipê
+export const livros = [
+  { id: 1, titulo: 'O Rio das Mangueiras', autora: 'Clara Fontes', categoria: 'ficcao', preco: 49.9 },
+  { id: 2, titulo: 'JavaScript na Prática', autora: 'Renata Luz', categoria: 'tecnico', preco: 89.0 },
+  { id: 3, titulo: 'A Menina e o Tatu', autora: 'Inês Prado', categoria: 'infantil', preco: 34.5 },
+  { id: 4, titulo: 'Noites em Ibitipoca', autora: 'Marta Queiroz', categoria: 'ficcao', preco: 52.0 },
+  { id: 5, titulo: 'Banco de Dados sem Medo', autora: 'Paula Siqueira', categoria: 'tecnico', preco: 95.0 },
+  { id: 6, titulo: 'O Barco de Papel', autora: 'Lia Barros', categoria: 'infantil', preco: 29.9 },
+];
+
+export const categorias = [
+  { chave: 'ficcao', nome: 'Ficção' },
+  { chave: 'tecnico', nome: 'Técnicos' },
+  { chave: 'infantil', nome: 'Infantis' },
+];
+// Fim de livros.js</pre>
+        <h2>src/pages/Catalogo.jsx</h2>
+        <pre>// Início: src/pages/Catalogo.jsx — lista com filtro guardado na URL
+import { Link, useSearchParams } from 'react-router';
+import { livros, categorias } from '../data/livros.js';
+
+// Lista os livros e filtra pela categoria lida da query string
+export default function Catalogo() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoria = searchParams.get('categoria');
+  const visiveis = categoria ? livros.filter((l) =&gt; l.categoria === categoria) : livros;
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Catálogo&lt;/h1&gt;
+      &lt;div className="filtros"&gt;
+        &lt;button className={!categoria ? 'ativo' : ''} onClick={() =&gt; setSearchParams({})}&gt;Todas&lt;/button&gt;
+        {categorias.map((c) =&gt; (
+          &lt;button key={c.chave} className={categoria === c.chave ? 'ativo' : ''}
+            onClick={() =&gt; setSearchParams({ categoria: c.chave })}&gt;
+            {c.nome}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;ul className="lista"&gt;
+        {visiveis.map((livro) =&gt; (
+          &lt;li key={livro.id}&gt;
+            &lt;Link to={`/livros/${livro.id}`}&gt;{livro.titulo}&lt;/Link&gt; — {livro.autora}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Catalogo.jsx</pre>
+        <h2>src/pages/DetalheLivro.jsx</h2>
+        <pre>// Início: src/pages/DetalheLivro.jsx — uma rota que atende qualquer livro
+import { Link, useParams } from 'react-router';
+import { livros } from '../data/livros.js';
+
+// Lê o id da URL, busca o livro e trata o caso de id inexistente
+export default function DetalheLivro() {
+  const { id } = useParams();
+  const livro = livros.find((l) =&gt; l.id === Number(id));
+
+  if (!livro) {
+    return (
+      &lt;section&gt;
+        &lt;h1&gt;Livro não encontrado&lt;/h1&gt;
+        &lt;p&gt;Nenhum livro com o código {id}. &lt;Link to="/catalogo"&gt;Voltar ao catálogo&lt;/Link&gt;&lt;/p&gt;
+      &lt;/section&gt;
+    );
+  }
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;{livro.titulo}&lt;/h1&gt;
+      &lt;p&gt;Autora: {livro.autora}&lt;/p&gt;
+      &lt;p&gt;Preço: {livro.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}&lt;/p&gt;
+      &lt;Link to={`/catalogo?categoria=${livro.categoria}`}&gt;Ver outros desta categoria&lt;/Link&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de DetalheLivro.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — rotas do catálogo com segmento dinâmico
+import { Routes, Route, Link } from 'react-router';
+import Catalogo from './pages/Catalogo.jsx';
+import DetalheLivro from './pages/DetalheLivro.jsx';
+
+// Componente raiz com a rota fixa do catálogo e a rota dinâmica do detalhe
+export default function App() {
+  return (
+    &lt;&gt;
+      &lt;nav className="menu"&gt;
+        &lt;Link to="/catalogo"&gt;Catálogo&lt;/Link&gt;
+        &lt;Link to="/livros/99"&gt;Livro inexistente&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path="/catalogo" element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path="/livros/:id" element={&lt;DetalheLivro /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Use o projeto da prática anterior (com <code>react-router</code> instalado e o <code>BrowserRouter</code> no <code>main.jsx</code>)</li>
+            <li>Crie <code>src/data/livros.js</code> e as duas páginas acima</li>
+            <li>Substitua o <code>App.jsx</code> e rode <code>npm run dev</code></li>
+            <li>Acesse direto <code>/livros/3</code>, <code>/livros/99</code> e <code>/catalogo?categoria=infantil</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li><code>useParams()</code> devolve sempre texto: sem o <code>Number(id)</code> a comparação estrita com o id numérico nunca encontra o livro.</li>
+            <li>O filtro sobrevive ao recarregar a página, porque está na URL e não num <code>useState</code>.</li>
+            <li>Os botões de categoria não criam rotas novas: mudam só o trecho depois do <code>?</code>.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

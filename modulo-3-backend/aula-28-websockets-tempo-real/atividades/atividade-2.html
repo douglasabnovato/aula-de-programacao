@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel com Socket.IO — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Painel com Socket.IO — Código de Referência</h1>
+        <p class="subtitulo">Aula 28 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um servidor Express e Socket.IO na mesma porta, onde o pedido criado pela API REST chega só ao painel da unidade certa, com confirmação de recebimento e reentrada automática na sala após reconectar.</p>
+        </div>
+        <h2>server.js</h2>
+        <pre>// Início: servidor Express + Socket.IO na mesma porta, com pedidos separados por unidade
+const http = require('http');
+const path = require('path');
+const express = require('express');
+const { Server } = require('socket.io');
+
+const app = express();
+const servidor = http.createServer(app);
+const io = new Server(servidor);
+
+const pedidos = [];
+let proximoId = 1;
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// cria o pedido pela API REST e avisa só a cozinha da unidade
+app.post('/pedidos', (req, res) =&gt; {
+  const { unidade, item } = req.body;
+  if (!unidade || !item) return res.status(400).json({ erro: 'Informe unidade e item' });
+  const pedido = { id: proximoId++, unidade, item, status: 'novo' };
+  pedidos.push(pedido);
+  io.to(unidade).emit('pedido-novo', pedido);
+  res.status(201).json(pedido);
+});
+
+// trata cada painel conectado
+io.on('connection', (socket) =&gt; {
+  // coloca o painel na sala da unidade
+  socket.on('entrar-unidade', (unidade) =&gt; {
+    socket.join(unidade);
+    socket.emit('entrou', unidade);
+  });
+
+  // marca o pedido como pronto e confirma ao painel pelo callback
+  socket.on('pedido-pronto', (id, confirmar) =&gt; {
+    const pedido = pedidos.find((p) =&gt; p.id === Number(id));
+    if (!pedido) return confirmar({ ok: false, erro: 'Pedido não encontrado' });
+    pedido.status = 'pronto';
+    io.to(pedido.unidade).emit('pedido-atualizado', pedido);
+    confirmar({ ok: true });
+  });
+});
+
+servidor.listen(3000, () =&gt; console.log('Painel em http://localhost:3000/painel.html'));
+// Fim de server.js</pre>
+        <h2>public/painel.html</h2>
+        <pre>&lt;!-- Início: painel da cozinha que entra na sala da unidade e reentra ao reconectar --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Cozinha&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;label&gt;Unidade
+    &lt;select id="unidade"&gt;
+      &lt;option value="centro"&gt;Centro&lt;/option&gt;
+      &lt;option value="sao-pedro"&gt;São Pedro&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/label&gt;
+  &lt;p id="estado"&gt;Conectando...&lt;/p&gt;
+  &lt;ul id="lista"&gt;&lt;/ul&gt;
+  &lt;script src="/socket.io/socket.io.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // Início: conexão Socket.IO do painel
+    const socket = io();
+    const seletor = document.getElementById('unidade');
+    const lista = document.getElementById('lista');
+    const estado = document.getElementById('estado');
+
+    // entra (ou reentra) na sala escolhida
+    function entrar() {
+      socket.emit('entrar-unidade', seletor.value);
+    }
+
+    // desenha um pedido com botão de pronto
+    function desenhar(pedido) {
+      const item = document.createElement('li');
+      item.textContent = `#${pedido.id} ${pedido.item} — ${pedido.status} `;
+      const botao = document.createElement('button');
+      botao.textContent = 'Pronto';
+      botao.onclick = () =&gt; socket.emit('pedido-pronto', pedido.id, (resposta) =&gt; {
+        if (!resposta.ok) alert(resposta.erro);
+      });
+      item.append(botao);
+      lista.prepend(item);
+    }
+
+    socket.on('connect', () =&gt; { estado.textContent = 'Conectado'; entrar(); });
+    socket.on('disconnect', () =&gt; { estado.textContent = 'Sem conexão — tentando de novo...'; });
+    socket.on('pedido-novo', desenhar);
+    socket.on('pedido-atualizado', desenhar);
+    seletor.onchange = () =&gt; location.reload();
+    // Fim do script do painel
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de painel.html --&gt;</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install express socket.io</code></li>
+            <li><code>node server.js</code></li>
+            <li>Abra <code>http://localhost:3000/painel.html</code> em duas abas, uma para cada unidade</li>
+            <li>Envie <code>POST /pedidos</code> com <code>{ "unidade": "centro", "item": "Pastel" }</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>emit</code> vem da rota REST: quem cria o pedido não precisa estar conectado por socket.</li>
+            <li>Salas vivem no servidor e somem quando a conexão cai; por isso o painel reentra dentro do evento <code>connect</code>.</li>
+            <li>O callback de <code>pedido-pronto</code> é a confirmação de que o servidor processou — sem ele, o painel não sabe se a mensagem chegou.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

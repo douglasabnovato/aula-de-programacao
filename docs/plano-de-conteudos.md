@@ -172,6 +172,77 @@ estruturar projetos escaláveis
 aplicar boas práticas
 entregar soluções robustas
 
+## 🧭 Níveis × módulos da grade
+
+A grade oficial do painel são os **7 módulos de 10 aulas** (`cursos.js`). Os 4 níveis acima não viram
+módulos novos: eles descrevem **a progressão do aluno**, e cada tópico de nível é trabalhado dentro de
+uma ou mais aulas da grade. A tabela abaixo mostra onde.
+
+### 🟢 Básico → Trilha experimental + Módulo 1
+
+| Tópico do nível | Onde é trabalhado |
+| --- | --- |
+| 1 Navegador não é mágica | Trilha experimental (Chrome, ambiente de estudo) · Aula 2 |
+| 2 Estrutura antes de estilo · 3 HTML não é só texto | Aula 2 — Card de Perfil, HTML Semântico e Box Model |
+| 4 Organizando a página · 5 CSS · 6 Layout | Aulas 2 e 3 — Box Model, Flexbox e Responsividade |
+| 7 Primeiro JavaScript · 8 Página que responde · 9 DOM | Aula 1 — JS e Algoritmos · Aula 4 — Arrays |
+| 10 Juntando tudo | Aula 3 — Mini Landing Pages |
+
+### 🟡 Iniciante → Módulo 1 (4–8) e Módulo 2
+
+| Tópico do nível | Onde é trabalhado |
+| --- | --- |
+| 1 Componentes reutilizáveis | Aulas 11 e 12 — Componentes, State e Props |
+| 2 Organização de pastas | Aula 11 · Aula 23 (MVC) |
+| 3 Eventos além do clique | Aula 8 — Estado Local · Aula 13 — Hooks |
+| 4 Validação de formulários | Aula 16 — Formulários e Validação |
+| 5 Arrays no frontend · 6 Listas dinâmicas | Aula 4 — Arrays · Aula 12 |
+| 7 Classes e estados | Aula 8 — Estado Local |
+| 8 Responsividade | Aula 3 · Aula 15 — Tailwind CSS |
+| 9 Consumindo API simples | Aula 6 — Fetch · Aula 17 — APIs REST no React |
+| 10 Projeto final: mini aplicação | Aula 20 — Projeto Final do Módulo 2 |
+
+### 🟠 Intermediário → Módulos 1 (5–10), 2 e 3
+
+| Tópico do nível | Onde é trabalhado |
+| --- | --- |
+| 1 Separação de responsabilidades | Aula 10 — Clean Code · Aula 23 — MVC |
+| 2 Funções puras × efeitos colaterais | Aula 4 · Aula 10 |
+| 3 Organização modular | Aula 7 — POO · Aula 10 |
+| 4 Padrões de arquitetura no frontend | Aula 18 — Context API · Aula 61 |
+| 5 Estado sem framework | Aula 8 — Estado Local |
+| 6 Performance e DOM | Aula 19 — Deploy e Performance |
+| 7 CSS escalável | Aula 15 — Tailwind CSS |
+| 8 Git | Trilha experimental (Git Bash) · Aula 33 — CI/CD |
+| 9 Projeto para portfólio | Aula 55 — Currículo, LinkedIn e GitHub |
+| 10 Arquitetura limpa simples | Aula 23 — Clean Architecture |
+
+### 🔴 Avançado → Módulos 2, 3, 4 e 7
+
+| Tópico do nível | Onde é trabalhado |
+| --- | --- |
+| 1 SPA sem framework | Aula 14 — React Router (o conceito de SPA abre a aula) |
+| 2 Modularização avançada | Aula 23 · Aula 62 — Design Patterns |
+| 3 Clean Code | Aula 10 · Aula 65 — Code Review |
+| 4 Testes | Aula 9 — Testes e Depuração · Aula 24 — Testes de API |
+| 5 TypeScript | **sem aula dedicada** — ver decisão abaixo |
+| 6 React | Aulas 11 a 18 |
+| 7 API com tratamento de erros | Aula 17 · Aula 26 — Middlewares e Erros |
+| 8 Projeto escalável | Aula 35 — Microsserviços · Aula 64 — Escalabilidade |
+| 9 Deploy e produção | Aula 19 · Aula 39 — Deploy e Produção |
+| 10 Projeto final completo | Aulas 37 a 40 — Projeto Final Fullstack |
+
+### O que a grade cobre além dos níveis
+
+Os módulos 3 a 7 levam o aluno além do plano de níveis, que é centrado no frontend:
+backend e banco (Módulo 3), devops (Módulo 4), produto e UX (Módulo 5), soft skills e carreira
+(Módulo 6) e arquitetura, SRE, segurança e IA (Módulo 7). Nesses casos o plano de níveis serve de
+régua de maturidade: o Módulo 3 começa no Intermediário e o Módulo 7 fecha no Avançado.
+
+> **Decisão pendente:** TypeScript aparece no nível Avançado mas não tem aula na grade.
+> Opções: (a) incluir como tema dentro de uma aula existente do Módulo 7; (b) criar um módulo/aula
+> extra; (c) tirar do plano de níveis.
+
 ## 🧠 Roteiro de Aula
 
 Conduziremos as aulas de um nível com um projeto 

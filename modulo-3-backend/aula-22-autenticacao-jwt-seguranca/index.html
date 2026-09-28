@@ -32,6 +32,10 @@
             <!-- TEMA 1: AUTENTICAÇÃO, AUTORIZAÇÃO E SENHA EM REPOUSO -->
             <div class="card" id="card-1">
                 <h2>🔑 1. Autenticação, Autorização e Senha em Repouso</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A academia fictícia Força Total guardava as senhas dos alunos em texto puro, e um backup esquecido num servidor público expôs todas de uma vez. Como guardar a senha de um jeito que nem quem tem acesso ao banco consiga lê-la, e ainda assim validar o login?</p>
+                </div>
                 <p>Duas palavras que parecem sinônimo e não são: autenticar é saber quem é; autorizar é saber o que essa pessoa pode. E antes das duas vem a pergunta que derruba projeto: como a senha está guardada.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=bc0HbYO_AuQ" target="_blank" rel="noopener noreferrer">▶️ Criptografia de senhas com NodeJS, Express e Bcrypt  //Prof.  Gabriel</a>
+                            <span class="link-desc">Danki Code · 17:12 — Mostra como gerar o hash de senhas com bcrypt numa API Node com Express.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=eFERQi2-eus" target="_blank" rel="noopener noreferrer">▶️ Como criptografar senha no Nodejs com Bcrypt</a>
+                            <span class="link-desc">João Alves · 6:52 — Demonstra de forma direta como criptografar e comparar senhas com bcrypt no Node.js.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: JSON WEB TOKEN: EMISSÃO E VERIFICAÇÃO -->
             <div class="card" id="card-2">
                 <h2>🎫 2. JSON Web Token: Emissão e Verificação</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Depois do login, o app da Força Total pede a senha de novo a cada tela, porque a API não lembra de ninguém entre uma requisição e outra. Guardar sessão no servidor exigiria memória compartilhada entre instâncias. Como o cliente prova quem é em cada chamada sem o servidor guardar estado?</p>
+                </div>
                 <p>O token resolve o problema de o servidor não precisar lembrar de ninguém. Mas ele é assinado, não escondido: o que você põe dentro, qualquer um lê.</p>
 
                 <ul class="links-list">
@@ -104,7 +121,7 @@
                         <span class="link-desc">O documento normativo: claims registradas, formato e regras de validação.</span>
                     </li>
                     <li>
-                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Riscos comuns com JWT</a>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 OWASP — Riscos comuns com JWT</a>
                         <span class="link-desc">Os erros clássicos: algoritmo none, chave fraca e token sem expiração.</span>
                     </li>
                     <li>
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=-v8zHjXGRxo" target="_blank" rel="noopener noreferrer">▶️ Autenticação com JWT no Node.js (api com Express)</a>
+                            <span class="link-desc">Kewa Code · 23:26 — Implementa autenticação com JWT numa API Express: emissão do token e verificação nas rotas.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dglEyFdOUKM" target="_blank" rel="noopener noreferrer">▶️ Autenticação JWT | Tudo o que você precisa saber</a>
+                            <span class="link-desc">Café com Bug · 9:11 — Explica o que é um JWT, como ele é assinado e o que não deve ir dentro dele.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: SUPERFÍCIE DE ATAQUE: CORS, INJEÇÃO E RATE LIMIT -->
             <div class="card" id="card-3">
                 <h2>🛡️ 3. Superfície de Ataque: CORS, Injeção e Rate Limit</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A API da Força Total já tem login e token, mas aceita chamadas de qualquer site, deixa tentar senhas sem limite e usa o texto enviado pelo usuário sem conferir o tipo. Quais portas continuam abertas e como fechá-las com poucas linhas?</p>
+                </div>
                 <p>Com a autenticação de pé, sobram as portas que ninguém fechou: origem liberada para todo mundo, entrada concatenada direto na consulta e login sem limite de tentativa.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=GZV-FUdeVwE" target="_blank" rel="noopener noreferrer">▶️ CORS (Cross-Origin Resource Sharing em 6 minutos) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 6:39 — Explica o que é CORS e por que o navegador bloqueia requisições de outras origens.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=CpPaadKZ47s" target="_blank" rel="noopener noreferrer">▶️ Rate-limit com NodeJS, ExpressJS e Redis (Evitando Brute Force)</a>
+                            <span class="link-desc">DevPleno · 30:55 — Implementa rate limit numa API Express para conter ataques de força bruta.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

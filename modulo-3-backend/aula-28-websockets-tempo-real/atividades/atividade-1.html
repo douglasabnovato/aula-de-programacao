@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket com ws — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>WebSocket com ws — Código de Referência</h1>
+        <p class="subtitulo">Aula 28 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um servidor WebSocket em Node que recebe pedidos em JSON e distribui a todos os painéis abertos, e um cliente HTML que usa o WebSocket nativo do navegador.</p>
+        </div>
+        <h2>servidor-ws.js</h2>
+        <pre>// Início: servidor WebSocket puro que distribui pedidos a todos os painéis conectados
+const { WebSocketServer, WebSocket } = require('ws');
+
+const wss = new WebSocketServer({ port: 8080 });
+
+// envia uma mensagem JSON para todas as conexões abertas
+function difundir(mensagem) {
+  const texto = JSON.stringify(mensagem);
+  wss.clients.forEach((cliente) =&gt; {
+    if (cliente.readyState === WebSocket.OPEN) cliente.send(texto);
+  });
+}
+
+// trata cada nova conexão
+wss.on('connection', (socket) =&gt; {
+  socket.send(JSON.stringify({ tipo: 'boas-vindas', dados: { conectados: wss.clients.size } }));
+
+  // interpreta a mensagem recebida e repassa pedidos a todos
+  socket.on('message', (bruto) =&gt; {
+    let mensagem;
+    try {
+      mensagem = JSON.parse(bruto.toString());
+    } catch {
+      return socket.send(JSON.stringify({ tipo: 'erro', dados: 'Mensagem precisa ser JSON' }));
+    }
+    if (mensagem.tipo === 'pedido') difundir({ tipo: 'pedido-novo', dados: mensagem.dados });
+  });
+
+  // informa quantos continuam conectados
+  socket.on('close', () =&gt; console.log(`Clientes conectados: ${wss.clients.size}`));
+});
+
+console.log('WebSocket em ws://localhost:8080');
+// Fim de servidor-ws.js</pre>
+        <h2>cliente.html</h2>
+        <pre>&lt;!-- Início: painel mínimo que recebe pedidos pelo WebSocket nativo do navegador --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Painel de pedidos&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Pedidos&lt;/h1&gt;
+  &lt;button id="enviar"&gt;Simular pedido&lt;/button&gt;
+  &lt;ul id="lista"&gt;&lt;/ul&gt;
+  &lt;script&gt;
+    // Início: conexão com o servidor e renderização das mensagens
+    const socket = new WebSocket('ws://localhost:8080');
+    const lista = document.getElementById('lista');
+
+    // escreve uma linha no painel
+    function registrar(texto) {
+      const item = document.createElement('li');
+      item.textContent = texto;
+      lista.prepend(item);
+    }
+
+    // trata cada mensagem vinda do servidor
+    socket.onmessage = (evento) =&gt; {
+      const mensagem = JSON.parse(evento.data);
+      registrar(`${mensagem.tipo}: ${JSON.stringify(mensagem.dados)}`);
+    };
+
+    // envia um pedido de exemplo
+    document.getElementById('enviar').onclick = () =&gt; {
+      socket.send(JSON.stringify({ tipo: 'pedido', dados: { item: 'X-Salada', mesa: 4 } }));
+    };
+    // Fim do script do painel
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de cliente.html --&gt;</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm init -y</code> e <code>npm install ws</code></li>
+            <li><code>node servidor-ws.js</code></li>
+            <li>Abra <code>cliente.html</code> em três abas</li>
+            <li>Clique em <em>Simular pedido</em> em uma delas</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Na aba Rede, a conexão aparece uma vez só, com status 101; as mensagens passam por ela sem novas requisições.</li>
+            <li>O <code>try/catch</code> no <code>JSON.parse</code> impede que uma mensagem malformada derrube o processo para todos.</li>
+            <li>Não há salas nem reconexão: tudo que o Socket.IO oferece na próxima atividade teria de ser escrito à mão aqui.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

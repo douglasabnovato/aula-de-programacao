@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 9 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a investigar bugs com o DevTools, proteger regras de negócio com testes automatizados e tratar erros com mensagens úteis para quem usa e para quem desenvolve.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 9: Testes e Depuração de Código</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: DEPURAÇÃO COM DEVTOOLS: CONSOLE, BREAKPOINTS E DEBUGGER -->
+            <div class="card" id="card-1">
+                <h2>🐞 1. Depuração com DevTools: Console, Breakpoints e debugger</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na calculadora de frete fictícia da loja Rota Verde, um pedido de R$ 30 com frete de R$ 10 mostra total de 'R$ 3010'. Nenhum erro aparece no console e o código parece certo à primeira vista. Como descobrir em que linha o valor sai errado sem encher o arquivo de console.log às cegas?</p>
+                </div>
+
+                <p>Depurar é observar o programa rodando em vez de adivinhar. O DevTools permite pausar a execução numa linha (breakpoint ou a instrução debugger), inspecionar o valor e o tipo de cada variável naquele instante e avançar passo a passo até o ponto em que o dado muda de forma inesperada.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.chrome.com/docs/devtools/javascript" target="_blank" rel="noopener noreferrer">📄 Debug JavaScript — Chrome DevTools</a>
+                        <span class="link-desc">Tutorial oficial que depura justamente um bug de soma que concatena texto.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.chrome.com/docs/devtools/javascript/breakpoints" target="_blank" rel="noopener noreferrer">📄 Pause your code with breakpoints — Chrome DevTools</a>
+                        <span class="link-desc">Os tipos de breakpoint: de linha, condicional, de evento e de exceção.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.chrome.com/docs/devtools/console" target="_blank" rel="noopener noreferrer">📄 Console overview — Chrome DevTools</a>
+                        <span class="link-desc">O console como lugar para testar expressões com o código pausado.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript" target="_blank" rel="noopener noreferrer">📄 JavaScript debugging and error handling — MDN Learn</a>
+                        <span class="link-desc">Tipos de erro, como ler a mensagem do console e estratégias de investigação.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ReL1M9m2wqc" target="_blank" rel="noopener noreferrer">▶️ Debugger JavaScript no Google Chrome DevTools - Aprenda a Debugar</a>
+                            <span class="link-desc">hcode · 16:38 — Ensina a depurar JavaScript no Chrome DevTools com breakpoints e inspeção de variáveis.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=H0XScE08hy8" target="_blank" rel="noopener noreferrer">▶️ Debugging JavaScript - Chrome DevTools 101</a>
+                            <span class="link-desc">Chrome for Developers · 7:28 · em inglês — Tutorial oficial em inglês do Chrome DevTools sobre breakpoints e execução passo a passo.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Caçando um Bug de Tipo na Calculadora de Frete</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-9-frete</code> com os três arquivos e um formulário com preço, quantidade e frete.</li>
+                            <li><strong>Reproduzindo o Bug:</strong> preencha preço 10, quantidade 3 e frete 10, e anote no README o resultado esperado e o obtido.</li>
+                            <li><strong>Hipótese Antes do Código:</strong> escreva no README duas hipóteses para o '3010' antes de abrir o DevTools.</li>
+                            <li><strong>Primeiro Breakpoint:</strong> na aba Sources, clique no número da linha de <code>calcularTotal</code> e envie o formulário de novo.</li>
+                            <li><strong>Inspecionando Tipos:</strong> com o código pausado, digite <code>typeof frete</code> no console e compare com <code>typeof subtotal</code>.</li>
+                            <li><strong>Avançando Passo a Passo:</strong> use 'Step over' e acompanhe em Scope o momento em que <code>total</code> vira texto.</li>
+                            <li><strong>A Instrução debugger:</strong> marque o checkbox 'pausar com debugger' e veja a execução parar sozinha com o DevTools aberto.</li>
+                            <li><strong>Registro Organizado:</strong> troque logs soltos por um <code>console.table</code> com entrada, tipos e resultado de cada cálculo.</li>
+                            <li><strong>Corrigindo na Origem:</strong> converta os campos com <code>Number(...)</code> no momento da leitura e remova o <code>debugger</code>.</li>
+                            <li><strong>Validação e Testes:</strong> repita o cenário do passo 2, teste valores decimais e registre no README a causa e a correção do bug.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: TESTES UNITÁRIOS NO NAVEGADOR COM ASSERÇÕES -->
+            <div class="card" id="card-2">
+                <h2>✅ 2. Testes Unitários no Navegador com Asserções</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A escola fictícia Nota Dez calcula a média final e a situação de cada aluno — aprovado, recuperação ou reprovado — com duas funções. Ontem alguém trocou um &gt;= por &gt; e os alunos com média exatamente 7 foram para a recuperação sem ninguém perceber. Como detectar esse tipo de mudança em segundos, antes de publicar?</p>
+                </div>
+
+                <p>Um teste unitário chama uma função com uma entrada conhecida e confere se a saída é a esperada. Funções puras, que só dependem dos parâmetros, são as mais fáceis de testar. Frameworks como Jest organizam isso em describe, test e expect; aqui o mesmo formato é construído à mão para entender o que eles fazem por baixo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/assert_static" target="_blank" rel="noopener noreferrer">📄 console.assert() — MDN</a>
+                        <span class="link-desc">A asserção mais simples do navegador: só escreve no console quando a condição é falsa.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/UnitTest.html" target="_blank" rel="noopener noreferrer">📄 Unit Test — Martin Fowler</a>
+                        <span class="link-desc">O que conta como unidade e por que testes rápidos mudam o jeito de programar.</span>
+                    </li>
+                    <li>
+                        <a href="https://jestjs.io/docs/getting-started" target="_blank" rel="noopener noreferrer">📄 Getting Started — Jest</a>
+                        <span class="link-desc">O formato test/expect que a prática imita e que o aluno usará no Módulo 3.</span>
+                    </li>
+                    <li>
+                        <a href="https://jestjs.io/docs/using-matchers" target="_blank" rel="noopener noreferrer">📄 Using Matchers — Jest</a>
+                        <span class="link-desc">toBe, toEqual e outros comparadores, e quando usar cada um.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=MQs8_KIj_PU" target="_blank" rel="noopener noreferrer">▶️ O que são Testes Unitários e como implementar em JavaScript?</a>
+                            <span class="link-desc">DevPleno · 30:05 — Explica o que são testes unitários e como implementá-los em JavaScript.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=HcDJdKfm5nA" target="_blank" rel="noopener noreferrer">▶️ Descomplicando Testes Unitários! (Guia Rápido Para Iniciantes Na Programação)</a>
+                            <span class="link-desc">Attekita Dev · 12:55 — Introduz testes unitários de forma simples: entrada conhecida, saída esperada e por que testar.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Mini Test Runner para as Regras de Notas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-9-testes</code> com os três arquivos e uma lista vazia para os resultados.</li>
+                            <li><strong>Funções Puras:</strong> escreva <code>calcularMedia(notas)</code> e <code>situacao(media)</code> sem ler nada do DOM dentro delas.</li>
+                            <li><strong>Primeira Asserção:</strong> no console, rode <code>console.assert(situacao(7) === 'aprovado', 'média 7 deveria aprovar')</code>.</li>
+                            <li><strong>A Função expect:</strong> crie <code>esperar(valor)</code> que devolve um objeto com <code>toBe(esperado)</code>, lançando <code>Error</code> quando os valores diferem.</li>
+                            <li><strong>A Função teste:</strong> crie <code>teste(descricao, fn)</code> que roda <code>fn</code> num <code>try/catch</code> e guarda se passou ou falhou.</li>
+                            <li><strong>Casos de Borda:</strong> escreva testes para média 7, 6,99, 5, 4,99, lista vazia e notas decimais.</li>
+                            <li><strong>Erro Provocado:</strong> ative a opção que troca <code>&gt;=</code> por <code>&gt;</code> e veja quais testes ficam vermelhos.</li>
+                            <li><strong>Comparando Números Decimais:</strong> arredonde a média com <code>Math.round(x * 100) / 100</code> e observe o teste de decimais passar.</li>
+                            <li><strong>Relatório na Tela:</strong> mostre total, aprovados e falhas, com a mensagem de erro de cada teste que falhou.</li>
+                            <li><strong>Validação e Testes:</strong> rode a suíte com e sem o bug, e registre no README qual teste pegou a mudança e por quê.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: TRATAMENTO DE ERROS: THROW, TRY/CATCH E MENSAGENS ÚTEIS -->
+            <div class="card" id="card-3">
+                <h2>🧯 3. Tratamento de Erros: throw, try/catch e Mensagens Úteis</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O formulário de inscrição fictício da Semana Tech Serra Azul aceita idade 'abc' e e-mail vazio. O problema só aparece depois, no meio do processamento, como 'Cannot read properties of undefined', e o participante não entende o que fazer. Como recusar dados inválidos no ponto de entrada, com uma mensagem que a pessoa entenda, sem esconder os erros de programação?</p>
+                </div>
+
+                <p>Nem todo erro é igual: dado inválido do usuário é esperado e merece uma mensagem clara; erro de programação precisa aparecer para quem desenvolve. throw interrompe o fluxo com um objeto Error, try/catch decide onde tratar, e uma classe de erro própria permite separar os dois casos com instanceof.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank" rel="noopener noreferrer">📄 try...catch — MDN</a>
+                        <span class="link-desc">Os blocos try, catch e finally e o que acontece com erros não capturados.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw" target="_blank" rel="noopener noreferrer">📄 throw — MDN</a>
+                        <span class="link-desc">Lançar um erro próprio e por que lançar objetos Error, não strings.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error" target="_blank" rel="noopener noreferrer">📄 Error — MDN</a>
+                        <span class="link-desc">As propriedades name e message e como criar classes de erro personalizadas.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" target="_blank" rel="noopener noreferrer">📄 Control flow and error handling — MDN</a>
+                        <span class="link-desc">Visão geral de fluxo de controle e tratamento de exceções na linguagem.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=AWroMPi9PXU" target="_blank" rel="noopener noreferrer">▶️ Curso de Javascript #22 - Tratamento de erros / try catch finally</a>
+                            <span class="link-desc">CFBCursos · 20:29 — Explica try, catch e finally para capturar e tratar erros em JavaScript.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=PknztTlBGUk" target="_blank" rel="noopener noreferrer">▶️ Como usar TRY CATCH e THROW ERROR no JAVASCRIPT? AULA para INICIANTES</a>
+                            <span class="link-desc">Serliv | Daniel Tapias Morales · 22:49 — Mostra como lançar erros com throw e tratá-los com try/catch, com foco em iniciantes.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Inscrição com Validação por Exceções</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-9-inscricao</code> com os três arquivos e um formulário com nome, e-mail e idade.</li>
+                            <li><strong>Erro Provocado:</strong> processe a inscrição sem validar, com idade 'abc', e leia o resultado estranho que chega ao final.</li>
+                            <li><strong>Classe de Erro Própria:</strong> crie <code>class ErroValidacao extends Error</code> com um campo <code>campo</code> para indicar onde está o problema.</li>
+                            <li><strong>Validando na Entrada:</strong> crie <code>validarInscricao(dados)</code> que lança <code>new ErroValidacao(...)</code> para cada regra violada.</li>
+                            <li><strong>Mensagens para Pessoas:</strong> escreva mensagens que digam o que corrigir, como 'Informe a idade em números, entre 14 e 99'.</li>
+                            <li><strong>Capturando no Lugar Certo:</strong> no <code>submit</code>, chame a validação dentro de <code>try</code> e mostre o erro no campo indicado.</li>
+                            <li><strong>Separando os Tipos:</strong> no <code>catch</code>, use <code>erro instanceof ErroValidacao</code> para diferenciar dado inválido de falha de programação.</li>
+                            <li><strong>Não Engolindo Erros:</strong> para erros desconhecidos, mostre uma mensagem genérica e registre com <code>console.error</code>.</li>
+                            <li><strong>Limpando o Estado:</strong> no <code>finally</code>, reabilite o botão e remova o destaque dos campos que ficaram válidos.</li>
+                            <li><strong>Validação e Testes:</strong> teste cada regra, o botão 'simular falha interna' e o caminho feliz, e registre no README a diferença entre os tipos de erro.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

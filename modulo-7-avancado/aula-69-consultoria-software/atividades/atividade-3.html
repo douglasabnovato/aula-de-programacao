@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta de Estratégia e Roadmap 30-60-90 — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Proposta de Estratégia e Roadmap 30-60-90 — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 69 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A proposta de estratégia para o Grupo Bom Grão: matriz de priorização, iniciativas escolhidas, roadmap de 90 dias com indicadores e o registro da decisão de não reescrever o sistema.</p>
+        </div>
+        <h2>diagnostico/estrategia.md</h2>
+        <pre>&lt;!-- Início: proposta de estratégia técnica do Grupo Bom Grão --&gt;
+# Proposta de Estratégia Técnica — 2º semestre
+
+## Iniciativas avaliadas
+| Iniciativa | Achado | Impacto (1-5) | Esforço (1-5) | Quadrante |
+|------------|--------|---------------|---------------|-----------|
+| Backup automatizado com restauração testada | D1 | 5 | 1 | Vitória rápida |
+| Revogar senha vazada e mover para variável de ambiente | D3 | 5 | 1 | Vitória rápida |
+| Chave de idempotência no registro de pedido | D2 | 4 | 2 | Vitória rápida |
+| Índice e reescrita da consulta de estoque | D4 | 4 | 1 | Vitória rápida |
+| Pipeline de deploy automatizado com rollback | D5 | 4 | 3 | Aposta |
+| Extrair módulo de estoque com Strangler Fig | Arquitetura | 3 | 4 | Depois |
+| Reescrita total em microsserviços | — | 3 | 5 | Descartada |
+
+## Escolhidas para o semestre (4)
+Backup e segredo (juntas), idempotência, consulta de estoque e pipeline de deploy.
+
+## Roadmap 30-60-90
+| Marco | Entrega | Indicador verificável pelo cliente |
+|-------|---------|------------------------------------|
+| 30 dias | Backup restaurado em teste; senha revogada; consulta de estoque corrigida | Relatório de restauração assinado; tempo de consulta abaixo de 300 ms |
+| 60 dias | Idempotência em produção | Zero pedidos duplicados por 30 dias |
+| 90 dias | Pipeline com deploy semanal e rollback em 1 comando | 12 deploys no trimestre sem incidente grave |
+
+## Decisão registrada (ADR 001)
+**Contexto:** time de 3 pessoas, operação sem parada, 6 meses de orçamento.
+**Decisão:** evoluir o monolito com as 4 iniciativas; avaliar a extração do estoque no próximo semestre.
+**Alternativa descartada:** reescrita total em microsserviços — primeiro valor só depois de 8 a 12 meses, exige base operacional que ainda não existe e pararia a evolução do sistema atual.
+**Custo aceito:** o acoplamento entre pedidos e estoque continua até a próxima revisão.
+&lt;!-- Fim de estrategia.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A reescrita aparece na matriz e é descartada com números, o que responde ao pedido do diretor sem ignorá-lo.</li>
+            <li>Cada marco tem um indicador que o cliente consegue conferir sem ler código.</li>
+            <li>As quatro escolhidas cabem num time de três pessoas; o resto não sumiu, ficou registrado para o próximo ciclo.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

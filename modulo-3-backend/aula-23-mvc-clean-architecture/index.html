@@ -32,11 +32,15 @@
             <!-- TEMA 1: MVC: A SEPARAÇÃO QUE TODO FRAMEWORK ASSUME -->
             <div class="card" id="card-1">
                 <h2>🗂️ 1. MVC: a Separação que Todo Framework Assume</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O controlador de tarefas da agência fictícia Ponto Norte tem 180 linhas: valida entrada, decide regra, mexe no array e monta a resposta, tudo junto. Cada ajuste numa regra quebra outra coisa. Como separar o que é requisição, o que é regra e o que é dado?</p>
+                </div>
                 <p>Model, View e Controller nasceram em interface gráfica nos anos 70 e viraram o vocabulário padrão do backend. Entender o original evita o erro mais comum: chamar de MVC qualquer pasta com três nomes.</p>
 
                 <ul class="links-list">
                     <li>
-                        <a href="https://developer.mozilla.org/pt-BR/docs/Glossary/MVC" target="_blank" rel="noopener noreferrer">📄 MVC — Glossário da MDN</a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Glossary/MVC" target="_blank" rel="noopener noreferrer">📄 MVC — Glossário da MDN</a>
                         <span class="link-desc">A definição curta e correta das três camadas, sem o folclore que se acumulou em volta.</span>
                     </li>
                     <li>
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=W2PQwpGUZB8" target="_blank" rel="noopener noreferrer">▶️ Arquitetura MVC - Funcionamento real com explicação fácil</a>
+                            <span class="link-desc">JDev Treinamento e Software · 11:20 — Explica o papel de Model, View e Controller e como eles se comunicam.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=za5zDmTY8TE" target="_blank" rel="noopener noreferrer">▶️ Como fazer um projeto Node.js com MVC e Express.js</a>
+                            <span class="link-desc">Vem Codar Brasil · 21:22 — Organiza um projeto Node.js com Express seguindo o padrão MVC.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: CLEAN ARCHITECTURE: A REGRA DE DEPENDÊNCIA -->
             <div class="card" id="card-2">
                 <h2>🎯 2. Clean Architecture: a Regra de Dependência</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Ponto Norte vai trocar o armazenamento em memória por um banco na próxima fase, e o time teme reescrever as regras de negócio junto. Como organizar o código para que a regra não saiba qual banco está por baixo?</p>
+                </div>
                 <p>A ideia central cabe numa frase: as dependências apontam para dentro. O caso de uso não sabe que existe Express, e a regra de negócio não sabe que existe Postgres.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ow8UUjS5vzU" target="_blank" rel="noopener noreferrer">▶️ Clean Architecture (Arquitetura Limpa) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 12:30 — Explica a Clean Architecture e a regra de que as dependências apontam para dentro.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=wN0HPtL8Z9Y" target="_blank" rel="noopener noreferrer">▶️ 86 - Clean Architecture | Camada de Domínio vs. Camada de Casos de Uso</a>
+                            <span class="link-desc">Otavio Lemos · 5:36 — Diferencia a camada de domínio da camada de casos de uso na Clean Architecture.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,11 +178,15 @@
             <!-- TEMA 3: QUANDO NÃO VALE A PENA: O CUSTO DA CAMADA -->
             <div class="card" id="card-3">
                 <h2>⚖️ 3. Quando Não Vale a Pena: o Custo da Camada</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Depois da refatoração, um aluno da turma criou sete camadas para uma API de três rotas, e agora uma mudança simples exige editar seis arquivos. Como decidir quando uma camada se paga e quando é só peso?</p>
+                </div>
                 <p>Arquitetura é escolha com preço. Cinco camadas numa API de três rotas é tão ruim quanto nenhuma camada numa API de cinquenta. O bloco fecha com o critério de quando parar.</p>
 
                 <ul class="links-list">
                     <li>
-                        <a href="https://martinfowler.com/bliki/YagniDefinition.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — You Aren&#x27;t Gonna Need It</a>
+                        <a href="https://martinfowler.com/bliki/Yagni.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — You Aren&#x27;t Gonna Need It</a>
                         <span class="link-desc">O argumento contra construir a abstração antes de precisar dela.</span>
                     </li>
                     <li>
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=5yJ_cAUrpQc" target="_blank" rel="noopener noreferrer">▶️ DRY, KISS, YAGNI | Code/Drops #27</a>
+                            <span class="link-desc">Rocketseat · 22:12 — Discute os princípios DRY, KISS e YAGNI e o risco de complicar o código antes da hora.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=wjtfJ9c4KdM" target="_blank" rel="noopener noreferrer">▶️ O maior erro que Programadores cometem e como o YAGNI pode salvar seu código</a>
+                            <span class="link-desc">Renato Augusto · 8:26 — Explica o YAGNI e como evitar construir abstrações que o projeto ainda não precisa.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

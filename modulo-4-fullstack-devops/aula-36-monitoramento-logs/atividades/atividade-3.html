@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLO, Alertas e Runbook — Modelo e Configuração | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>SLO, Alertas e Runbook — Modelo e Configuração</h1>
+        <p class="subtitulo">Aula 36 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um documento de SLO preenchido para a API de agendamentos, as regras de alerta do Prometheus que o protegem e o runbook com o primeiro passo para cada alerta. No Compose, monte também <code>./alertas.yml:/etc/prometheus/alertas.yml:ro</code> no serviço do Prometheus.</p>
+        </div>
+        <h2>SLO.md</h2>
+        <pre>&lt;!-- Início: SLO.md — objetivos de nível de serviço da API de agendamentos da clínica Bem-Te-Vi --&gt;
+# SLO — API de Agendamentos
+
+## Indicadores (SLI)
+| Nome            | Definição                                                        | Fonte                          |
+|-----------------|------------------------------------------------------------------|--------------------------------|
+| Disponibilidade | requisições sem status 5xx ÷ total de requisições                | http_requisicoes_total         |
+| Latência        | requisições respondidas em até 500 ms ÷ total de requisições     | http_duracao_segundos_bucket   |
+
+## Objetivos (SLO) — janela de 30 dias
+- Disponibilidade: 99% das requisições sem erro 5xx.
+- Latência: 95% das requisições em até 500 ms.
+
+## Orçamento de erro
+- Tráfego médio: 20.000 requisições por mês.
+- 1% de 20.000 = 200 requisições com erro permitidas no mês.
+- Se o orçamento acabar antes do fim do mês: novas funcionalidades param e o time trabalha em estabilidade.
+
+## Alertas ligados a este documento
+- TaxaDeErroAlta → seção "Runbook: taxa de erro".
+- LatenciaP95Alta → seção "Runbook: latência".
+&lt;!-- Fim de SLO.md --&gt;</pre>
+        <h2>alertas.yml</h2>
+        <pre># Início: alertas.yml — regras de alerta ligadas ao SLO da API de agendamentos
+groups:
+  - name: api-agendamentos
+    rules:
+      - alert: TaxaDeErroAlta
+        expr: |
+          sum(rate(http_requisicoes_total{status=~"5.."}[5m]))
+          /
+          sum(rate(http_requisicoes_total[5m])) &gt; 0.05
+        for: 2m
+        labels:
+          severidade: critica
+        annotations:
+          resumo: "Mais de 5% das requisições com erro 5xx nos últimos 5 minutos"
+          runbook: "SLO.md — Runbook: taxa de erro"
+
+      - alert: LatenciaP95Alta
+        expr: |
+          histogram_quantile(0.95, sum(rate(http_duracao_segundos_bucket[5m])) by (le)) &gt; 0.5
+        for: 5m
+        labels:
+          severidade: aviso
+        annotations:
+          resumo: "p95 da latência acima de 500 ms"
+          runbook: "SLO.md — Runbook: latência"
+# Fim de alertas.yml</pre>
+        <h2>prometheus.yml</h2>
+        <pre># Início: prometheus.yml — coleta da API e carregamento das regras de alerta
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alertas.yml
+
+scrape_configs:
+  - job_name: api-agendamentos
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api:3000"]
+# Fim de prometheus.yml</pre>
+        <h2>Runbook: taxa de erro</h2>
+        <ol>
+            <li>Confirme o alerta na aba Alerts do Prometheus e veja desde quando está em firing.</li>
+            <li>Filtre o log por <code>level</code> de erro nos últimos 10 minutos e agrupe pela mensagem: um erro repetido aponta a causa.</li>
+            <li>Consulte <code>/saude/pronto</code>: se devolver <code>503</code>, o problema está no banco, não na API.</li>
+            <li>Se o erro começou logo após uma publicação, reverta para a versão anterior antes de investigar mais.</li>
+            <li>Registre horário de início, causa provável e ação tomada no canal do time.</li>
+        </ol>
+        <h2>Runbook: latência</h2>
+        <ol>
+            <li>Consulte o p95 por rota trocando <code>by (le)</code> por <code>by (le, rota)</code> e ache a rota lenta.</li>
+            <li>Verifique a saturação: memória e CPU do processo nas métricas padrão.</li>
+            <li>Se a rota lenta consulta o banco, rode <code>EXPLAIN ANALYZE</code> na consulta dela.</li>
+            <li>Registre a rota, o p95 medido e a correção proposta.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>for: 2m</code> evita alerta por um pico de segundos: a condição precisa se manter.</li>
+            <li>O alerta mede sintoma que o usuário sente (erro e demora), não causa interna como CPU alta.</li>
+            <li>Cada alerta aponta para uma seção do runbook: quem recebe não começa do zero.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

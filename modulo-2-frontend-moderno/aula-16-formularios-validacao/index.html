@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 16 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a construir formulários controlados em React, validar cada campo com mensagens acessíveis e controlar o envio para que aconteça uma vez só e sempre dê retorno ao usuário.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 16: Gerenciamento de Formulários e Validação</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: INPUTS CONTROLADOS E ESTADO DO FORMULÁRIO -->
+            <div class="card" id="card-1">
+                <h2>⌨️ 1. Inputs Controlados e Estado do Formulário</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O pet shop fictício Bicho Feliz recebe agendamentos de banho por um formulário com nome do tutor, telefone, porte do cachorro, serviço e aceite das regras. Hoje cada campo tem o próprio useState e a lógica de leitura se repete cinco vezes. Como guardar o formulário inteiro num estado só e ainda mostrar um resumo que muda enquanto a pessoa digita?</p>
+                </div>
+
+                <p>Num input controlado, o valor exibido vem do estado e cada digitação passa pelo onChange antes de aparecer. Com um objeto de estado e uma função de atualização genérica que lê name, value e checked, o mesmo código atende texto, select, radio e checkbox.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/reference/react-dom/components/input" target="_blank" rel="noopener noreferrer">📄 Componente input — React</a>
+                        <span class="link-desc">Referência do input no React: value, onChange, checked e o aviso de campo controlado sem manipulador.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/reacting-to-input-with-state" target="_blank" rel="noopener noreferrer">📄 Reagindo a entradas com estado — React</a>
+                        <span class="link-desc">Como pensar a interface como estados, a base de qualquer formulário.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/updating-objects-in-state" target="_blank" rel="noopener noreferrer">📄 Atualizando objetos no estado — React</a>
+                        <span class="link-desc">Por que se cria um objeto novo com spread em vez de alterar o existente.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTML/Reference/Elements/label" target="_blank" rel="noopener noreferrer">📄 Elemento label — MDN</a>
+                        <span class="link-desc">Como o rótulo se liga ao campo e por que isso importa para clique e leitor de tela.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=iy6fcEomDx8" target="_blank" rel="noopener noreferrer">▶️ Como pegar valor de input com React JS</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 9:40 — Mostra como capturar o valor de inputs no React com estado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=o59EnbaSQ14" target="_blank" rel="noopener noreferrer">▶️ ReactJS - Manipulando valores de um formulário com useState e onChange</a>
+                            <span class="link-desc">Vinicius Dacal · 2:26 — Demonstra um formulário controlado com useState e onChange.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Formulário de Agendamento com Estado Único</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto com <code>npm create vite@latest bicho-feliz -- --template react</code> e o arquivo <code>src/components/FormAgendamento.jsx</code>.</li>
+                            <li><strong>Estado Inicial:</strong> declare <code>const inicial = { tutor: '', telefone: '', porte: 'pequeno', servico: 'banho', termos: false }</code> e passe para <code>useState(inicial)</code>.</li>
+                            <li><strong>Primeiro Campo:</strong> escreva <code>&lt;input name="tutor" value={form.tutor} /&gt;</code> e renderize o formulário no <code>App.jsx</code>.</li>
+                            <li><strong>Erro Provocado: Campo Travado:</strong> tente digitar no campo sem <code>onChange</code> e observe que nada muda e que o React registra um aviso no console.</li>
+                            <li><strong>Função Genérica:</strong> crie <code>atualizar(evento)</code> lendo <code>name</code>, <code>value</code>, <code>type</code> e <code>checked</code> e chamando <code>setForm({ ...form, [name]: valor })</code>.</li>
+                            <li><strong>Rótulos Ligados:</strong> envolva cada campo com <code>&lt;label htmlFor="tutor"&gt;</code> e dê ao input o <code>id</code> correspondente.</li>
+                            <li><strong>Select de Porte:</strong> adicione um <code>&lt;select name="porte"&gt;</code> com três opções, controlado pelo mesmo <code>atualizar</code>.</li>
+                            <li><strong>Radio de Serviço:</strong> crie dois radios com <code>name="servico"</code> e <code>checked={form.servico === 'banho'}</code> dentro de um <code>&lt;fieldset&gt;</code> com <code>&lt;legend&gt;</code>.</li>
+                            <li><strong>Checkbox e Resumo:</strong> adicione o checkbox <code>termos</code> e, abaixo do formulário, mostre <code>JSON.stringify(form, null, 2)</code> num <code>&lt;pre&gt;</code>.</li>
+                            <li><strong>Validação e Testes:</strong> preencha todos os campos observando o resumo, clique nos textos dos rótulos para conferir o foco e registre no README por que uma única função atende os cinco campos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: VALIDAÇÃO E MENSAGENS DE ERRO -->
+            <div class="card" id="card-2">
+                <h2>✅ 2. Validação e Mensagens de Erro</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No Bicho Feliz, um em cada cinco agendamentos chega com telefone incompleto e a recepção perde tempo ligando para número errado. Mas mostrar todos os erros em vermelho assim que a página abre assusta quem nem começou a digitar. Como validar cada campo e exibir a mensagem certa só na hora certa?</p>
+                </div>
+
+                <p>A validação no navegador é uma função pura: recebe os valores e devolve os erros. Um estado de campos visitados controla quando a mensagem aparece, e aria-invalid com aria-describedby levam o erro também a quem usa leitor de tela. A validação no servidor continua obrigatória.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Extensions/Forms/Form_validation" target="_blank" rel="noopener noreferrer">📄 Validação de formulários — MDN</a>
+                        <span class="link-desc">Validação nativa do HTML, validação com JavaScript e os limites de cada uma.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/choosing-the-state-structure" target="_blank" rel="noopener noreferrer">📄 Escolhendo a estrutura do estado — React</a>
+                        <span class="link-desc">Por que erros calculados a partir do formulário não devem virar outro estado.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid" target="_blank" rel="noopener noreferrer">📄 aria-invalid — MDN</a>
+                        <span class="link-desc">Como sinalizar a tecnologias assistivas que o valor do campo não passou na validação.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-describedby" target="_blank" rel="noopener noreferrer">📄 aria-describedby — MDN</a>
+                        <span class="link-desc">Como ligar a mensagem de erro ao campo para que ela seja lida junto com o rótulo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=6TH_XoBdIjo" target="_blank" rel="noopener noreferrer">▶️ Formulário + Validação no Reactjs</a>
+                            <span class="link-desc">userdansilva · 13:55 — Constrói um formulário em React com validação e exibição de erros.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ObttmYAJeUI" target="_blank" rel="noopener noreferrer">▶️ Tratamento de Erros em Formulários React | Mensagens e UX na Prática</a>
+                            <span class="link-desc">Desvendando o Código · 18:28 — Mostra como exibir mensagens de erro em formulários React pensando na experiência do usuário.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Validação por Campo com Mensagens Acessíveis</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto anterior, crie <code>src/utils/validar.js</code> e <code>src/components/CampoTexto.jsx</code>.</li>
+                            <li><strong>Regras em Função Pura:</strong> escreva <code>validar(valores)</code> devolvendo um objeto com mensagens para nome com menos de 3 letras, telefone fora do padrão e regras não aceitas.</li>
+                            <li><strong>Erros Derivados:</strong> no corpo do componente, calcule <code>const erros = validar(form)</code> sem criar um novo <code>useState</code>.</li>
+                            <li><strong>Erro Provocado: Tudo Vermelho:</strong> exiba <code>erros.tutor</code> direto embaixo do campo, recarregue e observe a mensagem aparecendo antes de qualquer digitação.</li>
+                            <li><strong>Campos Visitados:</strong> crie <code>const [tocados, setTocados] = useState({})</code> e marque o campo no <code>onBlur</code>.</li>
+                            <li><strong>Condição de Exibição:</strong> mostre a mensagem só quando <code>tocados.tutor &amp;&amp; erros.tutor</code> for verdadeiro.</li>
+                            <li><strong>Atributos ARIA:</strong> no input, use <code>aria-invalid</code> e <code>aria-describedby="erro-tutor"</code> apontando para o <code>id</code> da mensagem.</li>
+                            <li><strong>Componente de Campo:</strong> mova rótulo, input e mensagem para <code>CampoTexto.jsx</code> e reutilize nos campos de nome e telefone.</li>
+                            <li><strong>Botão Condicionado:</strong> desabilite o botão com <code>disabled={Object.keys(erros).length &gt; 0}</code> e mostre quantos campos faltam.</li>
+                            <li><strong>Validação e Testes:</strong> teste nome vazio, telefone <code>1234</code> e <code>(32) 99999-0000</code> e o checkbox desmarcado; registre no README uma tabela com cada regra e sua mensagem.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ENVIO, ESTADOS DE SUBMISSÃO E RETORNO AO USUÁRIO -->
+            <div class="card" id="card-3">
+                <h2>📨 3. Envio, Estados de Submissão e Retorno ao Usuário</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Quando a internet da recepção oscila, clientes do Bicho Feliz clicam três vezes em Agendar e o sistema grava três horários iguais. Quando dá erro, a tela não diz nada e a pessoa não sabe se precisa tentar de novo. Como controlar o envio para que aconteça uma vez só e o usuário sempre saiba o resultado?</p>
+                </div>
+
+                <p>O envio passa por estados: parado, enviando, sucesso e erro. O onSubmit concentra a lógica, o botão fica bloqueado enquanto a resposta não chega e o resultado é anunciado numa região aria-live. Nesta aula o servidor é simulado com uma Promise; a chamada HTTP real vem na Aula 17.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/reference/react-dom/components/form" target="_blank" rel="noopener noreferrer">📄 Componente form — React</a>
+                        <span class="link-desc">O componente form no React e as formas de tratar o envio.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/HTMLFormElement/submit_event" target="_blank" rel="noopener noreferrer">📄 Evento submit — MDN</a>
+                        <span class="link-desc">Quando o evento dispara e por que ele cobre tanto o clique quanto o Enter.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Event/preventDefault" target="_blank" rel="noopener noreferrer">📄 Event.preventDefault() — MDN</a>
+                        <span class="link-desc">Como impedir o comportamento padrão do navegador de recarregar a página.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-live" target="_blank" rel="noopener noreferrer">📄 aria-live — MDN</a>
+                        <span class="link-desc">Regiões que anunciam mudanças de conteúdo sem mover o foco.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=CG_rFXX1o98" target="_blank" rel="noopener noreferrer">▶️ Curso React: Criando componente de loader - #28</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 8:16 — Cria um componente de loader para indicar ao usuário que uma operação está em andamento.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=iPKSX0mbox4" target="_blank" rel="noopener noreferrer">▶️ FORMULÁRIO COM REACTJS!  *com react hook form* | Gabriel Dias</a>
+                            <span class="link-desc">Além do Código · 28:10 — Constrói um formulário em React com envio tratado pelo onSubmit usando react-hook-form.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Envio com Estados, Proteção contra Duplo Clique e Mensagem de Retorno</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>src/services/agendamentos.js</code> com <code>enviarAgendamento(dados)</code>, que devolve uma Promise resolvida após 1,5 s e rejeitada quando o nome for <code>erro</code>.</li>
+                            <li><strong>Ligando o Envio:</strong> troque o botão para <code>type="submit"</code> e registre <code>&lt;form onSubmit={enviar}&gt;</code>.</li>
+                            <li><strong>Erro Provocado: Recarga:</strong> escreva <code>enviar</code> sem <code>evento.preventDefault()</code>, clique em Agendar e observe a página recarregar e os dados sumirem.</li>
+                            <li><strong>Estado do Envio:</strong> crie <code>const [status, setStatus] = useState('parado')</code> e a constante <code>enviando</code> derivada dele.</li>
+                            <li><strong>Chamada Assíncrona:</strong> torne <code>enviar</code> uma função <code>async</code> e use <code>try/catch</code> em volta de <code>await enviarAgendamento(form)</code>, trocando o status para sucesso ou erro.</li>
+                            <li><strong>Bloqueio de Duplo Clique:</strong> use <code>disabled={enviando}</code> no botão, troque o texto para <code>Enviando...</code> e saia da função se ela já estiver enviando.</li>
+                            <li><strong>Validação no Envio:</strong> se houver erros, marque todos os campos como visitados e chame <code>evento.target.elements[primeiro].focus()</code>.</li>
+                            <li><strong>Mensagem de Retorno:</strong> mostre o resultado num <code>&lt;p role="status" aria-live="polite"&gt;</code> com o protocolo ou o motivo da falha.</li>
+                            <li><strong>Limpeza Após Sucesso:</strong> depois de confirmar, volte o formulário para <code>inicial</code> e zere os campos visitados.</li>
+                            <li><strong>Validação e Testes:</strong> envie vazio, envie certo clicando várias vezes e envie com o nome <code>erro</code>; registre no README os quatro estados do envio e o que a tela mostra em cada um.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

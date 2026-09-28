@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tema Claro e Escuro com createContext, Provider e useContext — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Tema Claro e Escuro com createContext, Provider e useContext — Resposta</h1>
+        <p class="subtitulo">Aula 18 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A loja fictícia Tear Mineiro com o tema claro ou escuro disponível para qualquer componente via Context. <code>Cabecalho</code> e <code>Vitrine</code> deixaram de receber e repassar <code>tema</code>; só lê o contexto quem usa o valor. O hook <code>useTema</code> dá uma mensagem clara se alguém usar o tema fora do provedor.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.loja { border-radius: 12px; padding: 16px; transition: background .2s, color .2s; }
+.loja.claro { background: #F7F3EA; color: #2B2118; }
+.loja.escuro { background: #1B1712; color: #F1E9DC; }
+.loja header { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.produto { border: 1px solid #C9B79C; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.loja.escuro .produto { border-color: #5A4A36; }
+.carrinho { margin-top: 16px; border-top: 1px dashed #C9B79C; padding-top: 12px; }
+.carrinho li { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+.carrinho ul { list-style: none; padding: 0; }
+.renders { font-size: .75rem; opacity: .7; }
+.loja input { background: #fff; color: #2B2118; border-color: #C9B79C; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { createContext, useContext, useState, useReducer, useEffect, useMemo, useRef } = React;
+
+// Início: src/data/produtos.js — produtos fictícios da loja Tear Mineiro
+const produtos = [
+  { id: 1, nome: &#x27;Tapete de tear&#x27;, preco: 180 },
+  { id: 2, nome: &#x27;Toalha bordada&#x27;, preco: 95 },
+  { id: 3, nome: &#x27;Cesto de palha&#x27;, preco: 62 },
+  { id: 4, nome: &#x27;Almofada de crochê&#x27;, preco: 74 },
+];
+
+// Formata um número como valor em reais
+function brl(valor) {
+  return valor.toLocaleString(&#x27;pt-BR&#x27;, { style: &#x27;currency&#x27;, currency: &#x27;BRL&#x27; });
+}
+// Fim de produtos.js
+
+// Início: src/contexts/TemaContext.jsx — contexto do tema da loja
+
+const TemaContext = createContext(null);
+
+// Guarda o tema e oferece a função de alternância para toda a árvore abaixo dele
+function TemaProvider({ children }) {
+  const [tema, setTema] = useState(&#x27;claro&#x27;);
+
+  // Troca entre claro e escuro a partir do valor atual
+  function alternarTema() {
+    setTema((atual) =&gt; (atual === &#x27;claro&#x27; ? &#x27;escuro&#x27; : &#x27;claro&#x27;));
+  }
+
+  return &lt;TemaContext.Provider value={{ tema, alternarTema }}&gt;{children}&lt;/TemaContext.Provider&gt;;
+}
+
+// Lê o contexto e avisa com clareza quando o componente está fora do provedor
+function useTema() {
+  const contexto = useContext(TemaContext);
+  if (!contexto) {
+    throw new Error(&#x27;useTema precisa ser usado dentro de &lt;TemaProvider&gt;.&#x27;);
+  }
+  return contexto;
+}
+// Fim de TemaContext.jsx
+
+// Início: src/components/Loja.jsx — árvore da loja sem repasse de props de tema
+
+// Botão que lê e altera o tema direto do contexto
+function BotaoTema() {
+  const { tema, alternarTema } = useTema();
+  return &lt;button onClick={alternarTema}&gt;{tema === &#x27;claro&#x27; ? &#x27;Tema escuro&#x27; : &#x27;Tema claro&#x27;}&lt;/button&gt;;
+}
+
+// Cabeçalho que não sabe nada sobre tema: só posiciona o botão
+function Cabecalho() {
+  return (
+    &lt;header&gt;
+      &lt;h2&gt;Tear Mineiro&lt;/h2&gt;
+      &lt;BotaoTema /&gt;
+    &lt;/header&gt;
+  );
+}
+
+// Card que usa o tema para escolher o texto do selo
+function CardProduto({ produto }) {
+  const { tema } = useTema();
+  return (
+    &lt;article className=&quot;produto&quot;&gt;
+      &lt;strong&gt;{produto.nome}&lt;/strong&gt;
+      &lt;span&gt;{brl(produto.preco)}&lt;/span&gt;
+      &lt;small&gt;{tema === &#x27;claro&#x27; ? &#x27;Feito à mão&#x27; : &#x27;Feito à mão · modo noturno&#x27;}&lt;/small&gt;
+    &lt;/article&gt;
+  );
+}
+
+// Vitrine que também não recebe mais props de tema
+function Vitrine() {
+  return (
+    &lt;section className=&quot;vitrine&quot;&gt;
+      {produtos.map((p) =&gt; (
+        &lt;CardProduto key={p.id} produto={p} /&gt;
+      ))}
+    &lt;/section&gt;
+  );
+}
+
+// Moldura que aplica a classe do tema atual
+function Layout() {
+  const { tema } = useTema();
+  return (
+    &lt;div className={`loja ${tema}`}&gt;
+      &lt;Cabecalho /&gt;
+      &lt;Vitrine /&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de Loja.jsx
+
+// Início: src/App.jsx — o provedor envolve a loja inteira
+
+// Componente raiz: nenhuma prop de tema sai daqui
+function App() {
+  return (
+    &lt;TemaProvider&gt;
+      &lt;Layout /&gt;
+    &lt;/TemaProvider&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/data/produtos.js</h2>
+        <pre>// Início: src/data/produtos.js — produtos fictícios da loja Tear Mineiro
+export const produtos = [
+  { id: 1, nome: 'Tapete de tear', preco: 180 },
+  { id: 2, nome: 'Toalha bordada', preco: 95 },
+  { id: 3, nome: 'Cesto de palha', preco: 62 },
+  { id: 4, nome: 'Almofada de crochê', preco: 74 },
+];
+
+// Formata um número como valor em reais
+export function brl(valor) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+// Fim de produtos.js</pre>
+        <h2>src/contexts/TemaContext.jsx</h2>
+        <pre>// Início: src/contexts/TemaContext.jsx — contexto do tema da loja
+import { createContext, useContext, useState } from 'react';
+
+export const TemaContext = createContext(null);
+
+// Guarda o tema e oferece a função de alternância para toda a árvore abaixo dele
+export function TemaProvider({ children }) {
+  const [tema, setTema] = useState('claro');
+
+  // Troca entre claro e escuro a partir do valor atual
+  function alternarTema() {
+    setTema((atual) =&gt; (atual === 'claro' ? 'escuro' : 'claro'));
+  }
+
+  return &lt;TemaContext.Provider value={{ tema, alternarTema }}&gt;{children}&lt;/TemaContext.Provider&gt;;
+}
+
+// Lê o contexto e avisa com clareza quando o componente está fora do provedor
+export function useTema() {
+  const contexto = useContext(TemaContext);
+  if (!contexto) {
+    throw new Error('useTema precisa ser usado dentro de &lt;TemaProvider&gt;.');
+  }
+  return contexto;
+}
+// Fim de TemaContext.jsx</pre>
+        <h2>src/components/Loja.jsx</h2>
+        <pre>// Início: src/components/Loja.jsx — árvore da loja sem repasse de props de tema
+import { useTema } from '../contexts/TemaContext.jsx';
+import { produtos, brl } from '../data/produtos.js';
+
+// Botão que lê e altera o tema direto do contexto
+function BotaoTema() {
+  const { tema, alternarTema } = useTema();
+  return &lt;button onClick={alternarTema}&gt;{tema === 'claro' ? 'Tema escuro' : 'Tema claro'}&lt;/button&gt;;
+}
+
+// Cabeçalho que não sabe nada sobre tema: só posiciona o botão
+function Cabecalho() {
+  return (
+    &lt;header&gt;
+      &lt;h2&gt;Tear Mineiro&lt;/h2&gt;
+      &lt;BotaoTema /&gt;
+    &lt;/header&gt;
+  );
+}
+
+// Card que usa o tema para escolher o texto do selo
+function CardProduto({ produto }) {
+  const { tema } = useTema();
+  return (
+    &lt;article className="produto"&gt;
+      &lt;strong&gt;{produto.nome}&lt;/strong&gt;
+      &lt;span&gt;{brl(produto.preco)}&lt;/span&gt;
+      &lt;small&gt;{tema === 'claro' ? 'Feito à mão' : 'Feito à mão · modo noturno'}&lt;/small&gt;
+    &lt;/article&gt;
+  );
+}
+
+// Vitrine que também não recebe mais props de tema
+function Vitrine() {
+  return (
+    &lt;section className="vitrine"&gt;
+      {produtos.map((p) =&gt; (
+        &lt;CardProduto key={p.id} produto={p} /&gt;
+      ))}
+    &lt;/section&gt;
+  );
+}
+
+// Moldura que aplica a classe do tema atual
+export default function Layout() {
+  const { tema } = useTema();
+  return (
+    &lt;div className={`loja ${tema}`}&gt;
+      &lt;Cabecalho /&gt;
+      &lt;Vitrine /&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de Loja.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — o provedor envolve a loja inteira
+import { TemaProvider } from './contexts/TemaContext.jsx';
+import Layout from './components/Loja.jsx';
+
+// Componente raiz: nenhuma prop de tema sai daqui
+export default function App() {
+  return (
+    &lt;TemaProvider&gt;
+      &lt;Layout /&gt;
+    &lt;/TemaProvider&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm create vite@latest tear-mineiro -- --template react</code>, <code>cd tear-mineiro</code> e <code>npm install</code></li>
+            <li>Crie <code>src/data</code>, <code>src/contexts</code> e <code>src/components</code> com os arquivos acima e substitua o <code>App.jsx</code></li>
+            <li>Copie o CSS das classes <code>.loja</code>, <code>.claro</code> e <code>.escuro</code> para o <code>index.css</code></li>
+            <li><code>npm run dev</code> e alterne o tema; com a extensão React Developer Tools, inspecione as props de cada componente</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Renderizar <code>&lt;BotaoTema /&gt;</code> fora do <code>TemaProvider</code> dispara o erro escrito em <code>useTema</code>, em vez de um "cannot destructure null" sem contexto.</li>
+            <li>No React Developer Tools, <code>Cabecalho</code> e <code>Vitrine</code> não têm mais props de tema.</li>
+            <li>Context resolve distância na árvore, não organização de estado: o tema continua sendo um <code>useState</code> comum dentro do provedor.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

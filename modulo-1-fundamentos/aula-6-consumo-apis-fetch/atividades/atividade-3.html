@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Endereço — ViaCEP e POST | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Cadastro de Endereço — ViaCEP e POST</h1>
+        <p class="subtitulo">Aula 6 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um formulário de cadastro que valida o CEP, consulta o endereço no ViaCEP ao sair do campo, trata o CEP inexistente e envia o cadastro completo com <code>POST</code> para a API de testes JSONPlaceholder.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.grade label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.grade button {
+  align-self: end;
+}
+
+input:invalid:not(:placeholder-shown) {
+  border-color: var(--danger);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Leva Já — endereço de entrega&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Digite o CEP e saia do campo. Teste também 99999-999.&lt;/p&gt;
+  &lt;form id=&quot;formEndereco&quot; class=&quot;grade&quot;&gt;
+    &lt;label&gt;CEP
+      &lt;input id=&quot;cep&quot; name=&quot;cep&quot; inputmode=&quot;numeric&quot; pattern=&quot;\d{5}-?\d{3}&quot; placeholder=&quot;00000-000&quot; required&gt;
+    &lt;/label&gt;
+    &lt;label&gt;Rua &lt;input id=&quot;rua&quot; name=&quot;rua&quot; required&gt;&lt;/label&gt;
+    &lt;label&gt;Número &lt;input id=&quot;numero&quot; name=&quot;numero&quot; required&gt;&lt;/label&gt;
+    &lt;label&gt;Bairro &lt;input id=&quot;bairro&quot; name=&quot;bairro&quot; required&gt;&lt;/label&gt;
+    &lt;label&gt;Cidade &lt;input id=&quot;cidade&quot; name=&quot;cidade&quot; required&gt;&lt;/label&gt;
+    &lt;label&gt;UF &lt;input id=&quot;uf&quot; name=&quot;uf&quot; maxlength=&quot;2&quot; required&gt;&lt;/label&gt;
+    &lt;button type=&quot;submit&quot;&gt;Enviar cadastro&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id=&quot;aviso&quot; class=&quot;muted&quot;&gt;&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: cadastro de endereço com consulta ao ViaCEP e envio por POST
+const formEndereco = document.querySelector(&#x27;#formEndereco&#x27;);
+const campoCep = document.querySelector(&#x27;#cep&#x27;);
+const aviso = document.querySelector(&#x27;#aviso&#x27;);
+const CAMPOS_ENDERECO = { rua: &#x27;logradouro&#x27;, bairro: &#x27;bairro&#x27;, cidade: &#x27;localidade&#x27;, uf: &#x27;uf&#x27; };
+
+// mostra uma mensagem abaixo do formulário
+const avisar = (texto, classe = &#x27;muted&#x27;) =&gt; {
+  aviso.textContent = texto;
+  aviso.className = classe;
+};
+
+// remove tudo que não for dígito do CEP digitado
+const limparCep = (valor) =&gt; valor.replace(/\D/g, &#x27;&#x27;);
+
+// copia os dados do ViaCEP para os campos do formulário
+const preencherEndereco = (dados) =&gt; {
+  Object.entries(CAMPOS_ENDERECO).forEach(([campo, chave]) =&gt; {
+    formEndereco.elements[campo].value = dados[chave] || &#x27;&#x27;;
+  });
+};
+
+// consulta o endereço do CEP no ViaCEP
+async function buscarCep() {
+  const cep = limparCep(campoCep.value);
+  if (cep.length !== 8) {
+    avisar(&#x27;O CEP precisa ter 8 dígitos.&#x27;, &#x27;erro&#x27;);
+    return;
+  }
+  avisar(&#x27;Buscando endereço...&#x27;);
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${encodeURIComponent(cep)}/json/`);
+    if (!resposta.ok) {
+      throw new Error(`status ${resposta.status}`);
+    }
+    const dados = await resposta.json();
+    if (dados.erro) {
+      preencherEndereco({});
+      avisar(&#x27;CEP não encontrado. Confira os números.&#x27;, &#x27;erro&#x27;);
+      return;
+    }
+    preencherEndereco(dados);
+    avisar(&#x27;Endereço preenchido. Informe o número.&#x27;, &#x27;ok&#x27;);
+    formEndereco.elements.numero.focus();
+  } catch (erro) {
+    avisar(`Falha na consulta: ${erro.message}.`, &#x27;erro&#x27;);
+  }
+}
+
+// envia o cadastro completo para a API de testes
+async function enviarCadastro(evento) {
+  evento.preventDefault();
+  const cadastro = Object.fromEntries(new FormData(formEndereco));
+  avisar(&#x27;Enviando...&#x27;);
+  try {
+    const resposta = await fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;, {
+      method: &#x27;POST&#x27;,
+      headers: { &#x27;Content-Type&#x27;: &#x27;application/json; charset=UTF-8&#x27; },
+      body: JSON.stringify(cadastro)
+    });
+    const salvo = await resposta.json();
+    avisar(`Cadastro recebido (status ${resposta.status}, id ${salvo.id}).`, &#x27;ok&#x27;);
+  } catch (erro) {
+    avisar(`Falha no envio: ${erro.message}.`, &#x27;erro&#x27;);
+  }
+}
+
+campoCep.addEventListener(&#x27;blur&#x27;, buscarCep);
+formEndereco.addEventListener(&#x27;submit&#x27;, enviarCadastro);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Cadastro de Endereço — ViaCEP e POST --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Cadastro de Endereço — ViaCEP e POST&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Leva Já — endereço de entrega&lt;/h1&gt;
+    &lt;p class="sub"&gt;Digite o CEP e saia do campo. Teste também 99999-999.&lt;/p&gt;
+    &lt;form id="formEndereco" class="grade"&gt;
+      &lt;label&gt;CEP
+        &lt;input id="cep" name="cep" inputmode="numeric" pattern="\d{5}-?\d{3}" placeholder="00000-000" required&gt;
+      &lt;/label&gt;
+      &lt;label&gt;Rua &lt;input id="rua" name="rua" required&gt;&lt;/label&gt;
+      &lt;label&gt;Número &lt;input id="numero" name="numero" required&gt;&lt;/label&gt;
+      &lt;label&gt;Bairro &lt;input id="bairro" name="bairro" required&gt;&lt;/label&gt;
+      &lt;label&gt;Cidade &lt;input id="cidade" name="cidade" required&gt;&lt;/label&gt;
+      &lt;label&gt;UF &lt;input id="uf" name="uf" maxlength="2" required&gt;&lt;/label&gt;
+      &lt;button type="submit"&gt;Enviar cadastro&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p id="aviso" class="muted"&gt;&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.grade label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.grade button {
+  align-self: end;
+}
+
+input:invalid:not(:placeholder-shown) {
+  border-color: var(--danger);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: cadastro de endereço com consulta ao ViaCEP e envio por POST
+const formEndereco = document.querySelector('#formEndereco');
+const campoCep = document.querySelector('#cep');
+const aviso = document.querySelector('#aviso');
+const CAMPOS_ENDERECO = { rua: 'logradouro', bairro: 'bairro', cidade: 'localidade', uf: 'uf' };
+
+// mostra uma mensagem abaixo do formulário
+const avisar = (texto, classe = 'muted') =&gt; {
+  aviso.textContent = texto;
+  aviso.className = classe;
+};
+
+// remove tudo que não for dígito do CEP digitado
+const limparCep = (valor) =&gt; valor.replace(/\D/g, '');
+
+// copia os dados do ViaCEP para os campos do formulário
+const preencherEndereco = (dados) =&gt; {
+  Object.entries(CAMPOS_ENDERECO).forEach(([campo, chave]) =&gt; {
+    formEndereco.elements[campo].value = dados[chave] || '';
+  });
+};
+
+// consulta o endereço do CEP no ViaCEP
+async function buscarCep() {
+  const cep = limparCep(campoCep.value);
+  if (cep.length !== 8) {
+    avisar('O CEP precisa ter 8 dígitos.', 'erro');
+    return;
+  }
+  avisar('Buscando endereço...');
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${encodeURIComponent(cep)}/json/`);
+    if (!resposta.ok) {
+      throw new Error(`status ${resposta.status}`);
+    }
+    const dados = await resposta.json();
+    if (dados.erro) {
+      preencherEndereco({});
+      avisar('CEP não encontrado. Confira os números.', 'erro');
+      return;
+    }
+    preencherEndereco(dados);
+    avisar('Endereço preenchido. Informe o número.', 'ok');
+    formEndereco.elements.numero.focus();
+  } catch (erro) {
+    avisar(`Falha na consulta: ${erro.message}.`, 'erro');
+  }
+}
+
+// envia o cadastro completo para a API de testes
+async function enviarCadastro(evento) {
+  evento.preventDefault();
+  const cadastro = Object.fromEntries(new FormData(formEndereco));
+  avisar('Enviando...');
+  try {
+    const resposta = await fetch('https://jsonplaceholder.typicode.com/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      body: JSON.stringify(cadastro)
+    });
+    const salvo = await resposta.json();
+    avisar(`Cadastro recebido (status ${resposta.status}, id ${salvo.id}).`, 'ok');
+  } catch (erro) {
+    avisar(`Falha no envio: ${erro.message}.`, 'erro');
+  }
+}
+
+campoCep.addEventListener('blur', buscarCep);
+formEndereco.addEventListener('submit', enviarCadastro);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Digite <code>36010-000</code> (ou o CEP da sua rua), saia do campo, informe o número e envie.</li>
+            <li>Repita com <code>99999-999</code> e com <code>123</code>.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O ViaCEP responde <code>200</code> com <code>{ "erro": true }</code> para CEP inexistente: é uma regra da API, e só a documentação avisa.</li>
+            <li>O <code>pattern</code> impede o envio de um CEP mal formatado antes de qualquer requisição, sem uma linha de JavaScript.</li>
+            <li>O JSONPlaceholder responde <code>201</code> e devolve um <code>id</code>, mas não grava nada de verdade — serve só para praticar o envio.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

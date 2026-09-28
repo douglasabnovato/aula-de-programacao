@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Quadro HEART e North Star | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Quadro HEART e North Star</h1>
+        <p class="subtitulo">Aula 45 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O quadro HEART completo da LivroLivre, a North Star escolhida com suas métricas de entrada e o plano de eventos que o código precisa registrar.</p>
+        </div>
+        <h2>metricas-heart.md</h2>
+        <pre># LivroLivre — Métricas
+
+| Dimensão     | Objetivo                           | Sinal                          | Métrica                                  |
+|--------------|------------------------------------|--------------------------------|------------------------------------------|
+| Happiness    | estudante confia na troca          | avaliação após o encontro      | nota média da troca (1 a 5)              |
+| Engagement   | —  (não é prioridade agora)        | —                              | —                                        |
+| Adoption     | novo usuário oferece um livro      | primeiro livro cadastrado      | % de novos que cadastram livro em 7 dias |
+| Retention    | estudante volta a trocar           | segunda troca concluída        | % com 2ª troca em 60 dias                |
+| Task success | troca combinada acontece           | ambos confirmam o encontro     | % de trocas combinadas concluídas        |
+
+## North Star
+Trocas concluídas por semana.
+
+## Métricas de entrada
+1. Livros disponíveis com pedido em aberto.
+2. % de trocas combinadas concluídas.
+3. Tempo médio entre pedido e encontro.
+
+## Eventos a registrar
+- livro_cadastrado   { livro_id, curso }
+- troca_solicitada   { troca_id, livro_id }
+- encontro_confirmado{ troca_id, lado }
+- troca_concluida    { troca_id, nota }
+</pre>
+        <h2>Métricas descartadas e por quê</h2>
+        <ul>
+            <li><strong>Visitas no mês</strong>: sobe com um post viral e não muda nenhuma decisão.</li>
+            <li><strong>Tempo na página</strong>: tempo alto pode ser confusão, não interesse.</li>
+            <li><strong>Total de cadastros</strong>: só cresce, nunca mostra problema.</li>
+        </ul>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Escreva o objetivo de cada dimensão antes de pensar em número.</li>
+            <li>Deixe em branco as dimensões que não importam agora.</li>
+            <li>Para cada métrica, escreva a decisão que ela provocaria se caísse.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A North Star só sobe quando alguém recebeu valor: um livro trocado.</li>
+            <li>Os eventos têm nome no passado e parâmetros mínimos: isso facilita a análise depois.</li>
+            <li>Engagement ficou vazio de propósito — cinco dimensões não são obrigatórias.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

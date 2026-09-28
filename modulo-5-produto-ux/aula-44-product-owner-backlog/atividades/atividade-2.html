@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Histórias de Usuário com Critérios de Aceite | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Histórias de Usuário com Critérios de Aceite</h1>
+        <p class="subtitulo">Aula 44 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O item vago <em>"melhorar o agendamento"</em> reescrito como três histórias pequenas, cada uma com critérios de aceite no formato Dado/Quando/Então.</p>
+        </div>
+        <h2>historias.md</h2>
+        <pre># Histórias — Agenda Pet
+
+## H1 — Remarcar horário
+Como tutora com rotina corrida,
+quero remarcar o banho do meu cachorro pelo app,
+para não precisar ligar no horário comercial.
+
+Critérios de aceite
+- Dado um agendamento futuro, Quando toco em "Remarcar",
+  Então vejo apenas horários livres dos próximos 14 dias.
+- Dado que escolhi um novo horário, Quando confirmo,
+  Então o horário antigo fica livre para outros tutores.
+- Dado um agendamento a menos de 2 horas, Quando toco em "Remarcar",
+  Então vejo a mensagem "Remarcação só por telefone a menos de 2h".
+
+## H2 — Lembrete antes do horário
+Como tutor,
+quero receber um lembrete 24 horas antes,
+para não esquecer e perder o horário.
+
+Critérios de aceite
+- Dado um agendamento confirmado, Quando faltam 24h,
+  Então recebo uma notificação com data, hora e endereço.
+
+## H3 — Cancelar horário
+Como tutora,
+quero cancelar pelo app,
+para liberar o horário sem constrangimento.
+
+Critérios de aceite
+- Dado um agendamento futuro, Quando cancelo,
+  Então ele some da minha lista e aparece como livre na agenda da loja.
+</pre>
+        <h2>remarcar.feature</h2>
+        <pre>Funcionalidade: Remarcar horário
+
+  Cenário: Remarcação com antecedência
+    Dado que tenho banho agendado para sexta às 10h
+    Quando escolho remarcar para sábado às 9h
+    Então vejo o agendamento de sábado às 9h
+    E o horário de sexta às 10h aparece como livre
+
+  Cenário: Remarcação em cima da hora
+    Dado que tenho banho agendado para daqui a 1 hora
+    Quando toco em "Remarcar"
+    Então vejo a mensagem "Remarcação só por telefone a menos de 2h"
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Escolha um item vago do seu backlog.</li>
+            <li>Quebre em histórias que entreguem valor sozinhas.</li>
+            <li>Escreva de três a cinco critérios para cada uma e peça a um colega que leia.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O critério de aceite fala do comportamento, não da implementação.</li>
+            <li>O caso de borda (menos de 2h) é onde mora a maior parte das dúvidas.</li>
+            <li>O arquivo <code>.feature</code> pode virar teste automatizado depois — o texto já está pronto.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

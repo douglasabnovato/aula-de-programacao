@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 46 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a identificar a suposição mais arriscada de uma ideia, testá-la com entrevistas e experimentos baratos e cortar o escopo até um MVP que responde uma pergunta em uma semana.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 46: Descoberta de Produto (Discovery) e MVP</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: DISCOVERY: ENTENDER O PROBLEMA ANTES DA SOLUÇÃO -->
+            <div class="card" id="card-1">
+                <h2>🔎 1. Discovery: Entender o Problema Antes da Solução</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Dois alunos querem criar o Marmita Já, um app para restaurantes de bairro venderem marmitas por encomenda. Eles já desenharam 14 telas e escolheram o banco de dados, mas ainda não conversaram com nenhum dono de restaurante. Como descobrir, antes de programar, se o problema existe do jeito que eles imaginam?</p>
+                </div>
+
+                <p>Discovery é o trabalho de reduzir risco antes de construir: o risco de ninguém querer, de ninguém conseguir usar, de não dar para fazer e de não dar para sustentar. A entrevista de problema é a ferramenta mais barata para o primeiro desses riscos — desde que pergunte sobre o passado, não sobre a ideia.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.designcouncil.org.uk/resources/the-double-diamond/" target="_blank" rel="noopener noreferrer">📄 Double Diamond — Design Council</a>
+                        <span class="link-desc">O modelo que separa descobrir e definir o problema de desenvolver e entregar a solução.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/four-big-risks/" target="_blank" rel="noopener noreferrer">📄 Os quatro grandes riscos — SVPG</a>
+                        <span class="link-desc">Valor, usabilidade, viabilidade técnica e viabilidade de negócio: o que o discovery precisa responder.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/user-interviews/" target="_blank" rel="noopener noreferrer">📄 Entrevistas com usuários 101 — NN/g</a>
+                        <span class="link-desc">Quando entrevistar, como conduzir e quais erros tornam a entrevista inútil.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/interview-guide/" target="_blank" rel="noopener noreferrer">📄 Roteiro de entrevista de UX — NN/g</a>
+                        <span class="link-desc">Como escrever o roteiro com perguntas abertas e sem induzir a resposta.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=kd5rH2vaZ5E" target="_blank" rel="noopener noreferrer">▶️ O QUE É PRODUCT DISCOVERY | AULA 1 | FUNDAMENTOS DE PRODUCT DISCOVERY</a>
+                            <span class="link-desc">CANAL VALOR · 13:18 — Explica o que é Product Discovery e por que investigar o problema antes de construir.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=psJ4bsE4SpI" target="_blank" rel="noopener noreferrer">▶️ Como fazer Product Discovery com pouco tempo (sem abrir mão da qualidade)</a>
+                            <span class="link-desc">PM3 · 8:06 — Mostra como fazer Product Discovery com pouco tempo, priorizando os riscos mais importantes.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Roteiro e Rodada de Entrevistas de Problema</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-46</code> com o arquivo <code>discovery.md</code> e escolha uma ideia de produto sua ou o Marmita Já.</li>
+                            <li><strong>Listando Suposições:</strong> escreva tudo que precisa ser verdade para a ideia dar certo, uma suposição por linha.</li>
+                            <li><strong>Classificando pelos Riscos:</strong> marque cada suposição como risco de valor, usabilidade, viabilidade técnica ou de negócio.</li>
+                            <li><strong>Escolhendo a Mais Arriscada:</strong> escolha a suposição que, se estiver errada, derruba o produto inteiro e que você tem menos evidência hoje.</li>
+                            <li><strong>Escrevendo o Roteiro:</strong> escreva de cinco a sete perguntas abertas sobre <strong>a última vez</strong> que a pessoa viveu o problema.</li>
+                            <li><strong>Erro Provocado:</strong> inclua de propósito a pergunta <em>"Você usaria um app que faz X?"</em>. Aplique numa pessoa e anote por que o "sim" dela não prova nada.</li>
+                            <li><strong>Ajustando a Pergunta:</strong> troque a pergunta sobre o futuro por uma sobre comportamento real, como <em>"Como você recebeu as encomendas na semana passada?"</em>.</li>
+                            <li><strong>Rodando as Entrevistas:</strong> entreviste de três a cinco pessoas do público, anotando falas literais entre aspas.</li>
+                            <li><strong>Sintetizando:</strong> agrupe as falas por padrão e marque quais suposições foram reforçadas, enfraquecidas ou ficaram sem evidência.</li>
+                            <li><strong>Validação e Testes:</strong> escreva o enunciado do problema confirmado em uma frase e mostre ao instrutor as falas que o sustentam; registre no README as suposições que caíram.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: HIPÓTESES E EXPERIMENTOS BARATOS -->
+            <div class="card" id="card-2">
+                <h2>🧪 2. Hipóteses e Experimentos Baratos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>As entrevistas do Marmita Já mostraram que os restaurantes perdem pedidos pelo WhatsApp em horário de pico. Os alunos agora querem construir o app completo com pagamento, cardápio e entrega. Existe um jeito de testar se os donos pagariam pela solução antes de escrever essas telas?</p>
+                </div>
+
+                <p>Toda funcionalidade nova é uma aposta. Escrever a aposta como hipótese — com a métrica e o critério de sucesso definidos antes — transforma a construção em experimento. A árvore de oportunidades liga o resultado desejado aos problemas descobertos e às soluções a testar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://theleanstartup.com/principles" target="_blank" rel="noopener noreferrer">📄 Princípios do Lean Startup — Eric Ries</a>
+                        <span class="link-desc">O ciclo construir-medir-aprender e o conceito de aprendizado validado, na página oficial do método.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.strategyzer.com/library/validate-your-ideas-with-the-test-card" target="_blank" rel="noopener noreferrer">📄 Test Card — Strategyzer</a>
+                        <span class="link-desc">O cartão de quatro linhas para escrever hipótese, teste, métrica e critério antes de começar.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.producttalk.org/opportunity-solution-trees/" target="_blank" rel="noopener noreferrer">📄 Árvore de Oportunidades e Soluções — Teresa Torres</a>
+                        <span class="link-desc">Como ligar resultado, oportunidades, soluções e experimentos num só desenho.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ab-testing/" target="_blank" rel="noopener noreferrer">📄 Teste A/B 101 — NN/g</a>
+                        <span class="link-desc">Quando um teste A/B responde a pergunta e quando ele é caro demais para a fase do produto.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=SXqn1C_3aJE" target="_blank" rel="noopener noreferrer">▶️ ⚙ - COMO EMPREENDER: 3 PASSOS DE TESTE DE HIPÓTESES: EXPERIMENTAÇÂO DE NEGÓCIOS</a>
+                            <span class="link-desc">Rogerio Lacerda · 7:35 — Apresenta três passos para testar hipóteses de negócio com experimentos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=GAag3GNEnOA" target="_blank" rel="noopener noreferrer">▶️ 💡 Metodologia Lean Startup - Giovanna Baccarin - Palestrante -  [Aula Rápida]</a>
+                            <span class="link-desc">Giovanna Baccarin · 13:15 — Resume a metodologia Lean Startup e o ciclo construir, medir e aprender.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Da Árvore de Oportunidades ao Cartão de Teste</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>experimentos.md</code> na pasta <code>aula-46</code> e cole o enunciado do problema confirmado na prática anterior.</li>
+                            <li><strong>Resultado no Topo:</strong> escreva o resultado de negócio que você quer mover no topo da árvore, como <em>"restaurantes perdem menos pedidos no pico"</em>.</li>
+                            <li><strong>Oportunidades:</strong> abaixo dele, escreva de três a cinco oportunidades — necessidades ou dores ouvidas nas entrevistas.</li>
+                            <li><strong>Soluções:</strong> para a oportunidade escolhida, escreva ao menos três soluções diferentes, incluindo uma que não seja software.</li>
+                            <li><strong>Escrevendo a Hipótese:</strong> para a solução mais promissora, preencha: <code>Acreditamos que ... Vamos testar com ... Vamos medir ... Estamos certos se ...</code>.</li>
+                            <li><strong>Erro Provocado:</strong> escreva o critério de sucesso como <em>"se as pessoas gostarem"</em> e tente decidir, com ele, se o teste passou. Observe que qualquer resultado serve.</li>
+                            <li><strong>Critério Numérico:</strong> defina o número mínimo antes do teste, como <em>"pelo menos 3 de 10 restaurantes pedem para usar"</em>.</li>
+                            <li><strong>Escolhendo o Teste Mais Barato:</strong> escolha um teste que caiba numa semana: página de apresentação, protótipo clicável ou serviço feito à mão.</li>
+                            <li><strong>Planejando o Registro:</strong> defina onde e como vai contar o resultado, e quem vai contar.</li>
+                            <li><strong>Validação e Testes:</strong> peça ao instrutor que leia o cartão e diga se o critério permite reprovar a ideia; registre no README a hipótese e o critério final.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: MVP: O MENOR TESTE QUE GERA APRENDIZADO -->
+            <div class="card" id="card-3">
+                <h2>🚀 3. MVP: o Menor Teste que Gera Aprendizado</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Os alunos do Marmita Já passaram a chamar de MVP a versão com cadastro, cardápio, carrinho, pagamento e painel do restaurante — seis semanas de trabalho. O teste da hipótese só precisa saber se os donos usariam uma lista de encomendas no horário de pico. Qual é a menor coisa que eles podem entregar para aprender isso na semana que vem?</p>
+                </div>
+
+                <p>MVP não é a versão pobre do produto final: é o menor experimento que responde à hipótese com usuários reais. Às vezes é código, às vezes é um formulário, uma planilha ou um protótipo de baixa fidelidade. O escopo sai da pergunta, não da lista de funcionalidades.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.ycombinator.com/library/6f-how-to-plan-an-mvp" target="_blank" rel="noopener noreferrer">📄 Como planejar um MVP — Y Combinator</a>
+                        <span class="link-desc">Como cortar escopo até sobrar só o que testa a hipótese principal, com exemplos de empresas reais.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/minimum-viable-product" target="_blank" rel="noopener noreferrer">📄 O que é MVP — Atlassian</a>
+                        <span class="link-desc">Definição, tipos de MVP e como ele se encaixa no ciclo de desenvolvimento ágil.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ux-prototype-hi-lo-fidelity/" target="_blank" rel="noopener noreferrer">📄 Protótipos de baixa × alta fidelidade — NN/g</a>
+                        <span class="link-desc">Quando um rascunho em papel responde a pergunta tão bem quanto uma tela pronta.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/the-purpose-of-prototypes/" target="_blank" rel="noopener noreferrer">📄 O propósito dos protótipos — SVPG</a>
+                        <span class="link-desc">Protótipo como ferramenta de aprendizado barato, antes de virar produto.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=i6nWH7STrb4" target="_blank" rel="noopener noreferrer">▶️ O QUE É MVP (PRODUTO MÍNIMO VIÁVEL)? EXEMPLOS PRÁTICOS</a>
+                            <span class="link-desc">Gabriel Valle · 5:48 — Explica o que é MVP com exemplos práticos de experimentos mínimos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9fnxZJY-yCQ" target="_blank" rel="noopener noreferrer">▶️ TIPOS DE MVP - PRODUTO MINIMAMENTE VIÁVEL</a>
+                            <span class="link-desc">Rogerio Lacerda · 11:22 — Apresenta os tipos de MVP, de protótipos a testes sem código.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Cortando o Escopo até o MVP de Uma Semana</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>mvp.md</code> na pasta <code>aula-46</code> e cole a hipótese do cartão de teste da prática anterior.</li>
+                            <li><strong>Lista Completa:</strong> escreva todas as funcionalidades que você imagina para a versão final, sem limite.</li>
+                            <li><strong>A Pergunta do MVP:</strong> escreva em uma frase a única coisa que o MVP precisa descobrir.</li>
+                            <li><strong>Cortando:</strong> para cada funcionalidade, pergunte <em>"sem isto, ainda consigo responder a pergunta?"</em> e risque as que passarem.</li>
+                            <li><strong>Erro Provocado:</strong> estime em dias o que sobrou. Se passar de cinco dias úteis, o MVP ainda é um produto pequeno, não um teste — anote o que ainda sobra.</li>
+                            <li><strong>Trocando Código por Processo:</strong> para cada funcionalidade restante, avalie se ela pode ser feita à mão, por planilha ou por formulário nesta primeira semana.</li>
+                            <li><strong>Escolhendo o Tipo:</strong> decida entre MVP de fachada, concierge, protótipo clicável ou código mínimo, e escreva o motivo.</li>
+                            <li><strong>Esboço de Baixa Fidelidade:</strong> desenhe em papel as duas ou três telas ou etapas que o usuário vai ver.</li>
+                            <li><strong>Plano de Aplicação:</strong> escreva quem vai usar, por quantos dias e como você vai registrar o resultado.</li>
+                            <li><strong>Validação e Testes:</strong> mostre o plano ao instrutor com a estimativa em dias e a ligação com o critério da hipótese; registre no README o que foi cortado e por quê.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

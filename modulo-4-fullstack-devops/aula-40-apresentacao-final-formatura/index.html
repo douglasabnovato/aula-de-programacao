@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 40 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a transformar o projeto final em prova pública, com README para portfólio, pitch com demonstração ao vivo e defesa técnica que termina num plano de 90 dias.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 40: Apresentação Final, Defesa de Projetos e Formatura</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: README, PORTFÓLIO E A PROVA PÚBLICA DO PROJETO -->
+            <div class="card" id="card-1">
+                <h2>📘 1. README, Portfólio e a Prova Pública do Projeto</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Uma recrutadora fictícia da empresa Horizonte Sistemas abre o repositório da Agenda Lírio entre outros 40 candidatos e dá a cada um cerca de dois minutos. O README atual começa com 'npm install' e não diz que problema o projeto resolve nem onde ver funcionando. O que precisa estar no topo do repositório para esses dois minutos contarem a seu favor?</p>
+                </div>
+
+                <p>O README é a primeira apresentação do projeto e continua trabalhando depois da formatura. Ele precisa responder, nesta ordem, o que é, para quem, onde ver funcionando, como foi construído e como rodar, com as decisões técnicas a um clique.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/visual-hierarchy-ux-definition/" target="_blank" rel="noopener noreferrer">📄 Hierarquia Visual — Nielsen Norman Group</a>
+                        <span class="link-desc">Como organizar conteúdo para que quem escaneia encontre o essencial primeiro.</span>
+                    </li>
+                    <li>
+                        <a href="https://adr.github.io/" target="_blank" rel="noopener noreferrer">📄 Architectural Decision Records — adr.github.io</a>
+                        <span class="link-desc">O formato dos registros de decisão que o README aponta como prova de raciocínio técnico.</span>
+                    </li>
+                    <li>
+                        <a href="https://swagger.io/specification/" target="_blank" rel="noopener noreferrer">📄 OpenAPI Specification — swagger.io</a>
+                        <span class="link-desc">O contrato da API publicado junto do projeto, legível por pessoas e ferramentas.</span>
+                    </li>
+                    <li>
+                        <a href="https://web.dev/learn/accessibility" target="_blank" rel="noopener noreferrer">📄 Learn Accessibility — web.dev</a>
+                        <span class="link-desc">O curso de referência para revisar a acessibilidade da aplicação antes de expô-la publicamente.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=k4Rsy8GbKE0" target="_blank" rel="noopener noreferrer">▶️ COMO CRIAR SEUS READMEs? GUIA DO README COMPLETO</a>
+                            <span class="link-desc">Fernanda Kipper · 25:44 — Guia completo para escrever o README de um projeto: o que é, como rodar e tecnologias usadas.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=jIa8R69pKh8" target="_blank" rel="noopener noreferrer">▶️ Como fazer um README para portfolio no Github</a>
+                            <span class="link-desc">DevSuperior · 14:37 — Mostra como montar um README de projeto voltado para portfólio no GitHub.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: README Final e Repositório Pronto para Portfólio</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o README atual do projeto final e a aplicação publicada lado a lado.</li>
+                            <li><strong>Primeira Linha:</strong> escreva o nome do projeto e uma frase com o problema resolvido e para quem, sem citar tecnologia.</li>
+                            <li><strong>Prova Visual:</strong> grave um GIF curto do fluxo principal e coloque logo abaixo da primeira linha, com texto alternativo.</li>
+                            <li><strong>Links que Importam:</strong> acrescente os links da aplicação publicada, do contrato OpenAPI e da pasta de ADRs.</li>
+                            <li><strong>Tecnologias com Motivo:</strong> liste a stack em uma tabela com uma coluna dizendo por que cada escolha foi feita.</li>
+                            <li><strong>Erro Provocado:</strong> peça a um colega que leia o README por 60 segundos e diga o que o projeto faz; se ele citar só a tecnologia, o topo ainda não funciona.</li>
+                            <li><strong>Como Rodar:</strong> reduza a instalação local a no máximo cinco comandos, testados numa máquina limpa.</li>
+                            <li><strong>Limites e Próximos Passos:</strong> escreva o que ficou fora do escopo e o que a próxima versão traria.</li>
+                            <li><strong>Repositório Organizado:</strong> preencha a descrição e os tópicos do repositório no GitHub e fixe o projeto no seu perfil.</li>
+                            <li><strong>Validação e Testes:</strong> abra o repositório numa aba anônima pelo celular, confira que imagens e links funcionam e registre no próprio README a data da versão apresentada.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PITCH E DEMONSTRAÇÃO AO VIVO -->
+            <div class="card" id="card-2">
+                <h2>🎤 2. Pitch e Demonstração ao Vivo</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Cada equipe terá sete minutos diante da banca e da turma, com a dona do Studio Lírio convidada na plateia. No ensaio, uma equipe gastou cinco minutos explicando a estrutura de pastas e a demonstração travou no login porque a API do plano gratuito estava hibernando. Como contar a história do projeto em sete minutos e garantir que a demonstração funcione na hora?</p>
+                </div>
+
+                <p>Pitch é uma história com começo, meio e fim: o problema de alguém, a solução funcionando e o que foi aprendido. A demonstração ao vivo é a prova, e por isso precisa de roteiro, dados de exemplo preparados e um plano para quando algo falhar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/definition-user-experience/" target="_blank" rel="noopener noreferrer">📄 Definição de Experiência do Usuário — Nielsen Norman Group</a>
+                        <span class="link-desc">Por que começar pelo que muda para quem usa, e não pelo que foi programado.</span>
+                    </li>
+                    <li>
+                        <a href="https://lawsofux.com/" target="_blank" rel="noopener noreferrer">📄 Leis de UX — lawsofux.com</a>
+                        <span class="link-desc">Princípios de percepção que valem para os slides: menos elementos, uma ideia por tela.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">📄 Contraste Mínimo — W3C WCAG 2.1</a>
+                        <span class="link-desc">O critério de contraste que garante slides e tela legíveis no projetor da sala.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener noreferrer">📄 10 Heurísticas de Usabilidade — Nielsen Norman Group</a>
+                        <span class="link-desc">A revisão rápida da interface antes de mostrá-la para quem nunca a viu.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=SuoX9q-XtMw" target="_blank" rel="noopener noreferrer">▶️ Pitch Projeto Aplicado - Arquitetura de Software e Soluções - XPE</a>
+                            <span class="link-desc">Daniel Wisky · 9:47 — Exemplo de pitch de um projeto aplicado de arquitetura de software apresentado em poucos minutos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JC34mC3NdHs" target="_blank" rel="noopener noreferrer">▶️ Como Fazer um Pitch de Excelência | Na Prática e Exame</a>
+                            <span class="link-desc">Na Prática · 3:31 — Apresenta um roteiro curto para montar um pitch objetivo com começo, meio e fim.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Roteiro de Pitch de Sete Minutos com Demonstração</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o modelo de roteiro da atividade 2 e defina quem da equipe fala em cada bloco.</li>
+                            <li><strong>Abertura com o Problema:</strong> escreva os primeiros 60 segundos contando a situação do cliente com o número do escopo, sem nenhuma tela de código.</li>
+                            <li><strong>Roteiro da Demonstração:</strong> liste os cliques exatos do fluxo principal, do login ao resultado, com os dados de exemplo que serão usados.</li>
+                            <li><strong>Dados Preparados:</strong> crie no banco de produção os registros fictícios que a demonstração precisa, com nomes que façam sentido para o salão.</li>
+                            <li><strong>Uma Decisão Técnica:</strong> escolha um único ADR para contar em 60 segundos: o problema, a escolha e o que ela custou.</li>
+                            <li><strong>Slides Mínimos:</strong> monte no máximo cinco slides, uma ideia por slide, e confira o contraste do texto com o fundo.</li>
+                            <li><strong>Erro Provocado:</strong> ensaie a demonstração com a API recém-hibernada e cronometre quanto tempo a tela fica carregando.</li>
+                            <li><strong>Plano B:</strong> acorde a API cinco minutos antes, deixe o vídeo do fluxo pronto numa aba e combine a frase de transição se algo falhar.</li>
+                            <li><strong>Ensaio Cronometrado:</strong> apresente para outra equipe com cronômetro visível e anote onde passou do tempo.</li>
+                            <li><strong>Validação e Testes:</strong> faça o ensaio final dentro de sete minutos, colete duas sugestões da equipe ouvinte e registre no README o link dos slides e do vídeo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: DEFESA TÉCNICA, FEEDBACK E PRÓXIMOS PASSOS -->
+            <div class="card" id="card-3">
+                <h2>🎓 3. Defesa Técnica, Feedback e Próximos Passos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Depois do pitch, a banca pergunta à equipe da Agenda Lírio por que o token dura oito horas, o que acontece se duas recepcionistas marcarem o mesmo horário e o que fariam diferente. Um integrante responde que 'foi o jeito que deu', e outro fica em silêncio porque não escreveu aquela parte. Como se preparar para defender cada decisão, receber a crítica e sair da formatura com um plano para os próximos meses?</p>
+                </div>
+
+                <p>Defender um projeto é mostrar que as escolhas foram feitas com consciência, inclusive as que ficaram abaixo do ideal. A banca avalia raciocínio, não perfeição, e o feedback recebido vira o primeiro item do plano de estudo depois do curso.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/comments.html" target="_blank" rel="noopener noreferrer">📄 Como Escrever Comentários de Revisão — Google</a>
+                        <span class="link-desc">O tom de uma crítica técnica útil, que também ensina a recebê-la.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-feedbacktip/" target="_blank" rel="noopener noreferrer">📄 Intenção e Impacto no Feedback — Center for Creative Leadership</a>
+                        <span class="link-desc">O método para dar e receber feedback focado em situação, comportamento e impacto.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html" target="_blank" rel="noopener noreferrer">📄 Technical Debt Quadrant — Martin Fowler</a>
+                        <span class="link-desc">Como falar da dívida técnica assumida de propósito, com prudência, na defesa.</span>
+                    </li>
+                    <li>
+                        <a href="https://survey.stackoverflow.co/" target="_blank" rel="noopener noreferrer">📄 Stack Overflow Developer Survey</a>
+                        <span class="link-desc">O retrato anual das tecnologias e práticas de mercado, útil para escolher o próximo estudo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Nfs_q3rQpqI" target="_blank" rel="noopener noreferrer">▶️ Dicas de como apresentar TCC para a banca - roteiro passo a passo!</a>
+                            <span class="link-desc">El Professor da Oratória · 15:58 — Dá um roteiro passo a passo para apresentar um trabalho diante de uma banca avaliadora.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=xFFfQPPJl44" target="_blank" rel="noopener noreferrer">▶️ 7 dicas para uma boa defesa (doutorado, mestrado, tcc)</a>
+                            <span class="link-desc">Núbia · 4:03 — Reúne dicas práticas para se preparar para uma defesa e responder às perguntas da banca.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Preparação para a Banca e Plano dos Próximos 90 Dias</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra a rubrica de avaliação da atividade 3 e leia cada critério em voz alta com a equipe.</li>
+                            <li><strong>Mapa de Autoria:</strong> liste quem escreveu cada parte do sistema e garanta que todos consigam explicar as partes centrais, não só as próprias.</li>
+                            <li><strong>Perguntas Prováveis:</strong> escreva dez perguntas que a banca pode fazer, uma para cada ADR e uma para cada regra de negócio crítica.</li>
+                            <li><strong>Respostas em Três Frases:</strong> responda cada pergunta com a decisão, o motivo e o custo aceito.</li>
+                            <li><strong>Dívida Assumida:</strong> liste três limitações conhecidas do projeto e o que seria feito com mais tempo.</li>
+                            <li><strong>Erro Provocado:</strong> faça uma banca simulada em que outra equipe pergunta sobre a parte que você não escreveu e note onde a resposta travou.</li>
+                            <li><strong>Recebendo a Crítica:</strong> durante a banca real, anote cada crítica sem rebater na hora e agradeça ao final.</li>
+                            <li><strong>Autoavaliação:</strong> preencha a rubrica sobre o próprio projeto e compare com a nota e os comentários da banca.</li>
+                            <li><strong>Plano de 90 Dias:</strong> escolha uma evolução do projeto e um tema de estudo a partir das críticas, com metas mensais verificáveis.</li>
+                            <li><strong>Validação e Testes:</strong> publique no README a seção Próximos Passos com o plano de 90 dias e registre a data da formatura como marco da versão 1.0 do projeto.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

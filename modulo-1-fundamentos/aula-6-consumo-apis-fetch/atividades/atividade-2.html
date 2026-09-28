@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas por Usuário — os Quatro Estados da Interface | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Tarefas por Usuário — os Quatro Estados da Interface</h1>
+        <p class="subtitulo">Aula 6 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma busca de tarefas por usuário que mostra quatro estados distintos: carregando, sucesso, vazio (usuário sem tarefas) e erro (status HTTP ou tempo limite). Um checkbox troca a rota por uma inexistente para provocar o 404.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.estado {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  min-height: 80px;
+}
+
+.estado.carregando {
+  color: var(--muted);
+}
+
+.estado.vazio {
+  color: #F2CC60;
+}
+
+.estado.erro {
+  border-color: var(--danger);
+}
+
+.estado.sucesso {
+  border-color: var(--primary);
+}
+
+.feita {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Vitrine Norte — tarefas da equipe&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Usuários 1 a 10 têm tarefas; 11 em diante não têm.&lt;/p&gt;
+  &lt;form id=&quot;formBusca&quot; class=&quot;linha&quot;&gt;
+    &lt;label for=&quot;campoUsuario&quot;&gt;Usuário:&lt;/label&gt;
+    &lt;input type=&quot;number&quot; id=&quot;campoUsuario&quot; min=&quot;1&quot; value=&quot;1&quot;&gt;
+    &lt;button id=&quot;btnBuscar&quot; type=&quot;submit&quot;&gt;Buscar&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rotaQuebrada&quot;&gt; Usar rota errada (/todoss)&lt;/label&gt;
+  &lt;div id=&quot;resultado&quot; class=&quot;estado&quot;&gt;&lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: busca de tarefas com os estados carregando, sucesso, vazio e erro
+const BASE = &#x27;https://jsonplaceholder.typicode.com&#x27;;
+
+const formBusca = document.querySelector(&#x27;#formBusca&#x27;);
+const campoUsuario = document.querySelector(&#x27;#campoUsuario&#x27;);
+const btnBuscar = document.querySelector(&#x27;#btnBuscar&#x27;);
+const rotaQuebrada = document.querySelector(&#x27;#rotaQuebrada&#x27;);
+const resultado = document.querySelector(&#x27;#resultado&#x27;);
+
+// troca a aparência e o conteúdo da caixa conforme o estado
+const mostrarEstado = (tipo, conteudo) =&gt; {
+  resultado.className = `estado ${tipo}`;
+  resultado.innerHTML = conteudo;
+};
+
+// monta a lista HTML das tarefas recebidas
+const listaDeTarefas = (tarefas) =&gt; `&lt;ul class=&quot;lista&quot;&gt;${tarefas
+  .map((t) =&gt; `&lt;li&gt;&lt;span class=&quot;${t.completed ? &#x27;feita&#x27; : &#x27;&#x27;}&quot;&gt;${t.title}&lt;/span&gt;&lt;small&gt;${t.completed ? &#x27;feita&#x27; : &#x27;pendente&#x27;}&lt;/small&gt;&lt;/li&gt;`)
+  .join(&#x27;&#x27;)}&lt;/ul&gt;`;
+
+// busca as tarefas do usuário e trata cada desfecho
+async function buscarTarefas(evento) {
+  evento.preventDefault();
+  const rota = rotaQuebrada.checked ? &#x27;todoss&#x27; : &#x27;todos&#x27;;
+  const usuario = Number(campoUsuario.value);
+  btnBuscar.disabled = true;
+  mostrarEstado(&#x27;carregando&#x27;, &#x27;Carregando tarefas...&#x27;);
+  try {
+    const resposta = await fetch(`${BASE}/${rota}?userId=${usuario}`, { signal: AbortSignal.timeout(5000) });
+    if (!resposta.ok) {
+      throw new Error(`o servidor respondeu com status ${resposta.status}`);
+    }
+    const tarefas = await resposta.json();
+    if (tarefas.length === 0) {
+      mostrarEstado(&#x27;vazio&#x27;, `O usuário ${usuario} não tem tarefas cadastradas.`);
+      return;
+    }
+    mostrarEstado(&#x27;sucesso&#x27;, `&lt;strong&gt;${tarefas.length} tarefas&lt;/strong&gt;${listaDeTarefas(tarefas.slice(0, 8))}`);
+  } catch (erro) {
+    const motivo = erro.name === &#x27;TimeoutError&#x27; ? &#x27;a API demorou mais de 5 segundos&#x27; : erro.message;
+    mostrarEstado(&#x27;erro&#x27;, `Não foi possível carregar: ${motivo}.`);
+  } finally {
+    btnBuscar.disabled = false;
+  }
+}
+
+formBusca.addEventListener(&#x27;submit&#x27;, buscarTarefas);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Tarefas por Usuário — os Quatro Estados da Interface --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Tarefas por Usuário — os Quatro Estados da Interface&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Vitrine Norte — tarefas da equipe&lt;/h1&gt;
+    &lt;p class="sub"&gt;Usuários 1 a 10 têm tarefas; 11 em diante não têm.&lt;/p&gt;
+    &lt;form id="formBusca" class="linha"&gt;
+      &lt;label for="campoUsuario"&gt;Usuário:&lt;/label&gt;
+      &lt;input type="number" id="campoUsuario" min="1" value="1"&gt;
+      &lt;button id="btnBuscar" type="submit"&gt;Buscar&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;label class="linha"&gt;&lt;input type="checkbox" id="rotaQuebrada"&gt; Usar rota errada (/todoss)&lt;/label&gt;
+    &lt;div id="resultado" class="estado"&gt;&lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.estado {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  min-height: 80px;
+}
+
+.estado.carregando {
+  color: var(--muted);
+}
+
+.estado.vazio {
+  color: #F2CC60;
+}
+
+.estado.erro {
+  border-color: var(--danger);
+}
+
+.estado.sucesso {
+  border-color: var(--primary);
+}
+
+.feita {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: busca de tarefas com os estados carregando, sucesso, vazio e erro
+const BASE = 'https://jsonplaceholder.typicode.com';
+
+const formBusca = document.querySelector('#formBusca');
+const campoUsuario = document.querySelector('#campoUsuario');
+const btnBuscar = document.querySelector('#btnBuscar');
+const rotaQuebrada = document.querySelector('#rotaQuebrada');
+const resultado = document.querySelector('#resultado');
+
+// troca a aparência e o conteúdo da caixa conforme o estado
+const mostrarEstado = (tipo, conteudo) =&gt; {
+  resultado.className = `estado ${tipo}`;
+  resultado.innerHTML = conteudo;
+};
+
+// monta a lista HTML das tarefas recebidas
+const listaDeTarefas = (tarefas) =&gt; `&lt;ul class="lista"&gt;${tarefas
+  .map((t) =&gt; `&lt;li&gt;&lt;span class="${t.completed ? 'feita' : ''}"&gt;${t.title}&lt;/span&gt;&lt;small&gt;${t.completed ? 'feita' : 'pendente'}&lt;/small&gt;&lt;/li&gt;`)
+  .join('')}&lt;/ul&gt;`;
+
+// busca as tarefas do usuário e trata cada desfecho
+async function buscarTarefas(evento) {
+  evento.preventDefault();
+  const rota = rotaQuebrada.checked ? 'todoss' : 'todos';
+  const usuario = Number(campoUsuario.value);
+  btnBuscar.disabled = true;
+  mostrarEstado('carregando', 'Carregando tarefas...');
+  try {
+    const resposta = await fetch(`${BASE}/${rota}?userId=${usuario}`, { signal: AbortSignal.timeout(5000) });
+    if (!resposta.ok) {
+      throw new Error(`o servidor respondeu com status ${resposta.status}`);
+    }
+    const tarefas = await resposta.json();
+    if (tarefas.length === 0) {
+      mostrarEstado('vazio', `O usuário ${usuario} não tem tarefas cadastradas.`);
+      return;
+    }
+    mostrarEstado('sucesso', `&lt;strong&gt;${tarefas.length} tarefas&lt;/strong&gt;${listaDeTarefas(tarefas.slice(0, 8))}`);
+  } catch (erro) {
+    const motivo = erro.name === 'TimeoutError' ? 'a API demorou mais de 5 segundos' : erro.message;
+    mostrarEstado('erro', `Não foi possível carregar: ${motivo}.`);
+  } finally {
+    btnBuscar.disabled = false;
+  }
+}
+
+formBusca.addEventListener('submit', buscarTarefas);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Busque o usuário 1, depois o 11.</li>
+            <li>Marque 'Usar rota errada' e busque de novo.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Com a rota errada, o <code>fetch</code> não rejeita: quem detecta o 404 é o <code>if (!resposta.ok)</code>.</li>
+            <li>Vazio não é erro: a requisição deu certo, só não há dados — e a mensagem precisa dizer isso.</li>
+            <li>O <code>finally</code> reabilita o botão até quando o <code>return</code> do estado vazio encerra a função mais cedo.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

@@ -32,6 +32,10 @@
             <!-- TEMA 1: MONOLITO, MODULAR E MICROSSERVIÇOS -->
             <div class="card" id="card-1">
                 <h2>🏛️ 1. Monolito, Modular e Microsserviços</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A startup fictícia Agenda Pet tem quatro desenvolvedores, publica o sistema uma vez por semana e o CTO quer dividir tudo em oito microsserviços porque 'é assim que as grandes fazem'. Ninguém mediu quanto trabalho a mudança custaria nem se o problema atual é mesmo de arquitetura. Como avaliar, com a contagem da equipe e a frequência de deploy, se o monolito modular ou os microsserviços são a escolha certa para este caso?</p>
+                </div>
                 <p>Microsserviço não é evolução de monolito — é uma troca com preço alto. Entender o preço antes de pagar evita a reescrita que muita equipe faz duas vezes.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ooJjxNsQnK4" target="_blank" rel="noopener noreferrer">▶️ Quando usar Monolitos vs Microserviços</a>
+                            <span class="link-desc">Augusto Galego · 22:14 — Compara monolito e microsserviços e discute quando cada arquitetura compensa.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=fNQ_OPnthcg" target="_blank" rel="noopener noreferrer">▶️ 3 Tipos de Módulos em um Monolito Modular</a>
+                            <span class="link-desc">Waldemar Neto - Dev Lab · 9:46 — Explica o monolito modular e os tipos de módulos usados para organizá-lo.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: HEXAGONAL, CAMADAS E ORIENTAÇÃO A EVENTOS -->
             <div class="card" id="card-2">
                 <h2>🔌 2. Hexagonal, Camadas e Orientação a Eventos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O módulo de pedidos da loja fictícia Casa Ipê chama o banco, o gateway de pagamento e o serviço de e-mail direto de dentro da regra de negócio. Para testar um cálculo de desconto é preciso subir banco e simular três APIs, e a troca do provedor de e-mail exigiu mexer em doze arquivos. Como reorganizar o módulo para que a regra de negócio fique no centro e possa ser testada sem nenhuma infraestrutura?</p>
+                </div>
                 <p>Três estilos que resolvem problemas diferentes. Hexagonal isola o domínio; camadas organizam a dependência; eventos desacoplam o tempo.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7SaA3HCOc4c" target="_blank" rel="noopener noreferrer">▶️ Arquitetura Hexagonal (Explicação de Ports &amp; Adapters Simplificada) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 15:33 — Explica a Arquitetura Hexagonal (Ports and Adapters) e como ela isola o domínio.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=_OIoAYFmbx8" target="_blank" rel="noopener noreferrer">▶️ Clean Architecture e Hexagonal architecture: Explicando no detalhe o propósito e as semelhanças</a>
+                            <span class="link-desc">Dev Eficiente · 31:13 — Compara Clean Architecture e Arquitetura Hexagonal, mostrando propósitos e semelhanças.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: ATRIBUTOS DE QUALIDADE E O ADR -->
             <div class="card" id="card-3">
                 <h2>⚖️ 3. Atributos de Qualidade e o ADR</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na empresa fictícia Rota Fácil Logística, a escolha de usar fila entre os serviços foi feita há dois anos, e hoje ninguém lembra por quê; o time novo quer removê-la sem saber o que vai quebrar. Decisões parecidas se repetem a cada troca de equipe. Como registrar decisões de arquitetura com o contexto, as alternativas e o custo aceito, para que a próxima equipe entenda o raciocínio sem depender da memória de ninguém?</p>
+                </div>
                 <p>Toda decisão de arquitetura favorece um atributo e prejudica outro. O bloco fecha com o método de tornar essa troca explícita — e registrada.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=8XO_6R9o5jo" target="_blank" rel="noopener noreferrer">▶️ Documentando decisões técnicas com ADRs (Architecture Decision Record)</a>
+                            <span class="link-desc">Matheus Castiglioni · 15:43 — Mostra como documentar decisões de arquitetura com ADRs, registrando as trocas feitas.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=5AjYSJrCnS0" target="_blank" rel="noopener noreferrer">▶️ O que são ADRs (Architecture Decision Records)?</a>
+                            <span class="link-desc">André Secco · 16:16 — Explica o que são ADRs e como estruturar contexto, decisão e consequências.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

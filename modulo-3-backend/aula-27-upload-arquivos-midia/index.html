@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 27 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a receber arquivos por multipart/form-data com Multer, validar tamanho e tipo real antes de aceitar e guardar a mídia no Supabase Storage com metadados no banco.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 27: Upload de Arquivos e Gestão de Mídia no Backend</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: RECEBENDO ARQUIVOS COM MULTIPART/FORM-DATA E MULTER -->
+            <div class="card" id="card-1">
+                <h2>📤 1. Recebendo Arquivos com multipart/form-data e Multer</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A imobiliária fictícia Lar Mineiro quer que o corretor anexe a foto do imóvel à tarefa de vistoria. O express.json() da API não entende arquivo, e o req.body chega vazio quando o formulário é enviado. Como fazer a API receber um arquivo binário junto com os campos de texto do formulário?</p>
+                </div>
+
+                <p>JSON transporta texto; arquivo viaja em multipart/form-data, um corpo dividido em partes separadas por um delimitador. O Multer, mantido pelo próprio time do Express, lê esse formato, entrega os campos de texto em req.body e o arquivo em req.file.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/en/resources/middleware/multer/" target="_blank" rel="noopener noreferrer">📄 multer middleware — Express</a>
+                        <span class="link-desc">A página oficial do Multer no site do Express, com todas as opções.</span>
+                    </li>
+                    <li>
+                        <a href="https://github.com/expressjs/multer/blob/main/README.md" target="_blank" rel="noopener noreferrer">📄 Multer — README oficial</a>
+                        <span class="link-desc">single, array, fields, diskStorage, memoryStorage, limits e fileFilter.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Learn/Forms/Sending_and_retrieving_form_data" target="_blank" rel="noopener noreferrer">📄 Enviando dados de formulário — MDN</a>
+                        <span class="link-desc">Como o navegador monta o corpo multipart quando o formulário tem arquivo.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/FormData" target="_blank" rel="noopener noreferrer">📄 FormData — MDN</a>
+                        <span class="link-desc">O objeto que monta o mesmo corpo multipart a partir do JavaScript.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FKnDvu_eODY" target="_blank" rel="noopener noreferrer">▶️ Upload com NodeJS+Express - Hands-on: Multer</a>
+                            <span class="link-desc">DevPleno · 11:02 — Mostra na prática como receber uploads num servidor Express usando o Multer.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=o5JoNi8z6q0" target="_blank" rel="noopener noreferrer">▶️ Upload com Node JS - Aprenda DEFINITIVAMENTE</a>
+                            <span class="link-desc">João Bibiano · 17:56 — Explica passo a passo o upload de arquivos em Node.js com Multer e onde os arquivos são gravados.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Rota de Anexo com Multer em Disco</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install multer</code>, crie a pasta <code>uploads/</code> e acrescente <code>uploads/</code> ao <code>.gitignore</code>.</li>
+                            <li><strong>Formulário de Teste:</strong> crie <code>public/teste-upload.html</code> com <code>&lt;form method="post" enctype="multipart/form-data"&gt;</code> e <code>&lt;input type="file" name="foto"&gt;</code>.</li>
+                            <li><strong>Configuração Mínima:</strong> crie <code>const upload = multer({ dest: 'uploads/' })</code> e a rota <code>POST /tarefas/:id/anexos</code> com <code>upload.single('foto')</code>.</li>
+                            <li><strong>Inspecionando o Arquivo:</strong> imprima <code>req.file</code> e observe <code>originalname</code>, <code>mimetype</code>, <code>size</code> e o nome aleatório gravado em disco.</li>
+                            <li><strong>Erro Provocado:</strong> mude o <code>name</code> do input para <code>imagem</code>, envie e leia o erro <code>Unexpected field</code>; volte para <code>foto</code>.</li>
+                            <li><strong>Controlando o Nome:</strong> troque <code>dest</code> por <code>multer.diskStorage</code> com <code>filename</code> gerado por <code>crypto.randomUUID()</code>.</li>
+                            <li><strong>Campos Junto do Arquivo:</strong> adicione ao formulário um campo <code>legenda</code> e leia em <code>req.body.legenda</code>.</li>
+                            <li><strong>Sem Arquivo:</strong> responda <code>400</code> quando <code>req.file</code> vier <code>undefined</code>.</li>
+                            <li><strong>Várias Fotos:</strong> crie uma segunda rota com <code>upload.array('fotos', 5)</code> e leia a lista em <code>req.files</code>.</li>
+                            <li><strong>Validação e Testes:</strong> envie pelo formulário e pelo Insomnia com corpo <em>Multipart Form</em>, confira o arquivo na pasta e registre no README o formato do corpo enviado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: VALIDANDO TAMANHO, TIPO E CONTEÚDO DO ARQUIVO -->
+            <div class="card" id="card-2">
+                <h2>🛡️ 2. Validando Tamanho, Tipo e Conteúdo do Arquivo</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na Lar Mineiro, alguém renomeou um script para foto.jpg e enviou pela rota de anexos; outro corretor mandou um vídeo de 900 MB que encheu o disco do servidor. A API confiou na extensão e não tinha limite de tamanho. Como aceitar só imagens de verdade e de tamanho razoável?</p>
+                </div>
+
+                <p>Extensão e mimetype vêm do cliente e podem mentir. A defesa em camadas combina limite de tamanho no próprio Multer, lista de tipos permitidos e checagem dos primeiros bytes do arquivo, a assinatura que identifica o formato real.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 File Upload Cheat Sheet — OWASP</a>
+                        <span class="link-desc">A lista de controles para upload: tamanho, tipo, nome, armazenamento e permissão.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload" target="_blank" rel="noopener noreferrer">📄 Unrestricted File Upload — OWASP</a>
+                        <span class="link-desc">O que um atacante consegue quando a API aceita qualquer arquivo.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Headers/Content-Type" target="_blank" rel="noopener noreferrer">📄 Content-Type — MDN</a>
+                        <span class="link-desc">O cabeçalho que declara o tipo do conteúdo, e por que ele é só uma declaração.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/" target="_blank" rel="noopener noreferrer">📄 API4:2023 Unrestricted Resource Consumption — OWASP</a>
+                        <span class="link-desc">Por que limite de tamanho e de quantidade é requisito de segurança, não detalhe.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ZL9L0uhdWlQ" target="_blank" rel="noopener noreferrer">▶️ Como Fazer Upload de Arquivos com Node.js e Multer (Passo a Passo)</a>
+                            <span class="link-desc">Kewa Code · 12:50 — Configura o Multer passo a passo, base para aplicar limite de tamanho e filtro de tipos de arquivo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=_tppRHlrwh8" target="_blank" rel="noopener noreferrer">▶️ Como fazer UPLOAD de arquivos com NODE EXPRESS e MULTER | StartDev</a>
+                            <span class="link-desc">Codaro · 14:30 — Revisa o fluxo de upload com Express e Multer, ponto de partida para validar o arquivo recebido.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Upload Seguro com Limites e Checagem de Assinatura</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> troque o armazenamento para <code>multer.memoryStorage()</code>: o arquivo fica em <code>req.file.buffer</code> até ser aprovado e nada vai ao disco antes disso.</li>
+                            <li><strong>Limite de Tamanho:</strong> configure <code>limits: { fileSize: 2 * 1024 * 1024, files: 1 }</code>.</li>
+                            <li><strong>Erro Provocado:</strong> envie uma imagem de 5 MB e observe o <code>MulterError</code> com código <code>LIMIT_FILE_SIZE</code> sair como erro 500 genérico.</li>
+                            <li><strong>Traduzindo o Erro:</strong> no middleware de erro da aula 26, converta <code>MulterError</code> em <code>413</code> quando for tamanho e <code>400</code> nos demais códigos.</li>
+                            <li><strong>Primeiro Filtro:</strong> use <code>fileFilter</code> para aceitar só os tipos declarados <code>image/jpeg</code>, <code>image/png</code> e <code>image/webp</code>.</li>
+                            <li><strong>Assinatura Real:</strong> compare os primeiros bytes do buffer com as assinaturas de JPEG (<code>FF D8 FF</code>), PNG (<code>89 50 4E 47</code>) e WebP (<code>RIFF</code> ... <code>WEBP</code>).</li>
+                            <li><strong>Teste do Disfarce:</strong> renomeie um arquivo <code>.txt</code> para <code>.jpg</code>, envie e confirme a recusa com <code>415</code> mesmo tendo passado pelo <code>fileFilter</code>.</li>
+                            <li><strong>Nome Definido pelo Servidor:</strong> gere o nome final com UUID e a extensão a partir do tipo <strong>detectado</strong>, nunca do <code>originalname</code>.</li>
+                            <li><strong>Organização:</strong> isole a checagem em <code>src/uploads/detectarImagem.js</code> e o Multer configurado em <code>src/uploads/upload.js</code>.</li>
+                            <li><strong>Validação e Testes:</strong> envie imagem válida, arquivo grande, arquivo disfarçado e campo com nome errado; registre no README o status que cada caso recebeu.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ARMAZENAMENTO NO SUPABASE STORAGE -->
+            <div class="card" id="card-3">
+                <h2>☁️ 3. Armazenamento no Supabase Storage</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O servidor gratuito da Lar Mineiro apaga a pasta uploads a cada novo deploy, e as fotos das vistorias somem. Além disso, fotos da casa de clientes não podem ficar num link público para sempre. Como guardar arquivos fora do servidor e entregá-los só a quem pode ver?</p>
+                </div>
+
+                <p>Servidor de API não é lugar de guardar arquivo: o disco da hospedagem gratuita é efêmero e não acompanha mais de uma instância. O Supabase Storage guarda os arquivos em buckets; o banco guarda só o caminho e os metadados, e a API entrega links assinados que expiram.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://supabase.com/docs/guides/storage" target="_blank" rel="noopener noreferrer">📄 Storage — Supabase Docs</a>
+                        <span class="link-desc">Visão geral do serviço de arquivos do Supabase.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/storage/buckets/fundamentals" target="_blank" rel="noopener noreferrer">📄 Storage Buckets — Supabase Docs</a>
+                        <span class="link-desc">A diferença entre bucket público e privado e quando usar cada um.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/storage/uploads/standard-uploads" target="_blank" rel="noopener noreferrer">📄 Upload a file — Supabase JavaScript</a>
+                        <span class="link-desc">A assinatura de upload com contentType e upsert.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/storage/serving/downloads" target="_blank" rel="noopener noreferrer">📄 Serving assets from Storage — Supabase Docs</a>
+                        <span class="link-desc">URL pública, URL assinada e download pelo cliente.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=j2Zl1PLza8k" target="_blank" rel="noopener noreferrer">▶️ Supabase Storage Upload</a>
+                            <span class="link-desc">Treina dev · 5:46 — Mostra como enviar arquivos para um bucket do Supabase Storage.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9XWTSd8C1LU" target="_blank" rel="noopener noreferrer">▶️ Upload de Arquivos no NestJS com Supabase: Aprenda a Implementar em Poucos Minutos</a>
+                            <span class="link-desc">Daniele Leão · 21:50 — Implementa upload de arquivos numa API NestJS salvando no Supabase Storage.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Enviando a Foto ao Bucket e Gerando Link Assinado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no painel do Supabase, crie o bucket <strong>privado</strong> <code>anexos</code>.</li>
+                            <li><strong>Tabela de Metadados:</strong> crie <code>anexos</code> com <code>tarefa_id</code> referenciando <code>tarefas</code>, <code>caminho</code>, <code>tipo</code>, <code>tamanho</code> e <code>criado_em</code>.</li>
+                            <li><strong>Caminho Organizado:</strong> monte o caminho como <code>tarefas/{id}/{uuid}.{extensao}</code> para agrupar os arquivos por tarefa.</li>
+                            <li><strong>Upload:</strong> chame <code>supabase.storage.from('anexos').upload(caminho, req.file.buffer, { contentType })</code>.</li>
+                            <li><strong>Registrando:</strong> depois do upload, insira a linha em <code>anexos</code> com caminho, tipo e tamanho.</li>
+                            <li><strong>Erro Provocado:</strong> envie duas vezes para o mesmo caminho fixo e leia o erro de recurso já existente; decida entre <code>upsert: true</code> ou nome novo.</li>
+                            <li><strong>Compensação:</strong> se o insert no banco falhar, remova o arquivo com <code>.remove([caminho])</code> para não deixar lixo no bucket.</li>
+                            <li><strong>Link Assinado:</strong> crie <code>GET /anexos/:id/link</code> que chama <code>createSignedUrl(caminho, 300)</code> e devolve a URL.</li>
+                            <li><strong>Expiração:</strong> abra o link, espere passar dos cinco minutos, abra de novo e observe a recusa.</li>
+                            <li><strong>Validação e Testes:</strong> reinicie a API, confirme que a foto continua acessível por um link novo e registre no README por que o bucket é privado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 47 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a reorganizar o conteúdo de um site pela tarefa do usuário, validar a estrutura com card sorting e tree testing e mapear a jornada completa de um objetivo até o fluxo de telas.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 47: Arquitetura de Informação e Jornada do Usuário</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ARQUITETURA DE INFORMAÇÃO: ORGANIZAR, ROTULAR E NAVEGAR -->
+            <div class="card" id="card-1">
+                <h2>🗂️ 1. Arquitetura de Informação: Organizar, Rotular e Navegar</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O portal da prefeitura fictícia de Vale Serrano tem 180 páginas, e o menu principal foi montado com o nome das secretarias. Quem quer tirar a segunda via do IPTU precisa saber que isso fica na "Secretaria de Fazenda e Planejamento". Como reorganizar o conteúdo para que o cidadão encontre o serviço sem conhecer o organograma?</p>
+                </div>
+
+                <p>Arquitetura de informação é a estrutura por trás da tela: como o conteúdo é agrupado, como cada grupo se chama e como se chega até ele. A navegação é só a parte visível dessa estrutura — se a estrutura segue a lógica interna da empresa e não a do usuário, nenhum menu bonito resolve.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ia-vs-navigation/" target="_blank" rel="noopener noreferrer">📄 Arquitetura de informação × navegação — NN/g</a>
+                        <span class="link-desc">A diferença entre a estrutura do conteúdo e os componentes de interface que a expõem.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ia-study-guide/" target="_blank" rel="noopener noreferrer">📄 Guia de estudo de arquitetura de informação — NN/g</a>
+                        <span class="link-desc">Os artigos essenciais de AI organizados em ordem de leitura.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/ds/components/breadcrumb" target="_blank" rel="noopener noreferrer">📄 Breadcrumb — Padrão Digital de Governo</a>
+                        <span class="link-desc">Como o design system do governo federal orienta o usuário sobre onde ele está na hierarquia.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html" target="_blank" rel="noopener noreferrer">📄 Navegação consistente — WCAG 2.2</a>
+                        <span class="link-desc">O critério de acessibilidade que exige menus na mesma ordem em todas as páginas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=vmvSMYaV4oE" target="_blank" rel="noopener noreferrer">▶️ O que é Arquitetura de Informação? //UXNOW</a>
+                            <span class="link-desc">UXNOW / Daniel Furtado · 9:35 — Explica o que é Arquitetura de Informação: organizar, rotular e estruturar a navegação.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=fdLdCQ6x050" target="_blank" rel="noopener noreferrer">▶️ Como ORGANIZAR CONTEÚDOS em SITES - Experiência de NAVEGAÇÃO PERFEITA | ARQUITETURA DA INFORMAÇÃO</a>
+                            <span class="link-desc">Prof. Tiago Segato · 25:59 — Mostra como organizar os conteúdos de um site para facilitar a navegação.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Inventário de Conteúdo e Nova Estrutura de Menu</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-47</code> com a planilha <code>inventario</code> e escolha um site com pelo menos 20 páginas — um seu ou o portal fictício da atividade.</li>
+                            <li><strong>Inventário:</strong> liste cada página numa linha com as colunas <code>título</code>, <code>endereço</code>, <code>menu atual</code> e <code>tarefa do usuário</code>.</li>
+                            <li><strong>Tarefas Reais:</strong> escreva as cinco tarefas mais frequentes que um visitante vem fazer no site.</li>
+                            <li><strong>Caminho Atual:</strong> para cada tarefa, anote quantos cliques e quais rótulos o usuário precisa atravessar hoje.</li>
+                            <li><strong>Erro Provocado:</strong> peça a alguém de fora que encontre uma das tarefas usando só o menu atual, sem busca. Anote onde a pessoa hesitou e qual rótulo a confundiu.</li>
+                            <li><strong>Novo Agrupamento:</strong> agrupe as páginas pela tarefa do usuário, não pelo departamento que as publica.</li>
+                            <li><strong>Novos Rótulos:</strong> renomeie cada grupo com as palavras que o usuário usaria, no máximo três palavras por rótulo.</li>
+                            <li><strong>Profundidade:</strong> confira se as cinco tarefas principais ficam a no máximo três níveis da página inicial.</li>
+                            <li><strong>Orientação:</strong> defina onde entram breadcrumb e título de página para o usuário saber onde está em cada nível.</li>
+                            <li><strong>Validação e Testes:</strong> repita o teste do passo 5 com outra pessoa usando a estrutura nova desenhada em papel; registre no README a comparação de cliques e hesitações.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CARD SORTING E TREE TESTING -->
+            <div class="card" id="card-2">
+                <h2>🃏 2. Card Sorting e Tree Testing</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A loja virtual fictícia Ponto Eletro reorganizou as categorias por conta própria, e as vendas de acessórios caíram porque ninguém achava "Periféricos e Conectividade". O time quer mudar de novo, mas agora sem chutar. Como descobrir como os clientes agrupam os produtos e depois conferir se o novo menu funciona?</p>
+                </div>
+
+                <p>Card sorting mostra como as pessoas agrupam e nomeiam o conteúdo na cabeça delas; tree testing confere se uma estrutura proposta leva ao lugar certo sem nenhum visual atrapalhando. Um gera a estrutura, o outro a valida — os dois custam pouco e evitam redesenho às cegas.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/card-sorting-definition/" target="_blank" rel="noopener noreferrer">📄 Card sorting — NN/g</a>
+                        <span class="link-desc">Como aplicar, a diferença entre aberto e fechado, e o que a análise revela.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/tree-testing/" target="_blank" rel="noopener noreferrer">📄 Tree testing — NN/g</a>
+                        <span class="link-desc">Como testar rótulos e categorias com a estrutura em texto puro, sem layout.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/card-sorting-tree-testing-differences/" target="_blank" rel="noopener noreferrer">📄 Card sorting × tree testing — NN/g</a>
+                        <span class="link-desc">Quando usar cada método e como eles se completam no mesmo projeto.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/interpreting-tree-test-results/" target="_blank" rel="noopener noreferrer">📄 Interpretando resultados de tree testing — NN/g</a>
+                        <span class="link-desc">Taxa de sucesso, caminho direto e primeiro clique: o que cada número diz sobre a estrutura.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=DpNymZz4O58" target="_blank" rel="noopener noreferrer">▶️ O que é Card Sorting UX na MIRO - Tutorial de Card Sorting Online.</a>
+                            <span class="link-desc">Chief of Design · 16:57 — Mostra o que é card sorting e como conduzir um online no Miro.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=P0WDO76300Q" target="_blank" rel="noopener noreferrer">▶️ Tree Testing to Evaluate Information Architecture Categories</a>
+                            <span class="link-desc">NNgroup · 3:06 · em inglês — Explica (em inglês, pela NNgroup) como o tree testing avalia se a estrutura de categorias funciona.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Card Sorting Aberto e Tree Testing em Papel</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escreva de 25 a 30 itens de conteúdo em cartões de papel ou num quadro online gratuito, um item por cartão.</li>
+                            <li><strong>Recrutando:</strong> combine com cinco pessoas do público do produto, 15 minutos cada.</li>
+                            <li><strong>Card Sorting Aberto:</strong> peça que cada pessoa agrupe os cartões como fizer sentido para ela e dê um nome a cada grupo.</li>
+                            <li><strong>Registrando:</strong> fotografe ou copie o resultado de cada pessoa, com os nomes que ela usou.</li>
+                            <li><strong>Matriz de Concordância:</strong> monte uma tabela contando quantas pessoas colocaram cada par de itens juntos.</li>
+                            <li><strong>Propondo a Árvore:</strong> escreva a nova estrutura em texto, com indentação, usando os nomes que mais se repetiram.</li>
+                            <li><strong>Escrevendo as Tarefas:</strong> escreva cinco tarefas de busca, como <em>"onde você procuraria um cabo para ligar o notebook na TV?"</em>.</li>
+                            <li><strong>Erro Provocado:</strong> escreva uma tarefa que use a mesma palavra do rótulo, como <em>"encontre Periféricos"</em>. Aplique e observe que ela mede leitura, não entendimento.</li>
+                            <li><strong>Tree Testing:</strong> reescreva a tarefa sem a palavra do rótulo e aplique as cinco tarefas com três pessoas novas, mostrando só a árvore em texto.</li>
+                            <li><strong>Validação e Testes:</strong> calcule a taxa de sucesso de cada tarefa e aponte o rótulo com mais erro no primeiro clique; registre no README a árvore final e o que mudou depois do teste.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PERSONAS, JORNADA E FLUXOS DO USUÁRIO -->
+            <div class="card" id="card-3">
+                <h2>🛤️ 3. Personas, Jornada e Fluxos do Usuário</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No portal de Vale Serrano, cada secretaria cuida da sua página, e o pedido de alvará de reforma passa por quatro delas. Nenhuma sabe que o cidadão desiste na terceira etapa porque precisa voltar à prefeitura com um documento que ninguém pediu antes. Como enxergar a experiência inteira, e não só a tela de cada departamento?</p>
+                </div>
+
+                <p>A persona dá nome e contexto a um grupo real de usuários; o mapa de jornada mostra o que essa pessoa faz, pensa e sente do começo ao fim de um objetivo, atravessando canais e setores. O fluxo de usuário desce ao nível das telas e decisões de uma tarefa específica.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/journey-mapping-101/" target="_blank" rel="noopener noreferrer">📄 Mapa de jornada 101 — NN/g</a>
+                        <span class="link-desc">Os elementos de um mapa de jornada e como montá-lo a partir de pesquisa.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/persona-types/" target="_blank" rel="noopener noreferrer">📄 Três tipos de persona — NN/g</a>
+                        <span class="link-desc">Persona leve, qualitativa e estatística: quanto de pesquisa cada uma exige.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/user-journeys-vs-user-flows/" target="_blank" rel="noopener noreferrer">📄 Jornada × fluxo de usuário — NN/g</a>
+                        <span class="link-desc">Quando olhar a experiência inteira e quando olhar os passos de uma tarefa.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/wireflows/" target="_blank" rel="noopener noreferrer">📄 Wireflows — NN/g</a>
+                        <span class="link-desc">O entregável que junta esboço de tela e fluxo para documentar tarefas de aplicação.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dzNwd4KQth0" target="_blank" rel="noopener noreferrer">▶️ Mapeamento de Jornada na prática, da Persona até as oportunidades</a>
+                            <span class="link-desc">UX Unicórnio · 20:05 — Mostra o mapeamento de jornada na prática, partindo da persona até as oportunidades.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=HdktfUSqVzc" target="_blank" rel="noopener noreferrer">▶️ Como criar um Mapa da Jornada do Usuário? | UX Design na Prática</a>
+                            <span class="link-desc">Chief of Design · 17:16 — Ensina a criar um mapa da jornada do usuário passo a passo.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Da Persona ao Mapa de Jornada e ao Fluxo de Tela</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>jornada.md</code> na pasta <code>aula-47</code> e escolha um objetivo de ponta a ponta, como pedir um alvará ou comprar e receber um produto.</li>
+                            <li><strong>Persona Leve:</strong> escreva uma persona com nome fictício, contexto, objetivo e duas frustrações, baseada no que você já ouviu de usuários.</li>
+                            <li><strong>Erro Provocado:</strong> acrescente idade, signo e cor favorita à persona e pergunte-se qual decisão de produto esses dados mudam. Remova tudo que não muda nenhuma.</li>
+                            <li><strong>Etapas da Jornada:</strong> divida o objetivo em cinco a sete etapas, do primeiro contato ao resultado final.</li>
+                            <li><strong>Ações e Canais:</strong> para cada etapa, anote o que a pessoa faz e em qual canal: site, telefone, balcão, e-mail.</li>
+                            <li><strong>Pensamentos e Sentimentos:</strong> para cada etapa, escreva uma frase que a pessoa pensaria e marque o sentimento numa escala de negativo a positivo.</li>
+                            <li><strong>Pontos de Dor:</strong> destaque a etapa com o sentimento mais baixo e escreva o que causa essa queda.</li>
+                            <li><strong>Oportunidades:</strong> abaixo de cada dor, escreva uma oportunidade de melhoria, sem ainda desenhar solução.</li>
+                            <li><strong>Fluxo da Etapa Crítica:</strong> desenhe o fluxo de telas da etapa mais dolorosa, com caixas para telas e losangos para decisões.</li>
+                            <li><strong>Validação e Testes:</strong> percorra o fluxo com um colega simulando a persona e confira se toda decisão tem saída; registre no README o mapa e a oportunidade escolhida.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

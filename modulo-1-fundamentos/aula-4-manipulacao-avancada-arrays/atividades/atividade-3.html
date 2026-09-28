@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho com Cupom — Imutabilidade na Prática | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Carrinho com Cupom — Imutabilidade na Prática</h1>
+        <p class="subtitulo">Aula 4 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Dois carrinhos lado a lado: o pedido original e o pedido com cupom de 10%. Um botão aplica o cupom alterando os objetos (versão com bug) e outro cria cópias com spread (versão correta), para o aluno ver a diferença.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.colunas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+h2 {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.total {
+  font-weight: 700;
+}
+
+button.perigo {
+  background: var(--danger);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Carrinho Rápido — cupom de 10%&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Aplique o cupom das duas formas e compare o pedido original.&lt;/p&gt;
+  &lt;div class=&quot;linha&quot;&gt;
+    &lt;button id=&quot;btnMutando&quot; class=&quot;perigo&quot;&gt;Aplicar alterando (bug)&lt;/button&gt;
+    &lt;button id=&quot;btnImutavel&quot;&gt;Aplicar com cópia&lt;/button&gt;
+    &lt;button id=&quot;btnRestaurar&quot; class=&quot;neutro&quot;&gt;Restaurar&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;colunas&quot;&gt;
+    &lt;section&gt;
+      &lt;h2&gt;Pedido original&lt;/h2&gt;
+      &lt;ul id=&quot;listaOriginal&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+      &lt;p id=&quot;totalOriginal&quot; class=&quot;total&quot;&gt;&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+      &lt;h2&gt;Com cupom&lt;/h2&gt;
+      &lt;ul id=&quot;listaCupom&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+      &lt;p id=&quot;totalCupom&quot; class=&quot;total ok&quot;&gt;&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: carrinho com cupom aplicado sem alterar o pedido original
+const DESCONTO_CUPOM = 0.1;
+
+const listaOriginal = document.querySelector(&#x27;#listaOriginal&#x27;);
+const totalOriginal = document.querySelector(&#x27;#totalOriginal&#x27;);
+const listaCupom = document.querySelector(&#x27;#listaCupom&#x27;);
+const totalCupom = document.querySelector(&#x27;#totalCupom&#x27;);
+
+// cria o pedido de exemplo do zero, sempre com objetos novos
+const criarPedido = () =&gt; [
+  { id: 1, nome: &#x27;Caneca térmica&#x27;, preco: 60, qtd: 1 },
+  { id: 2, nome: &#x27;Café 500 g&#x27;, preco: 32, qtd: 2 },
+  { id: 3, nome: &#x27;Filtro de pano&#x27;, preco: 18, qtd: 3 }
+];
+
+let original = criarPedido();
+let comCupom = [];
+
+// soma preço vezes quantidade de cada item
+const totalDe = (itens) =&gt; itens.reduce((soma, { preco, qtd }) =&gt; soma + preco * qtd, 0);
+
+// gera as linhas de um carrinho
+const linhas = (itens) =&gt; itens.map(({ nome, preco, qtd }) =&gt; `&lt;li&gt;&lt;span&gt;${qtd}x ${nome}&lt;/span&gt;&lt;span&gt;R$ ${(preco * qtd).toFixed(2)}&lt;/span&gt;&lt;/li&gt;`).join(&#x27;&#x27;);
+
+// desenha os dois carrinhos lado a lado
+const renderizar = () =&gt; {
+  listaOriginal.innerHTML = linhas(original);
+  totalOriginal.textContent = `Total: R$ ${totalDe(original).toFixed(2)}`;
+  listaCupom.innerHTML = comCupom.length ? linhas(comCupom) : &#x27;&lt;li class=&quot;muted&quot;&gt;Nenhum cupom aplicado.&lt;/li&gt;&#x27;;
+  totalCupom.textContent = comCupom.length ? `Total: R$ ${totalDe(comCupom).toFixed(2)}` : &#x27;&#x27;;
+};
+
+// versão com bug: altera os objetos do próprio pedido original
+const aplicarMutando = () =&gt; {
+  original.forEach((item) =&gt; {
+    item.preco = item.preco * (1 - DESCONTO_CUPOM);
+  });
+  comCupom = original;
+  renderizar();
+};
+
+// versão correta: cria um array novo com objetos novos
+const aplicarImutavel = () =&gt; {
+  comCupom = original.map((item) =&gt; ({ ...item, preco: item.preco * (1 - DESCONTO_CUPOM) }));
+  renderizar();
+};
+
+// volta os dois carrinhos ao estado inicial
+const restaurar = () =&gt; {
+  original = criarPedido();
+  comCupom = [];
+  renderizar();
+};
+
+document.querySelector(&#x27;#btnMutando&#x27;).addEventListener(&#x27;click&#x27;, aplicarMutando);
+document.querySelector(&#x27;#btnImutavel&#x27;).addEventListener(&#x27;click&#x27;, aplicarImutavel);
+document.querySelector(&#x27;#btnRestaurar&#x27;).addEventListener(&#x27;click&#x27;, restaurar);
+renderizar();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Carrinho com Cupom — Imutabilidade na Prática --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Carrinho com Cupom — Imutabilidade na Prática&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Carrinho Rápido — cupom de 10%&lt;/h1&gt;
+    &lt;p class="sub"&gt;Aplique o cupom das duas formas e compare o pedido original.&lt;/p&gt;
+    &lt;div class="linha"&gt;
+      &lt;button id="btnMutando" class="perigo"&gt;Aplicar alterando (bug)&lt;/button&gt;
+      &lt;button id="btnImutavel"&gt;Aplicar com cópia&lt;/button&gt;
+      &lt;button id="btnRestaurar" class="neutro"&gt;Restaurar&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="colunas"&gt;
+      &lt;section&gt;
+        &lt;h2&gt;Pedido original&lt;/h2&gt;
+        &lt;ul id="listaOriginal" class="lista"&gt;&lt;/ul&gt;
+        &lt;p id="totalOriginal" class="total"&gt;&lt;/p&gt;
+      &lt;/section&gt;
+      &lt;section&gt;
+        &lt;h2&gt;Com cupom&lt;/h2&gt;
+        &lt;ul id="listaCupom" class="lista"&gt;&lt;/ul&gt;
+        &lt;p id="totalCupom" class="total ok"&gt;&lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.colunas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+h2 {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.total {
+  font-weight: 700;
+}
+
+button.perigo {
+  background: var(--danger);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: carrinho com cupom aplicado sem alterar o pedido original
+const DESCONTO_CUPOM = 0.1;
+
+const listaOriginal = document.querySelector('#listaOriginal');
+const totalOriginal = document.querySelector('#totalOriginal');
+const listaCupom = document.querySelector('#listaCupom');
+const totalCupom = document.querySelector('#totalCupom');
+
+// cria o pedido de exemplo do zero, sempre com objetos novos
+const criarPedido = () =&gt; [
+  { id: 1, nome: 'Caneca térmica', preco: 60, qtd: 1 },
+  { id: 2, nome: 'Café 500 g', preco: 32, qtd: 2 },
+  { id: 3, nome: 'Filtro de pano', preco: 18, qtd: 3 }
+];
+
+let original = criarPedido();
+let comCupom = [];
+
+// soma preço vezes quantidade de cada item
+const totalDe = (itens) =&gt; itens.reduce((soma, { preco, qtd }) =&gt; soma + preco * qtd, 0);
+
+// gera as linhas de um carrinho
+const linhas = (itens) =&gt; itens.map(({ nome, preco, qtd }) =&gt; `&lt;li&gt;&lt;span&gt;${qtd}x ${nome}&lt;/span&gt;&lt;span&gt;R$ ${(preco * qtd).toFixed(2)}&lt;/span&gt;&lt;/li&gt;`).join('');
+
+// desenha os dois carrinhos lado a lado
+const renderizar = () =&gt; {
+  listaOriginal.innerHTML = linhas(original);
+  totalOriginal.textContent = `Total: R$ ${totalDe(original).toFixed(2)}`;
+  listaCupom.innerHTML = comCupom.length ? linhas(comCupom) : '&lt;li class="muted"&gt;Nenhum cupom aplicado.&lt;/li&gt;';
+  totalCupom.textContent = comCupom.length ? `Total: R$ ${totalDe(comCupom).toFixed(2)}` : '';
+};
+
+// versão com bug: altera os objetos do próprio pedido original
+const aplicarMutando = () =&gt; {
+  original.forEach((item) =&gt; {
+    item.preco = item.preco * (1 - DESCONTO_CUPOM);
+  });
+  comCupom = original;
+  renderizar();
+};
+
+// versão correta: cria um array novo com objetos novos
+const aplicarImutavel = () =&gt; {
+  comCupom = original.map((item) =&gt; ({ ...item, preco: item.preco * (1 - DESCONTO_CUPOM) }));
+  renderizar();
+};
+
+// volta os dois carrinhos ao estado inicial
+const restaurar = () =&gt; {
+  original = criarPedido();
+  comCupom = [];
+  renderizar();
+};
+
+document.querySelector('#btnMutando').addEventListener('click', aplicarMutando);
+document.querySelector('#btnImutavel').addEventListener('click', aplicarImutavel);
+document.querySelector('#btnRestaurar').addEventListener('click', restaurar);
+renderizar();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Clique em 'Aplicar alterando (bug)' duas vezes, depois em 'Restaurar' e em 'Aplicar com cópia' duas vezes.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Na versão com bug, o total do pedido original cai a cada clique: <code>comCupom</code> e <code>original</code> são o mesmo array.</li>
+            <li>Na versão com spread, o cupom é aplicado sempre sobre o preço cheio, porque o original nunca é tocado.</li>
+            <li><code>{ ...item }</code> é uma cópia rasa: se um item tivesse um objeto dentro (ex.: <code>fornecedor</code>), ele ainda seria compartilhado.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

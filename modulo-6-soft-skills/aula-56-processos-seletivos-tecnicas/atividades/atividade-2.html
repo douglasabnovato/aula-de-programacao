@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Coding — Solução de Referência e Roteiro de Fala | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Live Coding — Solução de Referência e Roteiro de Fala</h1>
+        <p class="subtitulo">Aula 56 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A solução do problema de agrupar transações por cliente, com os testes, e o roteiro de fala usado durante os 30 minutos.</p>
+        </div>
+        <h2>solucao.js</h2>
+        <pre>// Início: agrupa transações por cliente e soma os valores
+// Entrada: [{ cliente: 'Ana', valor: 10 }, { cliente: 'Ana', valor: '5.5' }]
+// Saída:   { Ana: 15.5 }
+
+// soma os valores de cada cliente, convertendo texto em número e rejeitando valor inválido
+function somarPorCliente(transacoes) {
+  const totais = {};
+  for (const { cliente, valor } of transacoes) {
+    const numero = Number(valor);
+    if (Number.isNaN(numero)) {
+      throw new Error(`Valor inválido para ${cliente}: ${valor}`);
+    }
+    totais[cliente] = (totais[cliente] || 0) + numero;
+  }
+  return totais;
+}
+
+module.exports = { somarPorCliente };
+// Fim de solucao.js</pre>
+        <h2>solucao.test.js</h2>
+        <pre>// Início: testes da função somarPorCliente com o executor nativo do Node
+const test = require('node:test');
+const assert = require('node:assert');
+const { somarPorCliente } = require('./solucao');
+
+test('soma valores do mesmo cliente, inclusive texto numérico', () =&gt; {
+  const r = somarPorCliente([
+    { cliente: 'Ana', valor: 10 },
+    { cliente: 'Ana', valor: '5.5' },
+    { cliente: 'Bruno', valor: 3 },
+  ]);
+  assert.deepStrictEqual(r, { Ana: 15.5, Bruno: 3 });
+});
+
+test('lista vazia devolve objeto vazio', () =&gt; {
+  assert.deepStrictEqual(somarPorCliente([]), {});
+});
+
+test('valor inválido lança erro', () =&gt; {
+  assert.throws(() =&gt; somarPorCliente([{ cliente: 'Ana', valor: 'abc' }]));
+});
+// Fim de solucao.test.js</pre>
+        <h2>Roteiro de fala</h2>
+        <ol>
+            <li>"Deixa eu repetir para confirmar: recebo uma lista de transações e devolvo o total por cliente, certo?"</li>
+            <li>"O valor pode vir como texto? E se a lista vier vazia?"</li>
+            <li>"Vou começar com um laço e um objeto acumulador, que é o jeito mais direto."</li>
+            <li>"Rodei e deu concatenação: o valor veio como texto. Vou converter com Number."</li>
+            <li>"Agora dois testes para provar, e se sobrar tempo mostro a versão com reduce."</li>
+        </ol>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Salve os dois arquivos na mesma pasta.</li>
+            <li><code>node --test</code></li>
+            <li>Confira que os três testes passam.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O erro da concatenação é o momento em que o entrevistador mais aprende sobre você: narrar a correção vale mais que não errar.</li>
+            <li>A decisão sobre valor inválido foi tomada em voz alta e virou teste.</li>
+            <li>A versão com <code>reduce</code> é melhoria opcional, não o ponto de partida.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

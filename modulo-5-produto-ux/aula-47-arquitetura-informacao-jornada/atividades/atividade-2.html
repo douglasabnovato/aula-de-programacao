@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Card Sorting e Tree Testing | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Card Sorting e Tree Testing</h1>
+        <p class="subtitulo">Aula 47 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O resultado de um card sorting aberto com cinco pessoas para a loja fictícia Ponto Eletro, a árvore proposta a partir dele e o resultado do tree testing com a correção feita.</p>
+        </div>
+        <h2>card-sorting.md</h2>
+        <pre># Card sorting aberto — Ponto Eletro (5 pessoas)
+
+## Nomes de grupo mais usados
+| Nome dado pelos participantes | Quantas pessoas |
+|-------------------------------|-----------------|
+| Computador / Notebook         | 5               |
+| Celular                       | 5               |
+| Cabos e carregadores          | 4               |
+| Acessórios para computador    | 3               |
+| Casa / TV                     | 3               |
+
+## Pares mais agrupados (de 5)
+- cabo HDMI + adaptador USB-C: 5
+- mouse + teclado: 5
+- carregador de celular + cabo USB-C: 4
+- fone Bluetooth + caixa de som: 3
+
+## Árvore proposta v1
+Computadores e notebooks
+  Acessórios (mouse, teclado, suporte)
+Celulares
+  Capas e películas
+Cabos e carregadores
+Áudio (fones e caixas)
+TV e casa
+</pre>
+        <h2>tree-testing.md</h2>
+        <pre># Tree testing — 3 pessoas, árvore v1
+
+| Tarefa                                             | Sucesso | Primeiro clique errado     |
+|----------------------------------------------------|---------|----------------------------|
+| Cabo para ligar o notebook na TV                   | 1 de 3  | "TV e casa" (2 pessoas)    |
+| Algo para ouvir música sem fio na academia         | 3 de 3  | —                          |
+| Algo para o celular não quebrar se cair            | 3 de 3  | —                          |
+| Carregador que funcione no notebook e no celular   | 2 de 3  | "Computadores" (1 pessoa)  |
+| Algo para digitar confortável no notebook          | 3 de 3  | —                          |
+
+## Correção (árvore v2)
+- "Cabos e carregadores" também aparece dentro de "TV e casa" (polihierarquia)
+  com o atalho "Cabos para TV".
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Rode o card sorting antes de desenhar qualquer menu.</li>
+            <li>Monte a árvore com os nomes que mais se repetiram.</li>
+            <li>Escreva tarefas de tree testing sem usar as palavras dos rótulos.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O rótulo antigo "Periféricos e Conectividade" não apareceu em nenhum grupo dos participantes.</li>
+            <li>O tree testing encontrou um problema que o card sorting não mostrou: cabo de TV mora em dois lugares na cabeça das pessoas.</li>
+            <li>Cinco pessoas bastaram para ver padrão claro nos agrupamentos principais.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

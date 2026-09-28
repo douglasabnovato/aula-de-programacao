@@ -32,6 +32,10 @@
             <!-- TEMA 1: PADRÕES DE CRIAÇÃO: FACTORY, BUILDER E SINGLETON -->
             <div class="card" id="card-1">
                 <h2>🏭 1. Padrões de Criação: Factory, Builder e Singleton</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No sistema fictício da transportadora Via Sul, o mesmo if que escolhe entre calcular frete pelos Correios, por transportadora ou por retirada está copiado em nove arquivos, e o objeto de cotação é criado com onze parâmetros posicionais. Cada nova modalidade exige caçar e alterar todas as cópias. Como centralizar a decisão de criação e montar objetos complexos de forma legível e validada?</p>
+                </div>
                 <p>Os três resolvem a mesma pergunta por caminhos diferentes: como criar um objeto sem espalhar a decisão de construção por todo o código.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=x9h8MgAvi_I" target="_blank" rel="noopener noreferrer">▶️ Singleton Teoria - Padrões de Projeto - Parte 4/45</a>
+                            <span class="link-desc">Otávio Miranda · 15:53 — Explica a teoria do padrão Singleton e quando ele faz sentido.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=kuirGzhGhyw" target="_blank" rel="noopener noreferrer">▶️ Javascript Design Patterns #1 - Factory Pattern</a>
+                            <span class="link-desc">DevSage · 10:12 · em inglês — Mostra em inglês o padrão Factory aplicado em JavaScript.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: PADRÕES ESTRUTURAIS E COMPORTAMENTAIS NO DIA A DIA -->
             <div class="card" id="card-2">
                 <h2>🔧 2. Padrões Estruturais e Comportamentais no Dia a Dia</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia Cupom Certo tem uma função de 180 linhas com um switch que aplica doze regras de desconto diferentes, e toda campanha nova mexe no mesmo bloco, quebrando regras antigas. Os testes cobrem só metade dos ramos porque é difícil isolar cada um. Como transformar esse switch em peças independentes, testáveis uma a uma, em que acrescentar uma regra não altera as outras?</p>
+                </div>
                 <p>Adapter, Strategy e Observer são os que mais aparecem em código JavaScript real — muitas vezes sem que a pessoa saiba que está usando um padrão nomeado.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=_wIrxrUd0YE" target="_blank" rel="noopener noreferrer">▶️ JAVASCRIPT Strategy Pattern - O que é? Como implementar? - DESIGN PATTERNS</a>
+                            <span class="link-desc">Clóvis Neto · 14:52 — Explica o padrão Strategy em JavaScript e como implementá-lo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=TfAAGUrUBIQ" target="_blank" rel="noopener noreferrer">▶️ Evite IF/ELSE e HERANÇA aplicando o padrão STRATEGY!</a>
+                            <span class="link-desc">RinaldoDev · 26:28 — Mostra como o padrão Strategy substitui cadeias de if/else e herança.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,11 +178,15 @@
             <!-- TEMA 3: O EXCESSO: QUANDO O PADRÃO PIORA O CÓDIGO -->
             <div class="card" id="card-3">
                 <h2>🚫 3. O Excesso: Quando o Padrão Piora o Código</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Um desenvolvedor da empresa fictícia Nuvem Alta aplicou padrões em todo o projeto depois de um curso: hoje, para entender como um e-mail é enviado, é preciso abrir sete arquivos, e metade das interfaces tem uma única implementação. O time demora mais para mudar o código do que antes da refatoração. Como identificar a abstração que não se pagou e desfazê-la com segurança?</p>
+                </div>
                 <p>Quem acabou de estudar padrões vê padrão em tudo. O bloco fecha com o critério oposto: como reconhecer a abstração que não se pagou e como desfazê-la.</p>
 
                 <ul class="links-list">
                     <li>
-                        <a href="https://martinfowler.com/bliki/YagniDefinition.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — Martin Fowler</a>
+                        <a href="https://martinfowler.com/bliki/Yagni.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — Martin Fowler</a>
                         <span class="link-desc">O argumento contra construir a abstração antes de ter a necessidade.</span>
                     </li>
                     <li>
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=5yJ_cAUrpQc" target="_blank" rel="noopener noreferrer">▶️ DRY, KISS, YAGNI | Code/Drops #27</a>
+                            <span class="link-desc">Rocketseat · 22:12 — Discute DRY, KISS e YAGNI e o risco de criar abstrações antes da necessidade.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=SQqqiC0YpA0" target="_blank" rel="noopener noreferrer">▶️ Code Smell (A arte de farejar código ruim) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 14:40 — Explica o que são code smells e como reconhecer sinais de código que precisa ser simplificado.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

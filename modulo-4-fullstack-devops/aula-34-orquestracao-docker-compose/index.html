@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 34 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a descrever API e banco num único compose.yaml, com dado persistente, subida na ordem certa e configuração separada por ambiente.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 34: Orquestração com Docker Compose</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: O COMPOSE.YAML: SERVIÇOS, REDE E A APLICAÇÃO INTEIRA NUM ARQUIVO -->
+            <div class="card" id="card-1">
+                <h2>🧩 1. O compose.yaml: Serviços, Rede e a Aplicação Inteira num Arquivo</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A equipe fictícia da Papelaria Ponto Final tem uma API em contêiner e um PostgreSQL que cada pessoa instala de um jeito na própria máquina. Todo novato perde uma manhã com senha errada e porta ocupada antes de rodar o projeto. Como subir API e banco juntos, iguais para todos, com um único comando?</p>
+                </div>
+
+                <p>Na aula 32 cada contêiner subia com um docker run cheio de flags. O Compose descreve a aplicação inteira num arquivo: quais serviços existem, como se enxergam na rede e o que cada um recebe de configuração.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/compose/intro/compose-application-model/" target="_blank" rel="noopener noreferrer">📄 Como o Compose funciona — Docker Docs</a>
+                        <span class="link-desc">O modelo de aplicação: serviços, redes, volumes e o projeto que o Compose cria a partir do arquivo.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/reference/compose-file/services/" target="_blank" rel="noopener noreferrer">📄 Referência de services — Docker Docs</a>
+                        <span class="link-desc">Cada chave que um serviço aceita — image, build, ports, environment, depends_on — com exemplos.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/networking/" target="_blank" rel="noopener noreferrer">📄 Redes no Compose — Docker Docs</a>
+                        <span class="link-desc">Por que o nome do serviço vira endereço dentro da rede e localhost deixa de servir.</span>
+                    </li>
+                    <li>
+                        <a href="https://hub.docker.com/_/postgres" target="_blank" rel="noopener noreferrer">📄 Imagem oficial do PostgreSQL — Docker Hub</a>
+                        <span class="link-desc">As variáveis POSTGRES_USER, POSTGRES_PASSWORD e POSTGRES_DB e a pasta de dados da imagem.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=AVNADGzXrrQ" target="_blank" rel="noopener noreferrer">▶️ Ambiente de desenvolvimento NodeJS com Docker e Docker Compose | Diego Fernandes</a>
+                            <span class="link-desc">Rocketseat · 17:31 — Monta um ambiente Node.js com Docker Compose, descrevendo os serviços num único arquivo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Qzfb3yx2OI4" target="_blank" rel="noopener noreferrer">▶️ Como rodar e customizar o Postgresql com docker e docker-compose</a>
+                            <span class="link-desc">Domine AWS com Henrylle Maia · 18:11 — Mostra como subir e configurar um Postgres com docker-compose.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: API e PostgreSQL Subindo Juntos com um Comando</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> confirme <code>docker compose version</code> e organize a pasta com a API da aula 32 em <code>api/</code> e um <code>compose.yaml</code> vazio na raiz.</li>
+                            <li><strong>Serviço do Banco:</strong> declare o serviço <code>db</code> com <code>image: postgres:16-alpine</code> e as três variáveis <code>POSTGRES_USER</code>, <code>POSTGRES_PASSWORD</code> e <code>POSTGRES_DB</code>.</li>
+                            <li><strong>Serviço da API:</strong> declare o serviço <code>api</code> com <code>build: ./api</code> e publique a porta com <code>ports: ["3000:3000"]</code>.</li>
+                            <li><strong>Driver do Banco:</strong> dentro de <code>api/</code>, rode <code>npm install pg</code> e crie <code>src/db.js</code> com um <code>Pool</code> lendo <code>process.env.DATABASE_URL</code>.</li>
+                            <li><strong>Erro Provocado:</strong> passe <code>DATABASE_URL</code> apontando para <code>localhost:5432</code>, suba com <code>docker compose up --build</code> e leia o <code>ECONNREFUSED</code> no log da API.</li>
+                            <li><strong>Ajuste pelo Nome do Serviço:</strong> troque <code>localhost</code> por <code>db</code> na URL: dentro da rede do Compose, o nome do serviço é o endereço do contêiner.</li>
+                            <li><strong>Ordem Declarada:</strong> acrescente <code>depends_on: [db]</code> na API e registre no README por que isso ainda não garante que o banco aceita conexão.</li>
+                            <li><strong>Tabela na Subida:</strong> faça a API criar a tabela <code>tarefas</code> com <code>CREATE TABLE IF NOT EXISTS</code> antes de chamar <code>app.listen</code>.</li>
+                            <li><strong>Comandos do Dia a Dia:</strong> use <code>docker compose ps</code>, <code>docker compose logs -f api</code> e <code>docker compose exec db psql -U tarefas</code> e anote o que cada um mostra.</li>
+                            <li><strong>Validação e Testes:</strong> crie duas tarefas via <code>POST /tarefas</code>, consulte com <code>SELECT * FROM tarefas</code> no <code>psql</code>, derrube com <code>docker compose down</code> e registre no README o comando único de subida.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: VOLUMES, HEALTHCHECK E A ORDEM DE SUBIDA -->
+            <div class="card" id="card-2">
+                <h2>💾 2. Volumes, Healthcheck e a Ordem de Subida</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na Papelaria Ponto Final, toda vez que alguém roda docker compose down as tarefas cadastradas somem, e em metade das subidas a API cai porque tentou conectar antes do banco ficar pronto. O time já pensou em colocar um sleep de 10 segundos. Como garantir dado persistente e subida na ordem certa sem adivinhar tempo?</p>
+                </div>
+
+                <p>O contêiner do banco é descartável; o dado não pode ser. Volume nomeado guarda o dado fora do ciclo de vida do contêiner, e o healthcheck troca o 'já subiu' pelo 'já aceita conexão'.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/startup-order/" target="_blank" rel="noopener noreferrer">📄 Ordem de subida e parada — Docker Docs</a>
+                        <span class="link-desc">A diferença entre service_started e service_healthy e como o depends_on usa o healthcheck.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/reference/compose-file/volumes/" target="_blank" rel="noopener noreferrer">📄 Volumes no Compose — Docker Docs</a>
+                        <span class="link-desc">Como declarar volumes nomeados no topo do arquivo e montá-los em cada serviço.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/reference/cli/docker/compose/down/" target="_blank" rel="noopener noreferrer">📄 docker compose down — referência da CLI</a>
+                        <span class="link-desc">O que o down remove por padrão e o que a opção -v apaga junto.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/guides/databases/" target="_blank" rel="noopener noreferrer">📄 Bancos de dados em contêiner — Docker Docs</a>
+                        <span class="link-desc">O guia oficial de persistência, inicialização e acesso a bancos rodando em contêiner.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=m_AmsZgusr8" target="_blank" rel="noopener noreferrer">▶️ [Docker] Como funciona o Healthcheck no docker-compose</a>
+                            <span class="link-desc">Cristiano Cunha · 7:25 — Explica como funciona o healthcheck no docker-compose para saber quando um serviço está pronto.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=10YUI7KoBUg" target="_blank" rel="noopener noreferrer">▶️ O que são volumes Docker</a>
+                            <span class="link-desc">JLCP · 8:24 — Explica volumes Docker e como eles preservam os dados do banco fora do contêiner.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Banco Persistente com Healthcheck e Script de Carga Inicial</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba o projeto da prática anterior, cadastre três tarefas e deixe o terminal de logs aberto.</li>
+                            <li><strong>Provocando a Perda:</strong> rode <code>docker compose down</code> seguido de <code>docker compose up</code> e confirme que as tarefas sumiram.</li>
+                            <li><strong>Volume Nomeado:</strong> declare <code>volumes: { dados-pg: {} }</code> no topo e monte <code>dados-pg:/var/lib/postgresql/data</code> no serviço <code>db</code>.</li>
+                            <li><strong>Provando a Persistência:</strong> repita o ciclo de down e up, confirme que as tarefas ficaram e liste o volume com <code>docker volume ls</code>.</li>
+                            <li><strong>Script de Carga:</strong> crie <code>db/init.sql</code> com a tabela e duas tarefas de exemplo e monte em <code>/docker-entrypoint-initdb.d/</code>.</li>
+                            <li><strong>Entendendo o Init:</strong> rode <code>docker compose up</code> e observe que o script não executa: ele só roda com a pasta de dados vazia.</li>
+                            <li><strong>Recomeçando do Zero:</strong> rode <code>docker compose down -v</code>, suba de novo e confirme no log do banco que o <code>init.sql</code> executou.</li>
+                            <li><strong>Healthcheck do Banco:</strong> acrescente um <code>healthcheck</code> com <code>pg_isready -U tarefas -d tarefas</code>, <code>interval: 5s</code> e <code>retries: 10</code>.</li>
+                            <li><strong>Dependência Real:</strong> troque o <code>depends_on</code> da API para a forma longa com <code>condition: service_healthy</code> e observe a ordem nos logs.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>docker compose ps</code> e confirme o estado <code>healthy</code> do banco, suba tudo cinco vezes seguidas sem a API cair e registre no README a diferença entre <code>down</code> e <code>down -v</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: CONFIGURAÇÃO POR AMBIENTE: .ENV, OVERRIDE, PERFIS E WATCH -->
+            <div class="card" id="card-3">
+                <h2>🎛️ 3. Configuração por Ambiente: .env, Override, Perfis e Watch</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Papelaria Ponto Final quer usar o mesmo projeto em desenvolvimento, com código recarregando sozinho e um painel para olhar o banco, e em produção, sem porta do banco aberta e sem senha escrita no arquivo. Hoje existem dois compose.yaml copiados à mão que já divergem. Como manter um arquivo base e variar só o que muda de um ambiente para outro?</p>
+                </div>
+
+                <p>Configuração muda entre ambientes; a descrição da aplicação não. O Compose resolve isso com interpolação de variáveis, arquivos que se sobrepõem, perfis para serviços opcionais e o watch para refletir o código sem rebuild manual.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/" target="_blank" rel="noopener noreferrer">📄 Variáveis de ambiente no Compose — Docker Docs</a>
+                        <span class="link-desc">Como passar variáveis ao contêiner com environment, env_file e interpolação a partir do .env.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/" target="_blank" rel="noopener noreferrer">📄 Mesclando arquivos Compose — Docker Docs</a>
+                        <span class="link-desc">Como o compose.override.yaml é lido automaticamente e como combinar arquivos com -f.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/profiles/" target="_blank" rel="noopener noreferrer">📄 Perfis no Compose — Docker Docs</a>
+                        <span class="link-desc">Serviços que só sobem quando o perfil é ativado, como ferramentas de apoio ao desenvolvimento.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/compose/how-tos/file-watch/" target="_blank" rel="noopener noreferrer">📄 Compose Watch — Docker Docs</a>
+                        <span class="link-desc">Sincronizar arquivos e reconstruir a imagem automaticamente enquanto você edita o código.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=jGePPQFArwo" target="_blank" rel="noopener noreferrer">▶️ A Docker Compose Override File Can Help Avoid Compose File Duplication</a>
+                            <span class="link-desc">Nick Janetakis · 8:40 · em inglês — Mostra em inglês como usar arquivos de override do Compose para variar a configuração por ambiente.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FhorvGysZ6w" target="_blank" rel="noopener noreferrer">▶️ Docker Compose Watch: Hot Reload &amp; Rebuild Explained (2025 Tutorial)</a>
+                            <span class="link-desc">KodeKloud · 17:51 · em inglês — Explica em inglês o Compose Watch para sincronizar e reconstruir serviços durante o desenvolvimento.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Um Arquivo Base, Dois Ambientes e Nenhuma Senha no Git</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>.env.example</code> com <code>POSTGRES_PASSWORD=troque-aqui</code>, copie para <code>.env</code> e confirme que <code>.env</code> está no <code>.gitignore</code>.</li>
+                            <li><strong>Interpolação:</strong> troque a senha escrita no <code>compose.yaml</code> por <code>${POSTGRES_PASSWORD:?defina no .env}</code> nos dois serviços.</li>
+                            <li><strong>Erro Provocado:</strong> renomeie o <code>.env</code> temporariamente, rode <code>docker compose config</code> e leia a mensagem de variável obrigatória ausente.</li>
+                            <li><strong>Arquivo de Desenvolvimento:</strong> crie <code>compose.override.yaml</code> publicando a porta <code>5432</code> do banco só em desenvolvimento.</li>
+                            <li><strong>Vendo o Resultado Mesclado:</strong> rode <code>docker compose config</code> e confirme que a porta do banco apareceu sem você editar o arquivo base.</li>
+                            <li><strong>Watch no Código:</strong> no override, acrescente <code>develop.watch</code> com <code>action: sync</code> para <code>./api/src</code> e <code>action: rebuild</code> para <code>package.json</code>.</li>
+                            <li><strong>Recarregando Sozinho:</strong> suba com <code>docker compose watch</code>, altere uma mensagem da API e confirme a mudança sem rodar build.</li>
+                            <li><strong>Perfil de Ferramentas:</strong> no arquivo base, declare o serviço <code>adminer</code> com <code>profiles: ["ferramentas"]</code> e suba com <code>docker compose --profile ferramentas up</code>.</li>
+                            <li><strong>Arquivo de Produção:</strong> crie <code>compose.prod.yaml</code> com <code>NODE_ENV: production</code> e <code>restart: unless-stopped</code> e rode <code>docker compose -f compose.yaml -f compose.prod.yaml config</code>.</li>
+                            <li><strong>Validação e Testes:</strong> confira que em produção o banco não publica porta e o adminer não sobe, e registre no README os três comandos: desenvolvimento, ferramentas e produção.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esquema Relacional no Supabase — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Esquema Relacional no Supabase — Código de Referência</h1>
+        <p class="subtitulo">Aula 25 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O script SQL completo das tabelas <code>projetos</code> e <code>tarefas</code>, com chave estrangeira em cascata, regra de título no banco, índice e dados de exemplo. Cole no SQL Editor do Supabase e execute.</p>
+        </div>
+        <h2>db/schema.sql</h2>
+        <pre>-- Início: esquema relacional de projetos e tarefas para o Postgres do Supabase
+create table projetos (
+  id bigint generated always as identity primary key,
+  nome text not null unique
+);
+
+create table tarefas (
+  id bigint generated always as identity primary key,
+  projeto_id bigint not null references projetos(id) on delete cascade,
+  titulo text not null check (char_length(trim(titulo)) &gt; 0),
+  feita boolean not null default false,
+  criada_em timestamptz not null default now()
+);
+
+create index tarefas_projeto_id_idx on tarefas (projeto_id);
+
+insert into projetos (nome) values ('Turma de Inglês A1'), ('Turma de Espanhol B1');
+
+insert into tarefas (projeto_id, titulo) values
+  (1, 'Corrigir redações da semana'),
+  (1, 'Preparar lista de verbos irregulares'),
+  (2, 'Montar roteiro de conversação'),
+  (2, 'Enviar calendário de provas');
+
+select t.id, t.titulo, p.nome as projeto
+from tarefas t
+join projetos p on p.id = t.projeto_id
+order by t.id;
+-- Fim de schema.sql</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie um projeto no plano gratuito do Supabase</li>
+            <li>Abra <strong>SQL Editor</strong> → <em>New query</em></li>
+            <li>Cole o script e clique em <em>Run</em></li>
+            <li>Confira as tabelas em <strong>Table Editor</strong></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li><code>generated always as identity</code> deixa o banco gerar o id — o problema do <code>tarefas.length + 1</code> da aula 21 some aqui.</li>
+            <li>O <code>check</code> repete a regra da entidade: se um dia outro sistema gravar direto no banco, a regra continua valendo.</li>
+            <li>O Postgres não cria índice sozinho na coluna da chave estrangeira; por isso o <code>create index</code> é explícito.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

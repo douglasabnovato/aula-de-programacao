@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Row Level Security — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Row Level Security — Código de Referência</h1>
+        <p class="subtitulo">Aula 25 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>As políticas que limitam cada usuário às próprias tarefas e um script que entra como um usuário real, com a chave publicável, e mostra o que ele consegue ver e gravar.</p>
+        </div>
+        <h2>db/rls.sql</h2>
+        <pre>-- Início: dono por tarefa e políticas de Row Level Security
+alter table tarefas add column dono_id uuid references auth.users(id);
+
+alter table tarefas enable row level security;
+
+create policy "dono le as suas"
+on tarefas for select
+to authenticated
+using ((select auth.uid()) = dono_id);
+
+create policy "dono cria as suas"
+on tarefas for insert
+to authenticated
+with check ((select auth.uid()) = dono_id);
+
+create policy "dono altera as suas"
+on tarefas for update
+to authenticated
+using ((select auth.uid()) = dono_id)
+with check ((select auth.uid()) = dono_id);
+
+create policy "dono remove as suas"
+on tarefas for delete
+to authenticated
+using ((select auth.uid()) = dono_id);
+-- Fim de rls.sql</pre>
+        <h2>scripts/testar-rls.js</h2>
+        <pre>// Início: script que entra como um usuário e mostra o que o RLS deixa ele ver
+require('dotenv').config();
+const { createClient } = require('@supabase/supabase-js');
+
+// autentica com e-mail e senha e lista as tarefas visíveis para esse usuário
+async function verComo(email, senha) {
+  const cliente = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY);
+  const { data: sessao, error: erroLogin } = await cliente.auth.signInWithPassword({ email, password: senha });
+  if (erroLogin) throw erroLogin;
+
+  const { data, error } = await cliente.from('tarefas').select('id, titulo, dono_id');
+  if (error) throw error;
+  console.log(`${email} enxerga ${data.length} tarefa(s):`, data.map((t) =&gt; t.titulo));
+
+  const invasao = await cliente
+    .from('tarefas')
+    .insert({ titulo: 'Tentativa indevida', projeto_id: 1, dono_id: process.env.ID_OUTRO_USUARIO });
+  console.log('Inserir em nome de outro:', invasao.error ? invasao.error.message : 'aceito (política faltando!)');
+
+  return sessao.user.id;
+}
+
+// roda o teste para o usuário configurado no .env
+async function principal() {
+  await verComo(process.env.EMAIL_TESTE, process.env.SENHA_TESTE);
+}
+
+principal().catch((erro) =&gt; {
+  console.error('Falhou:', erro.message);
+  process.exit(1);
+});
+// Fim de testar-rls.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Execute <code>db/rls.sql</code> no SQL Editor</li>
+            <li>Crie dois usuários em <em>Authentication → Users</em> e atribua uma tarefa a cada um pelo <code>dono_id</code></li>
+            <li>Preencha no <code>.env</code>: <code>SUPABASE_PUBLISHABLE_KEY</code>, <code>EMAIL_TESTE</code>, <code>SENHA_TESTE</code> e <code>ID_OUTRO_USUARIO</code></li>
+            <li><code>node scripts/testar-rls.js</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Com RLS ligado e sem política, a consulta devolve lista vazia, não erro: negar por padrão é o comportamento seguro.</li>
+            <li><code>using</code> filtra o que se lê; <code>with check</code> valida o que se grava — o insert em nome de outro usuário esbarra no segundo.</li>
+            <li><code>(select auth.uid())</code> entre parênteses é avaliado uma vez por consulta, e não uma vez por linha.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

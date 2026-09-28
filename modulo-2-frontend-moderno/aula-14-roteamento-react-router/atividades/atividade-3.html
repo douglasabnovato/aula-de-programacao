@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente com Layout Compartilhado e Rota Protegida — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Área do Cliente com Layout Compartilhado e Rota Protegida — Resposta</h1>
+        <p class="subtitulo">Aula 14 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma área do cliente em que Resumo, Pedidos e Dados compartilham o mesmo menu lateral via <code>&lt;Outlet /&gt;</code>, o link da tela atual aparece destacado com <code>NavLink</code> e qualquer acesso sem login é desviado para <code>/entrar</code>. O login é simulado em memória: não há servidor nesta aula.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.endereco { background: var(--surface); border: 1px dashed var(--border); border-radius: 6px; padding: 6px 10px; font-size: .85rem; color: var(--muted); }
+.endereco code { color: var(--primary); }
+nav.menu { display: flex; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; flex-wrap: wrap; }
+nav.menu a { text-decoration: none; color: var(--text); }
+nav.menu a.ativo { color: var(--primary); font-weight: 700; border-bottom: 2px solid var(--primary); }
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filtros button.ativo { outline: 2px solid var(--text); }
+ul.lista { list-style: none; padding: 0; }
+ul.lista li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.conta { display: grid; grid-template-columns: 160px 1fr; gap: 16px; }
+.conta aside { display: flex; flex-direction: column; gap: 8px; border-right: 1px solid var(--border); padding-right: 12px; }
+.conta aside a { text-decoration: none; color: var(--text); }
+.conta aside a.ativo { color: var(--primary); font-weight: 700; }
+@media (max-width: 520px) { .conta { grid-template-columns: 1fr; } .conta aside { border-right: 0; flex-direction: row; } }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@remix-run/router@1.15.3/dist/router.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router@6.22.3/dist/umd/react-router.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router-dom@6.22.3/dist/umd/react-router-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+const { MemoryRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useParams, useNavigate, useSearchParams, useLocation } = ReactRouterDOM;
+
+// Início: src/components/RotaProtegida.jsx — guardião das rotas da conta
+
+// Libera as rotas filhas só quando há usuário; senão redireciona para /entrar
+function RotaProtegida({ usuario }) {
+  if (!usuario) {
+    return &lt;Navigate to=&quot;/entrar&quot; replace /&gt;;
+  }
+  return &lt;Outlet /&gt;;
+}
+// Fim de RotaProtegida.jsx
+
+// Início: src/layouts/LayoutConta.jsx — moldura comum às telas da conta
+
+// Define a classe do link conforme ele esteja ou não ativo
+function classeLink({ isActive }) {
+  return isActive ? &#x27;ativo&#x27; : &#x27;&#x27;;
+}
+
+// Menu lateral fixo e, ao lado, a rota filha que estiver ativa
+function LayoutConta({ usuario, onSair }) {
+  return (
+    &lt;div className=&quot;conta&quot;&gt;
+      &lt;aside&gt;
+        &lt;strong&gt;Olá, {usuario.nome}&lt;/strong&gt;
+        &lt;NavLink to=&quot;/conta&quot; end className={classeLink}&gt;Resumo&lt;/NavLink&gt;
+        &lt;NavLink to=&quot;/conta/pedidos&quot; className={classeLink}&gt;Pedidos&lt;/NavLink&gt;
+        &lt;NavLink to=&quot;/conta/dados&quot; className={classeLink}&gt;Dados&lt;/NavLink&gt;
+        &lt;button className=&quot;secundario&quot; onClick={onSair}&gt;Sair&lt;/button&gt;
+      &lt;/aside&gt;
+      &lt;main&gt;
+        &lt;Outlet /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de LayoutConta.jsx
+
+// Início: src/pages/Conta.jsx — páginas da área do cliente
+
+// Resumo exibido na rota índice /conta
+function Resumo() {
+  return &lt;p&gt;Você tem 2 pedidos neste ano.&lt;/p&gt;;
+}
+
+// Lista de pedidos fictícios
+function Pedidos() {
+  return (
+    &lt;ul className=&quot;lista&quot;&gt;
+      &lt;li&gt;#1042 — O Rio das Mangueiras — entregue&lt;/li&gt;
+      &lt;li&gt;#1057 — JavaScript na Prática — a caminho&lt;/li&gt;
+    &lt;/ul&gt;
+  );
+}
+
+// Dados cadastrais do usuário logado
+function Dados({ usuario }) {
+  return &lt;p&gt;Nome: {usuario.nome} · E-mail: {usuario.email}&lt;/p&gt;;
+}
+
+// Formulário de entrada que grava o usuário e navega para a conta
+function Entrar({ onEntrar }) {
+  const [nome, setNome] = useState(&#x27;&#x27;);
+  const navegar = useNavigate();
+
+  // Trata o envio do formulário de entrada
+  function enviar(evento) {
+    evento.preventDefault();
+    onEntrar({ nome: nome || &#x27;Cliente&#x27;, email: &#x27;cliente@exemplo.com&#x27; });
+    navegar(&#x27;/conta&#x27;);
+  }
+
+  return (
+    &lt;form onSubmit={enviar}&gt;
+      &lt;h1&gt;Entrar&lt;/h1&gt;
+      &lt;input value={nome} onChange={(e) =&gt; setNome(e.target.value)} placeholder=&quot;Seu nome&quot; /&gt;
+      &lt;button type=&quot;submit&quot;&gt;Entrar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de Conta.jsx
+
+// Início: src/App.jsx — rotas públicas, rota protegida e layout aninhado
+
+// Componente raiz: guarda a sessão e monta a árvore de rotas
+function App() {
+  const [usuario, setUsuario] = useState(null);
+
+  return (
+    &lt;&gt;
+      &lt;nav className=&quot;menu&quot;&gt;
+        &lt;Link to=&quot;/&quot;&gt;Início&lt;/Link&gt;
+        &lt;Link to=&quot;/conta/pedidos&quot;&gt;Meus pedidos&lt;/Link&gt;
+        {!usuario &amp;&amp; &lt;Link to=&quot;/entrar&quot;&gt;Entrar&lt;/Link&gt;}
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;p&gt;Bem-vindo à Livraria Ipê.&lt;/p&gt;} /&gt;
+        &lt;Route path=&quot;/entrar&quot; element={&lt;Entrar onEntrar={setUsuario} /&gt;} /&gt;
+        &lt;Route element={&lt;RotaProtegida usuario={usuario} /&gt;}&gt;
+          &lt;Route path=&quot;/conta&quot; element={&lt;LayoutConta usuario={usuario} onSair={() =&gt; setUsuario(null)} /&gt;}&gt;
+            &lt;Route index element={&lt;Resumo /&gt;} /&gt;
+            &lt;Route path=&quot;pedidos&quot; element={&lt;Pedidos /&gt;} /&gt;
+            &lt;Route path=&quot;dados&quot; element={&lt;Dados usuario={usuario} /&gt;} /&gt;
+          &lt;/Route&gt;
+        &lt;/Route&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx
+
+// Barra que mostra o endereço atual (só no demo, porque o iframe não tem barra de endereço)
+function BarraEndereco() {
+  const local = useLocation();
+  return &lt;p className=&quot;endereco&quot;&gt;Endereço: &lt;code&gt;{local.pathname + local.search}&lt;/code&gt;&lt;/p&gt;;
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(
+  &lt;MemoryRouter&gt;
+    &lt;BarraEndereco /&gt;
+    &lt;App /&gt;
+  &lt;/MemoryRouter&gt;
+);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/components/RotaProtegida.jsx</h2>
+        <pre>// Início: src/components/RotaProtegida.jsx — guardião das rotas da conta
+import { Navigate, Outlet } from 'react-router';
+
+// Libera as rotas filhas só quando há usuário; senão redireciona para /entrar
+export default function RotaProtegida({ usuario }) {
+  if (!usuario) {
+    return &lt;Navigate to="/entrar" replace /&gt;;
+  }
+  return &lt;Outlet /&gt;;
+}
+// Fim de RotaProtegida.jsx</pre>
+        <h2>src/layouts/LayoutConta.jsx</h2>
+        <pre>// Início: src/layouts/LayoutConta.jsx — moldura comum às telas da conta
+import { NavLink, Outlet } from 'react-router';
+
+// Define a classe do link conforme ele esteja ou não ativo
+function classeLink({ isActive }) {
+  return isActive ? 'ativo' : '';
+}
+
+// Menu lateral fixo e, ao lado, a rota filha que estiver ativa
+export default function LayoutConta({ usuario, onSair }) {
+  return (
+    &lt;div className="conta"&gt;
+      &lt;aside&gt;
+        &lt;strong&gt;Olá, {usuario.nome}&lt;/strong&gt;
+        &lt;NavLink to="/conta" end className={classeLink}&gt;Resumo&lt;/NavLink&gt;
+        &lt;NavLink to="/conta/pedidos" className={classeLink}&gt;Pedidos&lt;/NavLink&gt;
+        &lt;NavLink to="/conta/dados" className={classeLink}&gt;Dados&lt;/NavLink&gt;
+        &lt;button className="secundario" onClick={onSair}&gt;Sair&lt;/button&gt;
+      &lt;/aside&gt;
+      &lt;main&gt;
+        &lt;Outlet /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de LayoutConta.jsx</pre>
+        <h2>src/pages/Conta.jsx</h2>
+        <pre>// Início: src/pages/Conta.jsx — páginas da área do cliente
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
+// Resumo exibido na rota índice /conta
+export function Resumo() {
+  return &lt;p&gt;Você tem 2 pedidos neste ano.&lt;/p&gt;;
+}
+
+// Lista de pedidos fictícios
+export function Pedidos() {
+  return (
+    &lt;ul className="lista"&gt;
+      &lt;li&gt;#1042 — O Rio das Mangueiras — entregue&lt;/li&gt;
+      &lt;li&gt;#1057 — JavaScript na Prática — a caminho&lt;/li&gt;
+    &lt;/ul&gt;
+  );
+}
+
+// Dados cadastrais do usuário logado
+export function Dados({ usuario }) {
+  return &lt;p&gt;Nome: {usuario.nome} · E-mail: {usuario.email}&lt;/p&gt;;
+}
+
+// Formulário de entrada que grava o usuário e navega para a conta
+export function Entrar({ onEntrar }) {
+  const [nome, setNome] = useState('');
+  const navegar = useNavigate();
+
+  // Trata o envio do formulário de entrada
+  function enviar(evento) {
+    evento.preventDefault();
+    onEntrar({ nome: nome || 'Cliente', email: 'cliente@exemplo.com' });
+    navegar('/conta');
+  }
+
+  return (
+    &lt;form onSubmit={enviar}&gt;
+      &lt;h1&gt;Entrar&lt;/h1&gt;
+      &lt;input value={nome} onChange={(e) =&gt; setNome(e.target.value)} placeholder="Seu nome" /&gt;
+      &lt;button type="submit"&gt;Entrar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de Conta.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — rotas públicas, rota protegida e layout aninhado
+import { useState } from 'react';
+import { Routes, Route, Link } from 'react-router';
+import RotaProtegida from './components/RotaProtegida.jsx';
+import LayoutConta from './layouts/LayoutConta.jsx';
+import { Resumo, Pedidos, Dados, Entrar } from './pages/Conta.jsx';
+
+// Componente raiz: guarda a sessão e monta a árvore de rotas
+export default function App() {
+  const [usuario, setUsuario] = useState(null);
+
+  return (
+    &lt;&gt;
+      &lt;nav className="menu"&gt;
+        &lt;Link to="/"&gt;Início&lt;/Link&gt;
+        &lt;Link to="/conta/pedidos"&gt;Meus pedidos&lt;/Link&gt;
+        {!usuario &amp;&amp; &lt;Link to="/entrar"&gt;Entrar&lt;/Link&gt;}
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;p&gt;Bem-vindo à Livraria Ipê.&lt;/p&gt;} /&gt;
+        &lt;Route path="/entrar" element={&lt;Entrar onEntrar={setUsuario} /&gt;} /&gt;
+        &lt;Route element={&lt;RotaProtegida usuario={usuario} /&gt;}&gt;
+          &lt;Route path="/conta" element={&lt;LayoutConta usuario={usuario} onSair={() =&gt; setUsuario(null)} /&gt;}&gt;
+            &lt;Route index element={&lt;Resumo /&gt;} /&gt;
+            &lt;Route path="pedidos" element={&lt;Pedidos /&gt;} /&gt;
+            &lt;Route path="dados" element={&lt;Dados usuario={usuario} /&gt;} /&gt;
+          &lt;/Route&gt;
+        &lt;/Route&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>No projeto da aula, crie as pastas <code>src/components</code>, <code>src/layouts</code> e <code>src/pages</code></li>
+            <li>Salve os quatro arquivos acima</li>
+            <li><code>npm run dev</code> e clique em <em>Meus pedidos</em> sem ter entrado</li>
+            <li>Entre com um nome, navegue entre Resumo, Pedidos e Dados, e depois clique em Sair</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Sem o <code>&lt;Outlet /&gt;</code> no layout, a URL muda mas o conteúdo da rota filha nunca aparece.</li>
+            <li>O <code>replace</code> do <code>Navigate</code> troca a entrada do histórico: o botão voltar não leva de novo à tela bloqueada.</li>
+            <li>O <code>end</code> no link de Resumo impede que ele fique ativo em <code>/conta/pedidos</code>.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

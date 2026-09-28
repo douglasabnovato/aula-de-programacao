@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes Unitários com Jest — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Testes Unitários com Jest — Código de Referência</h1>
+        <p class="subtitulo">Aula 24 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A entidade e o caso de uso da aula 23 cobertos por dois testes unitários: o caminho feliz e a regra violada. Roda com <code>npm test</code>, sem servidor e sem banco.</p>
+        </div>
+        <h2>src/core/entities/Tarefa.js</h2>
+        <pre>// Início: entidade Tarefa com as regras que valem em qualquer ponto do sistema
+class Tarefa {
+  // cria a tarefa e recusa título vazio
+  constructor({ id = null, titulo, feita = false }) {
+    if (typeof titulo !== 'string' || titulo.trim() === '') {
+      throw new Error('O título da tarefa é obrigatório');
+    }
+    this.id = id;
+    this.titulo = titulo.trim();
+    this.feita = feita;
+  }
+}
+
+module.exports = Tarefa;
+// Fim de Tarefa.js</pre>
+        <h2>src/core/usecases/CriarTarefa.js</h2>
+        <pre>// Início: caso de uso que cria tarefa com qualquer repositório que cumpra o contrato
+const Tarefa = require('../entities/Tarefa');
+
+class CriarTarefa {
+  // recebe o repositório por injeção de dependência
+  constructor(repositorio) {
+    this.repositorio = repositorio;
+  }
+
+  // valida pela entidade e delega a gravação ao repositório
+  async executar({ titulo }) {
+    const tarefa = new Tarefa({ titulo });
+    return this.repositorio.salvar(tarefa);
+  }
+}
+
+module.exports = CriarTarefa;
+// Fim de CriarTarefa.js</pre>
+        <h2>tests/unit/CriarTarefa.test.js</h2>
+        <pre>// Início: testes unitários do caso de uso CriarTarefa, sem HTTP e sem banco
+const CriarTarefa = require('../../src/core/usecases/CriarTarefa');
+
+// monta um repositório falso que devolve a tarefa com id
+function criarRepositorioFalso() {
+  return { salvar: jest.fn(async (tarefa) =&gt; ({ ...tarefa, id: 1 })) };
+}
+
+describe('CriarTarefa', () =&gt; {
+  // caminho feliz: título válido vira tarefa gravada
+  test('cria tarefa com título válido', async () =&gt; {
+    const repositorio = criarRepositorioFalso();
+    const caso = new CriarTarefa(repositorio);
+
+    const resultado = await caso.executar({ titulo: '  Revisar contrato  ' });
+
+    expect(resultado).toEqual({ id: 1, titulo: 'Revisar contrato', feita: false });
+    expect(repositorio.salvar).toHaveBeenCalledTimes(1);
+  });
+
+  // regra violada: nada chega ao repositório
+  test('recusa título vazio e não chama o repositório', async () =&gt; {
+    const repositorio = criarRepositorioFalso();
+    const caso = new CriarTarefa(repositorio);
+
+    await expect(caso.executar({ titulo: '   ' })).rejects.toThrow('O título da tarefa é obrigatório');
+    expect(repositorio.salvar).not.toHaveBeenCalled();
+  });
+});
+// Fim de CriarTarefa.test.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install --save-dev jest</code></li>
+            <li>Adicione <code>"test": "jest"</code> em <code>scripts</code> no <code>package.json</code></li>
+            <li><code>npm test</code></li>
+            <li><code>npx jest --coverage</code> para ver a cobertura</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O repositório falso é um <code>jest.fn</code>: ele registra cada chamada, e é isso que permite afirmar que <code>salvar</code> não foi chamado.</li>
+            <li><code>rejects.toThrow</code> só funciona com <code>await</code> na frente — sem ele o teste termina antes da Promise rejeitar.</li>
+            <li><code>toEqual</code> compara valores, não a classe: a instância de <code>Tarefa</code> espalhada num objeto passa na comparação.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

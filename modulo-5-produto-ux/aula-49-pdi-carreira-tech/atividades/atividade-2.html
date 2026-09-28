@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Metas do PDI e Roadmap | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Metas do PDI e Roadmap</h1>
+        <p class="subtitulo">Aula 49 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>As três metas da Carla reescritas de atividade para resultado, cada uma com hipótese de caminho, evidência esperada, formas de aprender e a distribuição em Agora, Próximo e Depois.</p>
+        </div>
+        <h2>metas.md</h2>
+        <pre># PDI — Carla
+
+## Meta de 12 meses
+Ser considerada pelo time capaz de entregar uma funcionalidade
+completa, do banco à tela, sem pair obrigatório.
+
+## Metas
+### M1 — API
+Antes: "fazer curso de Node"
+Depois: entregar sozinha um endpoint usado em produção.
+Hipótese: acredito que assumir o endpoint de relatórios com revisão do sênior
+  vai me levar a construir APIs sozinha. Vou saber porque o próximo endpoint
+  terá no máximo 2 rodadas de correção no PR.
+Evidência: PR aprovado + endpoint em produção. Verificação: 30/11.
+Aprender: prática — endpoint de relatórios | pessoa — pair semanal com o sênior
+          | estudo — documentação oficial do Express.
+
+### M2 — Testes
+Depois: todo PR meu tem teste do caminho principal e de um erro.
+Evidência: 5 PRs seguidos com testes aprovados. Verificação: 31/10.
+
+### M3 — Revisão de código
+Depois: revisar 2 PRs por semana com comentário que gera mudança.
+Evidência: 8 revisões com pelo menos 1 sugestão aceita. Verificação: 31/12.
+
+## Roadmap
+| Agora (out–nov) | Próximo (dez–jan)   | Depois (fev+)            |
+|-----------------|---------------------|--------------------------|
+| M2 Testes       | M1 API              | SQL avançado             |
+| (destrava M1)   | M3 Revisão          | Explicar decisões        |
+
+Capacidade: 3h/semana de desenvolvimento pessoal (medido na aula 48).
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Troque cada atividade pela mudança que ela deveria causar.</li>
+            <li>Escreva a hipótese e a evidência antes de começar.</li>
+            <li>Coloque em Agora a meta que destrava as outras.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O curso não sumiu: virou uma das formas de aprender dentro da meta.</li>
+            <li>M2 veio antes de M1 porque o time exige teste em todo PR de API.</li>
+            <li>Cada meta tem data de verificação, não só prazo final.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

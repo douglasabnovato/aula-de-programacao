@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 28 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a entender quando o HTTP não basta, abrir conexões WebSocket com a biblioteca ws e construir notificações em tempo real com Socket.IO, salas e autenticação por token.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 28: WebSockets e Comunicação em Tempo Real</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: DO POLLING AO WEBSOCKET -->
+            <div class="card" id="card-1">
+                <h2>🔄 1. Do Polling ao WebSocket</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O painel de pedidos da lanchonete fictícia Sabor da Praça pergunta ao servidor a cada dois segundos se chegou pedido novo. Com trinta tablets ligados, são novecentas requisições por minuto, e quase todas respondem que não há nada novo. Como o servidor avisa o tablet no momento em que o pedido chega, sem ser perguntado?</p>
+                </div>
+
+                <p>HTTP é pergunta e resposta: o servidor só fala quando o cliente pede. O WebSocket começa como uma requisição HTTP, pede um upgrade e mantém um canal aberto nos dois sentidos, por onde qualquer lado envia mensagens a qualquer momento.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications" target="_blank" rel="noopener noreferrer">📄 Escrevendo aplicações cliente WebSocket — MDN</a>
+                        <span class="link-desc">O objeto WebSocket do navegador: abrir, enviar, receber e fechar.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/WebSockets_API/Writing_WebSocket_servers" target="_blank" rel="noopener noreferrer">📄 Escrevendo um servidor WebSocket — MDN</a>
+                        <span class="link-desc">O handshake e o formato das mensagens do lado do servidor.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.rfc-editor.org/rfc/rfc6455.html" target="_blank" rel="noopener noreferrer">📄 RFC 6455 — The WebSocket Protocol</a>
+                        <span class="link-desc">A especificação do protocolo, com o upgrade e o status 101.</span>
+                    </li>
+                    <li>
+                        <a href="https://github.com/websockets/ws" target="_blank" rel="noopener noreferrer">📄 ws — repositório oficial</a>
+                        <span class="link-desc">A biblioteca de WebSocket para Node usada nesta prática.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=T4unNrKogSA" target="_blank" rel="noopener noreferrer">▶️ WebSocket // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 7:19 — Explica o que é WebSocket e como ele difere do modelo pergunta e resposta do HTTP.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=LBTY5BaWLH0" target="_blank" rel="noopener noreferrer">▶️ O que é WebSocket? Entenda na prática em 20 minutos (Guia para programadores)</a>
+                            <span class="link-desc">Attekita Dev · 21:40 — Mostra na prática como funciona uma conexão WebSocket aberta entre cliente e servidor.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Servidor WebSocket com a Biblioteca ws</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>painel-ws</code>, rode <code>npm init -y</code> e <code>npm install ws</code>.</li>
+                            <li><strong>Servidor:</strong> em <code>servidor-ws.js</code>, crie <code>new WebSocketServer({ port: 8080 })</code>.</li>
+                            <li><strong>Conexão:</strong> escute o evento <code>connection</code> e envie uma mensagem de boas-vindas com <code>socket.send</code>.</li>
+                            <li><strong>Cliente no Navegador:</strong> crie <code>cliente.html</code> com <code>new WebSocket('ws://localhost:8080')</code> e um <code>onmessage</code> que escreve na tela.</li>
+                            <li><strong>Observando o Handshake:</strong> abra a aba Rede, filtre por <em>WS</em> e encontre o status <code>101 Switching Protocols</code> e as mensagens trocadas.</li>
+                            <li><strong>Mensagens Estruturadas:</strong> envie JSON com <code>tipo</code> e <code>dados</code> e faça <code>JSON.parse</code> do outro lado.</li>
+                            <li><strong>Difusão:</strong> ao receber um pedido, percorra <code>wss.clients</code> e envie para cada um com <code>readyState === WebSocket.OPEN</code>.</li>
+                            <li><strong>Erro Provocado:</strong> mande do cliente um texto que não é JSON, veja o servidor cair no <code>JSON.parse</code> e proteja com <code>try/catch</code> devolvendo uma mensagem de erro só para quem enviou.</li>
+                            <li><strong>Desconexão:</strong> escute <code>close</code> e imprima quantos clientes continuam conectados.</li>
+                            <li><strong>Validação e Testes:</strong> abra três abas, envie um pedido de uma e confirme que as três recebem; registre no README a comparação de número de requisições com o polling.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: SOCKET.IO: EVENTOS, DIFUSÃO E SALAS -->
+            <div class="card" id="card-2">
+                <h2>📡 2. Socket.IO: Eventos, Difusão e Salas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Sabor da Praça abriu uma segunda unidade, e agora a cozinha do Centro recebe no painel os pedidos do bairro São Pedro. Além disso, quando o Wi-Fi oscila, o tablet perde a conexão e não volta sozinho. Como separar as mensagens por unidade e reconectar sem ninguém recarregar a página?</p>
+                </div>
+
+                <p>Socket.IO é uma camada sobre o WebSocket que acrescenta eventos com nome, confirmação de recebimento, reconexão automática e salas. Sala é um grupo de conexões no servidor: emitir para a sala centro alcança só quem entrou nela.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://socket.io/docs/v4/" target="_blank" rel="noopener noreferrer">📄 Introdução — Socket.IO</a>
+                        <span class="link-desc">O que o Socket.IO acrescenta ao WebSocket e o que ele não é.</span>
+                    </li>
+                    <li>
+                        <a href="https://socket.io/docs/v4/tutorial/introduction" target="_blank" rel="noopener noreferrer">📄 Tutorial oficial — Socket.IO</a>
+                        <span class="link-desc">O passo a passo de um chat com Express, do servidor ao cliente.</span>
+                    </li>
+                    <li>
+                        <a href="https://socket.io/docs/v4/rooms/" target="_blank" rel="noopener noreferrer">📄 Rooms — Socket.IO</a>
+                        <span class="link-desc">join, leave e emissão para uma sala específica.</span>
+                    </li>
+                    <li>
+                        <a href="https://socket.io/docs/v4/tutorial/step-5" target="_blank" rel="noopener noreferrer">📄 Broadcasting — Socket.IO</a>
+                        <span class="link-desc">Emitir para todos, para todos menos um e para um grupo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=-jXfKDYJJvo" target="_blank" rel="noopener noreferrer">▶️ Chat em tempo real com NodeJS + Socket.io | Diego Fernandes</a>
+                            <span class="link-desc">Rocketseat · 16:43 — Constrói um chat em tempo real com Node.js e Socket.IO, emitindo e ouvindo eventos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=jD7FnbI76Hg" target="_blank" rel="noopener noreferrer">▶️ Realtime Chat With Users &amp; Rooms - Socket.io, Node &amp; Express</a>
+                            <span class="link-desc">Traversy Media · 58:45 · em inglês — Constrói em inglês um chat com Socket.IO usando salas e difusão de mensagens entre usuários.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Painel de Pedidos por Unidade com Socket.IO</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto <code>painel-pedidos</code> e instale <code>npm install express socket.io</code>.</li>
+                            <li><strong>Servidor Compartilhado:</strong> crie o servidor com <code>http.createServer(app)</code> e passe-o para <code>new Server(servidor)</code>: REST e tempo real na mesma porta.</li>
+                            <li><strong>Cliente:</strong> sirva <code>public/painel.html</code> carregando <code>/socket.io/socket.io.js</code>, entregue pelo próprio servidor.</li>
+                            <li><strong>Evento com Nome:</strong> no cliente, emita <code>entrar-unidade</code> com o nome da unidade escolhida.</li>
+                            <li><strong>Entrando na Sala:</strong> no servidor, trate o evento com <code>socket.join(unidade)</code>.</li>
+                            <li><strong>Pedido pela API REST:</strong> crie <code>POST /pedidos</code> que guarda o pedido e chama <code>io.to(pedido.unidade).emit('pedido-novo', pedido)</code>.</li>
+                            <li><strong>Erro Provocado:</strong> troque <code>io.to(pedido.unidade).emit</code> por <code>io.emit</code> e veja o pedido aparecer nas duas cozinhas; volte a versão com sala.</li>
+                            <li><strong>Confirmação de Recebimento:</strong> no evento <code>pedido-pronto</code>, use o callback de confirmação para o tablet saber que o servidor registrou.</li>
+                            <li><strong>Reconexão:</strong> derrube o servidor, suba de novo e observe o cliente reconectar sozinho; emita <code>entrar-unidade</code> de novo dentro do evento <code>connect</code>.</li>
+                            <li><strong>Validação e Testes:</strong> abra um painel por unidade, crie pedidos pelo Insomnia e confirme que cada um chega só na unidade certa; registre no README o fluxo REST para tempo real.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: AUTENTICAÇÃO E LIMITES NA CONEXÃO EM TEMPO REAL -->
+            <div class="card" id="card-3">
+                <h2>🔏 3. Autenticação e Limites na Conexão em Tempo Real</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Qualquer pessoa que descobrir o endereço do servidor da Sabor da Praça consegue abrir uma conexão, entrar na sala de qualquer unidade e ler os pedidos com o endereço dos clientes. A API REST exige token desde a aula 22, mas o canal em tempo real ficou aberto. Como aplicar a mesma regra de acesso na conexão?</p>
+                </div>
+
+                <p>A conexão é autenticada uma vez, no handshake, e a identidade vale enquanto ela estiver aberta. No Socket.IO isso é feito com um middleware io.use que lê o token enviado em auth, verifica o JWT e guarda o usuário para decidir a quais salas ele pode entrar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://socket.io/docs/v4/middlewares/" target="_blank" rel="noopener noreferrer">📄 Middlewares — Socket.IO</a>
+                        <span class="link-desc">Como rodar código antes de aceitar a conexão e recusar com erro.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.jwt.io/introduction" target="_blank" rel="noopener noreferrer">📄 Introdução ao JWT — jwt.io</a>
+                        <span class="link-desc">A estrutura do token verificado no handshake, o mesmo da aula 22.</span>
+                    </li>
+                    <li>
+                        <a href="https://socket.io/docs/v4/tutorial/handling-disconnections" target="_blank" rel="noopener noreferrer">📄 Handling disconnections — Socket.IO</a>
+                        <span class="link-desc">O que acontece com eventos enviados enquanto o cliente está desconectado.</span>
+                    </li>
+                    <li>
+                        <a href="https://socket.io/docs/v4/connection-state-recovery" target="_blank" rel="noopener noreferrer">📄 Connection state recovery — Socket.IO</a>
+                        <span class="link-desc">Recuperar salas e mensagens perdidas numa queda curta de conexão.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=rGYB7OCLAVw" target="_blank" rel="noopener noreferrer">▶️ #20 - Criando um Middleware de validação de token JWT | MERN STACK</a>
+                            <span class="link-desc">Thiago Veigah · 32:21 — Cria um middleware de validação de token JWT, o mesmo mecanismo usado para autenticar a conexão no handshake.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Handshake Autenticado com JWT e Salas por Permissão</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto da prática anterior, instale <code>npm install jsonwebtoken dotenv</code> e reutilize o <code>JWT_SECRET</code> da aula 22 no <code>.env</code>.</li>
+                            <li><strong>Token no Cliente:</strong> conecte com <code>io({ auth: { token } })</code> — o token vai no corpo do handshake, nunca na query string da URL.</li>
+                            <li><strong>Middleware de Conexão:</strong> registre <code>io.use((socket, proximo) =&gt; { ... })</code> lendo <code>socket.handshake.auth.token</code>.</li>
+                            <li><strong>Verificação:</strong> use <code>jwt.verify</code>; na falha, chame <code>proximo(new Error('nao autorizado'))</code>.</li>
+                            <li><strong>Erro Provocado:</strong> conecte sem token e trate <code>connect_error</code> no cliente, mostrando a mensagem na tela em vez de ficar tentando para sempre.</li>
+                            <li><strong>Dados do Usuário:</strong> guarde o payload decodificado em <code>socket.data.usuario</code>.</li>
+                            <li><strong>Autorização por Sala:</strong> no <code>entrar-unidade</code>, só aceite a entrada se a unidade estiver em <code>socket.data.usuario.unidades</code>.</li>
+                            <li><strong>Validando Mensagens:</strong> recuse, com resposta pelo callback, eventos cujo payload não tenha os campos esperados com o tipo certo.</li>
+                            <li><strong>Limite de Eventos:</strong> conte eventos por conexão numa janela de 10 segundos e desconecte quem passar de 20.</li>
+                            <li><strong>Validação e Testes:</strong> teste sem token, com token de outra unidade e com token certo; registre no README o que cada caso recebeu.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

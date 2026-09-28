@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação com Zod — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Validação com Zod — Código de Referência</h1>
+        <p class="subtitulo">Aula 26 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Esquemas de entrada declarados num arquivo só, um middleware genérico que valida qualquer rota e respostas 400 que apontam o campo exato, no mesmo formato Problem Details.</p>
+        </div>
+        <h2>src/esquemas/tarefa.esquema.js</h2>
+        <pre>// Início: esquemas de entrada das rotas de tarefas
+const { z } = require('zod');
+
+const criarTarefaEsquema = z.strictObject({
+  titulo: z.string({ error: 'titulo deve ser texto' })
+    .trim()
+    .min(3, { error: 'titulo precisa de pelo menos 3 caracteres' })
+    .max(120, { error: 'titulo aceita no máximo 120 caracteres' }),
+  prioridade: z.number()
+    .int({ error: 'prioridade deve ser inteiro' })
+    .min(1, { error: 'prioridade vai de 1 a 5' })
+    .max(5, { error: 'prioridade vai de 1 a 5' })
+    .optional(),
+  prazo: z.coerce.date({ error: 'prazo deve ser uma data válida' }).optional()
+});
+
+const atualizarTarefaEsquema = criarTarefaEsquema.partial();
+
+module.exports = { criarTarefaEsquema, atualizarTarefaEsquema };
+// Fim de tarefa.esquema.js</pre>
+        <h2>src/middlewares/validar.js</h2>
+        <pre>// Início: middleware genérico que valida o corpo contra um esquema Zod
+const { ValidacaoFalhou } = require('../erros/AppError');
+
+// devolve um middleware que recusa o corpo fora do esquema
+function validar(esquema) {
+  return function (req, res, proximo) {
+    const resultado = esquema.safeParse(req.body ?? {});
+    if (!resultado.success) {
+      const problemas = resultado.error.issues.map((issue) =&gt; ({
+        campo: issue.path.join('.') || '(corpo)',
+        mensagem: issue.message
+      }));
+      return proximo(new ValidacaoFalhou(problemas));
+    }
+    req.body = resultado.data;
+    proximo();
+  };
+}
+
+module.exports = validar;
+// Fim de validar.js</pre>
+        <h2>src/routes/tarefas.routes.js</h2>
+        <pre>// Início: rotas de tarefas com validação declarada antes do controlador
+const express = require('express');
+const validar = require('../middlewares/validar');
+const { criarTarefaEsquema, atualizarTarefaEsquema } = require('../esquemas/tarefa.esquema');
+const controlador = require('../controllers/tarefas.controller');
+
+const router = express.Router();
+
+router.get('/', controlador.listar);
+router.get('/:id', controlador.detalhar);
+router.post('/', validar(criarTarefaEsquema), controlador.criar);
+router.patch('/:id', validar(atualizarTarefaEsquema), controlador.atualizar);
+
+module.exports = router;
+// Fim de tarefas.routes.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install zod</code></li>
+            <li>Salve os arquivos e registre o roteador com <code>app.use('/tarefas', rotasTarefas)</code></li>
+            <li><code>node server.js</code></li>
+            <li>Envie <code>{ "titulo": "a", "prioridade": 99, "prazo": "amanhã", "admin": true }</code> para <code>POST /tarefas</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Um único corpo inválido devolve todos os problemas de uma vez, cada um com seu campo — o cliente corrige tudo numa tentativa.</li>
+            <li><code>strictObject</code> recusa campos que não estão no esquema; sem ele, <code>admin: true</code> passaria calado até o banco.</li>
+            <li><code>req.body = resultado.data</code> entrega ao controlador o dado já limpo: <code>trim</code> aplicado e <code>prazo</code> convertido em <code>Date</code>.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

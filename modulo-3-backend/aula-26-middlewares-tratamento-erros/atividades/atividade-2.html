@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erros de Domínio e Problem Details — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Erros de Domínio e Problem Details — Código de Referência</h1>
+        <p class="subtitulo">Aula 26 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma hierarquia de erros com status próprio, um serviço que lança esses erros em vez de montar resposta, e o middleware que traduz qualquer falha para <code>application/problem+json</code>.</p>
+        </div>
+        <h2>src/erros/AppError.js</h2>
+        <pre>// Início: hierarquia de erros de domínio com o status HTTP de cada um
+class AppError extends Error {
+  // guarda status, título curto e detalhes opcionais
+  constructor(status, titulo, detalhe, extras = {}) {
+    super(detalhe);
+    this.name = this.constructor.name;
+    this.status = status;
+    this.titulo = titulo;
+    this.extras = extras;
+  }
+}
+
+class NaoEncontrado extends AppError {
+  // recurso pedido não existe
+  constructor(recurso, id) {
+    super(404, 'Recurso não encontrado', `${recurso} ${id} não existe`);
+  }
+}
+
+class RegraViolada extends AppError {
+  // pedido bem formado que quebra uma regra de negócio
+  constructor(detalhe) {
+    super(422, 'Regra de negócio violada', detalhe);
+  }
+}
+
+class ValidacaoFalhou extends AppError {
+  // corpo da requisição fora do formato esperado
+  constructor(problemas) {
+    super(400, 'Dados inválidos', 'Um ou mais campos não passaram na validação', { problemas });
+  }
+}
+
+module.exports = { AppError, NaoEncontrado, RegraViolada, ValidacaoFalhou };
+// Fim de AppError.js</pre>
+        <h2>src/services/tarefas.service.js</h2>
+        <pre>// Início: serviço de tarefas que lança erros de domínio em vez de montar respostas HTTP
+const { NaoEncontrado, RegraViolada } = require('../erros/AppError');
+
+// cria o serviço sobre o repositório recebido
+function criarServicoTarefas(repositorio) {
+  // busca a tarefa ou lança 404
+  async function detalhar(id) {
+    const tarefa = await repositorio.buscarPorId(id);
+    if (!tarefa) throw new NaoEncontrado('Tarefa', id);
+    return tarefa;
+  }
+
+  // marca como feita, recusando tarefa já concluída
+  async function concluir(id) {
+    const tarefa = await detalhar(id);
+    if (tarefa.feita) throw new RegraViolada('A tarefa já está concluída');
+    return repositorio.atualizar(id, { feita: true });
+  }
+
+  return { detalhar, concluir };
+}
+
+module.exports = criarServicoTarefas;
+// Fim de tarefas.service.js</pre>
+        <h2>src/middlewares/erro.middleware.js</h2>
+        <pre>// Início: tradução de qualquer erro para o formato Problem Details (RFC 9457)
+const { AppError, NaoEncontrado } = require('../erros/AppError');
+
+// último handler de rota: caminho que ninguém atendeu vira 404
+function rotaInexistente(req, res, proximo) {
+  proximo(new NaoEncontrado('Rota', req.originalUrl));
+}
+
+// middleware de erro: quatro argumentos, registrado por último
+function tratarErro(erro, req, res, proximo) {
+  const conhecido = erro instanceof AppError;
+  const status = conhecido ? erro.status : 500;
+
+  console.error(JSON.stringify({
+    nivel: status &gt;= 500 ? 'error' : 'warn',
+    id: req.id,
+    status,
+    mensagem: erro.message,
+    stack: status &gt;= 500 ? erro.stack : undefined
+  }));
+
+  res.status(status).type('application/problem+json').json({
+    type: 'about:blank',
+    title: conhecido ? erro.titulo : 'Erro interno',
+    status,
+    detail: conhecido ? erro.message : 'Algo falhou no servidor. Informe o id abaixo ao suporte.',
+    instance: req.originalUrl,
+    requestId: req.id,
+    ...(conhecido ? erro.extras : {})
+  });
+}
+
+module.exports = { rotaInexistente, tratarErro };
+// Fim de erro.middleware.js</pre>
+        <h2>src/app.js</h2>
+        <pre>// Início: app com rotas assíncronas, handler de 404 e erro centralizado
+const express = require('express');
+const { requestId, logRequisicao } = require('./middlewares');
+const { rotaInexistente, tratarErro } = require('./middlewares/erro.middleware');
+const criarServicoTarefas = require('./services/tarefas.service');
+const TarefaSupabaseRepository = require('./infra/repositories/TarefaSupabaseRepository');
+
+const app = express();
+const servico = criarServicoTarefas(new TarefaSupabaseRepository());
+
+app.use(requestId);
+app.use(logRequisicao);
+app.use(express.json({ limit: '10kb' }));
+
+// detalhe sem try/catch: o Express 5 encaminha a rejeição ao tratarErro
+app.get('/tarefas/:id', async (req, res) =&gt; {
+  res.json(await servico.detalhar(req.params.id));
+});
+
+// conclusão que pode gerar 404 ou 422
+app.patch('/tarefas/:id/concluir', async (req, res) =&gt; {
+  res.json(await servico.concluir(req.params.id));
+});
+
+app.use(rotaInexistente);
+app.use(tratarErro);
+
+module.exports = app;
+// Fim de app.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Confirme o Express 5 com <code>npm ls express</code></li>
+            <li>Acrescente ao repositório o método <code>atualizar(id, campos)</code> usando <code>update</code> do supabase-js</li>
+            <li><code>node server.js</code></li>
+            <li>Teste <code>GET /tarefas/9999</code>, <code>PATCH /tarefas/1/concluir</code> duas vezes e <code>GET /qualquer-coisa</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Nenhuma rota tem <code>try/catch</code>: no Express 5, a Promise rejeitada vai sozinha para o <code>tratarErro</code>.</li>
+            <li>O erro 500 devolve ao cliente só uma frase e o <code>requestId</code>; o stack fica no log, onde o suporte procura pelo id.</li>
+            <li>O serviço não conhece <code>res</code>: ele lança <code>NaoEncontrado</code> e quem decide o formato HTTP é o middleware.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

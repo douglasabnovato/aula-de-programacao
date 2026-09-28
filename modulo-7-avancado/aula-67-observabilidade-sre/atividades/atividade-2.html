@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrumentação com OpenTelemetry — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Instrumentação com OpenTelemetry — Código de Referência</h1>
+        <p class="subtitulo">Aula 67 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A instrumentação de dois serviços Node com o SDK do OpenTelemetry, exportando via OTLP para o Jaeger, e um span manual com atributo e registro de erro. Os nomes dos pacotes seguem a documentação oficial; confira as versões atuais antes de instalar.</p>
+        </div>
+        <h2>instrumentation.js</h2>
+        <pre>// Início: inicialização do OpenTelemetry, carregada antes de qualquer outro módulo
+const { NodeSDK } = require('@opentelemetry/sdk-node');
+const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
+
+const sdk = new NodeSDK({
+  serviceName: process.env.OTEL_SERVICE_NAME || 'servico-sem-nome',
+  traceExporter: new OTLPTraceExporter({
+    url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT || 'http://localhost:4318/v1/traces',
+  }),
+  instrumentations: [getNodeAutoInstrumentations()],
+});
+
+sdk.start();
+
+// Envia os spans pendentes antes de o processo terminar
+async function encerrar() {
+  await sdk.shutdown();
+  process.exit(0);
+}
+
+process.on('SIGTERM', encerrar);
+// Fim de instrumentation.js</pre>
+        <h2>pedidos/app.js</h2>
+        <pre>// Início: serviço de pedidos que consulta o estoque e cria um span manual
+const express = require('express');
+const { trace, SpanStatusCode } = require('@opentelemetry/api');
+
+const app = express();
+app.use(express.json());
+const tracer = trace.getTracer('pedidos');
+const ESTOQUE_URL = process.env.ESTOQUE_URL || 'http://localhost:3002';
+
+// Calcula o desconto dentro de um span próprio com o valor do carrinho como atributo
+function calcularDesconto(itens) {
+  return tracer.startActiveSpan('calcular-desconto', (span) =&gt; {
+    const total = itens.reduce((soma, item) =&gt; soma + item.preco * item.quantidade, 0);
+    span.setAttribute('carrinho.valor_total', total);
+    const desconto = total &gt; 200 ? total * 0.05 : 0;
+    span.end();
+    return { total, desconto };
+  });
+}
+
+app.post('/pedidos', async (req, res) =&gt; {
+  const itens = req.body.itens || [];
+  const span = trace.getActiveSpan();
+  for (const item of itens) {
+    const resposta = await fetch(`${ESTOQUE_URL}/estoque/${encodeURIComponent(item.sku)}`);
+    if (resposta.status === 409) {
+      const erro = new Error(`Sem estoque para ${item.sku}`);
+      span?.recordException(erro);
+      span?.setStatus({ code: SpanStatusCode.ERROR, message: erro.message });
+      return res.status(409).json({ erro: erro.message });
+    }
+  }
+  res.status(201).json(calcularDesconto(itens));
+});
+
+app.listen(3001, () =&gt; console.log('pedidos na porta 3001'));
+// Fim de pedidos/app.js</pre>
+        <h2>docker-compose.yml</h2>
+        <pre># Início: Jaeger recebendo OTLP e exibindo a interface de consulta
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+# Fim de docker-compose.yml</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>docker compose up -d</code> e abra <code>http://localhost:16686</code></li>
+            <li>Em cada serviço: <code>npm install express @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/auto-instrumentations-node @opentelemetry/exporter-trace-otlp-http</code></li>
+            <li><code>OTEL_SERVICE_NAME=pedidos node --require ./instrumentation.js pedidos/app.js</code> e o equivalente para o estoque na porta 3002</li>
+            <li>Faça um <code>POST /pedidos</code> e procure o trace no Jaeger pelo serviço <code>pedidos</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O cabeçalho <code>traceparent</code> é injetado automaticamente no <code>fetch</code>; é ele que liga o span do estoque ao do pedido.</li>
+            <li>Se a instrumentação for carregada depois do Express, os módulos já foram importados sem os ganchos e as rotas não geram spans.</li>
+            <li>O span manual <code>calcular-desconto</code> aparece como filho da requisição, com o atributo de valor pesquisável no Jaeger.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

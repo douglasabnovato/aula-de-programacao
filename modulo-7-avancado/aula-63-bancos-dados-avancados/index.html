@@ -32,6 +32,10 @@
             <!-- TEMA 1: DIAGNÓSTICO: O PLANO DE EXECUÇÃO -->
             <div class="card" id="card-1">
                 <h2>🔎 1. Diagnóstico: o Plano de Execução</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O relatório de vendas do marketplace fictício Feira Online leva 14 segundos para abrir, e o time já trocou o servidor duas vezes sem melhora. Ninguém olhou o que o banco faz com a consulta, e a tela de pedidos dispara uma consulta por item da lista. Como descobrir, com o próprio banco, onde o tempo é gasto e corrigir a consulta lenta e o N+1?</p>
+                </div>
                 <p>Consulta lenta não se resolve por tentativa. O banco diz exatamente o que fez e quanto custou cada etapa — basta perguntar com EXPLAIN ANALYZE.</p>
 
                 <ul class="links-list">
@@ -44,19 +48,28 @@
                         <span class="link-desc">O capítulo oficial sobre o que afeta o desempenho de uma consulta.</span>
                     </li>
                     <li>
-                        <a href="https://use-the-index-luke.com/pt" target="_blank" rel="noopener noreferrer">📄 Use The Index, Luke! — em português</a>
+                        <a href="https://use-the-index-luke.com/" target="_blank" rel="noopener noreferrer">📄 Use The Index, Luke!</a>
                         <span class="link-desc">Curso gratuito e completo sobre indexação, escrito para quem desenvolve.</span>
                     </li>
                     <li>
-                        <a href="https://martinfowler.com/bliki/LazyLoad.html" target="_blank" rel="noopener noreferrer">📄 Lazy Load — Martin Fowler</a>
+                        <a href="https://martinfowler.com/eaaCatalog/lazyLoad.html" target="_blank" rel="noopener noreferrer">📄 Lazy Load — Martin Fowler</a>
                         <span class="link-desc">O padrão por trás do N+1, e por que ele aparece tanto com ORM.</span>
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=xfqFaJzN1xs" target="_blank" rel="noopener noreferrer">▶️ EXPLAIN SQL FÁCIL E VISUAL | PostgreSQL</a>
+                            <span class="link-desc">Dickson S. Guedes · 22:42 — Mostra como ler o plano de execução do PostgreSQL com EXPLAIN de forma visual.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qiiuVds2ahc" target="_blank" rel="noopener noreferrer">▶️ EXPLAIN ANALYZE no Postgres: Uma Query Fica 1.000x Mais Lenta?</a>
+                            <span class="link-desc">Dev ao Cubo · 8:01 — Usa EXPLAIN ANALYZE no Postgres para descobrir por que uma consulta ficou lenta.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: ÍNDICES: O QUE GANHA E O QUE CUSTA -->
             <div class="card" id="card-2">
                 <h2>📇 2. Índices: o que Ganha e o que Custa</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Depois de ouvir que índice resolve lentidão, o time fictício da Clínica Vale Verde criou índice em quase todas as colunas da tabela de agendamentos. As buscas melhoraram pouco, a gravação de novos agendamentos ficou mais lenta e o banco dobrou de tamanho. Como medir o ganho de leitura e o custo de escrita de cada índice e decidir quais manter?</p>
+                </div>
                 <p>Índice acelera leitura e desacelera escrita. Índice demais é tão ruim quanto índice de menos — e o segundo problema é mais fácil de perceber que o primeiro.</p>
 
                 <ul class="links-list">
@@ -100,7 +117,7 @@
                         <span class="link-desc">O capítulo completo: tipos, índices compostos, parciais e de expressão.</span>
                     </li>
                     <li>
-                        <a href="https://use-the-index-luke.com/pt/sql/where-clause" target="_blank" rel="noopener noreferrer">📄 A cláusula WHERE e o índice — Use The Index, Luke!</a>
+                        <a href="https://use-the-index-luke.com/sql/where-clause" target="_blank" rel="noopener noreferrer">📄 A cláusula WHERE e o índice — Use The Index, Luke!</a>
                         <span class="link-desc">Por que o índice às vezes é ignorado, com exemplos de cada caso.</span>
                     </li>
                     <li>
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=F5Ak31ToOjo" target="_blank" rel="noopener noreferrer">▶️ A melhor explicação sobre índices que você já viu</a>
+                            <span class="link-desc">MQFS - Meu querido Firebird SQL · 11:28 — Explica como os índices funcionam e por que aceleram leituras e custam nas escritas.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=S9EFegGpQ8E" target="_blank" rel="noopener noreferrer">▶️ B-tree, Hash, GIN, GiST: O Guia Completo de Índices no PostgreSQL</a>
+                            <span class="link-desc">Techt4lks · 16:26 — Apresenta os tipos de índice do PostgreSQL (B-tree, Hash, GIN, GiST) e quando usar cada um.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: RELACIONAL OU NOSQL: O CRITÉRIO É O ACESSO -->
             <div class="card" id="card-3">
                 <h2>🗄️ 3. Relacional ou NoSQL: o Critério é o Acesso</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A escola fictícia Saber Mais quer guardar o catálogo de cursos, com módulos, aulas e materiais aninhados, e metade do time defende MongoDB enquanto a outra metade defende PostgreSQL. A discussão já dura três reuniões e ninguém listou como a aplicação lê e grava esses dados. Como usar os padrões de acesso da aplicação para escolher o modelo de dados com argumento, e não por preferência?</p>
+                </div>
                 <p>A pergunta certa não é qual banco é melhor. É como a aplicação lê e escreve o dado — e é isso que aponta a escolha.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=o8i2KZiIW4Y" target="_blank" rel="noopener noreferrer">▶️ Banco de Dados relacional ou Não-relacional | Saiba quando usar SQL ou NoSQL</a>
+                            <span class="link-desc">Simplificando Redes · 12:38 — Explica quando usar banco relacional ou NoSQL a partir da forma como os dados são acessados.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=aure5d3B88g" target="_blank" rel="noopener noreferrer">▶️ O que é SQL e NoSQL? #HipstersPontoTube</a>
+                            <span class="link-desc">Alura · 12:41 — Apresenta o que são SQL e NoSQL e as diferenças entre os modelos.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rota Verde — Depurando a Calculadora de Frete | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Rota Verde — Depurando a Calculadora de Frete</h1>
+        <p class="subtitulo">Aula 9 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma calculadora de frete com duas versões do cálculo: a com bug (soma texto com número) e a corrigida. Um checkbox insere a instrução <code>debugger</code> para pausar a execução com o DevTools aberto, e cada cálculo é registrado com <code>console.table</code>.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.grade label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.resultado {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Rota Verde — total do pedido&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Abra o DevTools (F12) antes de calcular.&lt;/p&gt;
+  &lt;form id=&quot;formFrete&quot; class=&quot;grade&quot;&gt;
+    &lt;label&gt;Preço unitário &lt;input name=&quot;preco&quot; type=&quot;number&quot; step=&quot;0.01&quot; value=&quot;10&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;Quantidade &lt;input name=&quot;qtd&quot; type=&quot;number&quot; value=&quot;3&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;Frete &lt;input name=&quot;frete&quot; type=&quot;number&quot; step=&quot;0.01&quot; value=&quot;10&quot;&gt;&lt;/label&gt;
+    &lt;button type=&quot;submit&quot;&gt;Calcular&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;usarCorrecao&quot;&gt; Usar versão corrigida&lt;/label&gt;
+  &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;pausar&quot;&gt; Pausar com debugger&lt;/label&gt;
+  &lt;p id=&quot;resultado&quot; class=&quot;resultado&quot;&gt;&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: calculadora de frete com bug de tipo para praticar depuração
+const formFrete = document.querySelector(&#x27;#formFrete&#x27;);
+const usarCorrecao = document.querySelector(&#x27;#usarCorrecao&#x27;);
+const pausar = document.querySelector(&#x27;#pausar&#x27;);
+const resultado = document.querySelector(&#x27;#resultado&#x27;);
+
+// versão com bug: o frete chega como texto e o + concatena
+const calcularTotalComBug = (campos) =&gt; {
+  const subtotal = campos.preco.value * campos.qtd.value;
+  const frete = campos.frete.value;
+  return subtotal + frete;
+};
+
+// versão corrigida: converte cada campo em número na leitura
+const calcularTotalCorrigido = (campos) =&gt; {
+  const subtotal = Number(campos.preco.value) * Number(campos.qtd.value);
+  const frete = Number(campos.frete.value);
+  return subtotal + frete;
+};
+
+// escolhe a versão, pausa se pedido e registra o cálculo no console
+const calcular = (evento) =&gt; {
+  evento.preventDefault();
+  const campos = formFrete.elements;
+  if (pausar.checked) {
+    debugger;
+  }
+  const total = usarCorrecao.checked ? calcularTotalCorrigido(campos) : calcularTotalComBug(campos);
+  console.table([
+    { campo: &#x27;preco&#x27;, valor: campos.preco.value, tipo: typeof campos.preco.value },
+    { campo: &#x27;frete&#x27;, valor: campos.frete.value, tipo: typeof campos.frete.value },
+    { campo: &#x27;total&#x27;, valor: total, tipo: typeof total }
+  ]);
+  resultado.textContent = `Total: R$ ${total}`;
+  resultado.className = `resultado ${typeof total === &#x27;number&#x27; ? &#x27;ok&#x27; : &#x27;erro&#x27;}`;
+};
+
+formFrete.addEventListener(&#x27;submit&#x27;, calcular);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Rota Verde — Depurando a Calculadora de Frete --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Rota Verde — Depurando a Calculadora de Frete&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Rota Verde — total do pedido&lt;/h1&gt;
+    &lt;p class="sub"&gt;Abra o DevTools (F12) antes de calcular.&lt;/p&gt;
+    &lt;form id="formFrete" class="grade"&gt;
+      &lt;label&gt;Preço unitário &lt;input name="preco" type="number" step="0.01" value="10"&gt;&lt;/label&gt;
+      &lt;label&gt;Quantidade &lt;input name="qtd" type="number" value="3"&gt;&lt;/label&gt;
+      &lt;label&gt;Frete &lt;input name="frete" type="number" step="0.01" value="10"&gt;&lt;/label&gt;
+      &lt;button type="submit"&gt;Calcular&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;label class="linha"&gt;&lt;input type="checkbox" id="usarCorrecao"&gt; Usar versão corrigida&lt;/label&gt;
+    &lt;label class="linha"&gt;&lt;input type="checkbox" id="pausar"&gt; Pausar com debugger&lt;/label&gt;
+    &lt;p id="resultado" class="resultado"&gt;&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.grade label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.resultado {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: calculadora de frete com bug de tipo para praticar depuração
+const formFrete = document.querySelector('#formFrete');
+const usarCorrecao = document.querySelector('#usarCorrecao');
+const pausar = document.querySelector('#pausar');
+const resultado = document.querySelector('#resultado');
+
+// versão com bug: o frete chega como texto e o + concatena
+const calcularTotalComBug = (campos) =&gt; {
+  const subtotal = campos.preco.value * campos.qtd.value;
+  const frete = campos.frete.value;
+  return subtotal + frete;
+};
+
+// versão corrigida: converte cada campo em número na leitura
+const calcularTotalCorrigido = (campos) =&gt; {
+  const subtotal = Number(campos.preco.value) * Number(campos.qtd.value);
+  const frete = Number(campos.frete.value);
+  return subtotal + frete;
+};
+
+// escolhe a versão, pausa se pedido e registra o cálculo no console
+const calcular = (evento) =&gt; {
+  evento.preventDefault();
+  const campos = formFrete.elements;
+  if (pausar.checked) {
+    debugger;
+  }
+  const total = usarCorrecao.checked ? calcularTotalCorrigido(campos) : calcularTotalComBug(campos);
+  console.table([
+    { campo: 'preco', valor: campos.preco.value, tipo: typeof campos.preco.value },
+    { campo: 'frete', valor: campos.frete.value, tipo: typeof campos.frete.value },
+    { campo: 'total', valor: total, tipo: typeof total }
+  ]);
+  resultado.textContent = `Total: R$ ${total}`;
+  resultado.className = `resultado ${typeof total === 'number' ? 'ok' : 'erro'}`;
+};
+
+formFrete.addEventListener('submit', calcular);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Abra o DevTools (F12), calcule com os valores padrão e leia a tabela no console.</li>
+            <li>Marque 'Pausar com debugger', calcule e inspecione as variáveis em Scope.</li>
+            <li>Marque 'Usar versão corrigida' e calcule de novo.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A multiplicação converte texto em número sozinha, mas o <code>+</code> com texto concatena: por isso <code>30 + '10'</code> vira <code>'3010'</code>.</li>
+            <li>O <code>console.table</code> mostra que todo <code>input.value</code> é <code>string</code>, mesmo com <code>type="number"</code>.</li>
+            <li>A instrução <code>debugger</code> só pausa com o DevTools aberto; sem ele, o navegador a ignora.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

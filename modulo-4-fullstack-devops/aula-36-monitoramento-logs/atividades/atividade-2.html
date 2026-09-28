@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métricas e Health Checks — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Métricas e Health Checks — Código de Referência</h1>
+        <p class="subtitulo">Aula 36 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A API expondo <code>/metrics</code> no formato do Prometheus, com contador e histograma por rota, dois health checks e um Prometheus no Compose coletando a cada 15 segundos.</p>
+        </div>
+        <h2>src/metricas.js</h2>
+        <pre>// Início: metricas.js — contador de requisições e histograma de duração para o Prometheus
+const client = require('prom-client');
+
+const registro = new client.Registry();
+client.collectDefaultMetrics({ register: registro });
+
+const requisicoes = new client.Counter({
+  name: 'http_requisicoes_total',
+  help: 'Total de requisições HTTP recebidas',
+  labelNames: ['metodo', 'rota', 'status'],
+  registers: [registro]
+});
+
+const duracao = new client.Histogram({
+  name: 'http_duracao_segundos',
+  help: 'Duração das requisições HTTP em segundos',
+  labelNames: ['metodo', 'rota', 'status'],
+  buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5],
+  registers: [registro]
+});
+
+// mede cada requisição quando a resposta termina
+function medirRequisicoes(req, res, next) {
+  const encerrar = duracao.startTimer();
+  res.on('finish', () =&gt; {
+    const rota = req.route ? req.baseUrl + req.route.path : 'nao_mapeada';
+    const rotulos = { metodo: req.method, rota, status: String(res.statusCode) };
+    requisicoes.inc(rotulos);
+    encerrar(rotulos);
+  });
+  next();
+}
+
+// devolve o texto que o Prometheus coleta
+async function rotaMetricas(req, res) {
+  res.set('Content-Type', registro.contentType);
+  res.end(await registro.metrics());
+}
+
+module.exports = { medirRequisicoes, rotaMetricas };
+// Fim de metricas.js</pre>
+        <h2>src/saude.js</h2>
+        <pre>// Início: saude.js — rotas de liveness e readiness
+const express = require('express');
+const { pool } = require('./db');
+
+const router = express.Router();
+
+// responde se o processo está vivo
+router.get('/vivo', (req, res) =&gt; {
+  res.json({ status: 'vivo' });
+});
+
+// responde se a API consegue atender, testando o banco
+router.get('/pronto', async (req, res) =&gt; {
+  try {
+    await pool.query('SELECT 1');
+    res.json({ status: 'pronto', banco: 'ok' });
+  } catch (erro) {
+    res.status(503).json({ status: 'indisponivel', banco: erro.message });
+  }
+});
+
+module.exports = router;
+// Fim de saude.js</pre>
+        <h2>prometheus.yml</h2>
+        <pre># Início: prometheus.yml — coleta as métricas da API a cada 15 segundos
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: api-agendamentos
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api:3000"]
+# Fim de prometheus.yml</pre>
+        <h2>compose.yaml (trecho acrescentado)</h2>
+        <pre># Início: trecho do compose.yaml — serviço do Prometheus ao lado da API
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - api
+# Fim do trecho do compose.yaml</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>No <code>app.js</code>, registre <code>app.use(medirRequisicoes)</code> antes das rotas, <code>app.get('/metrics', rotaMetricas)</code> e <code>app.use('/saude', require('./src/saude'))</code></li>
+            <li>Suba com <code>docker compose up --build</code></li>
+            <li>Abra <code>http://localhost:3000/metrics</code> e procure <code>http_requisicoes_total</code></li>
+            <li>Abra <code>http://localhost:9090</code>, vá em Status › Targets e confirme o alvo <code>UP</code></li>
+            <li>Consulte <code>histogram_quantile(0.95, sum(rate(http_duracao_segundos_bucket[5m])) by (le))</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Cada combinação de rótulos vira uma série: usar o caminho com id cria uma série por registro e sobrecarrega o Prometheus.</li>
+            <li><code>/saude/vivo</code> não toca no banco; se tocasse, uma queda do banco faria o orquestrador reiniciar uma API que está saudável.</li>
+            <li>O Prometheus busca os dados na API (pull): a API não precisa saber que ele existe.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

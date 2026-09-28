@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Vendas do Dia — map, filter e reduce | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Painel de Vendas do Dia — map, filter e reduce</h1>
+        <p class="subtitulo">Aula 4 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um painel que filtra as vendas pelo valor mínimo escolhido, formata cada linha em reais e soma o faturamento — tudo com <code>filter</code>, <code>map</code> e <code>reduce</code>, sem laço <code>for</code> escrito à mão.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+input[type=&quot;range&quot;] {
+  flex: 1;
+  min-width: 140px;
+  padding: 0;
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Vendas do dia — Forno da Serra&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Arraste o controle para escolher o valor mínimo das vendas exibidas.&lt;/p&gt;
+  &lt;div class=&quot;linha&quot;&gt;
+    &lt;label for=&quot;valorMinimo&quot;&gt;Valor mínimo:&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;valorMinimo&quot; min=&quot;0&quot; max=&quot;80&quot; step=&quot;5&quot; value=&quot;0&quot;&gt;
+    &lt;strong id=&quot;saidaMinimo&quot;&gt;&lt;/strong&gt;
+  &lt;/div&gt;
+  &lt;p id=&quot;resumo&quot; class=&quot;ok&quot;&gt;&lt;/p&gt;
+  &lt;ul id=&quot;listaVendas&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: painel de vendas do dia usando filter, map e reduce
+const vendas = [
+  { id: 1, cliente: &#x27;Ana Ribeiro&#x27;, produto: &#x27;Bolo de fubá&#x27;, valor: 42.5 },
+  { id: 2, cliente: &#x27;Caio Mendes&#x27;, produto: &#x27;Pão de queijo (12 un.)&#x27;, valor: 18 },
+  { id: 3, cliente: &#x27;Lia Souto&#x27;, produto: &#x27;Torta de frango&#x27;, valor: 65 },
+  { id: 4, cliente: &#x27;Rui Batista&#x27;, produto: &#x27;Café coado 1 L&#x27;, valor: 12.9 },
+  { id: 5, cliente: &#x27;Nina Farias&#x27;, produto: &#x27;Cesta de café da manhã&#x27;, valor: 79.9 },
+  { id: 6, cliente: &#x27;Téo Aragão&#x27;, produto: &#x27;Broa de milho&#x27;, valor: 9.5 },
+  { id: 7, cliente: &#x27;Bia Lacerda&#x27;, produto: &#x27;Bolo de cenoura&#x27;, valor: 38 },
+  { id: 8, cliente: &#x27;Davi Prates&#x27;, produto: &#x27;Salgados (25 un.)&#x27;, valor: 55 }
+];
+
+const campoMinimo = document.querySelector(&#x27;#valorMinimo&#x27;);
+const saidaMinimo = document.querySelector(&#x27;#saidaMinimo&#x27;);
+const lista = document.querySelector(&#x27;#listaVendas&#x27;);
+const resumo = document.querySelector(&#x27;#resumo&#x27;);
+
+// formata um número como moeda brasileira
+const formatarMoeda = (valor) =&gt; valor.toLocaleString(&#x27;pt-BR&#x27;, { style: &#x27;currency&#x27;, currency: &#x27;BRL&#x27; });
+
+// devolve só as vendas com valor igual ou acima do mínimo
+const filtrarVendas = (itens, minimo) =&gt; itens.filter((venda) =&gt; venda.valor &gt;= minimo);
+
+// transforma cada venda num item de lista em HTML
+const montarItens = (itens) =&gt; itens.map((venda) =&gt; `&lt;li&gt;&lt;span&gt;${venda.cliente} — ${venda.produto}&lt;/span&gt;&lt;strong&gt;${formatarMoeda(venda.valor)}&lt;/strong&gt;&lt;/li&gt;`);
+
+// soma o valor de todas as vendas recebidas
+const somarVendas = (itens) =&gt; itens.reduce((total, venda) =&gt; total + venda.valor, 0);
+
+// atualiza lista e resumo conforme o valor mínimo escolhido
+const renderizar = () =&gt; {
+  const minimo = Number(campoMinimo.value);
+  const selecionadas = filtrarVendas(vendas, minimo);
+  saidaMinimo.textContent = formatarMoeda(minimo);
+  lista.innerHTML = montarItens(selecionadas).join(&#x27;&#x27;) || &#x27;&lt;li class=&quot;muted&quot;&gt;Nenhuma venda nesse valor.&lt;/li&gt;&#x27;;
+  resumo.textContent = `${selecionadas.length} de ${vendas.length} vendas · faturamento ${formatarMoeda(somarVendas(selecionadas))}`;
+};
+
+campoMinimo.addEventListener(&#x27;input&#x27;, renderizar);
+renderizar();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Painel de Vendas do Dia — map, filter e reduce --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Painel de Vendas do Dia — map, filter e reduce&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Vendas do dia — Forno da Serra&lt;/h1&gt;
+    &lt;p class="sub"&gt;Arraste o controle para escolher o valor mínimo das vendas exibidas.&lt;/p&gt;
+    &lt;div class="linha"&gt;
+      &lt;label for="valorMinimo"&gt;Valor mínimo:&lt;/label&gt;
+      &lt;input type="range" id="valorMinimo" min="0" max="80" step="5" value="0"&gt;
+      &lt;strong id="saidaMinimo"&gt;&lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;p id="resumo" class="ok"&gt;&lt;/p&gt;
+    &lt;ul id="listaVendas" class="lista"&gt;&lt;/ul&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+input[type="range"] {
+  flex: 1;
+  min-width: 140px;
+  padding: 0;
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: painel de vendas do dia usando filter, map e reduce
+const vendas = [
+  { id: 1, cliente: 'Ana Ribeiro', produto: 'Bolo de fubá', valor: 42.5 },
+  { id: 2, cliente: 'Caio Mendes', produto: 'Pão de queijo (12 un.)', valor: 18 },
+  { id: 3, cliente: 'Lia Souto', produto: 'Torta de frango', valor: 65 },
+  { id: 4, cliente: 'Rui Batista', produto: 'Café coado 1 L', valor: 12.9 },
+  { id: 5, cliente: 'Nina Farias', produto: 'Cesta de café da manhã', valor: 79.9 },
+  { id: 6, cliente: 'Téo Aragão', produto: 'Broa de milho', valor: 9.5 },
+  { id: 7, cliente: 'Bia Lacerda', produto: 'Bolo de cenoura', valor: 38 },
+  { id: 8, cliente: 'Davi Prates', produto: 'Salgados (25 un.)', valor: 55 }
+];
+
+const campoMinimo = document.querySelector('#valorMinimo');
+const saidaMinimo = document.querySelector('#saidaMinimo');
+const lista = document.querySelector('#listaVendas');
+const resumo = document.querySelector('#resumo');
+
+// formata um número como moeda brasileira
+const formatarMoeda = (valor) =&gt; valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+// devolve só as vendas com valor igual ou acima do mínimo
+const filtrarVendas = (itens, minimo) =&gt; itens.filter((venda) =&gt; venda.valor &gt;= minimo);
+
+// transforma cada venda num item de lista em HTML
+const montarItens = (itens) =&gt; itens.map((venda) =&gt; `&lt;li&gt;&lt;span&gt;${venda.cliente} — ${venda.produto}&lt;/span&gt;&lt;strong&gt;${formatarMoeda(venda.valor)}&lt;/strong&gt;&lt;/li&gt;`);
+
+// soma o valor de todas as vendas recebidas
+const somarVendas = (itens) =&gt; itens.reduce((total, venda) =&gt; total + venda.valor, 0);
+
+// atualiza lista e resumo conforme o valor mínimo escolhido
+const renderizar = () =&gt; {
+  const minimo = Number(campoMinimo.value);
+  const selecionadas = filtrarVendas(vendas, minimo);
+  saidaMinimo.textContent = formatarMoeda(minimo);
+  lista.innerHTML = montarItens(selecionadas).join('') || '&lt;li class="muted"&gt;Nenhuma venda nesse valor.&lt;/li&gt;';
+  resumo.textContent = `${selecionadas.length} de ${vendas.length} vendas · faturamento ${formatarMoeda(somarVendas(selecionadas))}`;
+};
+
+campoMinimo.addEventListener('input', renderizar);
+renderizar();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Arraste o controle e acompanhe a lista e o faturamento mudarem juntos.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li><code>filter</code>, <code>map</code> e <code>reduce</code> devolvem valores novos: o array <code>vendas</code> nunca muda, e por isso o controle pode ir e voltar sem perder dados.</li>
+            <li>Sem o <code>.join('')</code>, o array de strings vira texto separado por vírgulas quando entra no <code>innerHTML</code>.</li>
+            <li>O <code>0</code> no fim do <code>reduce</code> é o valor inicial: com ele, uma lista vazia soma zero em vez de lançar erro.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

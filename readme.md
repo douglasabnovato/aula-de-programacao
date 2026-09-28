@@ -18,8 +18,8 @@ Entregar ao aluno um conteúdo ordenado e uma referência viva de projetos, unin
 | --- | --- |
 | Módulos da grade | 7 |
 | Aulas na grade | 70 |
-| **Aulas publicadas** | **21** — três em cada um dos 7 módulos |
-| Aulas em preparação | 49 |
+| **Aulas publicadas** | **70** — as 10 de cada um dos 7 módulos |
+| Atividades | 210 — três por aula (módulos 1 e 2 com demonstração ao vivo) |
 | **Projetos no catálogo** | **59**, em 8 tecnologias |
 | Trilha experimental | 6 vídeos (Playlist 1 — Hack Dev) |
 
@@ -97,33 +97,43 @@ Antes eram 56 ícones diferentes vindos do Font Awesome por CDN. Dois problemas:
 
 ### Aulas publicadas por módulo
 
-| Módulo | Aulas publicadas |
+| Módulo | Aulas |
 | --- | --- |
-| 1 · Fundamentos | 1, 2, 3 |
-| 2 · Frontend Moderno | 11, 12, 13 |
-| 3 · Backend e Banco de Dados | 21, 22, 23 |
-| 4 · Fullstack, DevOps e Projeto Final | 31, 32, 33 |
-| 5 · Produto, UX e Agilidade | 41, 42, 43 |
-| 6 · Soft Skills, Carreira e IE | 51, 52, 53 |
-| 7 · Avançado | 61, 62, 63 |
+| 1 · Fundamentos | 1 a 10 |
+| 2 · Frontend Moderno | 11 a 20 |
+| 3 · Backend e Banco de Dados | 21 a 30 |
+| 4 · Fullstack, DevOps e Projeto Final | 31 a 40 |
+| 5 · Produto, UX e Agilidade | 41 a 50 |
+| 6 · Soft Skills, Carreira e IE | 51 a 60 |
+| 7 · Avançado | 61 a 70 |
 
-### O bloco de vídeo das aulas novas
+### Anatomia de um tema
 
-As 15 aulas dos módulos 3 a 7 trazem, em cada um dos três temas, **quatro links de
-documentação oficial** (MDN, Node, Docker, PostgreSQL, WCAG, Scrum Guide, CNVC, entre outros)
-e um bloco marcado **"Curadoria de vídeo pendente"**.
+Cada aula tem três temas (cards). Todo card segue a mesma ordem — **desafio → conteúdo → processo**:
 
-A escolha foi deliberada: seriam cerca de 180 links de vídeo para as 15 aulas, e link de vídeo
-inventado vira 404 na mão do aluno. A documentação oficial é estável e verificável; o vídeo
-entra por curadoria do instrutor, no bloco reservado.
+1. **🎯 Desafio** — logo abaixo do título: uma situação concreta (empresa ou produto fictício) que termina numa pergunta. O aluno lê o problema antes da teoria.
+2. **Conteúdo** — introdução curta e quatro links de documentação oficial ou fonte primária (MDN, nodejs.org, docs.docker.com, postgresql.org, OWASP, Scrum Guide, NN/g, CNVC, gov.br etc.).
+3. **🎥 Vídeos de apoio** — um ou dois vídeos do YouTube por tema, com canal e duração. Cada ID foi conferido (oEmbed) antes de entrar; vídeos em inglês vêm marcados.
+4. **Prática guiada** — acordeão com 10 passos enumerados; o último é sempre *Validação e Testes*.
+
+### Atividades
+
+Cada aula tem `atividades/atividade-1..3.html`, uma por tema:
+
+| Módulos | Formato da atividade |
+| --- | --- |
+| 1 e 2 (frontend) | aplicação funcionando numa **demonstração ao vivo** (iframe) + o código-fonte + "o que observar" |
+| 3, 4 e 7 (backend, devops, arquitetura) | código de referência completo + como rodar + o que observar |
+| 5 e 6 (produto, UX, soft skills) | modelo preenchido (canvas, roteiro, quadro, plano) |
 
 ## 🧠 Estratégia pedagógica
 
-1. **Granularidade por blocos** — cada aula é dividida em blocos temáticos, com vídeo de apoio focado no assunto.
-2. **Prática ativa em 10 passos** — cada bloco teórico vem com roteiro passo a passo, da configuração do ambiente ao build.
-3. **Exemplo à mão** — o catálogo de projetos fica a um clique da aula, filtrável pela tecnologia do módulo.
-4. **Validação humana** — o aluno conclui as etapas e busca validação técnica com o instrutor.
-5. **Tratamento de expectativa** — módulos futuros aparecem na grade com tela de aviso, não escondidos.
+1. **Desafio primeiro** — cada tema abre com um problema real a resolver; o conteúdo e a prática vêm depois, como caminho até a resposta.
+2. **Granularidade por blocos** — cada aula é dividida em blocos temáticos, com vídeo de apoio focado no assunto.
+3. **Prática ativa em 10 passos** — cada bloco teórico vem com roteiro passo a passo, da configuração do ambiente ao build.
+4. **Exemplo à mão** — o catálogo de projetos fica a um clique da aula, filtrável pela tecnologia do módulo.
+5. **Validação humana** — o aluno conclui as etapas e busca validação técnica com o instrutor.
+6. **Tratamento de expectativa** — se uma aula nova entrar na grade antes de estar escrita, ela aparece com tela de aviso (`status: "construcao"`), não escondida.
 
 A metodologia e o template de roteiro estão em [`docs/roteiro-de-aula.md`](./docs/roteiro-de-aula.md). O plano de conteúdos por nível está em [`docs/plano-de-conteudos.md`](./docs/plano-de-conteudos.md).
 
@@ -168,7 +178,7 @@ python -m http.server 3000
 | `disponivel` | a pasta tem `index.html` preenchido | carrega a aula no iframe |
 | `construcao` | os arquivos existem, mas estão vazios | exibe a tela "Aula em Construção" |
 
-**O `status` precisa refletir o disco.** Uma aula marcada `disponivel` com `index.html` vazio entrega tela em branco ao aluno. Hoje as 70 aulas batem uma a uma.
+**O `status` precisa refletir o disco.** Uma aula marcada `disponivel` com `index.html` vazio entrega tela em branco ao aluno. Hoje as 70 aulas estão `disponivel` e todas têm conteúdo.
 
 ### Publicar uma aula
 
@@ -204,17 +214,23 @@ aula-de-programacao/
 
 ## 🗺️ Próximos passos
 
-- [ ] Curar os vídeos de apoio das 15 aulas dos módulos 3 a 7 (bloco reservado em cada tema)
-- [ ] Publicar as aulas 4 a 10 do Módulo 1 e 14 a 20 do Módulo 2
-- [ ] **Corrigir o caminho dos assets nas 6 aulas antigas** — elas apontam para `../../../assets/`,
-      que fica acima da raiz do projeto, e por isso a logo do cabeçalho e o favicon não carregam.
-      O correto é `../../assets/`, já usado nas 15 aulas novas
+- [ ] Revisar os vídeos escolhidos (curadoria feita por busca + conferência de ID; o instrutor valida o conteúdo)
+- [ ] Temas com um vídeo só (28-3 e 53-3): procurar um segundo vídeo em português
 - [ ] **Apagar `projetos/assets/logo/`** — 2,0 MB de logos do antigo cabeçalho do hub, que saiu
 - [ ] **Apagar `projetos/readme.md`** — readme do repositório antigo, substituído por este
 - [ ] **171 MB em `projetos/projects/`** — o maior peso é mídia sem compressão: 37,5 MB de `.mp3` em `devcast-player` e 21 MB de `.jpg` em `curso-em-video` (um deles com 5 MB)
 - [ ] Converter os 6 MB de banners em `assets/` para `.webp`
-- [ ] Substituir os arquivos vazios das aulas em preparação por um `.gitkeep` por pasta — hoje são 332 arquivos de 0 byte versionados
 - [ ] Decidir o destino do repositório `escola-de-programacao`, de onde o catálogo veio: arquivar, redirecionar ou apagar
+
+### Feito nesta rodada
+
+- [x] 49 aulas escritas (4–10, 14–20, 24–30, 34–40, 44–50, 54–60, 64–70) e a grade inteira em `disponivel`
+- [x] Bloco 🎯 Desafio no topo dos 210 temas
+- [x] Vídeos de apoio no lugar dos blocos "Curadoria de vídeo pendente"
+- [x] Caminho dos assets corrigido nas aulas 11–13 (`../../../assets/` → `../../assets/`)
+- [x] readme e atividades das aulas 11–13
+- [x] Links do GitHub nos readmes das aulas: `/tree/main/…html` → `/blob/main/…html`
+- [x] Fim dos arquivos de 0 byte nas pastas de aula
 
 ---
 

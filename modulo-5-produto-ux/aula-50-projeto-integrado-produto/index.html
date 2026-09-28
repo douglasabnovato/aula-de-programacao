@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 50 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a aplicar o módulo inteiro num projeto em dupla: transformar uma demanda num brief de produto, planejar a entrega com story map, backlog, métricas e protótipo, e defender a estratégia numa banca.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 50: Projeto Integrado de Estratégia de Produto</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ETAPA 1: ESCOPO, PROBLEMA E HIPÓTESE DE VALOR -->
+            <div class="card" id="card-1">
+                <h2>🧱 1. Etapa 1: Escopo, Problema e Hipótese de Valor</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Cada dupla da turma recebe uma demanda de um cliente fictício — por exemplo, a associação de moradores do bairro fictício Vila Aurora quer "um app para organizar caronas até a universidade". O pedido chega pronto como solução, sem problema descrito nem público definido. Como transformar essa demanda num escopo de produto que a dupla consiga defender em duas semanas?</p>
+                </div>
+
+                <p>O projeto integrado junta o módulo inteiro num só produto. A primeira etapa é de enquadramento: descobrir o problema por trás do pedido, definir para quem é, escrever a meta e a hipótese de valor mais arriscada — tudo antes de desenhar tela ou escrever história.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.designcouncil.org.uk/resources/framework-for-innovation/" target="_blank" rel="noopener noreferrer">📄 Framework for Innovation — Design Council</a>
+                        <span class="link-desc">A versão atual do Double Diamond, com princípios e métodos para a fase de descoberta e definição.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/planning-product-discovery/" target="_blank" rel="noopener noreferrer">📄 Planejando o discovery — SVPG</a>
+                        <span class="link-desc">Como organizar o trabalho de descoberta antes de comprometer o time com uma solução.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/product-planning" target="_blank" rel="noopener noreferrer">📄 Guia de planejamento de produto — Atlassian</a>
+                        <span class="link-desc">As etapas de planejamento, da visão às iniciativas, com boas práticas de cada uma.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/software/confluence/templates/mvp-ideation" target="_blank" rel="noopener noreferrer">📄 Modelo de ideação de MVP — Atlassian</a>
+                        <span class="link-desc">Um modelo gratuito para registrar problema, público, hipóteses e escopo do MVP.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=iMAhbKrrHJk" target="_blank" rel="noopener noreferrer">▶️ Escopo do Produto x Escopo do Projeto</a>
+                            <span class="link-desc">Robson Camargo Projetos e Negócios · 3:58 — Diferencia escopo do produto e escopo do projeto.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=oNaPPCG3XIc" target="_blank" rel="noopener noreferrer">▶️ COMO DEFINIR O ESCOPO DO PROJETO? - PORTAS ABERTAS #43</a>
+                            <span class="link-desc">Rondinele Silva · 8:18 — Mostra como definir o escopo de um projeto e seus limites.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Brief do Produto: do Pedido ao Problema</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o repositório <code>projeto-integrado-produto</code> com a pasta <code>docs</code> e o arquivo <code>docs/01-brief.md</code>; defina a dupla e a demanda recebida.</li>
+                            <li><strong>Pedido Original:</strong> copie a demanda do cliente exatamente como chegou, sem interpretar.</li>
+                            <li><strong>Perguntando o Porquê:</strong> escreva cinco perguntas que você faria ao cliente para chegar ao problema por trás do pedido e responda com o que o cliente fictício informou.</li>
+                            <li><strong>Enunciado do Problema:</strong> escreva o problema em uma frase: <em>quem</em>, <em>o que acontece hoje</em> e <em>qual o custo disso</em>.</li>
+                            <li><strong>Público e Persona:</strong> defina o público principal e escreva uma persona leve com objetivo e duas frustrações.</li>
+                            <li><strong>Meta de Produto:</strong> escreva a Product Goal com resultado mensurável, como na aula 44.</li>
+                            <li><strong>Suposições e Riscos:</strong> liste as suposições e classifique-as pelos quatro riscos, como na aula 46.</li>
+                            <li><strong>Erro Provocado:</strong> escreva o escopo começando pelas funcionalidades que o cliente pediu e tente ligar cada uma ao problema. Marque as que não se ligam a nada.</li>
+                            <li><strong>Hipótese de Valor:</strong> escreva o cartão de teste da suposição mais arriscada, com critério numérico.</li>
+                            <li><strong>Validação e Testes:</strong> apresente o brief ao instrutor em três minutos e confira se ele consegue repetir o problema e a meta com as próprias palavras; registre no README do projeto o que precisou ser reescrito.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ETAPA 2: STORY MAP, BACKLOG, MÉTRICAS E PROTÓTIPO -->
+            <div class="card" id="card-2">
+                <h2>🗺️ 2. Etapa 2: Story Map, Backlog, Métricas e Protótipo</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Com o brief aprovado, a dupla tem uma semana para mostrar como o produto seria entregue. O cliente quer ver "as telas", o instrutor quer ver o backlog ordenado e ninguém ainda sabe qual parte vem primeiro. Como montar um plano de entrega que ligue cada tela a uma história, cada história a uma fatia de valor e cada fatia a uma métrica?</p>
+                </div>
+
+                <p>O story map organiza as histórias ao longo da jornada do usuário e permite cortar fatias horizontais — cada fatia é uma entrega que funciona sozinha. Dele saem o backlog ordenado, o roadmap e a lista de métricas; o protótipo de baixa fidelidade mostra só a primeira fatia.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://agilealliance.org/glossary/story-mapping/" target="_blank" rel="noopener noreferrer">📄 Story mapping — Agile Alliance</a>
+                        <span class="link-desc">A definição curta da técnica e para que ela serve no planejamento de entregas.</span>
+                    </li>
+                    <li>
+                        <a href="https://jpattonassociates.com/story-mapping-quick-ref/" target="_blank" rel="noopener noreferrer">📄 Guia rápido de story mapping — Jeff Patton</a>
+                        <span class="link-desc">A referência de uma página do criador da técnica, com a anatomia do mapa e das fatias.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/software/confluence/templates/product-roadmap" target="_blank" rel="noopener noreferrer">📄 Modelo de roadmap de produto — Atlassian</a>
+                        <span class="link-desc">Um modelo gratuito para organizar o roadmap por tema e horizonte.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/paper-prototyping/" target="_blank" rel="noopener noreferrer">📄 Prototipação em papel — NN/g</a>
+                        <span class="link-desc">Como testar a interface com usuários antes de escrever uma linha de código.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=itTs8P642_c" target="_blank" rel="noopener noreferrer">▶️ User Story Mapping - Como fazer?</a>
+                            <span class="link-desc">Workando · 9:52 — Explica como fazer um User Story Mapping e fatiar entregas ao longo da jornada.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=4NaFVSKharo" target="_blank" rel="noopener noreferrer">▶️ [Explicando] User Story Maping - exemplo com app de entregas</a>
+                            <span class="link-desc">Insights de Produto | Carol Teixeira · 15:16 — Mostra um exemplo de User Story Mapping aplicado a um app de entregas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Do Story Map ao Protótipo da Primeira Fatia</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>docs/02-plano-de-entrega.md</code> e um quadro (papel ou online) com espaço para o story map.</li>
+                            <li><strong>Espinha Dorsal:</strong> escreva na linha de cima as atividades da jornada do usuário, da esquerda para a direita, na ordem em que acontecem.</li>
+                            <li><strong>Histórias Abaixo:</strong> sob cada atividade, escreva as histórias de usuário possíveis, das mais essenciais (em cima) às opcionais (embaixo).</li>
+                            <li><strong>Fatiando:</strong> trace linhas horizontais separando a primeira fatia (o menor fluxo de ponta a ponta), a segunda e a terceira.</li>
+                            <li><strong>Erro Provocado:</strong> monte a primeira fatia com uma atividade completa e as outras vazias. Tente percorrer a jornada inteira e anote onde o usuário fica sem saída.</li>
+                            <li><strong>Corrigindo a Fatia:</strong> refaça a primeira fatia com pelo menos uma história em cada atividade, para que a jornada funcione do começo ao fim.</li>
+                            <li><strong>Backlog Ordenado:</strong> transfira as histórias da primeira fatia para o backlog, com critérios de aceite, e ordene com RICE ou MoSCoW.</li>
+                            <li><strong>Métricas por Fatia:</strong> escreva a North Star do produto e uma métrica HEART que diga se a primeira fatia funcionou.</li>
+                            <li><strong>Protótipo em Papel:</strong> desenhe as telas da primeira fatia e teste com duas pessoas usando o roteiro de tarefa da aula 41.</li>
+                            <li><strong>Validação e Testes:</strong> confira se cada tela do protótipo corresponde a uma história do backlog e cada história a uma atividade do mapa; registre no README do projeto o mapa, o roadmap e o que o teste de protótipo mudou.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ETAPA 3: APRESENTAÇÃO E DEFESA DA ESTRATÉGIA -->
+            <div class="card" id="card-3">
+                <h2>🎤 3. Etapa 3: Apresentação e Defesa da Estratégia</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No dia da banca, cada dupla tem dez minutos para apresentar e cinco para perguntas de um "cliente" que vai questionar tudo: por que não fizeram o que ele pediu, por que tão pouca funcionalidade na primeira entrega e como vão saber se deu certo. Como organizar a apresentação para que cada decisão tenha um argumento pronto, e não uma opinião?</p>
+                </div>
+
+                <p>Defender uma estratégia é mostrar a cadeia de raciocínio: problema, evidência, meta, hipótese, escopo, métrica. Uma apresentação que segue essa ordem responde a maioria das perguntas antes que elas sejam feitas, e a rubrica deixa claro para a dupla o que será avaliado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.scrum.org/resources/blog/how-product-owners-can-maximize-value-stakeholder-input" target="_blank" rel="noopener noreferrer">📄 Como usar a opinião dos stakeholders para gerar valor — Scrum.org</a>
+                        <span class="link-desc">Como ouvir o stakeholder sem entregar a ele a decisão de produto.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/product-management-kpis" target="_blank" rel="noopener noreferrer">📄 KPIs de gestão de produto — Atlassian</a>
+                        <span class="link-desc">Quais indicadores apresentar para mostrar como o sucesso será medido.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/product-discovery-anti-patterns/" target="_blank" rel="noopener noreferrer">📄 Armadilhas do discovery — SVPG</a>
+                        <span class="link-desc">Os erros comuns de descoberta de produto, bons para conferir o próprio projeto antes da banca.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/sketch-test/" target="_blank" rel="noopener noreferrer">📄 Sketch test — NN/g</a>
+                        <span class="link-desc">Como testar se um documento ou apresentação comunica a ideia central antes de mostrá-lo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JC34mC3NdHs" target="_blank" rel="noopener noreferrer">▶️ Como Fazer um Pitch de Excelência | Na Prática e Exame</a>
+                            <span class="link-desc">Na Prática · 3:31 — Apresenta um roteiro curto para montar uma apresentação objetiva e convincente.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=6EEJBaH_f7Y" target="_blank" rel="noopener noreferrer">▶️ O QUE É PITCH? (8 Dicas Incríveis para Trabalhar um de Sucesso)</a>
+                            <span class="link-desc">Blog Abri Minha Empresa · 9:41 — Reúne dicas para estruturar um pitch com problema, solução e fechamento.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Roteiro de Apresentação e Ensaio de Perguntas Difíceis</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>docs/03-apresentacao.md</code> e copie o roteiro de sete blocos da atividade desta etapa.</li>
+                            <li><strong>Uma Frase por Bloco:</strong> escreva a frase principal de cada bloco: problema, evidência, meta, hipótese, escopo, métricas e próximos passos.</li>
+                            <li><strong>Escolhendo a Evidência:</strong> para os blocos de problema e hipótese, escolha uma fala literal de entrevista ou um número, não uma opinião.</li>
+                            <li><strong>Mostrando o Corte:</strong> prepare um slide que mostra o que ficou fora da primeira entrega e o motivo de cada corte.</li>
+                            <li><strong>Sketch Test:</strong> mostre só os títulos dos slides a um colega por 30 segundos e peça que ele diga do que o projeto trata.</li>
+                            <li><strong>Erro Provocado:</strong> ensaie uma vez começando pelas telas do protótipo. Cronometre quanto tempo leva até o problema aparecer e anote as perguntas que o colega fez por falta de contexto.</li>
+                            <li><strong>Reordenando:</strong> volte à ordem problema → evidência → meta e ensaie de novo, cronometrando os dez minutos.</li>
+                            <li><strong>Perguntas Difíceis:</strong> liste cinco perguntas que o cliente fará, como <em>"por que não tem pagamento?"</em>, e escreva a resposta de cada uma apontando o bloco que a sustenta.</li>
+                            <li><strong>Divisão da Dupla:</strong> defina quem apresenta cada bloco e quem responde cada tipo de pergunta.</li>
+                            <li><strong>Validação e Testes:</strong> faça o ensaio final com outra dupla usando a rubrica de avaliação e registre no README do projeto a nota recebida em cada critério e o que foi ajustado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

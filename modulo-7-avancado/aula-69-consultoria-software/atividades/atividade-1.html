@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro de Descoberta e Escopo — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Roteiro de Descoberta e Escopo — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 69 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O roteiro de entrevistas e o documento de escopo preenchidos para o cliente fictício Grupo Bom Grão. Serve de gabarito para a prática em trios e de modelo para uma consultoria real.</p>
+        </div>
+        <h2>Partes interessadas e critério de sucesso</h2>
+        <ul>
+            <li><strong>Diretor comercial (decide e paga):</strong> parar de perder pedido em horário de pico.</li>
+            <li><strong>Gerente de TI (mantém):</strong> conseguir publicar correção sem medo de derrubar o sistema.</li>
+            <li><strong>Vendedores (usam):</strong> pedido registrado uma vez só e confirmação em menos de 10 segundos.</li>
+            <li><strong>Financeiro (afetado):</strong> fim do retrabalho de cancelar pedidos duplicados.</li>
+        </ul>
+        <h2>Roteiro de entrevista (10 perguntas, do negócio ao técnico)</h2>
+        <ol>
+            <li>O que hoje custa mais caro para a empresa por causa do sistema?</li>
+            <li>Conte o último dia em que o sistema atrapalhou o trabalho. O que aconteceu, hora a hora?</li>
+            <li>Como vocês ficam sabendo que o sistema está com problema?</li>
+            <li>Quanto tempo leva desde a ideia de uma mudança até ela estar em uso?</li>
+            <li>Quem consegue publicar uma nova versão? Como isso é feito?</li>
+            <li>O que acontece se o banco de dados parar agora?</li>
+            <li>Que partes do sistema ninguém quer mexer? Por quê?</li>
+            <li>Quais integrações externas existem (fiscal, pagamento, transportadora)?</li>
+            <li>O que já foi tentado para resolver e não funcionou?</li>
+            <li>Se só uma coisa pudesse melhorar em seis meses, qual seria?</li>
+        </ol>
+        <h2>escopo-diagnostico.md</h2>
+        <pre>&lt;!-- Início: escopo do diagnóstico técnico do Grupo Bom Grão --&gt;
+# Escopo do Diagnóstico Técnico
+
+## Problema declarado
+Lentidão em horário de pico, pedidos duplicados e baixa frequência de entregas do time.
+
+## Hipóteses a verificar
+| Nº | Hipótese | Evidência que confirma ou descarta |
+|----|----------|------------------------------------|
+| H1 | Duplicidade vem de reenvio do formulário sem chave de idempotência | Logs de pedidos com mesmo cliente e itens em menos de 30 s |
+| H2 | Lentidão vem de consultas sem índice no relatório de estoque | Log de consultas lentas do MySQL no horário de pico |
+| H3 | Deploy manual causa medo de publicar e acumula mudanças | Histórico de deploys e incidentes dos últimos 6 meses |
+
+## Cobre
+Código do sistema de pedidos, banco de dados, processo de deploy, monitoramento e segurança básica.
+
+## Não cobre
+Sistema fiscal terceirizado, infraestrutura de rede da empresa, avaliação individual de pessoas.
+
+## Entregas
+1. Relatório de diagnóstico com notas por dimensão e evidências.
+2. Resumo executivo de uma página.
+3. Proposta de estratégia com roadmap de 90 dias.
+
+## Prazo e acessos
+10 dias úteis. Acesso de leitura ao repositório, aos logs de produção e a 1 hora com cada parte interessada.
+&lt;!-- Fim de escopo-diagnostico.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>As perguntas começam no negócio e só chegam ao técnico na quinta: a ordem evita que a entrevista vire discussão de ferramenta.</li>
+            <li>Cada hipótese já nasce com a evidência que a testaria, o que define o que coletar nos dez dias.</li>
+            <li>O que o diagnóstico não cobre está escrito; isso protege a consultoria e o cliente de expectativa errada.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

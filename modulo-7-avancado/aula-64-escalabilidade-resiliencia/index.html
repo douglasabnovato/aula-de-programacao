@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 64 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a medir o limite real de uma API, proteger chamadas externas com timeout, retry e circuit breaker, e preparar réplicas que detectam a própria saúde e saem do ar sem perder requisições.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 64: Escalabilidade, Alta Disponibilidade e Resiliência</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: CAPACIDADE MEDIDA: TESTE DE CARGA E GARGALOS -->
+            <div class="card" id="card-1">
+                <h2>📈 1. Capacidade Medida: Teste de Carga e Gargalos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia Ingresso Serra vende entradas para shows e, na última abertura de vendas, a API caiu com 1.200 pessoas acessando ao mesmo tempo. O time quer dobrar o número de servidores antes da próxima venda, mas ninguém sabe se o gargalo está na API, no banco ou no número de conexões. Como descobrir o limite real do sistema antes que o público descubra?</p>
+                </div>
+
+                <p>Escalar sem medir é gastar no lugar errado. Um teste de carga com metas numéricas (latência no percentil 95, taxa de erro) mostra onde a curva quebra e qual recurso satura primeiro; só depois disso faz sentido falar em mais réplicas, fila ou cache. Na aula 35 o aluno viu escala horizontal; aqui ele aprende a provar quanto ela rende.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://grafana.com/docs/k6/latest/get-started/" target="_blank" rel="noopener noreferrer">📄 Get started — documentação do Grafana k6</a>
+                        <span class="link-desc">Instalação, primeiro script e como rodar um teste de carga pela linha de comando.</span>
+                    </li>
+                    <li>
+                        <a href="https://grafana.com/docs/k6/latest/using-k6/thresholds/" target="_blank" rel="noopener noreferrer">📄 Thresholds — Grafana k6</a>
+                        <span class="link-desc">Como transformar metas de latência e erro em critério de aprovação que falha o teste automaticamente.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/handling-overload/" target="_blank" rel="noopener noreferrer">📄 Handling Overload — Google SRE Book</a>
+                        <span class="link-desc">Como sistemas grandes recusam trabalho de forma controlada em vez de cair inteiros.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling" target="_blank" rel="noopener noreferrer">📄 Queue-Based Load Leveling — Azure Architecture Center</a>
+                        <span class="link-desc">Usar fila para absorver picos quando o serviço de trás não aguenta a vazão de entrada.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=6xNaaygQ6Ig" target="_blank" rel="noopener noreferrer">▶️ TESTE DE CARGA NA PRÁTICA COM K6 🚀</a>
+                            <span class="link-desc">Everton Oliveira 💻 Programação Backend · 8:56 — Mostra na prática como rodar um teste de carga com k6 e ler os resultados.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=gqvpco8uF6E" target="_blank" rel="noopener noreferrer">▶️ Conhecendo o K6 para os testes de carga</a>
+                            <span class="link-desc">Daniel Jesus · 24:43 — Apresenta o k6 para testes de carga, com métricas como latência e taxa de erro.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Encontrando o Ponto de Quebra de uma API com k6</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale o k6, crie a pasta <code>carga/</code> e suba a API dos módulos anteriores com um banco PostgreSQL em contêiner.</li>
+                            <li><strong>Definindo a Meta:</strong> escreva no README a meta de serviço: <code>p(95) &lt; 400ms</code> e menos de 1% de erro na rota de listagem.</li>
+                            <li><strong>Primeiro Script:</strong> crie <code>carga/listagem.js</code> com uma função padrão que chama <code>GET /produtos</code> e confere o status 200 com <code>check</code>.</li>
+                            <li><strong>Rodando o Básico:</strong> execute <code>k6 run carga/listagem.js</code> com 1 usuário virtual e anote a latência de referência.</li>
+                            <li><strong>Rampa de Carga:</strong> configure <code>stages</code> subindo de 10 para 200 usuários em três minutos e mantendo o pico por um minuto.</li>
+                            <li><strong>Critério Automático:</strong> adicione <code>thresholds</code> com a meta do passo 2 e confirme que o k6 devolve código de saída diferente de zero quando ela é violada.</li>
+                            <li><strong>Provocando o Gargalo:</strong> reduza o pool de conexões do banco para <code>max: 2</code>, rode de novo e observe a latência subir e os erros de timeout aparecerem.</li>
+                            <li><strong>Localizando a Saturação:</strong> durante o teste, acompanhe <code>docker stats</code> e o número de conexões ativas no PostgreSQL para ver qual recurso chegou ao limite primeiro.</li>
+                            <li><strong>Ajuste e Nova Medição:</strong> volte o pool para um valor adequado, adicione o índice que faltava na consulta e compare as duas execuções lado a lado.</li>
+                            <li><strong>Validação e Testes:</strong> registre no README a tabela antes/depois (usuários, p95, taxa de erro) e escreva em duas frases qual é o limite atual e o que o define.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PADRÕES DE RESILIÊNCIA: TIMEOUT, RETRY E CIRCUIT BREAKER -->
+            <div class="card" id="card-2">
+                <h2>🔁 2. Padrões de Resiliência: Timeout, Retry e Circuit Breaker</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A loja fictícia Casa Ipê depende de uma API externa de frete que, nos horários de pico, demora até 30 segundos para responder. Enquanto espera, cada requisição prende uma conexão da loja, e em poucos minutos o checkout inteiro para de responder, mesmo para quem não precisa calcular frete. Como impedir que a lentidão de um fornecedor derrube a loja inteira?</p>
+                </div>
+
+                <p>Toda chamada de rede pode falhar, demorar ou responder errado. Timeout limita a espera, retry com backoff e jitter tenta de novo sem virar um ataque ao próprio fornecedor, e o circuit breaker para de chamar quem está claramente fora do ar, devolvendo uma resposta alternativa na hora.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noopener noreferrer">📄 Circuit Breaker — Martin Fowler</a>
+                        <span class="link-desc">O texto de referência com os três estados do disjuntor e um exemplo de implementação.</span>
+                    </li>
+                    <li>
+                        <a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter" target="_blank" rel="noopener noreferrer">📄 Timeouts, retries and backoff with jitter — Amazon Builders' Library</a>
+                        <span class="link-desc">Como a Amazon define timeouts e por que retry sem jitter piora uma falha.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/retry" target="_blank" rel="noopener noreferrer">📄 Retry pattern — Azure Architecture Center</a>
+                        <span class="link-desc">Quando tentar de novo faz sentido e quando o erro não é transitório.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/antipatterns/retry-storm/" target="_blank" rel="noopener noreferrer">📄 Retry Storm Antipattern — Azure Architecture Center</a>
+                        <span class="link-desc">O que acontece quando todos os clientes tentam de novo ao mesmo tempo, e como evitar.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=1a4ilvj2iTE" target="_blank" rel="noopener noreferrer">▶️ Circuit Breaker Pattern em Microservices</a>
+                            <span class="link-desc">Michelli Brito · 12:59 — Explica o padrão Circuit Breaker e como ele protege serviços de falhas em cascata.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=r0_hIk_tWq0" target="_blank" rel="noopener noreferrer">▶️ Entendendo Retentativas: Retry, Jitter, Backoff e Exponential Backoff - Mais Resiliência ?</a>
+                            <span class="link-desc">Douglas Mugnos · 19:42 — Explica retry, backoff exponencial e jitter para novas tentativas sem sobrecarregar o serviço.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Protegendo a Chamada a um Serviço Externo Instável</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>resiliencia/</code> com um servidor falso de frete que responde com atraso aleatório e falha em 30% das chamadas.</li>
+                            <li><strong>Medindo o Problema:</strong> chame o serviço falso 50 vezes com <code>fetch</code> sem proteção e anote o maior tempo de espera e quantas chamadas falharam.</li>
+                            <li><strong>Limitando a Espera:</strong> passe <code>signal: AbortSignal.timeout(2000)</code> no <code>fetch</code> e confirme que nenhuma chamada passa de dois segundos.</li>
+                            <li><strong>Classificando o Erro:</strong> escreva uma função que decide se o erro é transitório (timeout, 503, 429) ou definitivo (400, 404), porque só o primeiro merece retry.</li>
+                            <li><strong>Retry Ingênuo:</strong> tente de novo imediatamente três vezes e observe no log do servidor falso as tentativas chegando todas no mesmo instante.</li>
+                            <li><strong>Backoff com Jitter:</strong> troque a espera fixa por <code>Math.random() * base * 2 ** tentativa</code> e compare a distribuição das tentativas no log.</li>
+                            <li><strong>Estados do Disjuntor:</strong> implemente a classe <code>CircuitBreaker</code> com os estados fechado, aberto e semiaberto, abrindo após cinco falhas seguidas.</li>
+                            <li><strong>Resposta Alternativa:</strong> quando o disjuntor estiver aberto, devolva um frete padrão marcado como estimado em vez de erro 500.</li>
+                            <li><strong>Provocando a Queda Total:</strong> desligue o servidor falso e confirme que, depois da quinta falha, a loja responde em milissegundos sem tentar a rede.</li>
+                            <li><strong>Validação e Testes:</strong> religue o servidor, espere o tempo de reabertura e confirme a transição semiaberto para fechado; registre no README os três tempos medidos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ALTA DISPONIBILIDADE: HEALTH CHECKS, BULKHEAD E FALHA EM CASCATA -->
+            <div class="card" id="card-3">
+                <h2>🛡️ 3. Alta Disponibilidade: Health Checks, Bulkhead e Falha em Cascata</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O sistema fictício de agendamento da Clínica Vale Verde roda em três réplicas atrás de um balanceador. Quando o banco ficou lento, um relatório pesado ocupou todas as conexões, as réplicas continuaram recebendo tráfego mesmo sem conseguir atender, e o balanceador não percebeu nada. Como fazer o sistema detectar que está doente, isolar o que é pesado e sair do ar sem perder requisições?</p>
+                </div>
+
+                <p>Redundância só gera disponibilidade quando cada réplica sabe dizer se está pronta e quando uma parte lenta não consome os recursos das outras. Health checks separados (vivo e pronto), isolamento por compartimento (bulkhead) e desligamento gracioso evitam que uma falha local vire uma queda em cascata.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/sre-book/addressing-cascading-failures/" target="_blank" rel="noopener noreferrer">📄 Addressing Cascading Failures — Google SRE Book</a>
+                        <span class="link-desc">Como uma falha pequena se espalha por sobrecarga e quais defesas interrompem a cascata.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead" target="_blank" rel="noopener noreferrer">📄 Bulkhead pattern — Azure Architecture Center</a>
+                        <span class="link-desc">Isolar recursos por tipo de trabalho para que um consumidor lento não esgote os demais.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/health-endpoint-monitoring" target="_blank" rel="noopener noreferrer">📄 Health Endpoint Monitoring — Azure Architecture Center</a>
+                        <span class="link-desc">O que um endpoint de saúde deve verificar e o que ele não deve expor.</span>
+                    </li>
+                    <li>
+                        <a href="https://kubernetes.io/docs/concepts/workloads/pods/probes/" target="_blank" rel="noopener noreferrer">📄 Liveness, Readiness and Startup Probes — Kubernetes</a>
+                        <span class="link-desc">A diferença entre reiniciar um processo travado e apenas tirá-lo do balanceamento.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=brQh8bjXL9Q" target="_blank" rel="noopener noreferrer">▶️ Kubernetes (K8s - Parte 15) - Como usar o Readiness e o Liveness Probe no seu projeto de devops</a>
+                            <span class="link-desc">Itiro Hidaka · 7:01 — Mostra como usar readiness e liveness probes para indicar se uma aplicação está pronta.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=2I3-lbnMXec" target="_blank" rel="noopener noreferrer">▶️ Bulkhead Pattern Explained: Resilience in Microservices Architecture</a>
+                            <span class="link-desc">ByteMonk · 6:48 · em inglês — Explica em inglês o padrão Bulkhead, que isola recursos para evitar falha em cascata.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Tornando uma API Consciente da Própria Saúde</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> use a API com PostgreSQL da prática anterior e suba duas réplicas atrás de um Nginx com Docker Compose, como na aula 34.</li>
+                            <li><strong>Separando Vivo de Pronto:</strong> crie <code>GET /health/live</code>, que só confirma que o processo responde, e <code>GET /health/ready</code>, que testa o banco com <code>SELECT 1</code>.</li>
+                            <li><strong>Timeout no Health Check:</strong> limite o teste do banco a 500 ms com <code>Promise.race</code>, porque um health check que trava é pior do que nenhum.</li>
+                            <li><strong>Provocando a Falha:</strong> pare o contêiner do banco e compare as respostas: <code>/live</code> continua 200 e <code>/ready</code> passa para 503.</li>
+                            <li><strong>Identificando o Consumidor Pesado:</strong> meça quanto tempo e quantas conexões a rota <code>/relatorios</code> usa em comparação com <code>/agendamentos</code>.</li>
+                            <li><strong>Criando o Compartimento:</strong> escreva um middleware que limita a rota de relatórios a duas execuções simultâneas e responde 503 com <code>Retry-After</code> acima disso.</li>
+                            <li><strong>Pool Separado:</strong> dê à rota de relatórios um pool de conexões próprio e pequeno, para que ela nunca consuma as conexões do agendamento.</li>
+                            <li><strong>Desligamento Gracioso:</strong> trate o sinal <code>SIGTERM</code>: marque a réplica como não pronta, pare de aceitar conexões, termine as requisições em andamento e feche o pool.</li>
+                            <li><strong>Teste de Cascata:</strong> dispare dez relatórios em paralelo com o k6 enquanto faz agendamentos e confirme que a latência do agendamento não mudou.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>docker compose stop</code> em uma réplica durante uma carga leve e confirme zero erros no k6; registre o resultado e o diagrama das réplicas no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

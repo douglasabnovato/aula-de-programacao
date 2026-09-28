@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curadoria do GitHub — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Curadoria do GitHub — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 55 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A planilha de curadoria do aluno fictício Lucas Nogueira e o modelo de README que cada repositório fixado passou a seguir.</p>
+        </div>
+        <h2>Planilha de curadoria (trecho)</h2>
+        <ul>
+            <li><code>painel-pedidos</code> — README: sim · publicado: sim · segredo: não · <strong>fixar</strong></li>
+            <li><code>loja-sabor-minas</code> — README: incompleto · publicado: sim · segredo: <code>.env</code> no histórico · <strong>revogar chave, corrigir e fixar</strong></li>
+            <li><code>exercicio-array-07</code> — README: não · publicado: não · <strong>arquivar</strong></li>
+        </ul>
+        <h2>README.md</h2>
+        <pre>&lt;!-- Início: modelo de README para repositório fixado --&gt;
+# Painel de Pedidos
+
+Painel que lista pedidos de uma loja fictícia com filtro por status.
+
+**Projeto publicado:** https://exemplo.github.io/painel-pedidos
+
+## Problema
+A equipe de expedição precisava ver os pedidos pendentes sem abrir o sistema administrativo.
+
+## Como rodar
+1. `git clone https://github.com/exemplo/painel-pedidos.git`
+2. `cd painel-pedidos`
+3. `cp .env.example .env` e preencha `VITE_API_URL`
+4. `npm install`
+5. `npm run dev`
+
+## Tecnologias
+React, React Router, Vite
+
+## Decisões
+- Filtro feito no cliente porque a API de exemplo não aceita parâmetros de busca.
+- Estado de erro exibido quando a API não responde em 5 segundos.
+
+## O que eu faria a seguir
+Paginação no servidor e testes de ponta a ponta.
+&lt;!-- Fim de README.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Preencha a planilha para todos os seus repositórios.</li>
+            <li>Aplique o modelo de README nos seis escolhidos.</li>
+            <li>Fixe os seis no perfil.</li>
+            <li>Arquive o que não representa seu nível atual.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Remover o <code>.env</code> num commit novo não apaga a chave do histórico; por isso a chave é revogada primeiro.</li>
+            <li>A seção <em>Decisões</em> é a que mais gera conversa em entrevista.</li>
+            <li>O <code>.env.example</code> mostra quais variáveis existem sem expor nenhum valor.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

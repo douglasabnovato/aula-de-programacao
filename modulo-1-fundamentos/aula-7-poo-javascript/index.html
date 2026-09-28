@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 7 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a modelar entidades com classes em JavaScript, reaproveitar comportamento com herança e proteger regras de negócio com encapsulamento.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 7: Programação Orientada a Objetos em JS</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: CLASSES, OBJETOS E MÉTODOS -->
+            <div class="card" id="card-1">
+                <h2>🧱 1. Classes, Objetos e Métodos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A academia fictícia Pulso Fit guarda cada aluno como um objeto solto, e a regra que calcula o IMC e diz se a mensalidade está em dia foi copiada em quatro lugares do código. Quando a regra de vencimento mudou, dois desses lugares ficaram com a versão antiga. Como juntar os dados e o comportamento de um aluno num molde único?</p>
+                </div>
+
+                <p>Uma classe é um molde: define quais dados cada objeto terá (no constructor) e quais ações ele sabe fazer (nos métodos). Cada new cria uma instância independente, e a regra passa a morar num lugar só.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Advanced_JavaScript_objects/Object-oriented_programming" target="_blank" rel="noopener noreferrer">📄 Object-oriented programming — MDN Learn</a>
+                        <span class="link-desc">Os conceitos de classe, instância, herança e encapsulamento antes da sintaxe.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes" target="_blank" rel="noopener noreferrer">📄 Using classes — MDN</a>
+                        <span class="link-desc">Guia prático de declaração de classes, campos, métodos e criação de instâncias.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor" target="_blank" rel="noopener noreferrer">📄 constructor — MDN</a>
+                        <span class="link-desc">O método que roda no new e prepara os dados de cada instância.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/class" target="_blank" rel="noopener noreferrer">📄 class — MDN</a>
+                        <span class="link-desc">A declaração de classe e o erro ao chamar uma classe sem new.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=keTIirTEdUc" target="_blank" rel="noopener noreferrer">▶️ Classes JavaScript: o Tutorial que Você Precisa</a>
+                            <span class="link-desc">dpw · 12:04 — Explica como declarar classes, usar o constructor e criar instâncias com new em JavaScript.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Ig8OZXyqu0k" target="_blank" rel="noopener noreferrer">▶️ Classes em JavaScript</a>
+                            <span class="link-desc">Hashtag Programação · 26:13 — Mostra classes em JavaScript com atributos, métodos e criação de objetos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Cadastro de Alunos com a Classe Aluno</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-7-academia</code> com os três arquivos e um formulário com nome, peso, altura e dia de vencimento.</li>
+                            <li><strong>Pensando no Molde:</strong> liste no README quais dados todo aluno tem e quais perguntas o sistema faz sobre ele.</li>
+                            <li><strong>Declarando a Classe:</strong> escreva <code>class Aluno</code> com um <code>constructor(nome, peso, altura, diaVencimento)</code> que guarda os valores em <code>this</code>.</li>
+                            <li><strong>Primeiro Método:</strong> crie <code>imc()</code> que devolve <code>this.peso / (this.altura * this.altura)</code> com uma casa decimal.</li>
+                            <li><strong>Método que Usa Outro:</strong> crie <code>faixaImc()</code> chamando <code>this.imc()</code> para devolver 'abaixo', 'adequado' ou 'acima'.</li>
+                            <li><strong>Regra de Negócio:</strong> crie <code>estaEmDia(hoje)</code> comparando o dia do mês com <code>this.diaVencimento</code>.</li>
+                            <li><strong>Erro Provocado:</strong> chame <code>Aluno('Rita', 60, 1.65, 10)</code> sem <code>new</code> no console e leia o <code>TypeError</code>.</li>
+                            <li><strong>Criando Instâncias:</strong> no <code>submit</code>, crie <code>new Aluno(...)</code> com os valores do formulário e guarde num array <code>alunos</code>.</li>
+                            <li><strong>Renderizando:</strong> desenhe um card por aluno usando só os métodos da instância, sem repetir cálculo fora da classe.</li>
+                            <li><strong>Validação e Testes:</strong> cadastre três alunos, confira um IMC na calculadora e registre no README o que mudaria se a regra de vencimento mudasse.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: HERANÇA COM EXTENDS E SUPER -->
+            <div class="card" id="card-2">
+                <h2>🧬 2. Herança com extends e super</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia Sala Aberta vende três tipos de curso: gravado, ao vivo e presencial. Todos têm nome, carga horária e preço, mas cada tipo descreve a oferta e calcula o preço final de um jeito. Hoje são três objetos quase iguais copiados e colados, e uma correção no nome precisa ser feita três vezes. Como escrever a parte comum uma vez e deixar cada tipo mudar só o que é dele?</p>
+                </div>
+
+                <p>Herança permite que uma classe filha reaproveite tudo da classe mãe e sobrescreva só o que muda. extends liga as duas classes, super chama o construtor e os métodos da mãe, e instanceof pergunta de qual tipo um objeto é.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends" target="_blank" rel="noopener noreferrer">📄 extends — MDN</a>
+                        <span class="link-desc">Como declarar uma classe filha e o que ela herda automaticamente.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super" target="_blank" rel="noopener noreferrer">📄 super — MDN</a>
+                        <span class="link-desc">Chamar o construtor e os métodos da classe mãe a partir da filha.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Advanced_JavaScript_objects/Classes_in_JavaScript" target="_blank" rel="noopener noreferrer">📄 Classes in JavaScript — MDN Learn</a>
+                        <span class="link-desc">Exemplo guiado de herança com Person e Professor, na mesma linha desta prática.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain" target="_blank" rel="noopener noreferrer">📄 Inheritance and the prototype chain — MDN</a>
+                        <span class="link-desc">O que acontece por baixo da sintaxe de classe: a cadeia de protótipos.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dmqNwVvKqR4" target="_blank" rel="noopener noreferrer">▶️ Curso de JS Aula 54 JS OO Herança, extends, super</a>
+                            <span class="link-desc">Professor Edson Maia · 7:41 — Demonstra herança em JavaScript com extends e a chamada ao construtor da classe mãe com super.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=-fOCg39SBzc" target="_blank" rel="noopener noreferrer">▶️ Entendendo sobre Herança em POO com Javascript - Objetos #P6 - Aula 62</a>
+                            <span class="link-desc">CFBCursos · 21:24 — Explica herança em POO com JavaScript e como a classe filha reaproveita e sobrescreve comportamentos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Catálogo de Cursos com Classe Base e Classes Filhas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-7-cursos</code> com os três arquivos, um <code>&lt;select&gt;</code> de filtro por tipo e uma lista vazia.</li>
+                            <li><strong>Classe Base:</strong> escreva <code>class Curso</code> com <code>nome</code>, <code>horas</code> e <code>preco</code>, e os métodos <code>descricao()</code> e <code>precoFinal()</code>.</li>
+                            <li><strong>Primeira Filha:</strong> declare <code>class CursoGravado extends Curso</code> com o campo extra <code>mesesDeAcesso</code>.</li>
+                            <li><strong>Erro Provocado:</strong> use <code>this.mesesDeAcesso = ...</code> antes de chamar <code>super(...)</code> e leia o <code>ReferenceError</code> no console.</li>
+                            <li><strong>Chamando a Mãe:</strong> coloque <code>super(nome, horas, preco)</code> como primeira linha do construtor da filha.</li>
+                            <li><strong>Sobrescrevendo com Reaproveitamento:</strong> em <code>descricao()</code>, devolva <code>`${super.descricao()} · acesso por ${this.mesesDeAcesso} meses`</code>.</li>
+                            <li><strong>Mais Duas Filhas:</strong> crie <code>CursoAoVivo</code> (data da turma) e <code>CursoPresencial</code> (cidade e taxa de material somada em <code>precoFinal()</code>).</li>
+                            <li><strong>Lista Polimórfica:</strong> guarde instâncias dos três tipos num único array e renderize chamando os mesmos métodos em todas.</li>
+                            <li><strong>Filtrando por Tipo:</strong> no filtro, use <code>curso instanceof CursoPresencial</code> (e as outras classes) para decidir o que aparece.</li>
+                            <li><strong>Validação e Testes:</strong> altere o método <code>descricao()</code> da classe base e confirme que os três tipos mudaram juntos; registre no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ENCAPSULAMENTO: CAMPOS PRIVADOS, GET, SET E STATIC -->
+            <div class="card" id="card-3">
+                <h2>🔒 3. Encapsulamento: Campos Privados, get, set e static</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na carteira digital fictícia Troco Certo, um trecho de código fez conta.saldo = -500 direto no objeto e ninguém percebeu até o fechamento do mês. As regras de saque — valor positivo, limite diário e saldo suficiente — só funcionavam para quem lembrava de chamar a função certa. Como proteger o saldo para que ele só mude por depósito e saque, com as regras sempre aplicadas?</p>
+                </div>
+
+                <p>Encapsular é esconder o estado interno e expor só as operações permitidas. Campos com # são privados de verdade em JavaScript, get permite ler um valor calculado como se fosse propriedade, e membros static pertencem à classe, não a cada instância.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements" target="_blank" rel="noopener noreferrer">📄 Private elements — MDN</a>
+                        <span class="link-desc">A sintaxe com # e o erro ao tentar acessar um campo privado de fora da classe.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get" target="_blank" rel="noopener noreferrer">📄 get — MDN</a>
+                        <span class="link-desc">Expor um valor para leitura sem permitir escrita direta.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set" target="_blank" rel="noopener noreferrer">📄 set — MDN</a>
+                        <span class="link-desc">Interceptar uma atribuição para validar antes de gravar.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank" rel="noopener noreferrer">📄 static — MDN</a>
+                        <span class="link-desc">Constantes e funções que pertencem à classe, como limites e validações comuns.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Z11iEPRGOiw" target="_blank" rel="noopener noreferrer">▶️ JavaScript Moderno: Encapsulamento - Ep #02</a>
+                            <span class="link-desc">Cod3r Cursos · 11:39 — Mostra como aplicar encapsulamento em JavaScript moderno, escondendo o estado interno do objeto.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FbuRUYa-3t8" target="_blank" rel="noopener noreferrer">▶️ POO - Aula 16 - Parte 7 - JavaScript - Encapsulamento</a>
+                            <span class="link-desc">Rafael Rossi · 16:43 — Explica encapsulamento em JavaScript com exemplos de acesso controlado aos dados.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Carteira Digital com Saldo Protegido</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-7-carteira</code> com os três arquivos, um campo de valor e os botões Depositar, Sacar e 'Alterar saldo direto'.</li>
+                            <li><strong>A Versão Frágil:</strong> crie primeiro um objeto comum <code>{ saldo: 0 }</code> e, no console, faça <code>conta.saldo = -500</code> para ver que nada impede.</li>
+                            <li><strong>Campo Privado:</strong> declare <code>class Carteira</code> com <code>#saldo = 0</code> e <code>#extrato = []</code>.</li>
+                            <li><strong>Erro Provocado:</strong> tente ler <code>carteira.#saldo</code> fora da classe e leia o <code>SyntaxError</code>.</li>
+                            <li><strong>Leitura com get:</strong> crie <code>get saldo()</code> que devolve <code>this.#saldo</code>, e <code>get extrato()</code> que devolve uma cópia com <code>[...this.#extrato]</code>.</li>
+                            <li><strong>Regras Centralizadas:</strong> crie <code>static LIMITE_SAQUE = 500</code> e <code>static validarValor(valor)</code> que lança erro para valor não positivo.</li>
+                            <li><strong>Operações Permitidas:</strong> crie <code>depositar(valor)</code> e <code>sacar(valor)</code> que validam, alteram <code>#saldo</code> e registram no extrato.</li>
+                            <li><strong>Testando a Proteção:</strong> no botão 'Alterar saldo direto', faça <code>carteira.saldo = 999999</code> e mostre que o saldo não mudou.</li>
+                            <li><strong>Mensagens de Erro:</strong> envolva as operações em <code>try/catch</code> e mostre <code>erro.message</code> para o usuário.</li>
+                            <li><strong>Validação e Testes:</strong> tente sacar mais que o saldo, acima do limite e valor negativo, e registre no README qual regra barrou cada tentativa.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

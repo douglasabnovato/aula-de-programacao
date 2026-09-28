@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 37 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a cortar o escopo do projeto final, documentar arquitetura e contrato antes do código e deixar o repositório pronto para o time trabalhar em paralelo.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 37: Projeto Final Fullstack — Parte 1 (Arquitetura e Setup)</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ESCOPO, PROBLEMA E MVP -->
+            <div class="card" id="card-1">
+                <h2>🎯 1. Escopo, Problema e MVP</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O salão fictício Studio Lírio anota os horários num caderno e perde cerca de oito clientes por semana por remarcação esquecida. Você tem quatro aulas para entregar um sistema fullstack no ar, e a lista de desejos da dona já tem 25 itens, de agenda a programa de fidelidade. O que entra na primeira versão para que ela resolva o problema de verdade e caiba no prazo?</p>
+                </div>
+
+                <p>Projeto final não é a soma de tudo que se aprendeu, é um problema resolvido de ponta a ponta. O escopo define o problema, quem sofre com ele, a menor versão que já entrega valor e, com a mesma clareza, o que fica de fora.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener noreferrer">📄 The Scrum Guide — scrumguides.org</a>
+                        <span class="link-desc">Backlog do produto, incremento e Definição de Pronto: os artefatos que organizam o que entra em cada entrega.</span>
+                    </li>
+                    <li>
+                        <a href="https://agilemanifesto.org/iso/ptbr/principles.html" target="_blank" rel="noopener noreferrer">📄 Princípios do Manifesto Ágil — agilemanifesto.org</a>
+                        <span class="link-desc">Software funcionando como medida de progresso e simplicidade como a arte de maximizar o trabalho não feito.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/Yagni.html" target="_blank" rel="noopener noreferrer">📄 Yagni — Martin Fowler</a>
+                        <span class="link-desc">Por que não construir agora a funcionalidade que talvez seja útil depois.</span>
+                    </li>
+                    <li>
+                        <a href="https://kanbanguides.org/" target="_blank" rel="noopener noreferrer">📄 Guia Kanban — kanbanguides.org</a>
+                        <span class="link-desc">Como visualizar o fluxo de trabalho e limitar o que está em andamento ao mesmo tempo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=i6nWH7STrb4" target="_blank" rel="noopener noreferrer">▶️ O QUE É MVP (PRODUTO MÍNIMO VIÁVEL)? EXEMPLOS PRÁTICOS</a>
+                            <span class="link-desc">Gabriel Valle · 5:48 — Explica o que é MVP com exemplos práticos de como reduzir a primeira versão ao essencial.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qApRyuKhME0" target="_blank" rel="noopener noreferrer">▶️ Como Fazer um Escopo de Projeto: Um Guia para Iniciantes</a>
+                            <span class="link-desc">Cafe Com Inovação · 14:30 — Mostra como definir o escopo de um projeto: problema, entregas e limites.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Documento de Escopo do Projeto Final</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o repositório do projeto final no GitHub com um <code>docs/ESCOPO.md</code> vazio e um quadro em GitHub Projects com as colunas A fazer, Fazendo e Feito.</li>
+                            <li><strong>O Problema em uma Frase:</strong> escreva quem sofre, com o quê e quanto isso custa hoje, sem citar tecnologia.</li>
+                            <li><strong>Pessoas Usuárias:</strong> descreva no máximo dois perfis que usam o sistema e o que cada um precisa conseguir fazer.</li>
+                            <li><strong>Lista Completa:</strong> liste todas as funcionalidades que vierem à cabeça, sem filtrar.</li>
+                            <li><strong>Corte do MVP:</strong> marque só o que é indispensável para resolver o problema da primeira frase: o alvo é de 3 a 5 histórias.</li>
+                            <li><strong>Erro Provocado:</strong> estime em horas cada história marcada, some e compare com as horas das aulas 38 e 39: se passou, o corte ainda não aconteceu.</li>
+                            <li><strong>Fora do Escopo:</strong> crie a seção Fora do Escopo com o que foi cortado e o motivo de cada corte.</li>
+                            <li><strong>Critérios de Aceite:</strong> escreva para cada história de 2 a 4 critérios verificáveis no formato Dado, Quando, Então.</li>
+                            <li><strong>Backlog no Quadro:</strong> transforme cada história em uma issue com os critérios no corpo e coloque todas em A fazer.</li>
+                            <li><strong>Validação e Testes:</strong> apresente o escopo a um colega em dois minutos, peça que ele diga de volta qual problema o sistema resolve e registre no README a frase final do problema.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ARQUITETURA, CONTRATO E DECISÕES REGISTRADAS -->
+            <div class="card" id="card-2">
+                <h2>🏛️ 2. Arquitetura, Contrato e Decisões Registradas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Com o escopo do Studio Lírio fechado, a dupla de frontend começou a tela de agenda esperando o campo 'data' e a dupla de backend entregou 'inicio' e 'fim' em outro formato. Duas tardes de trabalho foram refeitas, e ninguém lembra por que o banco escolhido foi PostgreSQL. Como fixar as decisões de arquitetura e o contrato antes de escrever a primeira rota?</p>
+                </div>
+
+                <p>Arquitetura é o conjunto de decisões difíceis de mudar depois. Um desenho simples das partes, o contrato da API escrito antes do código e um registro curto de cada decisão evitam retrabalho e respondem ao 'por quê' meses depois.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener noreferrer">📄 Software Architecture Guide — Martin Fowler</a>
+                        <span class="link-desc">O que é arquitetura, por que ela importa e onde estão as decisões que custam caro mudar.</span>
+                    </li>
+                    <li>
+                        <a href="https://adr.github.io/" target="_blank" rel="noopener noreferrer">📄 Architectural Decision Records — adr.github.io</a>
+                        <span class="link-desc">O formato de registro de decisão, com modelos prontos e exemplos.</span>
+                    </li>
+                    <li>
+                        <a href="https://swagger.io/specification/" target="_blank" rel="noopener noreferrer">📄 OpenAPI Specification — swagger.io</a>
+                        <span class="link-desc">O formato padrão para descrever rotas, corpos e respostas de uma API.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/PresentationDomainDataLayering.html" target="_blank" rel="noopener noreferrer">📄 Presentation Domain Data Layering — Martin Fowler</a>
+                        <span class="link-desc">A divisão em apresentação, domínio e dados que organiza tanto o frontend quanto a API.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=8XO_6R9o5jo" target="_blank" rel="noopener noreferrer">▶️ Documentando decisões técnicas com ADRs (Architecture Decision Record)</a>
+                            <span class="link-desc">Matheus Castiglioni · 15:43 — Mostra como documentar decisões técnicas com ADRs e por que registrá-las.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=5AjYSJrCnS0" target="_blank" rel="noopener noreferrer">▶️ O que são ADRs (Architecture Decision Records)?</a>
+                            <span class="link-desc">André Secco · 16:16 — Explica o que são Architecture Decision Records e como estruturar um.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Arquitetura, Contrato OpenAPI e Primeiros ADRs</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>docs/ARQUITETURA.md</code>, <code>docs/openapi.yaml</code> e a pasta <code>docs/adr/</code> no repositório do projeto.</li>
+                            <li><strong>Desenho das Partes:</strong> desenhe as caixas do sistema: navegador, frontend estático, API, banco e o sentido de cada seta.</li>
+                            <li><strong>Hospedagem de Cada Parte:</strong> anote ao lado de cada caixa onde ela vai rodar, escolhendo opções gratuitas: Vercel, Netlify ou GitHub Pages para o front; Render free para a API; Neon ou Supabase free para o banco.</li>
+                            <li><strong>Modelo de Dados:</strong> liste as tabelas com colunas, tipos e as ligações entre elas, partindo das histórias do escopo.</li>
+                            <li><strong>Contrato Primeiro:</strong> descreva no <code>openapi.yaml</code> cada rota do MVP com método, caminho, corpo de entrada e resposta de sucesso.</li>
+                            <li><strong>Formato de Erro:</strong> defina um único esquema de erro e use-o em todas as respostas <code>4xx</code> e <code>5xx</code> do contrato.</li>
+                            <li><strong>Erro Provocado:</strong> peça a um colega que escreva o JSON que a tela de listagem espera sem olhar o contrato e compare campo a campo.</li>
+                            <li><strong>Primeiro ADR:</strong> escreva <code>docs/adr/0001-banco-postgresql.md</code> com contexto, decisão e consequências.</li>
+                            <li><strong>Segundo ADR:</strong> escreva <code>docs/adr/0002-autenticacao-jwt.md</code> registrando também a alternativa descartada.</li>
+                            <li><strong>Validação e Testes:</strong> cole o <code>openapi.yaml</code> no Swagger Editor, corrija até não haver erro de validação e registre no README o link para a pasta <code>docs/</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: SETUP DO REPOSITÓRIO E ESTEIRA DESDE O PRIMEIRO DIA -->
+            <div class="card" id="card-3">
+                <h2>🧰 3. Setup do Repositório e Esteira Desde o Primeiro Dia</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No projeto do Studio Lírio, cada integrante criou a própria estrutura de pastas e a primeira integração entre as partes aconteceu na véspera da entrega. Metade dos commits foi direto na main e o projeto só rodava na máquina de quem escreveu. Como deixar o repositório pronto para o time trabalhar em paralelo desde o primeiro dia?</p>
+                </div>
+
+                <p>Setup é o investimento que paga todas as aulas seguintes: estrutura de pastas combinada, ambiente que sobe com um comando, esteira que verifica cada push e regras que protegem o ramo principal.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://12factor.net/pt_br/codebase" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Base de Código</a>
+                        <span class="link-desc">Uma base de código rastreada no controle de versão e muitos deploys a partir dela.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/dependencies" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Dependências</a>
+                        <span class="link-desc">Declarar e isolar dependências para que o projeto rode igual em qualquer máquina.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener noreferrer">📄 Docker Compose — Docker Docs</a>
+                        <span class="link-desc">A página de entrada do Compose, para o ambiente local subir inteiro com um comando.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/writing-workflows/quickstart" target="_blank" rel="noopener noreferrer">📄 GitHub Actions — Início Rápido</a>
+                        <span class="link-desc">O workflow mínimo, ponto de partida da esteira do projeto final.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=F51HlrEeedw" target="_blank" rel="noopener noreferrer">▶️ Criando um Workflow AUTOMATIZADO de CI com o Github Actions</a>
+                            <span class="link-desc">Fernanda Kipper · 14:59 — Cria um workflow de CI no GitHub Actions para verificar o código desde o início do projeto.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=cmv8XjvfQZ4" target="_blank" rel="noopener noreferrer">▶️ Como criar Pipelines CI/CD com Github Actions</a>
+                            <span class="link-desc">Devinfra Brasil · 44:14 — Mostra como montar pipelines de CI/CD com GitHub Actions passo a passo.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Repositório Pronto para o Time Trabalhar em Paralelo</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> clone o repositório do projeto final e crie as pastas <code>api/</code>, <code>web/</code> e <code>docs/</code> na raiz.</li>
+                            <li><strong>Esqueleto da API:</strong> dentro de <code>api/</code>, inicie o projeto Node com Express e uma rota <code>GET /saude</code> respondendo <code>200</code>.</li>
+                            <li><strong>Esqueleto do Frontend:</strong> dentro de <code>web/</code>, crie o projeto React com Vite e uma tela que chama <code>/saude</code> e mostra o resultado.</li>
+                            <li><strong>Configuração de Exemplo:</strong> crie <code>.env.example</code> em cada parte com todas as variáveis e valores fictícios, e coloque <code>.env</code> no <code>.gitignore</code>.</li>
+                            <li><strong>Ambiente Local:</strong> escreva o <code>compose.yaml</code> com <code>db</code>, <code>api</code> e healthcheck, como na aula 34.</li>
+                            <li><strong>Esteira Mínima:</strong> crie <code>.github/workflows/ci.yml</code> que instala e roda o lint das duas partes a cada push e pull request.</li>
+                            <li><strong>Proteção do Ramo:</strong> ative a regra que exige pull request e esteira verde para mesclar na <code>main</code>.</li>
+                            <li><strong>Erro Provocado:</strong> tente um <code>git push</code> direto na <code>main</code> e leia a recusa do GitHub.</li>
+                            <li><strong>README Inicial:</strong> escreva no README como clonar, configurar o <code>.env</code> e subir o projeto em três comandos.</li>
+                            <li><strong>Validação e Testes:</strong> peça a um colega que clone o repositório numa máquina limpa seguindo só o README e registre no próprio README quanto tempo ele levou até ver a tela chamando <code>/saude</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

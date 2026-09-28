@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Matriz de Competências | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Matriz de Competências</h1>
+        <p class="subtitulo">Aula 49 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A matriz de competências da dev fictícia Carla, que mira o papel de desenvolvedora fullstack plena, com nível esperado, nível atual com evidência e as três lacunas escolhidas.</p>
+        </div>
+        <h2>matriz-competencias.md</h2>
+        <pre># Matriz de competências — Carla
+Papel desejado (18 meses): desenvolvedora fullstack plena
+Escala: 1 conheço o nome | 2 faço com ajuda | 3 faço sozinha | 4 ensino
+
+| Competência                         | Esperado | Atual | Evidência                          | Lacuna |
+|-------------------------------------|----------|-------|------------------------------------|--------|
+| Componentes React                   | 3        | 3     | 4 telas entregues no app da Aurora | 0      |
+| Testes automatizados                | 3        | 1     | nenhum teste escrito em produção   | 2      |
+| API REST com Node                   | 3        | 1     | só tutorial                        | 2      |
+| Banco de dados relacional (SQL)     | 3        | 2     | consultas com ajuda do sênior      | 1      |
+| Deploy e variáveis de ambiente      | 2        | 2     | publicou projeto pessoal           | 0      |
+| Escrever história de usuário        | 2        | 2     | escreveu 3 com revisão do PO       | 0      |
+| Revisar código de colegas           | 3        | 1     | nunca revisou PR                   | 2      |
+| Explicar decisão técnica ao time    | 3        | 2     | 1 apresentação na daily            | 1      |
+
+## Três lacunas escolhidas
+1. API REST com Node — sem ela o papel fullstack não existe.
+2. Testes automatizados — exigido em todo PR do time.
+3. Revisar código — é como um pleno multiplica o time.
+
+## Segunda opinião (gestor)
+- Testes: concordou com 1.
+- Explicar decisão: deu 3 ("você explicou bem a troca de biblioteca").
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Escolha o papel antes de listar competências.</li>
+            <li>Dê notas só com evidência; sem fato, a nota desce.</li>
+            <li>Peça uma segunda opinião em pelo menos três linhas.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A lacuna maior nem sempre é a mais importante — a escolha é justificada pelo papel.</li>
+            <li>O gestor deu nota maior que a da Carla numa competência: autoavaliação erra para os dois lados.</li>
+            <li>A coluna de evidência vem do diário técnico da aula 48.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Seguro — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Upload Seguro — Código de Referência</h1>
+        <p class="subtitulo">Aula 27 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Três barreiras em sequência: limite de tamanho e quantidade no Multer, filtro pelo tipo declarado e checagem da assinatura real nos primeiros bytes. Erros do Multer viram 413 ou 400 no formato Problem Details.</p>
+        </div>
+        <h2>src/uploads/detectarImagem.js</h2>
+        <pre>// Início: detecção do tipo real de imagem pelos primeiros bytes do arquivo
+const ASSINATURAS = [
+  { tipo: 'image/jpeg', extensao: 'jpg', confere: (b) =&gt; b[0] === 0xff &amp;&amp; b[1] === 0xd8 &amp;&amp; b[2] === 0xff },
+  { tipo: 'image/png', extensao: 'png', confere: (b) =&gt; b.subarray(0, 4).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47])) },
+  { tipo: 'image/webp', extensao: 'webp', confere: (b) =&gt; b.toString('ascii', 0, 4) === 'RIFF' &amp;&amp; b.toString('ascii', 8, 12) === 'WEBP' }
+];
+
+// devolve { tipo, extensao } da imagem ou null quando o conteúdo não é imagem aceita
+function detectarImagem(buffer) {
+  if (!Buffer.isBuffer(buffer) || buffer.length &lt; 12) return null;
+  const achada = ASSINATURAS.find((a) =&gt; a.confere(buffer));
+  return achada ? { tipo: achada.tipo, extensao: achada.extensao } : null;
+}
+
+module.exports = detectarImagem;
+// Fim de detectarImagem.js</pre>
+        <h2>src/uploads/upload.js</h2>
+        <pre>// Início: Multer em memória com limite de tamanho e filtro de tipo declarado
+const multer = require('multer');
+const { AppError } = require('../erros/AppError');
+
+const TIPOS_ACEITOS = ['image/jpeg', 'image/png', 'image/webp'];
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024, files: 1 },
+  // primeira barreira: recusa o que nem declara ser imagem aceita
+  fileFilter(req, arquivo, callback) {
+    if (TIPOS_ACEITOS.includes(arquivo.mimetype)) return callback(null, true);
+    callback(new AppError(415, 'Tipo de arquivo não suportado', 'Envie JPEG, PNG ou WebP'));
+  }
+});
+
+module.exports = upload;
+// Fim de upload.js</pre>
+        <h2>src/middlewares/traduzirErroMulter.js</h2>
+        <pre>// Início: trecho do middleware de erro da aula 26 que traduz falhas do Multer
+const multer = require('multer');
+const { AppError } = require('../erros/AppError');
+
+// converte MulterError em AppError com o status adequado
+function traduzirErroMulter(erro) {
+  if (!(erro instanceof multer.MulterError)) return erro;
+  if (erro.code === 'LIMIT_FILE_SIZE') {
+    return new AppError(413, 'Arquivo grande demais', 'O limite é de 2 MB por arquivo');
+  }
+  return new AppError(400, 'Upload inválido', `${erro.message} (campo: ${erro.field || 'desconhecido'})`);
+}
+
+module.exports = traduzirErroMulter;
+// Fim de traduzirErroMulter.js — chame no início de tratarErro: erro = traduzirErroMulter(erro)</pre>
+        <h2>src/routes/anexos.routes.js</h2>
+        <pre>// Início: rota de anexo que só aceita imagem de verdade
+const crypto = require('crypto');
+const express = require('express');
+const upload = require('../uploads/upload');
+const detectarImagem = require('../uploads/detectarImagem');
+const { AppError } = require('../erros/AppError');
+
+const router = express.Router();
+
+// valida presença, assinatura real e define o nome pelo servidor
+router.post('/tarefas/:id/anexos', upload.single('foto'), (req, res) =&gt; {
+  if (!req.file) throw new AppError(400, 'Arquivo ausente', 'Envie a imagem no campo foto');
+
+  const detectado = detectarImagem(req.file.buffer);
+  if (!detectado) throw new AppError(415, 'Conteúdo não é imagem', 'O arquivo não é JPEG, PNG ou WebP de verdade');
+
+  const nomeFinal = `${crypto.randomUUID()}.${detectado.extensao}`;
+  res.status(201).json({ nomeFinal, tipo: detectado.tipo, tamanho: req.file.size });
+});
+
+module.exports = router;
+// Fim de anexos.routes.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Salve os arquivos e chame <code>traduzirErroMulter</code> na primeira linha do <code>tratarErro</code> da aula 26</li>
+            <li><code>node server.js</code></li>
+            <li>Envie uma imagem válida, uma de mais de 2 MB e um <code>.txt</code> renomeado para <code>.jpg</code></li>
+            <li>Compare os status 201, 413 e 415</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>fileFilter</code> só lê o que o cliente declarou; é a assinatura em <code>detectarImagem</code> que prova o conteúdo.</li>
+            <li>Com <code>memoryStorage</code>, o arquivo recusado nunca toca o disco do servidor.</li>
+            <li>A extensão final vem do tipo detectado, então um <code>.php</code> disfarçado nunca é gravado com a extensão que escolheu.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 58 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a montar uma referência salarial com fontes, comparar propostas CLT e PJ no ano com as tabelas oficiais e negociar o pacote de benefícios com a proposta por escrito.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 58: Negociação Salarial e Planos de Benefícios</h1>
+        <p>Módulo 6: Soft Skills, Carreira e Inteligência Emocional — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: REFERÊNCIA SALARIAL E A CONVERSA DA OFERTA -->
+            <div class="card" id="card-1">
+                <h2>🔎 1. Referência Salarial e a Conversa da Oferta</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A desenvolvedora fictícia Larissa Couto recebeu da empresa fictícia Brisa Fintech a pergunta 'qual sua pretensão salarial?' por mensagem, antes da entrevista técnica. Ela respondeu um valor que um colega tinha comentado, sem saber de onde ele vinha, e depois descobriu que estava abaixo do que a própria empresa oferecia na faixa. Como montar uma referência com fonte e conduzir a conversa quando a oferta chega?</p>
+                </div>
+
+                <p>A aula 53 já tratou de âncora e da faixa pessoal; aqui o foco é a fonte e o momento. Referência salarial séria cita de onde veio, para qual cargo, região e data: o Salariômetro da Fipe usa dados do mercado formal brasileiro, e o Stack Overflow Survey mostra remuneração por função em escala mundial. Com a referência pronta, a conversa da oferta deixa de ser um palpite e passa a ter critério.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://salariometro.fipe.org.br/pesquisa-salarial" target="_blank" rel="noopener noreferrer">📄 Pesquisa Salarial — Salariômetro Fipe</a>
+                        <span class="link-desc">Consulta de salário por ocupação no mercado formal brasileiro, com a fonte indicada.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/novo-caged" target="_blank" rel="noopener noreferrer">📄 O que é o Novo CAGED — Ministério do Trabalho e Emprego</a>
+                        <span class="link-desc">A base oficial de admissões com carteira assinada, de onde vêm muitos indicadores de salário de contratação.</span>
+                    </li>
+                    <li>
+                        <a href="https://survey.stackoverflow.co/2025/work" target="_blank" rel="noopener noreferrer">📄 Trabalho e salário — Stack Overflow Survey 2025</a>
+                        <span class="link-desc">Remuneração por tipo de função e experiência, em dólar e com amostra mundial: use como contexto, não como tabela brasileira.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.pon.harvard.edu/daily/salary-negotiations/how-to-negotiate-a-higher-salary-after-a-job-offer/" target="_blank" rel="noopener noreferrer">📄 Negociar depois da oferta — PON Harvard</a>
+                        <span class="link-desc">Como responder a uma proposta por escrito e pedir ajuste com argumento.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=pcZA-mbKbXU" target="_blank" rel="noopener noreferrer">▶️ COMO NEGOCIAR SEU SALÁRIO EM UM NOVO EMPREGO (NÃO COMETA estes 4 ERROS!) | Hackeando a Carreira</a>
+                            <span class="link-desc">Hackeando a Carreira · 16:08 — Mostra como negociar o salário numa nova oferta e os erros mais comuns.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=nkjalb0t0Ho" target="_blank" rel="noopener noreferrer">▶️ Pretensão Salarial: O Que Responder na Entrevista?</a>
+                            <span class="link-desc">Carolina Okubo - PraCarreiras  · 7:34 — Explica como responder à pergunta sobre pretensão salarial na entrevista.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Ficha de Referência Salarial com Fontes</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a planilha <code>referencia-salarial</code> com as colunas fonte, link, cargo pesquisado, região, data da consulta, valor encontrado e observação.</li>
+                            <li><strong>Definindo o Cargo:</strong> use o título de ocupação que você escolheu na aula 54, com o código CBO se tiver.</li>
+                            <li><strong>Primeira Fonte:</strong> consulte o Salariômetro para o cargo e a região mais próxima e anote o valor com a data.</li>
+                            <li><strong>Segunda Fonte:</strong> consulte a seção de salário do Stack Overflow Survey para a função equivalente e anote na coluna observação que o valor é global e em dólar.</li>
+                            <li><strong>Terceira Fonte:</strong> anote as faixas publicadas em vagas reais do mesmo cargo que você coletou nas aulas anteriores.</li>
+                            <li><strong>Erro Provocado:</strong> calcule a média das três fontes misturando o valor em dólar e o valor em reais e veja o número sem sentido que aparece.</li>
+                            <li><strong>Ajustando:</strong> descarte a média: use as fontes brasileiras como faixa e a fonte mundial só como contexto de tendência.</li>
+                            <li><strong>Respondendo a Pergunta Cedo:</strong> escreva uma resposta para quando a pretensão for pedida antes da entrevista, pedindo a faixa da vaga ou apresentando uma faixa com base nas fontes.</li>
+                            <li><strong>Respondendo a Oferta:</strong> escreva a mensagem de resposta a uma oferta: agradecimento, pedido de prazo e, se for o caso, contraproposta com a fonte.</li>
+                            <li><strong>Validação e Testes:</strong> ensaie as duas respostas com um colega no papel do recrutador e registre no README as fontes consultadas e as datas.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CLT X PJ NA PONTA DO LÁPIS -->
+            <div class="card" id="card-2">
+                <h2>🧮 2. CLT x PJ na Ponta do Lápis</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O desenvolvedor fictício Henrique Salles recebeu duas propostas da mesma empresa fictícia, a Trem Bão Tecnologia: um valor mensal com carteira assinada e um valor mensal maior para prestar serviço como PJ. Ele está inclinado a aceitar o maior número. O que precisa ser calculado para comparar as duas propostas no ano, e não no mês?</p>
+                </div>
+
+                <p>Salário CLT e valor PJ não são comparáveis diretamente. Na CLT, além do salário, existem 13º, férias com um terço a mais e depósito de FGTS pelo empregador, com INSS e Imposto de Renda descontados na folha. No PJ, o valor bruto paga os impostos da empresa, o contador, a própria previdência e precisa formar reserva para férias e meses sem contrato. A comparação honesta é anual e usa as tabelas oficiais vigentes.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452compilado.htm" target="_blank" rel="noopener noreferrer">📄 Consolidação das Leis do Trabalho — Planalto</a>
+                        <span class="link-desc">Férias, jornada e verbas do contrato de emprego, no texto oficial.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.planalto.gov.br/ccivil_03/leis/l8036consol.htm" target="_blank" rel="noopener noreferrer">📄 Lei do FGTS (Lei 8.036/1990) — Planalto</a>
+                        <span class="link-desc">Quem deposita, quanto e em que situações o trabalhador pode sacar.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal" target="_blank" rel="noopener noreferrer">📄 Tabela de contribuição mensal — INSS</a>
+                        <span class="link-desc">As faixas vigentes de contribuição do empregado e do contribuinte individual.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas" target="_blank" rel="noopener noreferrer">📄 Tabelas do Imposto de Renda — Receita Federal</a>
+                        <span class="link-desc">A tabela progressiva vigente para calcular o desconto na fonte.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=QHT_ED0KQuY" target="_blank" rel="noopener noreferrer">▶️ Recebeu proposta para PJ? APRENDA COMO CALCULAR SALARIO PJ x CLT. Avalie o que é MELHOR CLT ou PJ</a>
+                            <span class="link-desc">Finanças com Marcelo · 19:10 — Mostra como calcular e comparar uma proposta PJ com um salário CLT.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=eV3WQ-JHWgY" target="_blank" rel="noopener noreferrer">▶️ PJ ou CLT: como calcular para ter ganhos semelhantes</a>
+                            <span class="link-desc">InvestNews BR · 4:38 — Explica de forma rápida como calcular o valor PJ equivalente a um salário CLT.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Comparador Anual CLT x PJ</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie uma planilha com duas colunas, <strong>CLT</strong> e <strong>PJ</strong>, e uma linha para cada item do ano.</li>
+                            <li><strong>Receita Anual CLT:</strong> some 12 salários, o 13º salário e o terço constitucional de férias sobre um salário.</li>
+                            <li><strong>FGTS:</strong> acrescente o depósito anual de FGTS calculado com a alíquota prevista na Lei 8.036, lembrando que ele não é salário disponível no mês.</li>
+                            <li><strong>Descontos CLT:</strong> calcule INSS e Imposto de Renda com as tabelas vigentes do INSS e da Receita, anotando a data da consulta.</li>
+                            <li><strong>Receita Anual PJ:</strong> multiplique o valor mensal pelo número de meses efetivamente faturados, descontando o período em que você tiraria férias.</li>
+                            <li><strong>Erro Provocado:</strong> compare só o valor mensal bruto das duas propostas e anote qual parece melhor; guarde esse número para o passo final.</li>
+                            <li><strong>Custos PJ:</strong> subtraia imposto da empresa conforme o regime, honorários de contador, contribuição ao INSS e plano de saúde, usando valores pesquisados por você.</li>
+                            <li><strong>Reserva:</strong> separe uma reserva para meses sem contrato e registre quantos meses você considerou.</li>
+                            <li><strong>Organizando:</strong> gere a linha final <strong>disponível no ano</strong> em cada coluna e a diferença percentual entre elas.</li>
+                            <li><strong>Validação e Testes:</strong> compare o resultado anual com a impressão do passo do erro provocado e registre no README qual variável mais mudou a decisão.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: BENEFÍCIOS E A PROPOSTA POR ESCRITO -->
+            <div class="card" id="card-3">
+                <h2>🎁 3. Benefícios e a Proposta por Escrito</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A empresa fictícia Serra Azul Software ofereceu à candidata fictícia Mariana Lopes 'salário compatível e ótimos benefícios', tudo por telefone. Quando o contrato chegou, o vale-refeição era menor que o combinado, a participação nos lucros não tinha regra e o plano de saúde tinha carência. Como transformar a conversa numa proposta escrita que dê para comparar e negociar?</p>
+                </div>
+
+                <p>Benefícios fazem parte da remuneração e cada um tem uma lógica própria: o vale-transporte tem lei específica, o auxílio-alimentação costuma seguir o Programa de Alimentação do Trabalhador, e a participação nos lucros depende de regras negociadas previstas em lei. Negociar o pacote, e não só o salário, abre espaço quando o valor fixo não mexe. Tudo o que foi combinado precisa estar por escrito antes do aceite.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.planalto.gov.br/ccivil_03/leis/l7418.htm" target="_blank" rel="noopener noreferrer">📄 Lei do Vale-Transporte (Lei 7.418/1985) — Planalto</a>
+                        <span class="link-desc">Quem tem direito, como funciona o desconto e o que o empregador custeia.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.planalto.gov.br/ccivil_03/leis/l10101.htm" target="_blank" rel="noopener noreferrer">📄 Participação nos Lucros (Lei 10.101/2000) — Planalto</a>
+                        <span class="link-desc">Como a PLR precisa ser negociada e quais regras o acordo deve ter.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/trabalho-e-emprego/pt-br/servicos/empregador/programa-de-alimentacao-do-trabalhador-pat" target="_blank" rel="noopener noreferrer">📄 Programa de Alimentação do Trabalhador — MTE</a>
+                        <span class="link-desc">O programa oficial que costuma reger vale-refeição e vale-alimentação.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.pon.harvard.edu/daily/salary-negotiations/negotiate-salary-3-winning-strategies/" target="_blank" rel="noopener noreferrer">📄 Três estratégias para negociar salário — PON Harvard</a>
+                        <span class="link-desc">Negociar vários itens ao mesmo tempo em vez de disputar um número só.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=VVZ_E8NdHGo" target="_blank" rel="noopener noreferrer">▶️ Como funciona o vale-alimentação?</a>
+                            <span class="link-desc">Max Advogado · 3:29 — Explica como funciona o vale-alimentação e sua diferença para outros benefícios.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=5K1I59UufUA" target="_blank" rel="noopener noreferrer">▶️ Vale-refeição é OBRIGATÓRIO? Saiba quando a empresa tem que oferecer</a>
+                            <span class="link-desc">Liliana Delfino · 3:34 — Explica quando o vale-refeição é obrigatório e quando depende da empresa ou da convenção coletiva.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Checklist de Proposta e Mensagem de Negociação</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o documento <code>proposta.md</code> com as seções remuneração, benefícios, condições e dúvidas.</li>
+                            <li><strong>Remuneração:</strong> anote salário ou valor mensal, modelo de contratação, data de início e periodicidade de reajuste informada.</li>
+                            <li><strong>Benefícios com Valor:</strong> liste cada benefício com valor mensal, quem paga e se há desconto em folha.</li>
+                            <li><strong>Benefícios com Regra:</strong> para PLR, bônus e plano de saúde, anote a regra: meta, carência, coparticipação e dependentes.</li>
+                            <li><strong>Condições:</strong> anote regime presencial, híbrido ou remoto, jornada, equipamento e período de experiência.</li>
+                            <li><strong>Erro Provocado:</strong> tente preencher o documento só com o que foi dito por telefone e marque quantas linhas ficaram vagas ou com 'a combinar'.</li>
+                            <li><strong>Ajustando:</strong> escreva uma mensagem pedindo a proposta por escrito com todos os itens que ficaram vagos.</li>
+                            <li><strong>Escolhendo o que Negociar:</strong> marque os dois itens que mais importam para você, além do salário.</li>
+                            <li><strong>Mensagem de Negociação:</strong> escreva a contraproposta citando sua referência da primeira prática e oferecendo alternativa de pacote.</li>
+                            <li><strong>Validação e Testes:</strong> compare a proposta com o comparador anual da prática anterior e registre no README a decisão e o motivo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

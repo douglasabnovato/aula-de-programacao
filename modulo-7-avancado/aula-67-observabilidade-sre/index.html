@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 67 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a definir SLOs com orçamento de erro, rastrear uma requisição por vários serviços com OpenTelemetry e criar alertas por burn rate que acordam alguém só quando o usuário é afetado, fechando com um postmortem sem culpa.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 67: Observabilidade, Métricas e Engenharia de Confiabilidade (SRE)</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: SLIS, SLOS E ORÇAMENTO DE ERRO -->
+            <div class="card" id="card-1">
+                <h2>🎯 1. SLIs, SLOs e Orçamento de Erro</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O time fictício do aplicativo de transporte Vai de Van discute toda semana se deve lançar recurso novo ou parar para estabilizar o sistema, e a decisão depende de quem fala mais alto na reunião. O painel tem 60 gráficos, mas nenhum diz se o usuário está sendo bem atendido. Como transformar confiabilidade num número acordado que decide sozinho quando acelerar e quando frear?</p>
+                </div>
+
+                <p>Um SLI mede a experiência do usuário (proporção de requisições boas), o SLO é a meta acordada para esse SLI e o orçamento de erro é a diferença até 100%. Quando o orçamento acaba, a prioridade muda para confiabilidade; enquanto sobra, o time pode arriscar. A aula 36 ensinou a coletar métricas; aqui elas viram critério de decisão.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/workbook/implementing-slos/" target="_blank" rel="noopener noreferrer">📄 Implementing SLOs — Google SRE Workbook</a>
+                        <span class="link-desc">O passo a passo para escolher SLIs, definir a primeira meta e obter acordo com o negócio.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/service-level-objectives/" target="_blank" rel="noopener noreferrer">📄 Service Level Objectives — Google SRE Book</a>
+                        <span class="link-desc">As definições de SLI, SLO e SLA e por que 100% é a meta errada.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/embracing-risk/" target="_blank" rel="noopener noreferrer">📄 Embracing Risk — Google SRE Book</a>
+                        <span class="link-desc">Como o orçamento de erro equilibra velocidade de entrega e estabilidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/workbook/error-budget-policy/" target="_blank" rel="noopener noreferrer">📄 Example Error Budget Policy — Google SRE Workbook</a>
+                        <span class="link-desc">Um modelo real de política que diz o que acontece quando o orçamento se esgota.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=WBvaYep6b0E" target="_blank" rel="noopener noreferrer">▶️ Error Budgets: O Princípio chave do SRE | 📎 Zup Clipes ✂️</a>
+                            <span class="link-desc">Zup Innovation: Sua aliada tech do agora ao futuro · 8:48 — Explica o orçamento de erro como princípio central do SRE.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JQTaWPEE80w" target="_blank" rel="noopener noreferrer">▶️ Aprenda de vez SLI, SLO e SLA</a>
+                            <span class="link-desc">Fabricio Veronez · 9:39 — Explica a diferença entre SLI, SLO e SLA e como definir cada um.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Definindo e Calculando o SLO de uma API</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> use a API com logs estruturados da aula 36 e gere um arquivo <code>logs/requisicoes.jsonl</code> com pelo menos mil linhas de tráfego do k6.</li>
+                            <li><strong>Escolhendo a Jornada:</strong> escreva qual é a jornada crítica do usuário (por exemplo, buscar horários) e quais rotas a compõem.</li>
+                            <li><strong>Definindo o SLI de Disponibilidade:</strong> escreva a fórmula: requisições com status menor que 500 dividido pelo total das rotas da jornada.</li>
+                            <li><strong>Definindo o SLI de Latência:</strong> escreva a fórmula: requisições respondidas em menos de 300 ms dividido pelo total.</li>
+                            <li><strong>Escolhendo a Meta:</strong> fixe o SLO em 99,5% de disponibilidade e 95% de latência em janela de 28 dias, e justifique no README por que não 100%.</li>
+                            <li><strong>Calculando o Orçamento:</strong> converta o SLO em número: quantas requisições ruins são permitidas para o volume do período.</li>
+                            <li><strong>Medindo com Script:</strong> escreva <code>scripts/slo.js</code> que lê o arquivo de logs, calcula os dois SLIs e o percentual do orçamento consumido.</li>
+                            <li><strong>Erro Provocado:</strong> rode o k6 com o banco parado por um minuto, recalcule e observe quanto do orçamento mensal um minuto de queda consome.</li>
+                            <li><strong>Política de Orçamento:</strong> escreva a política: o que o time faz com 50%, 75% e 100% do orçamento gasto.</li>
+                            <li><strong>Validação e Testes:</strong> compare o valor calculado pelo script com uma contagem manual de uma amostra de 20 linhas e registre SLOs, orçamento e política no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: RASTREAMENTO DISTRIBUÍDO COM OPENTELEMETRY -->
+            <div class="card" id="card-2">
+                <h2>🧵 2. Rastreamento Distribuído com OpenTelemetry</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No marketplace fictício Feira Online, um pedido passa pela API de pedidos, pelo serviço de estoque e pelo serviço de pagamento. Quando o checkout demora oito segundos, cada time mostra o próprio log dizendo que o seu serviço respondeu rápido. Como seguir uma única requisição por todos os serviços e ver exatamente em qual trecho o tempo foi gasto?</p>
+                </div>
+
+                <p>Log conta o que aconteceu dentro de um serviço; o trace conta a história de uma requisição atravessando vários. Cada trecho vira um span com início, fim e atributos, e o contexto viaja entre serviços em cabeçalhos HTTP padronizados. O OpenTelemetry é o padrão aberto que instrumenta a aplicação uma vez e envia os dados para qualquer ferramenta.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://opentelemetry.io/docs/languages/js/getting-started/nodejs/" target="_blank" rel="noopener noreferrer">📄 Getting Started com Node.js — OpenTelemetry</a>
+                        <span class="link-desc">Como instrumentar uma aplicação Node com o SDK e ver os primeiros spans.</span>
+                    </li>
+                    <li>
+                        <a href="https://opentelemetry.io/docs/concepts/signals/traces/" target="_blank" rel="noopener noreferrer">📄 Traces — conceitos do OpenTelemetry</a>
+                        <span class="link-desc">O que são trace, span, contexto e atributos, com exemplos de uma requisição real.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/TR/trace-context/" target="_blank" rel="noopener noreferrer">📄 Trace Context — W3C</a>
+                        <span class="link-desc">O padrão do cabeçalho traceparent que carrega o identificador do trace entre serviços.</span>
+                    </li>
+                    <li>
+                        <a href="https://kubernetes.io/docs/concepts/cluster-administration/system-traces/" target="_blank" rel="noopener noreferrer">📄 Traces for Kubernetes System Components — Kubernetes</a>
+                        <span class="link-desc">Um exemplo de plataforma grande que adotou OpenTelemetry e OTLP para rastrear os próprios componentes.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Wu0Ajkxh69Y" target="_blank" rel="noopener noreferrer">▶️ OpenTelemetry na Prática: Monitore Qualquer App com Custo Zero</a>
+                            <span class="link-desc">Erick Wendel · 28:17 — Mostra como instrumentar uma aplicação com OpenTelemetry para coletar traces, métricas e logs.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qtr7Hf5YxA8" target="_blank" rel="noopener noreferrer">▶️ Instrumentação e tracing com OpenTelemetry e Jaeger - Parte 1</a>
+                            <span class="link-desc">eusouodaniel · 25:41 — Mostra instrumentação e rastreamento distribuído com OpenTelemetry e Jaeger.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Rastreando um Pedido Através de Dois Serviços</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie dois serviços Express, <code>pedidos</code> e <code>estoque</code>, e suba o Jaeger com Docker Compose expondo a porta 16686.</li>
+                            <li><strong>Instalando o SDK:</strong> em cada serviço, instale <code>@opentelemetry/sdk-node</code>, <code>@opentelemetry/auto-instrumentations-node</code> e o exportador OTLP HTTP.</li>
+                            <li><strong>Arquivo de Instrumentação:</strong> crie <code>instrumentation.js</code> que inicia o SDK com o nome do serviço e o endereço do coletor vindo de variável de ambiente.</li>
+                            <li><strong>Carregando Antes de Tudo:</strong> inicie cada serviço com <code>node --require ./instrumentation.js app.js</code>.</li>
+                            <li><strong>Erro Provocado:</strong> importe a instrumentação depois do Express e observe no Jaeger que as rotas não aparecem; volte para o <code>--require</code> e explique por quê.</li>
+                            <li><strong>Primeiro Trace:</strong> faça <code>POST /pedidos</code>, que chama <code>GET /estoque/:sku</code>, e encontre o trace no Jaeger com os dois serviços.</li>
+                            <li><strong>Lendo o Cabeçalho:</strong> imprima <code>req.headers.traceparent</code> no serviço de estoque e identifique o id do trace e do span pai.</li>
+                            <li><strong>Span Manual:</strong> no serviço de pedidos, crie um span <code>calcular-desconto</code> com <code>tracer.startActiveSpan</code> e um atributo com o valor do carrinho.</li>
+                            <li><strong>Registrando Falha:</strong> quando o estoque responder 409, marque o span com <code>recordException</code> e status de erro.</li>
+                            <li><strong>Validação e Testes:</strong> coloque um atraso de 2 segundos no estoque, encontre o trecho lento pela linha do tempo do Jaeger e registre a captura de tela no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ALERTAS POR BURN RATE, PLANTÃO E POSTMORTEM -->
+            <div class="card" id="card-3">
+                <h2>🚨 3. Alertas por Burn Rate, Plantão e Postmortem</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O time fictício do sistema de reservas Hotel Serra Azul recebe 200 alertas por semana: CPU acima de 80%, disco em 70%, um erro isolado às três da manhã. As pessoas começaram a silenciar o canal, e a queda real de sábado passou despercebida por duas horas. Como alertar só quando o usuário está sendo afetado de verdade e aprender com cada incidente sem procurar culpados?</p>
+                </div>
+
+                <p>Alerta bom é aquele que exige ação humana agora. Alertar pela velocidade de consumo do orçamento de erro (burn rate), com uma janela longa e uma curta, detecta quedas graves em minutos e ignora ruído. Depois do incidente, o postmortem sem culpa transforma o que deu errado em ações com dono e prazo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/workbook/alerting-on-slos/" target="_blank" rel="noopener noreferrer">📄 Alerting on SLOs — Google SRE Workbook</a>
+                        <span class="link-desc">A evolução de alertas simples até o burn rate com múltiplas janelas, com os números de cada abordagem.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/workbook/on-call/" target="_blank" rel="noopener noreferrer">📄 On-Call — Google SRE Workbook</a>
+                        <span class="link-desc">Como organizar o plantão para que ele seja sustentável e útil.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/postmortem-culture/" target="_blank" rel="noopener noreferrer">📄 Postmortem Culture — Google SRE Book</a>
+                        <span class="link-desc">Os princípios do postmortem sem culpa e quando ele deve ser escrito.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/example-postmortem/" target="_blank" rel="noopener noreferrer">📄 Example Postmortem — Google SRE Book</a>
+                        <span class="link-desc">Um postmortem completo, com linha do tempo, causa raiz e ações.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ra0cCmEVKS8" target="_blank" rel="noopener noreferrer">▶️ SLOconf 2023 - How I learned to stop worrying and love burn rates - Ashley Chen</a>
+                            <span class="link-desc">Nobl9 · 9:14 · em inglês — Palestra em inglês sobre alertas baseados em burn rate do orçamento de erro.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=hwbKwRf3cYM" target="_blank" rel="noopener noreferrer">▶️ 📊 Grafana do zero: Prometheus, dashboards e alertas em 10 minutos</a>
+                            <span class="link-desc">Just A Developer - Programmeiro · 10:01 — Mostra como configurar dashboards e alertas no Grafana com dados do Prometheus.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Criando Alertas de Burn Rate e um Postmortem</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba Prometheus e a API instrumentada da aula 36 com Docker Compose e confirme a métrica <code>http_requests_total</code> com o rótulo de status.</li>
+                            <li><strong>Inventário do Ruído:</strong> liste os alertas que o projeto tem hoje e marque quais exigiram alguma ação humana no último mês.</li>
+                            <li><strong>Regra de Gravação:</strong> crie a regra que calcula a taxa de erro em janelas de 5 minutos, 1 hora e 6 horas.</li>
+                            <li><strong>Calculando o Burn Rate:</strong> para o SLO de 99,5%, escreva a condição: taxa de erro maior que 14,4 vezes 0,5% em 1 hora e também em 5 minutos.</li>
+                            <li><strong>Alerta de Página:</strong> crie o alerta <code>OrcamentoQueimandoRapido</code> com severidade de página e o link do runbook na anotação.</li>
+                            <li><strong>Alerta de Ticket:</strong> crie um segundo alerta de 6 vezes o orçamento em 6 horas e 30 minutos, com severidade de ticket para o horário comercial.</li>
+                            <li><strong>Erro Provocado:</strong> gere 1% de erros por 10 minutos com o k6 e observe que só o alerta lento dispara; depois gere 20% e veja o de página disparar em poucos minutos.</li>
+                            <li><strong>Runbook:</strong> escreva <code>docs/runbooks/orcamento-queimando.md</code> com os três primeiros comandos que o plantonista deve rodar.</li>
+                            <li><strong>Postmortem:</strong> com os dados do incidente provocado, preencha o modelo de postmortem: impacto, linha do tempo, causa, o que funcionou, ações.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>promtool check rules</code> no arquivo de regras, confirme que passa e registre no README quantos alertas antigos podem ser removidos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>
