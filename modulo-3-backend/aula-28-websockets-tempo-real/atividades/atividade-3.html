@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Autenticado — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Socket.IO Autenticado — Código de Referência</h1>
+        <p class="subtitulo">Aula 28 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Middleware que verifica o JWT no handshake, autorização de entrada em sala pelas unidades do token, validação do payload e limite de eventos por conexão.</p>
+        </div>
+        <h2>src/socket-auth.js</h2>
+        <pre>// Início: autenticação no handshake, autorização por sala e limite de eventos por conexão
+const jwt = require('jsonwebtoken');
+
+const JANELA_MS = 10000;
+const MAX_EVENTOS = 20;
+
+// verifica o JWT enviado em auth e guarda o usuário na conexão
+function autenticar(socket, proximo) {
+  const token = socket.handshake.auth?.token;
+  if (!token) return proximo(new Error('nao autorizado: token ausente'));
+  try {
+    socket.data.usuario = jwt.verify(token, process.env.JWT_SECRET);
+    proximo();
+  } catch {
+    proximo(new Error('nao autorizado: token inválido ou expirado'));
+  }
+}
+
+// conta eventos por janela e derruba a conexão que exagerar
+function limitarEventos(socket) {
+  let inicioJanela = Date.now();
+  let contagem = 0;
+  socket.use((pacote, proximo) =&gt; {
+    const agora = Date.now();
+    if (agora - inicioJanela &gt; JANELA_MS) {
+      inicioJanela = agora;
+      contagem = 0;
+    }
+    contagem += 1;
+    if (contagem &gt; MAX_EVENTOS) return socket.disconnect(true);
+    proximo();
+  });
+}
+
+// registra os eventos já com as regras de acesso
+function registrarEventos(io) {
+  io.use(autenticar);
+
+  io.on('connection', (socket) =&gt; {
+    limitarEventos(socket);
+
+    // só entra na sala se a unidade constar no token
+    socket.on('entrar-unidade', (unidade, confirmar = () =&gt; {}) =&gt; {
+      if (typeof unidade !== 'string') return confirmar({ ok: false, erro: 'unidade inválida' });
+      const permitidas = socket.data.usuario.unidades || [];
+      if (!permitidas.includes(unidade)) return confirmar({ ok: false, erro: 'sem acesso a esta unidade' });
+      socket.join(unidade);
+      confirmar({ ok: true });
+    });
+  });
+}
+
+module.exports = registrarEventos;
+// Fim de socket-auth.js</pre>
+        <h2>scripts/gerar-tokens.js</h2>
+        <pre>// Início: gera tokens de teste para duas cozinhas diferentes
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
+// assina um token com as unidades permitidas
+function gerar(nome, unidades) {
+  return jwt.sign({ sub: nome, unidades }, process.env.JWT_SECRET, { expiresIn: '1h' });
+}
+
+console.log('Cozinha Centro:', gerar('cozinha-centro', ['centro']));
+console.log('Cozinha São Pedro:', gerar('cozinha-sao-pedro', ['sao-pedro']));
+// Fim de gerar-tokens.js</pre>
+        <h2>public/painel-auth.js</h2>
+        <pre>// Início: trecho do painel que conecta com token e trata a recusa
+const token = sessionStorage.getItem('token');
+const socket = io({ auth: { token }, reconnectionAttempts: 5 });
+
+// mostra o motivo quando o servidor recusa a conexão
+socket.on('connect_error', (erro) =&gt; {
+  document.getElementById('estado').textContent = `Conexão recusada: ${erro.message}`;
+});
+
+// pede entrada na sala e informa se foi negada
+socket.on('connect', () =&gt; {
+  socket.emit('entrar-unidade', 'centro', (resposta) =&gt; {
+    if (!resposta.ok) document.getElementById('estado').textContent = resposta.erro;
+  });
+});
+// Fim do trecho do painel</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install jsonwebtoken dotenv</code> e defina <code>JWT_SECRET</code> no <code>.env</code></li>
+            <li>No <code>server.js</code>, troque o <code>io.on('connection')</code> da atividade anterior por <code>require('./src/socket-auth')(io)</code></li>
+            <li><code>node scripts/gerar-tokens.js</code> e salve um token no <code>sessionStorage</code> do painel</li>
+            <li>Teste sem token, com o token de São Pedro e com o token do Centro</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A recusa acontece antes de <code>connection</code>: quem não tem token nunca chega a registrar evento nenhum.</li>
+            <li>O token vai em <code>auth</code>, não na URL — URL aparece em log de servidor e de proxy.</li>
+            <li>O limite derruba só a conexão abusiva; as outras cozinhas continuam recebendo normalmente.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

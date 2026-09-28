@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 17 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a buscar, criar, alterar e excluir dados numa API REST a partir do React, tratando carregamento e falhas e organizando o acesso à API em serviço e hook próprios.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 17: Consumo de APIs REST no React</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: BUSCANDO DADOS COM FETCH E USEEFFECT -->
+            <div class="card" id="card-1">
+                <h2>🌐 1. Buscando Dados com fetch e useEffect</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A startup fictícia Entrega Já guarda as tarefas da equipe numa API REST. O painel em React mostra uma lista vazia por alguns segundos, e quando a API cai a tela continua vazia, sem explicação nenhuma. Como buscar os dados ao abrir a página e mostrar carregando, erro ou lista conforme o caso?</p>
+                </div>
+
+                <p>O fetch devolve uma Promise com a resposta HTTP, e um status 404 ou 500 não é tratado como erro automaticamente. Em React a busca é um efeito colateral, por isso fica dentro de um useEffect, e a tela é decidida por três estados: carregando, erro e dados.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="noopener noreferrer">📄 Usando Fetch — MDN</a>
+                        <span class="link-desc">Como fazer requisições, ler o corpo em JSON e checar o status da resposta.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/synchronizing-with-effects" target="_blank" rel="noopener noreferrer">📄 Sincronizando com efeitos — React</a>
+                        <span class="link-desc">Por que buscar dados é um efeito e como o array de dependências controla quando ele roda.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Glossary/REST" target="_blank" rel="noopener noreferrer">📄 REST — Glossário MDN</a>
+                        <span class="link-desc">O estilo de arquitetura por trás das APIs que o frontend consome.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status" target="_blank" rel="noopener noreferrer">📄 Códigos de status HTTP — MDN</a>
+                        <span class="link-desc">O significado de cada faixa de status e quais delas o painel precisa tratar.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=L6raE_UfweY" target="_blank" rel="noopener noreferrer">▶️ React básico:  o useEffect p/ chamada de API</a>
+                            <span class="link-desc">Rocketseat · 6:17 — Mostra como usar o useEffect para chamar uma API quando o componente é montado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Wc3EQD9ZrHE" target="_blank" rel="noopener noreferrer">▶️ Buscando dados de uma API com useEffect no React - Fetching data #CursoDeReactNextJS</a>
+                            <span class="link-desc">Rafael Fischer - Dev &amp; Design · 8:40 — Busca dados de uma API com useEffect e guarda o resultado no estado do componente.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Painel de Tarefas com Carregando, Erro e Lista</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto <code>entrega-ja</code> com Vite e abra <code>https://jsonplaceholder.typicode.com/todos?userId=1</code> no navegador para conhecer o formato do JSON.</li>
+                            <li><strong>Três Estados:</strong> em <code>PainelTarefas.jsx</code>, declare <code>tarefas</code> (array vazio), <code>carregando</code> (<code>true</code>) e <code>erro</code> (<code>null</code>).</li>
+                            <li><strong>Erro Provocado: Busca Solta:</strong> chame o <code>fetch</code> com <code>setTarefas</code> direto no corpo do componente e observe na aba Rede as requisições se repetindo sem parar.</li>
+                            <li><strong>Efeito de Montagem:</strong> mova a busca para um <code>useEffect</code> com <code>[]</code>, dentro de uma função <code>async function carregar()</code> chamada logo em seguida.</li>
+                            <li><strong>Lendo o JSON:</strong> use <code>const resposta = await fetch(URL)</code> e <code>await resposta.json()</code> e guarde o resultado com <code>setTarefas</code>.</li>
+                            <li><strong>Checando o Status:</strong> troque a URL para <code>/todoss</code>, veja que o 404 não cai no <code>catch</code> e acrescente <code>if (!resposta.ok) throw new Error(...)</code>.</li>
+                            <li><strong>Finalizando o Carregamento:</strong> use <code>try/catch/finally</code> e desligue o carregando no <code>finally</code>.</li>
+                            <li><strong>Telas Antecipadas:</strong> antes do <code>return</code> principal, devolva a mensagem de carregando e, depois, a de erro com um botão Tentar de novo que incrementa um estado <code>tentativa</code> usado como dependência.</li>
+                            <li><strong>Lista Final:</strong> renderize as tarefas com <code>map</code> e <code>key={t.id}</code>, riscando as que têm <code>completed</code> verdadeiro.</li>
+                            <li><strong>Validação e Testes:</strong> com a aba Rede, teste <em>Slow 3G</em> e <em>Offline</em> e clique em Tentar de novo; registre no README o que aparece em cada um dos três estados.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CRIANDO, ATUALIZANDO E EXCLUINDO COM POST, PATCH E DELETE -->
+            <div class="card" id="card-2">
+                <h2>✏️ 2. Criando, Atualizando e Excluindo com POST, PATCH e DELETE</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A equipe da Entrega Já quer criar tarefas, marcá-las como feitas e apagar as canceladas direto no painel. Cada ação precisa chegar à API, e a lista na tela tem que refletir o resultado sem buscar tudo de novo a cada clique. Como enviar cada operação com o método HTTP certo e manter o estado em dia?</p>
+                </div>
+
+                <p>Numa API REST o método diz a intenção: POST cria, PATCH altera parte de um recurso e DELETE remove. O corpo vai em JSON com o cabeçalho Content-Type, e a resposta atualiza o estado com map e filter, sem alterar o array original.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Methods" target="_blank" rel="noopener noreferrer">📄 Métodos HTTP — MDN</a>
+                        <span class="link-desc">GET, POST, PATCH, PUT e DELETE, com a semântica de cada um.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Window/fetch" target="_blank" rel="noopener noreferrer">📄 fetch() — MDN</a>
+                        <span class="link-desc">As opções de method, headers e body que transformam o fetch numa escrita.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" target="_blank" rel="noopener noreferrer">📄 JSON.stringify() — MDN</a>
+                        <span class="link-desc">Como o objeto JavaScript vira o texto que viaja no corpo da requisição.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/updating-arrays-in-state" target="_blank" rel="noopener noreferrer">📄 Atualizando arrays no estado — React</a>
+                        <span class="link-desc">Incluir, trocar e remover itens sem mutar o array, com spread, map e filter.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=EJDCvW1AsIw" target="_blank" rel="noopener noreferrer">▶️ #1 Introdução aos Verbos HTTP: GET, POST, PATCH, PUT, DELETE | Rest API</a>
+                            <span class="link-desc">Refúgio Code · 7:22 — Explica os verbos HTTP GET, POST, PATCH, PUT e DELETE numa API REST.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=3yi0yvHgPfQ" target="_blank" rel="noopener noreferrer">▶️ Fetch API with Async/Await (GET, POST, PUT, DELETE)</a>
+                            <span class="link-desc">ByteGrad · 14:55 · em inglês — Mostra em inglês requisições GET, POST, PUT e DELETE com fetch e async/await.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: CRUD de Tarefas contra uma API REST</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>GerenciadorTarefas.jsx</code> carregando as cinco primeiras tarefas com <code>?userId=1&amp;_limit=5</code> e um formulário com campo e botão Adicionar.</li>
+                            <li><strong>Criando com POST:</strong> no envio, chame <code>fetch(API, { method: 'POST', body: JSON.stringify({ title, completed: false, userId: 1 }) })</code>.</li>
+                            <li><strong>Erro Provocado: Sem Cabeçalho:</strong> envie sem <code>headers</code>, veja na aba Rede que a resposta traz só o <code>id</code> e acrescente <code>{ 'Content-Type': 'application/json' }</code>.</li>
+                            <li><strong>Inserindo na Lista:</strong> coloque a tarefa criada no topo com <code>setTarefas((atuais) =&gt; [nova, ...atuais])</code> e limpe o campo.</li>
+                            <li><strong>Ids da API de Teste:</strong> note que a API devolve sempre o mesmo <code>id</code> para itens novos e gere um id local com <code>Date.now()</code>, marcando a tarefa com <code>local: true</code>.</li>
+                            <li><strong>Atualizando com PATCH:</strong> no checkbox, envie <code>PATCH</code> para <code>/todos/${id}</code> com <code>{ completed: !tarefa.completed }</code> e troque o item com <code>map</code>.</li>
+                            <li><strong>Excluindo com DELETE:</strong> no botão Excluir, envie <code>DELETE</code> e remova o item com <code>filter</code>.</li>
+                            <li><strong>Tratando Falhas:</strong> em cada operação, confira <code>resposta.ok</code>, lance um erro com o status e mostre a mensagem acima da lista.</li>
+                            <li><strong>Bloqueio por Item:</strong> guarde em <code>ocupado</code> o id da tarefa em andamento e desabilite só os controles dela.</li>
+                            <li><strong>Validação e Testes:</strong> crie, marque e exclua tarefas conferindo na aba Rede o método e o status de cada requisição; registre no README uma tabela ação, método e status esperado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: CAMADA DE SERVIÇO, HOOK PERSONALIZADO E CANCELAMENTO -->
+            <div class="card" id="card-3">
+                <h2>🗂️ 3. Camada de Serviço, Hook Personalizado e Cancelamento</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O painel da Entrega Já cresceu: a URL da API está repetida em nove componentes, cada tela reescreve o mesmo trio carregando, erro e dados, e quando alguém troca rápido de pessoa no seletor a lista às vezes mostra as tarefas da pessoa anterior. Como organizar o acesso à API num lugar só e evitar respostas que chegam fora de ordem?</p>
+                </div>
+
+                <p>Um módulo de serviço concentra a URL base, os cabeçalhos e a checagem de status. Um hook personalizado concentra os três estados da busca. E o AbortController, chamado na limpeza do useEffect, cancela a requisição antiga quando a dependência muda, eliminando a condição de corrida.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/learn/reusing-logic-with-custom-hooks" target="_blank" rel="noopener noreferrer">📄 Reutilizando lógica com hooks personalizados — React</a>
+                        <span class="link-desc">Como extrair estados e efeitos repetidos para uma função use própria.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/you-might-not-need-an-effect" target="_blank" rel="noopener noreferrer">📄 Talvez você não precise de um efeito — React</a>
+                        <span class="link-desc">Inclui a seção sobre busca de dados e condições de corrida com a solução pela limpeza do efeito.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noopener noreferrer">📄 AbortController — MDN</a>
+                        <span class="link-desc">O objeto que cancela uma ou mais requisições pelo signal.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank" rel="noopener noreferrer">📄 try...catch — MDN</a>
+                        <span class="link-desc">Captura de erros e como distinguir um cancelamento de uma falha real.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=l6WGzSc7Lng" target="_blank" rel="noopener noreferrer">▶️ Como Estruturar Custom Hooks no React e Evitar Confusões</a>
+                            <span class="link-desc">Dev Junior Alves · 16:43 — Mostra como estruturar custom hooks no React para isolar lógica de busca e estados.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=udY6nLx6etM" target="_blank" rel="noopener noreferrer">▶️ Custom Hooks no React para deixar seu código profissional</a>
+                            <span class="link-desc">João Bibiano · 15:27 — Cria custom hooks para reaproveitar lógica entre componentes e organizar o código.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Serviço de API, Hook useBusca e Troca de Usuário sem Condição de Corrida</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>src/services/api.js</code> e <code>src/hooks/useBusca.js</code> no projeto da aula.</li>
+                            <li><strong>URL Base Única:</strong> em <code>api.js</code>, declare <code>BASE_URL</code> e a função <code>requisitar(caminho, opcoes)</code>, que monta a URL, confere <code>resposta.ok</code> e devolve o JSON.</li>
+                            <li><strong>Cabeçalho Condicional:</strong> envie <code>Content-Type</code> só quando houver <code>body</code>, para não gerar verificações extras do navegador nos GET.</li>
+                            <li><strong>Hook useBusca:</strong> mova <code>dados</code>, <code>carregando</code> e <code>erro</code> para <code>useBusca(caminho)</code>, com um <code>useEffect</code> dependente de <code>[caminho]</code>.</li>
+                            <li><strong>Seletor de Pessoa:</strong> em <code>PainelEquipe.jsx</code>, use <code>useBusca('/users')</code> para preencher um <code>&lt;select&gt;</code> e guarde a escolha em <code>usuarioId</code>.</li>
+                            <li><strong>Lista Dependente:</strong> chame <code>useBusca(`/todos?userId=${usuarioId}`)</code> e mostre as tarefas da pessoa escolhida.</li>
+                            <li><strong>Erro Provocado: Corrida:</strong> com a aba Rede em <em>Slow 3G</em> e ainda sem cancelamento, troque de pessoa várias vezes rápido e observe respostas antigas chegando depois das novas.</li>
+                            <li><strong>Cancelamento:</strong> no efeito, crie <code>const controle = new AbortController()</code>, passe <code>signal: controle.signal</code> e devolva <code>() =&gt; controle.abort()</code>.</li>
+                            <li><strong>Ignorando o Abort:</strong> no <code>catch</code>, só registre o erro se <code>falha.name !== 'AbortError'</code>.</li>
+                            <li><strong>Validação e Testes:</strong> repita a troca rápida e confira as requisições <em>canceled</em> na aba Rede e a lista sempre da pessoa certa; registre no README o papel de cada camada.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

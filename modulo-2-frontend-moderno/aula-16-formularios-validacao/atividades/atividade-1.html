@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Agendamento com Estado Único — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Formulário de Agendamento com Estado Único — Resposta</h1>
+        <p class="subtitulo">Aula 16 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O formulário de agendamento do pet shop fictício Bicho Feliz com cinco campos de tipos diferentes (texto, telefone, select, radio e checkbox) guardados num único objeto de estado e atualizados por uma só função. O resumo abaixo do formulário mostra o estado mudando a cada tecla.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+form.card { max-width: 460px; }
+.campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+fieldset.campo { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+fieldset.campo label { display: flex; gap: 8px; align-items: center; }
+label.check { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+input[aria-invalid=&quot;true&quot;] { border-color: var(--erro); }
+.erro { color: var(--erro); font-size: .85rem; }
+.sucesso { color: var(--primary); font-size: .9rem; }
+pre.resumo { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: .8rem; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+
+// Início: src/components/FormAgendamento.jsx — formulário controlado com estado único
+
+const inicial = { tutor: &#x27;&#x27;, telefone: &#x27;&#x27;, porte: &#x27;pequeno&#x27;, servico: &#x27;banho&#x27;, termos: false };
+
+// Formulário de agendamento em que todos os campos leem e escrevem no mesmo objeto
+function FormAgendamento() {
+  const [form, setForm] = useState(inicial);
+
+  // Atualiza o campo que disparou o evento, tratando checkbox à parte
+  function atualizar(evento) {
+    const { name, value, type, checked } = evento.target;
+    setForm({ ...form, [name]: type === &#x27;checkbox&#x27; ? checked : value });
+  }
+
+  return (
+    &lt;form className=&quot;card&quot;&gt;
+      &lt;h2&gt;Agendar banho — Bicho Feliz&lt;/h2&gt;
+      &lt;div className=&quot;campo&quot;&gt;
+        &lt;label htmlFor=&quot;tutor&quot;&gt;Nome do tutor&lt;/label&gt;
+        &lt;input id=&quot;tutor&quot; name=&quot;tutor&quot; value={form.tutor} onChange={atualizar} /&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;campo&quot;&gt;
+        &lt;label htmlFor=&quot;telefone&quot;&gt;Telefone&lt;/label&gt;
+        &lt;input id=&quot;telefone&quot; name=&quot;telefone&quot; type=&quot;tel&quot; placeholder=&quot;(32) 99999-0000&quot;
+          value={form.telefone} onChange={atualizar} /&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;campo&quot;&gt;
+        &lt;label htmlFor=&quot;porte&quot;&gt;Porte do cachorro&lt;/label&gt;
+        &lt;select id=&quot;porte&quot; name=&quot;porte&quot; value={form.porte} onChange={atualizar}&gt;
+          &lt;option value=&quot;pequeno&quot;&gt;Pequeno&lt;/option&gt;
+          &lt;option value=&quot;medio&quot;&gt;Médio&lt;/option&gt;
+          &lt;option value=&quot;grande&quot;&gt;Grande&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;fieldset className=&quot;campo&quot;&gt;
+        &lt;legend&gt;Serviço&lt;/legend&gt;
+        &lt;label&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;servico&quot; value=&quot;banho&quot;
+            checked={form.servico === &#x27;banho&#x27;} onChange={atualizar} /&gt; Banho
+        &lt;/label&gt;
+        &lt;label&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;servico&quot; value=&quot;banho-tosa&quot;
+            checked={form.servico === &#x27;banho-tosa&#x27;} onChange={atualizar} /&gt; Banho e tosa
+        &lt;/label&gt;
+      &lt;/fieldset&gt;
+      &lt;label className=&quot;check&quot;&gt;
+        &lt;input type=&quot;checkbox&quot; name=&quot;termos&quot; checked={form.termos} onChange={atualizar} /&gt;
+        Li e aceito as regras do pet shop
+      &lt;/label&gt;
+      &lt;p className=&quot;muted&quot;&gt;Resumo ao vivo do estado:&lt;/p&gt;
+      &lt;pre className=&quot;resumo&quot;&gt;{JSON.stringify(form, null, 2)}&lt;/pre&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de FormAgendamento.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;FormAgendamento /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/components/FormAgendamento.jsx</h2>
+        <pre>// Início: src/components/FormAgendamento.jsx — formulário controlado com estado único
+import { useState } from 'react';
+
+const inicial = { tutor: '', telefone: '', porte: 'pequeno', servico: 'banho', termos: false };
+
+// Formulário de agendamento em que todos os campos leem e escrevem no mesmo objeto
+export default function FormAgendamento() {
+  const [form, setForm] = useState(inicial);
+
+  // Atualiza o campo que disparou o evento, tratando checkbox à parte
+  function atualizar(evento) {
+    const { name, value, type, checked } = evento.target;
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  }
+
+  return (
+    &lt;form className="card"&gt;
+      &lt;h2&gt;Agendar banho — Bicho Feliz&lt;/h2&gt;
+      &lt;div className="campo"&gt;
+        &lt;label htmlFor="tutor"&gt;Nome do tutor&lt;/label&gt;
+        &lt;input id="tutor" name="tutor" value={form.tutor} onChange={atualizar} /&gt;
+      &lt;/div&gt;
+      &lt;div className="campo"&gt;
+        &lt;label htmlFor="telefone"&gt;Telefone&lt;/label&gt;
+        &lt;input id="telefone" name="telefone" type="tel" placeholder="(32) 99999-0000"
+          value={form.telefone} onChange={atualizar} /&gt;
+      &lt;/div&gt;
+      &lt;div className="campo"&gt;
+        &lt;label htmlFor="porte"&gt;Porte do cachorro&lt;/label&gt;
+        &lt;select id="porte" name="porte" value={form.porte} onChange={atualizar}&gt;
+          &lt;option value="pequeno"&gt;Pequeno&lt;/option&gt;
+          &lt;option value="medio"&gt;Médio&lt;/option&gt;
+          &lt;option value="grande"&gt;Grande&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;fieldset className="campo"&gt;
+        &lt;legend&gt;Serviço&lt;/legend&gt;
+        &lt;label&gt;
+          &lt;input type="radio" name="servico" value="banho"
+            checked={form.servico === 'banho'} onChange={atualizar} /&gt; Banho
+        &lt;/label&gt;
+        &lt;label&gt;
+          &lt;input type="radio" name="servico" value="banho-tosa"
+            checked={form.servico === 'banho-tosa'} onChange={atualizar} /&gt; Banho e tosa
+        &lt;/label&gt;
+      &lt;/fieldset&gt;
+      &lt;label className="check"&gt;
+        &lt;input type="checkbox" name="termos" checked={form.termos} onChange={atualizar} /&gt;
+        Li e aceito as regras do pet shop
+      &lt;/label&gt;
+      &lt;p className="muted"&gt;Resumo ao vivo do estado:&lt;/p&gt;
+      &lt;pre className="resumo"&gt;{JSON.stringify(form, null, 2)}&lt;/pre&gt;
+    &lt;/form&gt;
+  );
+}
+// Fim de FormAgendamento.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm create vite@latest bicho-feliz -- --template react</code>, <code>cd bicho-feliz</code> e <code>npm install</code></li>
+            <li>Crie <code>src/components/FormAgendamento.jsx</code> com o código acima</li>
+            <li>No <code>App.jsx</code>, importe e renderize <code>&lt;FormAgendamento /&gt;</code></li>
+            <li><code>npm run dev</code> e preencha os campos observando o resumo</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Sem <code>onChange</code>, um <code>value</code> fixo trava o campo e o React avisa no console.</li>
+            <li>O colchete em <code>[name]: value</code> usa o atributo <code>name</code> do campo como chave, por isso uma função atende todos.</li>
+            <li>Clicar no texto do rótulo leva o foco ao campo: é o <code>htmlFor</code> ligado ao <code>id</code>.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

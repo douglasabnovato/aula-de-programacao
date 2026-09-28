@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card de Plano Estilizado Só com Utilitários — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Card de Plano Estilizado Só com Utilitários — Resposta</h1>
+        <p class="subtitulo">Aula 15 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um projeto Vite + React com Tailwind CSS v4 configurado pelo plugin oficial e um card de plano da academia fictícia Pulso Fit estilizado sem nenhuma classe CSS escrita à mão. O demo usa o build de navegador do Tailwind, que serve só para prototipar; no projeto o CSS é gerado pelo Vite.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+
+// Início: src/components/PlanoCard.jsx — card estilizado só com utilitários
+// Card de um plano da academia, com nome, preço, benefícios e botão
+function PlanoCard({ nome, preco, beneficios }) {
+  return (
+    &lt;article className=&quot;max-w-sm space-y-4 rounded-2xl bg-slate-800 p-6 text-slate-100 shadow-md&quot;&gt;
+      &lt;h2 className=&quot;text-2xl font-bold&quot;&gt;{nome}&lt;/h2&gt;
+      &lt;p&gt;
+        &lt;span className=&quot;text-4xl font-extrabold&quot;&gt;R$ {preco}&lt;/span&gt;
+        &lt;span className=&quot;text-sm text-slate-400&quot;&gt; /mês&lt;/span&gt;
+      &lt;/p&gt;
+      &lt;ul className=&quot;list-disc space-y-1 pl-5 text-slate-300&quot;&gt;
+        {beneficios.map((b) =&gt; (
+          &lt;li key={b}&gt;{b}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;button className=&quot;w-full rounded-lg bg-emerald-400 py-2 font-semibold text-slate-900&quot;&gt;
+        Quero este plano
+      &lt;/button&gt;
+    &lt;/article&gt;
+  );
+}
+// Fim de PlanoCard.jsx
+
+// Início: src/App.jsx — página com um card de plano
+
+// Componente raiz: fundo da página e um card centralizado
+function App() {
+  return (
+    &lt;main className=&quot;min-h-screen bg-slate-950 p-8&quot;&gt;
+      &lt;h1 className=&quot;mb-6 text-3xl font-bold text-white&quot;&gt;Planos Pulso Fit&lt;/h1&gt;
+      &lt;PlanoCard nome=&quot;Mensal&quot; preco=&quot;99&quot; beneficios={[&#x27;Musculação livre&#x27;, &#x27;Avaliação física&#x27;, &#x27;App de treinos&#x27;]} /&gt;
+    &lt;/main&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>vite.config.js</h2>
+        <pre>// Início: vite.config.js — Vite com os plugins de React e Tailwind
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+// Fim de vite.config.js</pre>
+        <h2>src/index.css</h2>
+        <pre>/* Início: src/index.css — única linha necessária para ligar o Tailwind */
+@import "tailwindcss";
+/* Fim de index.css */</pre>
+        <h2>src/components/PlanoCard.jsx</h2>
+        <pre>// Início: src/components/PlanoCard.jsx — card estilizado só com utilitários
+// Card de um plano da academia, com nome, preço, benefícios e botão
+export default function PlanoCard({ nome, preco, beneficios }) {
+  return (
+    &lt;article className="max-w-sm space-y-4 rounded-2xl bg-slate-800 p-6 text-slate-100 shadow-md"&gt;
+      &lt;h2 className="text-2xl font-bold"&gt;{nome}&lt;/h2&gt;
+      &lt;p&gt;
+        &lt;span className="text-4xl font-extrabold"&gt;R$ {preco}&lt;/span&gt;
+        &lt;span className="text-sm text-slate-400"&gt; /mês&lt;/span&gt;
+      &lt;/p&gt;
+      &lt;ul className="list-disc space-y-1 pl-5 text-slate-300"&gt;
+        {beneficios.map((b) =&gt; (
+          &lt;li key={b}&gt;{b}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;button className="w-full rounded-lg bg-emerald-400 py-2 font-semibold text-slate-900"&gt;
+        Quero este plano
+      &lt;/button&gt;
+    &lt;/article&gt;
+  );
+}
+// Fim de PlanoCard.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — página com um card de plano
+import PlanoCard from './components/PlanoCard.jsx';
+
+// Componente raiz: fundo da página e um card centralizado
+export default function App() {
+  return (
+    &lt;main className="min-h-screen bg-slate-950 p-8"&gt;
+      &lt;h1 className="mb-6 text-3xl font-bold text-white"&gt;Planos Pulso Fit&lt;/h1&gt;
+      &lt;PlanoCard nome="Mensal" preco="99" beneficios={['Musculação livre', 'Avaliação física', 'App de treinos']} /&gt;
+    &lt;/main&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm create vite@latest pulso-fit -- --template react</code>, <code>cd pulso-fit</code> e <code>npm install</code></li>
+            <li><code>npm install tailwindcss @tailwindcss/vite</code></li>
+            <li>Salve os quatro arquivos acima (o <code>main.jsx</code> gerado pelo Vite já importa o <code>index.css</code>)</li>
+            <li><code>npm run dev</code>; depois <code>npm run build</code> e abra o CSS gerado em <code>dist/assets</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>&lt;h1&gt;</code> sem classes perde tamanho e margem: é o Preflight, o reset de estilos que o Tailwind aplica.</li>
+            <li>O CSS de produção contém só as classes usadas nos arquivos, por isso fica pequeno.</li>
+            <li>Ler a lista de classes descreve o visual inteiro do card, sem abrir outro arquivo.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

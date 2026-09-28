@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 48 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a planejar a semana com meta e capacidade real, medir o próprio fluxo de trabalho para prometer prazos com base em dados e manter um registro técnico que vira evidência do que aprendeu.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 48: Autogestão e Organização de Rotina Técnica</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: A SEMANA COMO UM SPRINT PESSOAL -->
+            <div class="card" id="card-1">
+                <h2>🗓️ 1. A Semana como um Sprint Pessoal</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Rafa, dev júnior fictício de uma agência, começa toda segunda com uma lista de 25 tarefas soltas: bugs, estudo, um curso pela metade e pedidos do chefe no chat. Na sexta, fez muita coisa pequena e nenhuma importante. Como organizar a semana para que o trabalho que importa aconteça antes do urgente engolir tudo?</p>
+                </div>
+
+                <p>As mesmas ideias que organizam um time servem para organizar uma pessoa: uma meta curta para o período, uma lista de trabalho que cabe nele e um horário fixo para planejar e revisar. O Scrum chama isso de sprint com objetivo; na rotina pessoal, vira uma semana com foco declarado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener noreferrer">📄 The Scrum Guide — Sprint e Sprint Goal</a>
+                        <span class="link-desc">Por que o período tem duração fixa e um objetivo único que guia as escolhas dentro dele.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/project-management/sprint-backlog-product-backlog" target="_blank" rel="noopener noreferrer">📄 Product backlog × sprint backlog — Atlassian</a>
+                        <span class="link-desc">A diferença entre a lista de tudo e a lista do período, aplicável à sua própria semana.</span>
+                    </li>
+                    <li>
+                        <a href="https://agilealliance.org/glossary/sprint-backlog/" target="_blank" rel="noopener noreferrer">📄 Sprint backlog — Agile Alliance</a>
+                        <span class="link-desc">A definição curta de lista comprometida para um período, e quem é dono dela.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.intercom.com/blog/first-rule-prioritization-no-snacking/" target="_blank" rel="noopener noreferrer">📄 A primeira regra de priorização: nada de beliscar — Intercom</a>
+                        <span class="link-desc">Por que tarefas fáceis e de pouco valor ocupam a semana, e como evitá-las.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=hDCpLmPIVCE" target="_blank" rel="noopener noreferrer">▶️ Como Planejar Sua Semana em 15 Minutos</a>
+                            <span class="link-desc">Lucas Segalla · 20:30 — Mostra um método para planejar a semana em poucos minutos, definindo prioridades.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=2TRdaWtUQBU" target="_blank" rel="noopener noreferrer">▶️ Planejamento Semanal (passo a passo)</a>
+                            <span class="link-desc">Wendell Carvalho · 10:24 — Apresenta um passo a passo de planejamento semanal com metas e revisão.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Planejando a Semana com Meta, Backlog e Capacidade</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie um repositório <code>rotina-tecnica</code> com o arquivo <code>semana-01.md</code> e um quadro de Projects do GitHub ou em papel com as colunas <code>Semana</code>, <code>Fazendo</code> e <code>Feito</code>.</li>
+                            <li><strong>Despejo Completo:</strong> escreva tudo que está pendente — trabalho, estudo, pedidos — num único arquivo <code>entrada.md</code>, sem ordenar.</li>
+                            <li><strong>Medindo a Capacidade:</strong> conte quantas horas você realmente tem livres na semana, descontando aulas, reuniões e deslocamento.</li>
+                            <li><strong>Meta da Semana:</strong> escreva em uma frase o que precisa estar pronto na sexta para a semana ter valido a pena.</li>
+                            <li><strong>Separando o Que Serve:</strong> marque na entrada os itens que servem à meta e os que são manutenção inevitável.</li>
+                            <li><strong>Erro Provocado:</strong> coloque na coluna Semana todos os itens marcados, some a estimativa em horas e compare com a capacidade do passo 3. Anote a diferença.</li>
+                            <li><strong>Cortando para Caber:</strong> remova itens até a soma ocupar no máximo 70% da capacidade — o resto da semana é para o imprevisto.</li>
+                            <li><strong>Evitando o Beliscar:</strong> identifique as tarefas fáceis e de pouco valor que você faria só para riscar algo, e agrupe-as num único bloco de uma hora.</li>
+                            <li><strong>Marcando os Ritos:</strong> reserve na agenda 20 minutos na segunda para planejar e 20 minutos na sexta para revisar.</li>
+                            <li><strong>Validação e Testes:</strong> na sexta, marque se a meta foi atingida e quantos itens entraram sem estar no plano; registre os dois números no README do repositório.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: FLUXO PESSOAL: WIP, ESTIMATIVA E TROCA DE CONTEXTO -->
+            <div class="card" id="card-2">
+                <h2>🚦 2. Fluxo Pessoal: WIP, Estimativa e Troca de Contexto</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Rafa tem sete tarefas "em andamento" ao mesmo tempo e a sensação de estar sempre ocupado. Quando o chefe pergunta quando o bug do checkout fica pronto, ele responde "amanhã" há quatro dias. Como medir o próprio trabalho para parar de chutar prazos e de abrir tarefa nova antes de fechar a anterior?</p>
+                </div>
+
+                <p>Cada tarefa aberta cobra um custo de retomada quando você volta a ela. Limitar o trabalho em andamento, medir quanto tempo cada item leva do início ao fim e comparar a estimativa com o real são as mesmas métricas de fluxo de um time, aplicadas a uma pessoa.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.atlassian.com/agile/project-management/kanban-metrics" target="_blank" rel="noopener noreferrer">📄 Métricas de Kanban — Atlassian</a>
+                        <span class="link-desc">Lead time, cycle time, WIP e throughput explicados com exemplo de gráfico.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/project-management/metrics" target="_blank" rel="noopener noreferrer">📄 Cinco métricas ágeis úteis — Atlassian</a>
+                        <span class="link-desc">As métricas que ajudam a prever entrega sem virar cobrança.</span>
+                    </li>
+                    <li>
+                        <a href="https://agilealliance.org/glossary/points-estimates-in/" target="_blank" rel="noopener noreferrer">📄 Estimativas em pontos — Agile Alliance</a>
+                        <span class="link-desc">Por que estimar por tamanho relativo costuma errar menos que estimar em horas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/scrum/scrum-metrics" target="_blank" rel="noopener noreferrer">📄 Métricas de Scrum 101 — Atlassian</a>
+                        <span class="link-desc">Como a comparação entre previsto e realizado vira ajuste de planejamento.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7FlI8P-SbAc" target="_blank" rel="noopener noreferrer">▶️ Aprenda a limitar o Wip da sua equipe</a>
+                            <span class="link-desc">Agile School · 12:24 — Explica por que limitar o trabalho em andamento (WIP) melhora o fluxo de entregas.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=GGXnlrz6--8" target="_blank" rel="noopener noreferrer">▶️ TEMPO DE CICLO (CYCLE TIME) | AULA #16 | FUNDAMENTOS DO MÉTODO KANBAN</a>
+                            <span class="link-desc">CANAL VALOR · 4:57 — Explica o tempo de ciclo, métrica útil para medir quanto cada tarefa leva do início ao fim.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Medindo Cycle Time e Erro de Estimativa por Duas Semanas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a planilha <code>fluxo-pessoal</code> com as colunas <code>tarefa</code>, <code>tamanho</code>, <code>estimativa (h)</code>, <code>início</code>, <code>fim</code>, <code>real (h)</code> e <code>interrupções</code>.</li>
+                            <li><strong>Contando o Andamento:</strong> liste tudo que está começado e não terminado hoje e anote o total.</li>
+                            <li><strong>Definindo o Limite:</strong> defina um limite de no máximo duas tarefas em andamento ao mesmo tempo.</li>
+                            <li><strong>Tamanho Antes de Hora:</strong> antes de começar cada tarefa, classifique em P, M ou G e só depois escreva a estimativa em horas.</li>
+                            <li><strong>Registrando o Real:</strong> ao terminar cada tarefa, anote data de fim e horas reais, e quantas vezes você foi interrompido.</li>
+                            <li><strong>Erro Provocado:</strong> durante um dia, ignore o limite e abra uma tarefa nova sempre que surgir um pedido. No fim do dia, conte quantas terminou e compare com um dia respeitando o limite.</li>
+                            <li><strong>Calculando o Cycle Time:</strong> ao fim de duas semanas, calcule a média de dias entre início e fim para cada tamanho P, M e G.</li>
+                            <li><strong>Calculando o Erro:</strong> divida as horas reais pela estimativa em cada tarefa e calcule a média — esse é o seu fator de correção.</li>
+                            <li><strong>Ajustando a Promessa:</strong> reescreva a resposta ao chefe usando o cycle time medido, como <em>"tarefas M costumam levar 3 dias"</em>.</li>
+                            <li><strong>Validação e Testes:</strong> compare o fator de correção da primeira com o da segunda semana; registre no README os números e a regra que você vai adotar ao prometer prazos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: REGISTRO TÉCNICO E REVISÃO SEMANAL -->
+            <div class="card" id="card-3">
+                <h2>📓 3. Registro Técnico e Revisão Semanal</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na avaliação de seis meses, perguntaram ao Rafa o que ele tinha aprendido e quais problemas resolveu. Ele lembrou de três coisas, todas da última semana, e não conseguiu explicar por que tinha escolhido uma biblioteca em vez de outra. Como registrar o trabalho técnico no dia a dia sem transformar isso em mais uma tarefa pesada?</p>
+                </div>
+
+                <p>Memória não é sistema de registro. Um diário técnico curto, uma definição de pronto pessoal e um cartão de aprendizado por semana criam a evidência que depois sustenta avaliação, PDI e entrevista — e tornam visível o que está travando.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.atlassian.com/blog/jira/8-steps-to-a-definition-of-done-in-jira" target="_blank" rel="noopener noreferrer">📄 Oito passos para uma definição de pronto — Atlassian</a>
+                        <span class="link-desc">Como escrever critérios de pronto que valem para qualquer item, adaptáveis ao trabalho individual.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.strategyzer.com/library/capture-customer-insights-and-actions-with-the-learning-card" target="_blank" rel="noopener noreferrer">📄 Learning Card — Strategyzer</a>
+                        <span class="link-desc">O cartão que registra o que foi observado, o que se aprendeu e a decisão que vem daí.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/scrum/artifacts" target="_blank" rel="noopener noreferrer">📄 Artefatos do Scrum — Atlassian</a>
+                        <span class="link-desc">Incremento e compromissos: por que o que é entregue precisa ser visível e verificável.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/project-management/backlog-refinement-meeting" target="_blank" rel="noopener noreferrer">📄 Reunião de refinamento — Atlassian</a>
+                        <span class="link-desc">O ritual de revisar e reordenar a lista, que na rotina pessoal vira a revisão de sexta.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=RB_Zrr4ntW8" target="_blank" rel="noopener noreferrer">▶️ Como eu estudo programação | dicas para anotações</a>
+                            <span class="link-desc">Dev Malú · 15:20 — Um jeito prático de registrar o que se estuda em programação para revisar depois.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=fVMlUd9orf4" target="_blank" rel="noopener noreferrer">▶️ How To Take Notes as a Programmer</a>
+                            <span class="link-desc">isak · 14:20 · em inglês — Método de anotações técnicas de um programador, útil para montar o diário de registro semanal.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Diário Técnico, Pronto Pessoal e Revisão de Sexta</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no repositório <code>rotina-tecnica</code>, crie a pasta <code>diario</code> e o arquivo <code>modelo-dia.md</code> com os campos <code>fiz</code>, <code>travei em</code>, <code>decidi</code> e <code>aprendi</code>.</li>
+                            <li><strong>Primeiro Registro:</strong> preencha o modelo ao fim do dia em no máximo cinco minutos, com uma linha por campo.</li>
+                            <li><strong>Registrando a Decisão:</strong> sempre que escolher uma ferramenta ou abordagem, escreva no campo <code>decidi</code> a opção descartada e o motivo.</li>
+                            <li><strong>Pronto Pessoal:</strong> escreva em <code>pronto.md</code> de quatro a seis critérios que uma tarefa sua precisa cumprir, como <em>"testado no celular"</em> e <em>"commit com mensagem descritiva"</em>.</li>
+                            <li><strong>Erro Provocado:</strong> entregue uma tarefa sem conferir o <code>pronto.md</code> e anote o que voltou para correção depois. Compare com uma tarefa em que conferiu.</li>
+                            <li><strong>Cartão de Aprendizado:</strong> toda sexta, preencha um cartão: <em>observamos que ... aprendemos que ... portanto vamos ...</em>.</li>
+                            <li><strong>Revisão de Sexta:</strong> leia os registros da semana e marque o que se repetiu no campo <code>travei em</code>.</li>
+                            <li><strong>Reordenando:</strong> atualize a entrada da próxima semana com base no que travou, como faria num refinamento de backlog.</li>
+                            <li><strong>Tornando Pesquisável:</strong> use títulos com data no formato <code>2026-09-28.md</code> e palavras-chave no início de cada linha para achar depois.</li>
+                            <li><strong>Validação e Testes:</strong> depois de duas semanas, tente responder por escrito, só com o diário, <em>"que problema difícil você resolveu e por que escolheu aquela solução?"</em>; registre no README se o diário bastou.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro de Apresentação e Rubrica de Avaliação | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Roteiro de Apresentação e Rubrica de Avaliação</h1>
+        <p class="subtitulo">Aula 50 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O roteiro de dez minutos em sete blocos, as respostas preparadas para perguntas difíceis e a rubrica usada pela banca, conhecida pela dupla antes da apresentação.</p>
+        </div>
+        <h2>Roteiro de 10 minutos</h2>
+        <ol>
+            <li><strong>Problema</strong> (1 min) — quem sofre, o que acontece hoje e quanto custa.</li>
+            <li><strong>Evidência</strong> (1 min) — duas falas literais ou um número da pesquisa.</li>
+            <li><strong>Meta</strong> (1 min) — a Product Goal e como saberemos que chegamos.</li>
+            <li><strong>Hipótese</strong> (1 min) — a suposição mais arriscada e o cartão de teste.</li>
+            <li><strong>Escopo</strong> (3 min) — story map, primeira fatia e protótipo testado.</li>
+            <li><strong>Métricas</strong> (1 min) — North Star e a métrica da primeira fatia.</li>
+            <li><strong>Próximos passos e cortes</strong> (2 min) — o que ficou fora, por quê e quando volta.</li>
+        </ol>
+        <h2>docs/03-perguntas-dificeis.md</h2>
+        <pre># Perguntas difíceis — Carona Campus
+
+P: Pedimos um app. Por que a primeira entrega é uma lista feita à mão?
+R: Porque o maior risco é confiança entre vizinhos (bloco Hipótese).
+   Se ninguém aceitar carona, o app não resolve nada.
+
+P: Por que não tem pagamento?
+R: Nenhum entrevistado citou custo; citaram horário e segurança (bloco Evidência).
+
+P: Como vocês sabem que deu certo?
+R: 20 caronas concluídas em 2 semanas no teste; depois, a North Star
+   de caronas concluídas por semana (bloco Métricas).
+
+P: E quem não é do bairro?
+R: Está na fatia 3 do roadmap; primeiro provamos o modelo num bairro só.
+
+P: Quem garante que o motorista é confiável?
+R: O código da associação na fatia 1 e a nota após a viagem na fatia 2.
+</pre>
+        <h2>rubrica.md</h2>
+        <pre># Rubrica — Projeto Integrado de Estratégia de Produto
+Escala: 0 ausente | 1 parcial | 2 adequado | 3 exemplar
+
+| Critério                                   | 0 | 1 | 2 | 3 |
+|--------------------------------------------|---|---|---|---|
+| Problema descrito sem citar a solução      |   |   |   |   |
+| Evidência real (fala ou número) apresentada|   |   |   |   |
+| Meta de produto mensurável                 |   |   |   |   |
+| Hipótese com critério definido antes       |   |   |   |   |
+| Primeira fatia cruza a jornada inteira     |   |   |   |   |
+| Histórias com critérios de aceite          |   |   |   |   |
+| Métricas ligadas à meta                    |   |   |   |   |
+| Protótipo testado e ajustado               |   |   |   |   |
+| Cortes explicados pelo problema            |   |   |   |   |
+| Respostas apoiadas em dado, não em opinião |   |   |   |   |
+
+Total: ___ / 30   Aprovação: 18 ou mais, sem nenhum critério em 0.
+</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O bloco Escopo tem mais tempo porque é onde a banca mais pergunta.</li>
+            <li>Cada resposta preparada aponta o bloco da apresentação que a sustenta.</li>
+            <li>A rubrica avalia raciocínio e evidência, não a beleza dos slides.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

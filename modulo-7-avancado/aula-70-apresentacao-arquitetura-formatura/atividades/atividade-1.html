@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento de Arquitetura — Modelo para o Projeto Final | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Documento de Arquitetura — Modelo para o Projeto Final</h1>
+        <p class="subtitulo">Aula 70 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um documento de arquitetura enxuto, inspirado no arc42 e com diagramas C4 em Mermaid, preenchido para o caso fictício Saúde Perto. O aluno copia a estrutura e substitui o conteúdo pelo do próprio projeto.</p>
+        </div>
+        <h2>docs/arquitetura.md</h2>
+        <pre>&lt;!-- Início: documento de arquitetura da plataforma fictícia Saúde Perto --&gt;
+# Arquitetura — Saúde Perto
+
+## 1. Objetivos
+- Pacientes de cidades pequenas marcam e fazem teleconsulta sem instalar aplicativo.
+- Médicos veem o histórico do paciente antes da consulta.
+- A clínica recebe o pagamento no ato do agendamento.
+
+## 2. Atributos de qualidade prioritários
+| Atributo | Cenário mensurável |
+|----------|--------------------|
+| Disponibilidade | 99,5% das tentativas de agendamento bem-sucedidas em 28 dias |
+| Segurança | Nenhum médico acessa exame de paciente que não é seu (teste automatizado de IDOR) |
+| Desempenho | p95 da busca de horários abaixo de 400 ms com 300 usuários simultâneos |
+
+## 3. Contexto (C4 nível 1)
+```mermaid
+flowchart LR
+  paciente([Paciente]) --&gt; sp[Saúde Perto]
+  medico([Médico]) --&gt; sp
+  sp --&gt; pag[Gateway de pagamento]
+  sp --&gt; video[Serviço de vídeo]
+  sp --&gt; email[Serviço de e-mail]
+```
+
+## 4. Contêineres (C4 nível 2)
+```mermaid
+flowchart LR
+  web[Web app React] --&gt;|HTTPS/JSON| api[API Node/Express]
+  api --&gt;|SQL| db[(PostgreSQL)]
+  api --&gt;|publica eventos| fila[[Fila de mensagens]]
+  fila --&gt; worker[Worker de notificações]
+  worker --&gt; email[Serviço de e-mail]
+  api --&gt;|HTTPS com timeout e circuit breaker| pag[Gateway de pagamento]
+```
+
+## 5. Fluxo crítico: agendar consulta
+1. Web chama `GET /horarios` na API.
+2. API consulta o PostgreSQL com índice por médico e data.
+3. Web envia `POST /agendamentos` com chave de idempotência.
+4. API cobra no gateway com timeout de 2 s e retry com jitter.
+5. API grava o agendamento e publica `agendamento.criado` na fila.
+6. Worker envia a confirmação por e-mail.
+
+## 6. Decisões
+- ADR 001 — Monolito modular em vez de microsserviços
+- ADR 002 — Fila para notificações, fora do caminho da requisição
+- ADR 003 — Circuit breaker no gateway com agendamento pendente como alternativa
+
+## 7. Riscos e dívidas
+| Risco | Mitigação | Aceito? |
+|-------|-----------|---------|
+| Gateway fora do ar no pico | Circuit breaker e confirmação posterior | Sim, com alerta |
+| Banco único sem réplica | Backup diário com restauração testada | Sim, até 5 mil consultas/mês |
+
+## 8. Glossário
+**Agendamento pendente:** reserva de horário aguardando confirmação do pagamento, válida por 15 minutos.
+&lt;!-- Fim de arquitetura.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Copie o arquivo para <code>docs/arquitetura.md</code> do seu projeto</li>
+            <li>Substitua os objetivos e cenários pelos seus, sempre com número</li>
+            <li>Ajuste os diagramas Mermaid; o GitHub renderiza os blocos <code>mermaid</code> automaticamente</li>
+            <li>Crie um arquivo em <code>docs/adr/</code> para cada decisão listada na seção 6</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Cada atributo de qualidade tem um cenário que pode ser testado, e não um adjetivo como 'rápido' ou 'seguro'.</li>
+            <li>Os dois diagramas têm níveis de zoom diferentes e não misturam contêiner com classe ou tela.</li>
+            <li>O fluxo crítico retoma as práticas do módulo: índice, idempotência, timeout, retry, fila e circuit breaker.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

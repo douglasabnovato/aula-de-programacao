@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 14 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a dar endereço próprio a cada tela de uma aplicação React, ler parâmetros da URL e proteger áreas restritas com layouts aninhados.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 14: Roteamento com React Router</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: SPAS E ROTAS DECLARATIVAS -->
+            <div class="card" id="card-1">
+                <h2>🧭 1. SPAs e Rotas Declarativas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O site fictício da Livraria Ipê tem Início, Catálogo e Contato num único componente, alternados por um estado e três condicionais. Quando o cliente recarrega a página ou manda o link do catálogo para uma amiga, o site abre sempre no Início. Como dar a cada tela o próprio endereço sem recarregar o site a cada clique?</p>
+                </div>
+
+                <p>Numa SPA o navegador baixa o HTML uma vez e o JavaScript troca as telas. O React Router liga cada endereço a um componente, mantém o histórico do navegador funcionando e troca só a parte da tela que mudou.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Glossary/SPA" target="_blank" rel="noopener noreferrer">📄 SPA (Single-page application) — MDN</a>
+                        <span class="link-desc">O que caracteriza uma aplicação de página única e o que ela deixa de fazer em relação ao site tradicional.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" target="_blank" rel="noopener noreferrer">📄 History API — MDN</a>
+                        <span class="link-desc">A API do navegador que o roteador usa por baixo para mudar a URL sem pedir uma página nova ao servidor.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/start/declarative/routing" target="_blank" rel="noopener noreferrer">📄 Routing — React Router</a>
+                        <span class="link-desc">Como declarar Routes e Route no modo declarativo, incluindo rotas aninhadas e rota coringa.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/start/declarative/navigating" target="_blank" rel="noopener noreferrer">📄 Navigating — React Router</a>
+                        <span class="link-desc">Link, NavLink e navegação por código: as formas de trocar de rota.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7b42lVMdEjE" target="_blank" rel="noopener noreferrer">▶️ React Router: O guia completo para navegação em aplicativos React</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 25:10 — Guia sobre React Router: configurar rotas, páginas e navegação numa SPA.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=p_MEEFIBTps" target="_blank" rel="noopener noreferrer">▶️ Introdução a Rotas no React com React Router | Recorte</a>
+                            <span class="link-desc">Felipe Rocha · 10:35 — Introdução às rotas no React com React Router e à navegação sem recarregar a página.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Três Páginas com BrowserRouter, Routes e Link</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto com <code>npm create vite@latest livraria-ipe -- --template react</code>, entre na pasta e rode <code>npm install</code>.</li>
+                            <li><strong>Instalando o Roteador:</strong> rode <code>npm install react-router</code> e confira a versão registrada no <code>package.json</code>.</li>
+                            <li><strong>Criando as Páginas:</strong> crie <code>src/pages</code> com <code>Inicio.jsx</code>, <code>Catalogo.jsx</code> e <code>Contato.jsx</code>, cada um devolvendo um <code>&lt;h1&gt;</code> e um parágrafo.</li>
+                            <li><strong>Envolvendo a Aplicação:</strong> no <code>main.jsx</code>, importe <code>BrowserRouter</code> de <code>react-router</code> e envolva o <code>&lt;App /&gt;</code> com ele.</li>
+                            <li><strong>Declarando as Rotas:</strong> no <code>App.jsx</code>, escreva um <code>&lt;Routes&gt;</code> com um <code>&lt;Route path="/" element={&lt;Inicio /&gt;} /&gt;</code> para cada página.</li>
+                            <li><strong>Erro Provocado: a Tag Errada:</strong> monte o menu com <code>&lt;a href="/catalogo"&gt;</code>, abra a aba Rede do DevTools e observe o documento inteiro sendo baixado de novo a cada clique.</li>
+                            <li><strong>Trocando por Link:</strong> substitua cada <code>&lt;a&gt;</code> por <code>&lt;Link to="/catalogo"&gt;</code> e confirme na aba Rede que só a tela muda.</li>
+                            <li><strong>Página Não Encontrada:</strong> crie <code>NaoEncontrada.jsx</code> e registre a rota <code>path="*"</code> para qualquer endereço sem correspondência.</li>
+                            <li><strong>Organizando o Menu:</strong> extraia o menu para <code>src/components/Menu.jsx</code> e coloque-o fora do <code>&lt;Routes&gt;</code>, para aparecer em todas as páginas.</li>
+                            <li><strong>Validação e Testes:</strong> navegue pelo menu, use voltar e avançar do navegador, recarregue em <code>/catalogo</code> e digite <code>/qualquer-coisa</code>; registre no README a diferença entre <code>&lt;a&gt;</code> e <code>&lt;Link&gt;</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ROTAS DINÂMICAS E PARÂMETROS DE URL -->
+            <div class="card" id="card-2">
+                <h2>🔗 2. Rotas Dinâmicas e Parâmetros de URL</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O catálogo da Livraria Ipê tem 300 livros, e escrever uma rota para cada um é inviável. Além disso, a equipe de vendas quer mandar para os clientes o link do catálogo já filtrado em "Infantis". Como uma única rota atende qualquer livro e o filtro fica guardado no próprio endereço?</p>
+                </div>
+
+                <p>Um segmento dinâmico como :id transforma parte da URL em parâmetro, lido com useParams. A query string (?categoria=) guarda estados que valem a pena compartilhar, lidos e escritos com useSearchParams.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://reactrouter.com/start/declarative/url-values" target="_blank" rel="noopener noreferrer">📄 URL Values — React Router</a>
+                        <span class="link-desc">Parâmetros de rota, query string e location: os três jeitos de ler dados da URL.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/api/hooks/useParams" target="_blank" rel="noopener noreferrer">📄 useParams — React Router</a>
+                        <span class="link-desc">Referência do hook que devolve os segmentos dinâmicos da rota atual.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/api/hooks/useSearchParams" target="_blank" rel="noopener noreferrer">📄 useSearchParams — React Router</a>
+                        <span class="link-desc">Como ler e atualizar a query string sem montar a URL à mão.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/URLSearchParams" target="_blank" rel="noopener noreferrer">📄 URLSearchParams — MDN</a>
+                        <span class="link-desc">A API nativa que o hook devolve: get, set, delete e has.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=rvS-TdtM8Ak" target="_blank" rel="noopener noreferrer">▶️ Aprenda React Router Dom v6 agora mesmo - Mini Curso</a>
+                            <span class="link-desc">Otávio Miranda · 51:33 — Mini curso de React Router v6 que cobre a criação de rotas e a leitura de parâmetros da URL.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=wRk5o-pZxEU" target="_blank" rel="noopener noreferrer">▶️ ReactJS - Como extrair parâmetros da url com React Router.</a>
+                            <span class="link-desc">Vinicius Dacal · 3:18 — Demonstra de forma rápida como extrair parâmetros da URL com React Router.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Catálogo com Página de Detalhe e Filtro na URL</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto da prática anterior, crie <code>src/data/livros.js</code> exportando um array de 6 livros fictícios com <code>id</code>, <code>titulo</code>, <code>autora</code>, <code>categoria</code> e <code>preco</code>.</li>
+                            <li><strong>Listando o Catálogo:</strong> em <code>Catalogo.jsx</code>, percorra os livros com <code>map</code> e gere um <code>&lt;Link to={`/livros/${livro.id}`}&gt;</code> para cada um.</li>
+                            <li><strong>Rota Dinâmica:</strong> no <code>App.jsx</code>, registre <code>&lt;Route path="/livros/:id" element={&lt;DetalheLivro /&gt;} /&gt;</code>.</li>
+                            <li><strong>Lendo o Parâmetro:</strong> em <code>DetalheLivro.jsx</code>, leia <code>const { id } = useParams()</code> e mostre o valor na tela.</li>
+                            <li><strong>Erro Provocado: Tipos:</strong> busque com <code>livros.find((l) =&gt; l.id === id)</code> e observe que nenhum livro é encontrado: o parâmetro chega como texto.</li>
+                            <li><strong>Ajuste da Busca:</strong> converta com <code>Number(id)</code> e confirme que título, autora e preço aparecem.</li>
+                            <li><strong>Livro Inexistente:</strong> quando o <code>find</code> devolver <code>undefined</code>, mostre uma mensagem e um link de volta ao catálogo.</li>
+                            <li><strong>Filtro na URL:</strong> no catálogo, use <code>const [searchParams, setSearchParams] = useSearchParams()</code> e leia <code>searchParams.get('categoria')</code>.</li>
+                            <li><strong>Botões de Categoria:</strong> crie um botão por categoria chamando <code>setSearchParams({ categoria: 'infantil' })</code> e um botão Todas com <code>setSearchParams({})</code>.</li>
+                            <li><strong>Validação e Testes:</strong> abra direto <code>/livros/3</code> e <code>/livros/99</code>, copie a URL filtrada para outra aba e confirme o mesmo resultado; registre no README por que o filtro foi para a URL e não para um <code>useState</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: LAYOUTS ANINHADOS E ROTAS PROTEGIDAS -->
+            <div class="card" id="card-3">
+                <h2>🧱 3. Layouts Aninhados e Rotas Protegidas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Livraria Ipê ganhou uma área do cliente com Pedidos e Dados. As duas telas repetem o mesmo menu lateral copiado e colado, e qualquer pessoa que digite /conta/pedidos na barra de endereço vê a tela sem ter entrado. Como compartilhar o layout entre as telas e barrar quem não está logado?</p>
+                </div>
+
+                <p>Rotas aninhadas deixam um componente pai desenhar a moldura e um Outlet marcar onde entra a tela filha. Um componente guardião decide, antes de renderizar, se libera o Outlet ou redireciona com Navigate.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://reactrouter.com/api/components/Outlet" target="_blank" rel="noopener noreferrer">📄 Outlet — React Router</a>
+                        <span class="link-desc">O ponto do layout onde a rota filha ativa é renderizada.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/api/components/NavLink" target="_blank" rel="noopener noreferrer">📄 NavLink — React Router</a>
+                        <span class="link-desc">Link que sabe se está ativo, para destacar a tela atual no menu.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/api/components/Navigate" target="_blank" rel="noopener noreferrer">📄 Navigate — React Router</a>
+                        <span class="link-desc">Redirecionamento declarativo, usado no guardião de rotas.</span>
+                    </li>
+                    <li>
+                        <a href="https://reactrouter.com/api/hooks/useNavigate" target="_blank" rel="noopener noreferrer">📄 useNavigate — React Router</a>
+                        <span class="link-desc">Navegação por código, por exemplo depois de um login bem-sucedido.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=AdxvaMiVSbk" target="_blank" rel="noopener noreferrer">▶️ React Router OUTLET Você Precisa Saber Como Usar Esse Recurso!</a>
+                            <span class="link-desc">João Bibiano · 13:26 — Explica como usar o Outlet para montar layouts com rotas aninhadas no React Router.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=CYg0IuI24BU" target="_blank" rel="noopener noreferrer">▶️ O que fazem index e Outlet no React Router #cortes</a>
+                            <span class="link-desc">Roger Melo | JavaScript · 10:08 — Mostra a função das rotas index e do Outlet em rotas aninhadas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Área do Cliente com Layout Compartilhado e Rota Protegida</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>src/layouts/LayoutConta.jsx</code>, <code>src/components/RotaProtegida.jsx</code> e <code>src/pages/Conta.jsx</code> com as telas Resumo, Pedidos, Dados e Entrar.</li>
+                            <li><strong>Rota Pai:</strong> declare <code>&lt;Route path="/conta" element={&lt;LayoutConta /&gt;}&gt;</code> com as filhas <code>pedidos</code> e <code>dados</code>, em caminho relativo, sem barra no início.</li>
+                            <li><strong>Erro Provocado: Sem Outlet:</strong> acesse <code>/conta/pedidos</code> com o layout ainda sem <code>&lt;Outlet /&gt;</code> e observe que só o menu lateral aparece.</li>
+                            <li><strong>Ajuste com Outlet:</strong> coloque <code>&lt;Outlet /&gt;</code> na área principal do layout e confirme que a tela filha surge ao lado do menu.</li>
+                            <li><strong>Rota Índice:</strong> adicione <code>&lt;Route index element={&lt;Resumo /&gt;} /&gt;</code> para o que aparece em <code>/conta</code> sem nada depois.</li>
+                            <li><strong>Link Ativo:</strong> troque os links do menu lateral por <code>NavLink</code> com <code>className={({ isActive }) =&gt; isActive ? 'ativo' : ''}</code>.</li>
+                            <li><strong>Estado de Sessão:</strong> no <code>App.jsx</code>, crie <code>const [usuario, setUsuario] = useState(null)</code>; na tela Entrar, grave o usuário e chame <code>navegar('/conta')</code> vindo de <code>useNavigate()</code>.</li>
+                            <li><strong>Guardião de Rotas:</strong> em <code>RotaProtegida.jsx</code>, devolva <code>&lt;Navigate to="/entrar" replace /&gt;</code> quando não houver usuário e <code>&lt;Outlet /&gt;</code> quando houver.</li>
+                            <li><strong>Encaixando o Guardião:</strong> envolva a rota <code>/conta</code> com <code>&lt;Route element={&lt;RotaProtegida usuario={usuario} /&gt;}&gt;</code>.</li>
+                            <li><strong>Validação e Testes:</strong> tente abrir <code>/conta/pedidos</code> sem login, entre, navegue pelo menu lateral, saia e use o botão voltar; registre no README o que o <code>replace</code> mudou no histórico.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

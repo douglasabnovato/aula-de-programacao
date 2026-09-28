@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 15 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a estilizar componentes React com Tailwind CSS, construir layouts responsivos com estados de interação e tema escuro, e centralizar a identidade visual em tokens e componentes reutilizáveis.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 15: Estilização com Tailwind CSS</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: UTILITY-FIRST E CONFIGURAÇÃO COM VITE -->
+            <div class="card" id="card-1">
+                <h2>🎨 1. Utility-First e Configuração com Vite</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A academia fictícia Pulso Fit tem um arquivo CSS de 1.200 linhas com classes como card-plano-destaque-novo2, e ninguém sabe o que pode ser apagado sem quebrar outra tela. A nova página de planos precisa sair esta semana. Como estilizar sem inventar mais nomes de classe e sem medo de efeito colateral?</p>
+                </div>
+
+                <p>O Tailwind entrega classes utilitárias pequenas, cada uma com uma responsabilidade (espaçamento, cor, tamanho), aplicadas direto no JSX. O estilo fica ao lado do componente e o CSS final contém só as classes que o projeto usa.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://tailwindcss.com/docs/styling-with-utility-classes" target="_blank" rel="noopener noreferrer">📄 Styling with utility classes — Tailwind CSS</a>
+                        <span class="link-desc">A ideia central do utility-first e por que ela reduz o CSS que cresce sem controle.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/installation/using-vite" target="_blank" rel="noopener noreferrer">📄 Instalação com Vite — Tailwind CSS</a>
+                        <span class="link-desc">O passo a passo oficial com o plugin @tailwindcss/vite.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/preflight" target="_blank" rel="noopener noreferrer">📄 Preflight — Tailwind CSS</a>
+                        <span class="link-desc">O reset de estilos base que explica por que títulos e listas perdem a aparência padrão.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/installation/play-cdn" target="_blank" rel="noopener noreferrer">📄 Play CDN — Tailwind CSS</a>
+                        <span class="link-desc">O build de navegador para prototipar sem instalar nada, e por que ele não vai para produção.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=hFHT1m13r-w" target="_blank" rel="noopener noreferrer">▶️ How to install Tailwind CSS v4 to Vite and React project</a>
+                            <span class="link-desc">DevPush · 4:00 — Mostra a instalação do Tailwind CSS v4 num projeto React criado com Vite.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=DL3IPyEXRKU" target="_blank" rel="noopener noreferrer">▶️ CURSO DE TAILWIND PARA INICIANES | Tutorial Tailwind do ZERO</a>
+                            <span class="link-desc">Fernanda Kipper · 47:38 — Curso introdutório de Tailwind cobrindo a abordagem utility-first e as classes mais usadas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Card de Plano Estilizado Só com Utilitários</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto com <code>npm create vite@latest pulso-fit -- --template react</code> e instale <code>npm install tailwindcss @tailwindcss/vite</code>.</li>
+                            <li><strong>Plugin no Vite:</strong> no <code>vite.config.js</code>, importe <code>tailwindcss</code> de <code>@tailwindcss/vite</code> e adicione <code>tailwindcss()</code> à lista <code>plugins</code>.</li>
+                            <li><strong>Ligando o Tailwind:</strong> apague o conteúdo de <code>src/index.css</code> e deixe só <code>@import "tailwindcss";</code>.</li>
+                            <li><strong>Primeiro Utilitário:</strong> no <code>App.jsx</code>, escreva <code>&lt;h1 className="text-3xl font-bold"&gt;</code> e confira o resultado no navegador.</li>
+                            <li><strong>Erro Provocado: Sem Plugin:</strong> remova <code>tailwindcss()</code> do <code>vite.config.js</code>, reinicie o servidor e observe que as classes continuam no HTML mas nenhum estilo é aplicado; depois recoloque o plugin.</li>
+                            <li><strong>Estrutura do Card:</strong> crie <code>PlanoCard.jsx</code> com um <code>&lt;article className="rounded-2xl bg-slate-800 p-6"&gt;</code>.</li>
+                            <li><strong>Tipografia:</strong> use <code>text-2xl font-bold</code> no nome, <code>text-4xl</code> no preço e <code>text-slate-400</code> nos detalhes.</li>
+                            <li><strong>Espaçamento e Lista:</strong> aplique <code>space-y-4</code> no card e <code>list-disc pl-5</code> na lista de benefícios, que o Preflight deixou sem marcadores.</li>
+                            <li><strong>Botão do Plano:</strong> estilize o botão com <code>w-full rounded-lg bg-emerald-400 py-2 font-semibold</code>.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>npm run build</code>, abra o CSS em <code>dist/assets</code> e procure uma classe que você não usou; registre no README o tamanho do arquivo e o que o Preflight mudou.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: RESPONSIVIDADE, ESTADOS E MODO ESCURO -->
+            <div class="card" id="card-2">
+                <h2>📱 2. Responsividade, Estados e Modo Escuro</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Oito em cada dez alunos da Pulso Fit abrem a página de planos no celular, onde os três cards ficam espremidos lado a lado. O botão também não dá retorno ao passar o mouse nem ao navegar pelo teclado, e parte do público pediu tema escuro. Como resolver os três pontos sem escrever media query à mão?</p>
+                </div>
+
+                <p>Prefixos como md: e lg: aplicam um utilitário a partir de uma largura de tela, no modelo mobile-first. Prefixos de estado (hover:, focus-visible:, disabled:) e o dark: seguem a mesma lógica para interação e tema.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://tailwindcss.com/docs/responsive-design" target="_blank" rel="noopener noreferrer">📄 Responsive design — Tailwind CSS</a>
+                        <span class="link-desc">Pontos de quebra, mobile-first e como combinar prefixos de largura.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/hover-focus-and-other-states" target="_blank" rel="noopener noreferrer">📄 Hover, focus e outros estados — Tailwind CSS</a>
+                        <span class="link-desc">A lista de prefixos de estado, incluindo focus-visible e disabled.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/dark-mode" target="_blank" rel="noopener noreferrer">📄 Dark mode — Tailwind CSS</a>
+                        <span class="link-desc">O prefixo dark: e como trocar a preferência do sistema por uma classe controlada pelo app.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS/Guides/Media_queries/Using" target="_blank" rel="noopener noreferrer">📄 Usando media queries — MDN</a>
+                        <span class="link-desc">O mecanismo de CSS que os prefixos geram por baixo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=U4MmK2LnFj4" target="_blank" rel="noopener noreferrer">▶️ Dark mode com TailwindCSS em 7 minutos</a>
+                            <span class="link-desc">Kewa Code · 7:38 — Mostra como implementar modo escuro com o prefixo dark: do Tailwind CSS.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=vIBKSmWAdIA" target="_blank" rel="noopener noreferrer">▶️ The Best Way to Handle Dark Mode with TailwindCSS</a>
+                            <span class="link-desc">Tom Is Loading · 3:49 · em inglês — Mostra em inglês uma forma de alternar o modo escuro com Tailwind CSS.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Grade de Planos Responsiva com Estados e Tema Escuro</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto anterior, crie <code>src/data/planos.js</code> com três planos (Mensal, Semestral, Anual), um deles com <code>destaque: true</code>.</li>
+                            <li><strong>Mobile Primeiro:</strong> monte a grade com <code>grid gap-6</code> e confira no modo dispositivo do DevTools, em 375px, que os cards ficam um embaixo do outro.</li>
+                            <li><strong>Pontos de Quebra:</strong> acrescente <code>md:grid-cols-2 lg:grid-cols-3</code> e redimensione a janela até ver as três versões.</li>
+                            <li><strong>Erro Provocado: Lógica Invertida:</strong> troque para <code>grid-cols-3 sm:grid-cols-1</code> e observe três colunas espremidas no celular: sem prefixo vale para todas as larguras.</li>
+                            <li><strong>Ajuste Mobile-First:</strong> volte para a versão base de uma coluna e anote no código a regra: o prefixo significa "a partir de".</li>
+                            <li><strong>Resposta ao Mouse:</strong> adicione <code>transition hover:-translate-y-1 hover:shadow-lg</code> no card e <code>hover:bg-emerald-600</code> no botão.</li>
+                            <li><strong>Foco pelo Teclado:</strong> use <code>focus-visible:outline-2 focus-visible:outline-offset-2</code> no botão e percorra a página só com Tab.</li>
+                            <li><strong>Plano em Destaque:</strong> escolha as classes de borda e fundo com um ternário sobre <code>plano.destaque</code> e mostre um selo "Mais escolhido".</li>
+                            <li><strong>Modo Escuro por Classe:</strong> no <code>index.css</code>, declare <code>@custom-variant dark (&amp;:where(.dark, .dark *));</code>, crie um estado <code>escuro</code> que aplica a classe <code>dark</code> e use <code>dark:bg-slate-800</code> nos cards.</li>
+                            <li><strong>Validação e Testes:</strong> teste 375px, 768px e 1280px, navegue com Tab e alterne o tema; registre no README uma captura de cada largura.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: TEMA PRÓPRIO E COMPONENTES REUTILIZÁVEIS -->
+            <div class="card" id="card-3">
+                <h2>🧩 3. Tema Próprio e Componentes Reutilizáveis</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O verde da Pulso Fit aparece como emerald-400 num arquivo, emerald-500 em outro e #34d399 num terceiro, e os mesmos cinco utilitários de botão estão copiados em 14 componentes. O marketing vai trocar a cor da marca no mês que vem. Como centralizar as decisões de design sem voltar ao CSS de 1.200 linhas?</p>
+                </div>
+
+                <p>No Tailwind v4 as decisões de design viram variáveis dentro de @theme, e cada uma gera utilitários com o nome da marca. A repetição de classes se resolve com um componente React com variantes, e não com uma classe CSS nova para cada caso.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://tailwindcss.com/docs/theme" target="_blank" rel="noopener noreferrer">📄 Theme variables — Tailwind CSS</a>
+                        <span class="link-desc">Como o @theme define cores, fontes e espaçamentos que viram utilitários.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/colors" target="_blank" rel="noopener noreferrer">📄 Colors — Tailwind CSS</a>
+                        <span class="link-desc">A paleta padrão e como acrescentar ou substituir cores do projeto.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/adding-custom-styles" target="_blank" rel="noopener noreferrer">📄 Adding custom styles — Tailwind CSS</a>
+                        <span class="link-desc">Valores arbitrários, camadas e quando escrever CSS próprio faz sentido.</span>
+                    </li>
+                    <li>
+                        <a href="https://tailwindcss.com/docs/functions-and-directives" target="_blank" rel="noopener noreferrer">📄 Functions and directives — Tailwind CSS</a>
+                        <span class="link-desc">Referência de @import, @theme, @custom-variant e das demais diretivas usadas na aula.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=TaBYZtTWs-c" target="_blank" rel="noopener noreferrer">▶️ Tailwind CSS v4 Themes in React - The Easy Way</a>
+                            <span class="link-desc">Mitter - Your Tech Mate · 10:46 — Mostra como criar temas próprios no Tailwind CSS v4 dentro de um projeto React.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=oXq_9aPYiug" target="_blank" rel="noopener noreferrer">▶️ TailwindCSS: o que há de novo na V4</a>
+                            <span class="link-desc">Codante - Evolua no front-end · 12:28 — Apresenta as novidades do Tailwind v4, como a configuração do tema por variáveis CSS.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Tokens da Marca e Componente Botao com Variantes</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra <code>src/index.css</code> e liste, buscando no projeto, todas as cores verdes usadas hoje.</li>
+                            <li><strong>Token de Cor:</strong> declare <code>@theme { --color-marca: #22c55e; --color-marca-escura: #15803d; }</code> abaixo do <code>@import</code>.</li>
+                            <li><strong>Usando o Token:</strong> troque <code>bg-emerald-400</code> por <code>bg-marca</code> e <code>text-emerald-500</code> por <code>text-marca</code>.</li>
+                            <li><strong>Fonte da Marca:</strong> declare <code>--font-titulo</code> no <code>@theme</code> e aplique <code>font-titulo</code> no título principal.</li>
+                            <li><strong>Erro Provocado: Classe Montada:</strong> escreva <code>className={`bg-${cor}-500`}</code> com <code>cor = 'emerald'</code> e observe que o fundo não aparece: o Tailwind só gera classes escritas por inteiro no código.</li>
+                            <li><strong>Ajuste com Mapa:</strong> crie um objeto <code>variantes</code> com strings completas, como <code>primario: 'bg-marca text-white hover:bg-marca-escura'</code>.</li>
+                            <li><strong>Componente Botao:</strong> crie <code>Botao.jsx</code> recebendo <code>variante</code>, <code>children</code> e <code>...resto</code>, repassando o resto ao <code>&lt;button&gt;</code>.</li>
+                            <li><strong>Tamanhos:</strong> adicione a prop <code>tamanho</code> com um segundo mapa (<code>sm</code> e <code>md</code>) e valor padrão <code>'md'</code>.</li>
+                            <li><strong>Substituição Global:</strong> troque os botões dos cards pelo <code>&lt;Botao&gt;</code> e mude <code>--color-marca</code> para outra cor para ver a página inteira acompanhar.</li>
+                            <li><strong>Validação e Testes:</strong> busque por <code>emerald</code> no projeto e confirme zero resultados fora do tema; registre no README a tabela de tokens e as variantes do Botao.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

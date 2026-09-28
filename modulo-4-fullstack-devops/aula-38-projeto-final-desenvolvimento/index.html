@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 38 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a construir o núcleo do projeto final a partir do contrato, proteger as rotas com autenticação, ligar o frontend à API e garantir a qualidade com testes e revisão em dupla.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 38: Projeto Final Fullstack — Parte 2 (Desenvolvimento e API)</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MODELO DE DADOS E ROTAS DO NÚCLEO -->
+            <div class="card" id="card-1">
+                <h2>🗄️ 1. Modelo de Dados e Rotas do Núcleo</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na Agenda Lírio, a primeira versão da rota de criar agendamento aceitou dois horários sobrepostos para a mesma profissional, e a busca da agenda do dia levou quatro segundos com mil registros de teste. O contrato está pronto desde a aula passada. Como construir as rotas do núcleo para que respeitem o contrato, protejam a regra de negócio e continuem rápidas com dado de verdade?</p>
+                </div>
+
+                <p>O núcleo do projeto são as poucas rotas que resolvem o problema do escopo. Elas nascem do contrato, gravam num esquema versionado por migrações, validam a entrada e deixam o banco garantir o que não pode dar errado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/indexes.html" target="_blank" rel="noopener noreferrer">📄 Índices — documentação do PostgreSQL</a>
+                        <span class="link-desc">Quando um índice acelera a consulta e qual o custo dele na escrita.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Injection Prevention — OWASP</a>
+                        <span class="link-desc">Por que consulta parametrizada é a defesa principal contra injeção de SQL.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/en/guide/error-handling.html" target="_blank" rel="noopener noreferrer">📄 Tratamento de Erros no Express</a>
+                        <span class="link-desc">O middleware de erro único que transforma falhas do banco em respostas do contrato.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">📄 Códigos de Status HTTP — MDN</a>
+                        <span class="link-desc">Qual status devolver em cada situação prevista no contrato: 201, 400, 404 e 409.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=QOKk1PzGLeI" target="_blank" rel="noopener noreferrer">▶️ Aulão de Migrations no Sequelize</a>
+                            <span class="link-desc">LuizTools · 39:52 — Explica migrations para versionar o esquema do banco, com exemplos no Sequelize.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=69cMbxc06nk" target="_blank" rel="noopener noreferrer">▶️ Vincular Node.js com Express ao PostgreSQL via Prisma - tutorial completo - Aula 03</a>
+                            <span class="link-desc">Dev. Odair Michael · 56:37 — Conecta uma API Express ao PostgreSQL via Prisma, do modelo de dados às rotas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Implementando as Rotas do MVP a partir do Contrato</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba o projeto com <code>docker compose up</code>, abra o <code>docs/openapi.yaml</code> ao lado e crie a pasta <code>api/migracoes/</code>.</li>
+                            <li><strong>Primeira Migração:</strong> escreva <code>001_criar_tabelas.sql</code> com as tabelas do <code>ARQUITETURA.md</code>, chaves estrangeiras e <code>NOT NULL</code> onde o dado é obrigatório.</li>
+                            <li><strong>Aplicando a Migração:</strong> crie o script <code>npm run migrar</code> que executa os arquivos da pasta em ordem e registre quais já rodaram numa tabela de controle.</li>
+                            <li><strong>Camadas:</strong> organize cada recurso em rota, controlador e repositório, como no Módulo 3.</li>
+                            <li><strong>Rota de Listagem:</strong> implemente o <code>GET</code> do núcleo exatamente com os campos e o formato do contrato.</li>
+                            <li><strong>Rota de Criação:</strong> implemente o <code>POST</code> validando a entrada e devolvendo <code>400</code> com o esquema de erro do contrato.</li>
+                            <li><strong>Erro Provocado:</strong> crie dois registros que violam a regra de negócio principal ao mesmo tempo e confirme que a validação só no código deixou passar.</li>
+                            <li><strong>Regra no Banco:</strong> acrescente uma migração <code>002</code> com a restrição no banco e traduza a violação para <code>409</code> no middleware de erro.</li>
+                            <li><strong>Índice da Consulta Principal:</strong> insira mil registros de teste, rode <code>EXPLAIN ANALYZE</code> na listagem, crie o índice na coluna filtrada e compare o tempo.</li>
+                            <li><strong>Validação e Testes:</strong> percorra cada rota do contrato com o Thunder Client ou Insomnia, confira status e formato, mova a issue para Feito e registre no README o tempo da consulta antes e depois do índice.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: AUTENTICAÇÃO E INTEGRAÇÃO COM O FRONTEND -->
+            <div class="card" id="card-2">
+                <h2>🔐 2. Autenticação e Integração com o Frontend</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A recepção do Studio Lírio vai usar a Agenda Lírio num computador compartilhado, e qualquer pessoa que descobrir o endereço da API consegue hoje cancelar agendamentos. Ao mesmo tempo, a tela de agenda ainda mostra dados fixos no código. Como proteger as rotas e ligar o frontend à API real sem deixar a sessão exposta?</p>
+                </div>
+
+                <p>Autenticação responde quem é a pessoa; autorização responde o que ela pode fazer. Com senha guardada como hash, token assinado com prazo e tratamento do 401 no frontend, o fluxo completo fica protegido de ponta a ponta.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Authentication Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Mensagens de erro de login, limite de tentativas e o que não fazer ao autenticar.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Password Storage Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Por que a senha vira hash lento com sal e nunca é guardada nem registrada em texto.</span>
+                    </li>
+                    <li>
+                        <a href="https://jwt.io/introduction" target="_blank" rel="noopener noreferrer">📄 Introdução ao JWT — jwt.io</a>
+                        <span class="link-desc">As três partes do token, o que a assinatura garante e o que ela não esconde.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS" target="_blank" rel="noopener noreferrer">📄 CORS — MDN</a>
+                        <span class="link-desc">Por que o navegador bloqueia a chamada entre origens e como a API libera só o frontend certo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=QOGnkj3T_q0" target="_blank" rel="noopener noreferrer">▶️ Autenticação Segura com JWT no Node.js e React (Access Token + Expiration)</a>
+                            <span class="link-desc">Hashtag Dev · 36:30 — Implementa autenticação com JWT entre uma API Node.js e um frontend React, com expiração do token.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=YcH2kxqK3nc" target="_blank" rel="noopener noreferrer">▶️ Estratégias de autenticação entre front-end e back-end com JWT (cookies storage)</a>
+                            <span class="link-desc">Rocketseat · 6:18 — Compara estratégias de guardar o JWT no front-end, como cookies e storage.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Login, Rotas Protegidas e Tela Ligada à API</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> na API, rode <code>npm install bcrypt jsonwebtoken cors</code> e acrescente <code>JWT_SECRET</code> ao <code>.env.example</code> com valor fictício.</li>
+                            <li><strong>Cadastro Inicial:</strong> crie um script de semente que cadastra uma usuária de teste com <code>bcrypt.hash</code> e custo 10.</li>
+                            <li><strong>Rota de Login:</strong> crie <code>POST /auth/login</code> que compara a senha com <code>bcrypt.compare</code> e devolve um token com <code>expiresIn: '8h'</code>.</li>
+                            <li><strong>Mensagem Única:</strong> responda <code>401</code> com a mesma mensagem para e-mail inexistente e senha errada.</li>
+                            <li><strong>Middleware de Autenticação:</strong> leia o cabeçalho <code>Authorization: Bearer</code>, valide com <code>jwt.verify</code> e guarde o usuário em <code>req.usuario</code>.</li>
+                            <li><strong>Protegendo as Rotas:</strong> aplique o middleware às rotas de escrita e deixe pública só a consulta de horários livres.</li>
+                            <li><strong>Erro Provocado:</strong> no frontend, chame a API sem configurar CORS e leia o bloqueio no console do navegador.</li>
+                            <li><strong>Origem Liberada:</strong> configure <code>cors({ origin: process.env.ORIGEM_FRONT })</code> e confirme que a chamada passa só dessa origem.</li>
+                            <li><strong>Frontend Ligado:</strong> troque os dados fixos pela camada <code>src/api/cliente.js</code> da aula 31, enviando o token e tratando carregando, erro e vazio.</li>
+                            <li><strong>Validação e Testes:</strong> percorra o roteiro de testes da atividade 2, incluindo token expirado e token alterado, e registre no README como o frontend reage a cada <code>401</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: TESTES, PULL REQUESTS E REVISÃO EM DUPLA -->
+            <div class="card" id="card-3">
+                <h2>🧪 3. Testes, Pull Requests e Revisão em Dupla</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na véspera da entrega, a correção de um bug no cadastro da Agenda Lírio quebrou a remarcação e ninguém percebeu até a apresentação de ensaio. Os pull requests do time têm título 'ajustes' e são aprovados em trinta segundos. Como fazer a esteira e a revisão entre colegas pegarem o problema antes de ele chegar na main?</p>
+                </div>
+
+                <p>Teste automatizado prova que o critério de aceite continua valendo depois de cada mudança. Pull request pequeno e bem descrito, revisado por outra pessoa com um roteiro, pega o que o teste não cobre: nome confuso, regra esquecida e caso não pensado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://nodejs.org/api/test.html" target="_blank" rel="noopener noreferrer">📄 Test Runner nativo — API oficial do Node</a>
+                        <span class="link-desc">Escrever e rodar testes com node --test, sem instalar framework.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/PullRequest.html" target="_blank" rel="noopener noreferrer">📄 Pull Request — Martin Fowler</a>
+                        <span class="link-desc">O que um pull request resolve, o que ele atrasa e como manter o fluxo andando.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/developer/" target="_blank" rel="noopener noreferrer">📄 Guia do Autor de Code Review — Google</a>
+                        <span class="link-desc">Como escrever descrição de mudança e manter o pull request pequeno.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/standard.html" target="_blank" rel="noopener noreferrer">📄 O Padrão de Revisão — Google</a>
+                        <span class="link-desc">O critério para aprovar: a mudança melhora a saúde do código, mesmo sem ser perfeita.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=3wr0G5jz7_o" target="_blank" rel="noopener noreferrer">▶️ Dicas para melhorar seus Pull Requests e Code Reviews!</a>
+                            <span class="link-desc">Waldemar Neto - Dev Lab · 16:36 — Dá dicas para abrir pull requests menores e fazer code reviews mais úteis.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=_7W9pqWPyfc" target="_blank" rel="noopener noreferrer">▶️ CODE REVIEW (Como Essa Prática Funciona?) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 13:40 — Explica como funciona a prática de code review e o que observar ao revisar um PR.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Critérios de Aceite como Testes e Revisão Cruzada</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>api/test/</code> e acrescente <code>"test": "node --test"</code> nos scripts do <code>package.json</code>.</li>
+                            <li><strong>Separando o App:</strong> exporte o <code>app</code> do Express num arquivo e deixe o <code>listen</code> em outro, para o teste subir a API numa porta livre.</li>
+                            <li><strong>Critério Vira Teste:</strong> escolha um critério de aceite do <code>ESCOPO.md</code> e escreva o teste com o mesmo Dado, Quando, Então.</li>
+                            <li><strong>Caso de Erro:</strong> escreva o teste da regra de negócio principal esperando <code>409</code>.</li>
+                            <li><strong>Teste de Autenticação:</strong> escreva o teste que chama uma rota protegida sem token e espera <code>401</code>.</li>
+                            <li><strong>Portão na Esteira:</strong> acrescente <code>npm test</code> ao job da API no <code>ci.yml</code>, com um serviço PostgreSQL de teste.</li>
+                            <li><strong>Modelo de Pull Request:</strong> crie <code>.github/pull_request_template.md</code> com o modelo da atividade 3.</li>
+                            <li><strong>Erro Provocado:</strong> abra um PR que altera a validação da regra principal e confirme que o teste barra a mesclagem.</li>
+                            <li><strong>Revisão Cruzada:</strong> troque PRs com outra dupla e revise seguindo o roteiro da atividade 3, deixando pelo menos um comentário de pergunta.</li>
+                            <li><strong>Validação e Testes:</strong> responda os comentários recebidos, mescle só com a esteira verde e registre no README quantos testes existem e quais critérios eles cobrem.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

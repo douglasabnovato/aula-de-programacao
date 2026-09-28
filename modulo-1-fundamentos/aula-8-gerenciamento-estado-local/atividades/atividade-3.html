@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hábito Diário — Estado Salvo no Navegador | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Hábito Diário — Estado Salvo no Navegador</h1>
+        <p class="subtitulo">Aula 8 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma grade de hábitos por dia da semana cujo estado é salvo no <code>localStorage</code> a cada clique e restaurado ao abrir a página. A leitura é protegida contra dado corrompido e contra navegadores que bloqueiam o armazenamento.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.tabela-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+th,
+td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+input[type=&quot;checkbox&quot;] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+button.perigo {
+  background: var(--danger);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Hábito Diário&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Marque os dias, recarregue a página e confira que nada se perdeu.&lt;/p&gt;
+  &lt;div class=&quot;tabela-wrap&quot;&gt;
+    &lt;table id=&quot;grade&quot;&gt;&lt;/table&gt;
+  &lt;/div&gt;
+  &lt;p id=&quot;aviso&quot; class=&quot;muted&quot;&gt;&lt;/p&gt;
+  &lt;div class=&quot;linha&quot;&gt;
+    &lt;button id=&quot;btnCorromper&quot; class=&quot;neutro&quot;&gt;Corromper dado salvo&lt;/button&gt;
+    &lt;button id=&quot;btnLimpar&quot; class=&quot;perigo&quot;&gt;Limpar dados&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: rastreador de hábitos com estado salvo no localStorage
+const CHAVE = &#x27;habito-diario:v1&#x27;;
+const DIAS = [&#x27;Seg&#x27;, &#x27;Ter&#x27;, &#x27;Qua&#x27;, &#x27;Qui&#x27;, &#x27;Sex&#x27;, &#x27;Sáb&#x27;, &#x27;Dom&#x27;];
+
+const grade = document.querySelector(&#x27;#grade&#x27;);
+const aviso = document.querySelector(&#x27;#aviso&#x27;);
+
+// cria o estado inicial com todos os dias desmarcados
+const estadoInicial = () =&gt; ({
+  habitos: [&#x27;Beber 2 L de água&#x27;, &#x27;Estudar 30 min&#x27;, &#x27;Caminhar&#x27;].map((nome) =&gt; ({ nome, dias: DIAS.map(() =&gt; false) }))
+});
+
+// mostra uma mensagem de situação do armazenamento
+const avisar = (texto, classe = &#x27;muted&#x27;) =&gt; {
+  aviso.textContent = texto;
+  aviso.className = classe;
+};
+
+// lê o estado salvo, com volta ao inicial se estiver ausente ou inválido
+const carregar = () =&gt; {
+  try {
+    const texto = localStorage.getItem(CHAVE);
+    if (!texto) return estadoInicial();
+    const salvo = JSON.parse(texto);
+    avisar(&#x27;Estado restaurado do navegador.&#x27;, &#x27;ok&#x27;);
+    return salvo;
+  } catch (erro) {
+    avisar(`Dado salvo inválido ou armazenamento bloqueado (${erro.name}). Começando do zero.`, &#x27;erro&#x27;);
+    return estadoInicial();
+  }
+};
+
+let estado = carregar();
+
+// grava o estado atual como texto JSON
+const salvar = () =&gt; {
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify(estado));
+  } catch (erro) {
+    avisar(&#x27;Não foi possível salvar neste navegador.&#x27;, &#x27;erro&#x27;);
+  }
+};
+
+// redesenha a grade de hábitos a partir do estado
+const render = () =&gt; {
+  const cabecalho = `&lt;tr&gt;&lt;th&gt;Hábito&lt;/th&gt;${DIAS.map((d) =&gt; `&lt;th&gt;${d}&lt;/th&gt;`).join(&#x27;&#x27;)}&lt;th&gt;Total&lt;/th&gt;&lt;/tr&gt;`;
+  const linhas = estado.habitos
+    .map((h, hi) =&gt; `&lt;tr&gt;&lt;td&gt;${h.nome}&lt;/td&gt;${h.dias.map((feito, di) =&gt; `&lt;td&gt;&lt;input type=&quot;checkbox&quot; aria-label=&quot;${h.nome} ${DIAS[di]}&quot; data-habito=&quot;${hi}&quot; data-dia=&quot;${di}&quot; ${feito ? &#x27;checked&#x27; : &#x27;&#x27;}&gt;&lt;/td&gt;`).join(&#x27;&#x27;)}&lt;td&gt;${h.dias.filter(Boolean).length}/7&lt;/td&gt;&lt;/tr&gt;`)
+    .join(&#x27;&#x27;);
+  grade.innerHTML = cabecalho + linhas;
+};
+
+// alterna um dia de um hábito, salva e redesenha
+const aoMarcar = (evento) =&gt; {
+  const caixa = evento.target.closest(&#x27;input[data-habito]&#x27;);
+  if (!caixa) return;
+  const hi = Number(caixa.dataset.habito);
+  const di = Number(caixa.dataset.dia);
+  estado = {
+    habitos: estado.habitos.map((h, i) =&gt; (i === hi ? { ...h, dias: h.dias.map((v, j) =&gt; (j === di ? !v : v)) } : h))
+  };
+  salvar();
+  render();
+};
+
+// grava um texto inválido na chave para testar a proteção da leitura
+const corromper = () =&gt; {
+  try {
+    localStorage.setItem(CHAVE, &#x27;{quebrado&#x27;);
+    avisar(&#x27;Dado corrompido gravado. Recarregue a página para ver a proteção agir.&#x27;, &#x27;erro&#x27;);
+  } catch (erro) {
+    avisar(&#x27;Armazenamento bloqueado neste navegador.&#x27;, &#x27;erro&#x27;);
+  }
+};
+
+// apaga a chave e volta ao estado inicial
+const limpar = () =&gt; {
+  try {
+    localStorage.removeItem(CHAVE);
+  } catch (erro) {
+    avisar(&#x27;Armazenamento bloqueado neste navegador.&#x27;, &#x27;erro&#x27;);
+  }
+  estado = estadoInicial();
+  avisar(&#x27;Dados apagados.&#x27;);
+  render();
+};
+
+grade.addEventListener(&#x27;change&#x27;, aoMarcar);
+document.querySelector(&#x27;#btnCorromper&#x27;).addEventListener(&#x27;click&#x27;, corromper);
+document.querySelector(&#x27;#btnLimpar&#x27;).addEventListener(&#x27;click&#x27;, limpar);
+render();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Hábito Diário — Estado Salvo no Navegador --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Hábito Diário — Estado Salvo no Navegador&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Hábito Diário&lt;/h1&gt;
+    &lt;p class="sub"&gt;Marque os dias, recarregue a página e confira que nada se perdeu.&lt;/p&gt;
+    &lt;div class="tabela-wrap"&gt;
+      &lt;table id="grade"&gt;&lt;/table&gt;
+    &lt;/div&gt;
+    &lt;p id="aviso" class="muted"&gt;&lt;/p&gt;
+    &lt;div class="linha"&gt;
+      &lt;button id="btnCorromper" class="neutro"&gt;Corromper dado salvo&lt;/button&gt;
+      &lt;button id="btnLimpar" class="perigo"&gt;Limpar dados&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.tabela-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+th,
+td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+button.perigo {
+  background: var(--danger);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: rastreador de hábitos com estado salvo no localStorage
+const CHAVE = 'habito-diario:v1';
+const DIAS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+
+const grade = document.querySelector('#grade');
+const aviso = document.querySelector('#aviso');
+
+// cria o estado inicial com todos os dias desmarcados
+const estadoInicial = () =&gt; ({
+  habitos: ['Beber 2 L de água', 'Estudar 30 min', 'Caminhar'].map((nome) =&gt; ({ nome, dias: DIAS.map(() =&gt; false) }))
+});
+
+// mostra uma mensagem de situação do armazenamento
+const avisar = (texto, classe = 'muted') =&gt; {
+  aviso.textContent = texto;
+  aviso.className = classe;
+};
+
+// lê o estado salvo, com volta ao inicial se estiver ausente ou inválido
+const carregar = () =&gt; {
+  try {
+    const texto = localStorage.getItem(CHAVE);
+    if (!texto) return estadoInicial();
+    const salvo = JSON.parse(texto);
+    avisar('Estado restaurado do navegador.', 'ok');
+    return salvo;
+  } catch (erro) {
+    avisar(`Dado salvo inválido ou armazenamento bloqueado (${erro.name}). Começando do zero.`, 'erro');
+    return estadoInicial();
+  }
+};
+
+let estado = carregar();
+
+// grava o estado atual como texto JSON
+const salvar = () =&gt; {
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify(estado));
+  } catch (erro) {
+    avisar('Não foi possível salvar neste navegador.', 'erro');
+  }
+};
+
+// redesenha a grade de hábitos a partir do estado
+const render = () =&gt; {
+  const cabecalho = `&lt;tr&gt;&lt;th&gt;Hábito&lt;/th&gt;${DIAS.map((d) =&gt; `&lt;th&gt;${d}&lt;/th&gt;`).join('')}&lt;th&gt;Total&lt;/th&gt;&lt;/tr&gt;`;
+  const linhas = estado.habitos
+    .map((h, hi) =&gt; `&lt;tr&gt;&lt;td&gt;${h.nome}&lt;/td&gt;${h.dias.map((feito, di) =&gt; `&lt;td&gt;&lt;input type="checkbox" aria-label="${h.nome} ${DIAS[di]}" data-habito="${hi}" data-dia="${di}" ${feito ? 'checked' : ''}&gt;&lt;/td&gt;`).join('')}&lt;td&gt;${h.dias.filter(Boolean).length}/7&lt;/td&gt;&lt;/tr&gt;`)
+    .join('');
+  grade.innerHTML = cabecalho + linhas;
+};
+
+// alterna um dia de um hábito, salva e redesenha
+const aoMarcar = (evento) =&gt; {
+  const caixa = evento.target.closest('input[data-habito]');
+  if (!caixa) return;
+  const hi = Number(caixa.dataset.habito);
+  const di = Number(caixa.dataset.dia);
+  estado = {
+    habitos: estado.habitos.map((h, i) =&gt; (i === hi ? { ...h, dias: h.dias.map((v, j) =&gt; (j === di ? !v : v)) } : h))
+  };
+  salvar();
+  render();
+};
+
+// grava um texto inválido na chave para testar a proteção da leitura
+const corromper = () =&gt; {
+  try {
+    localStorage.setItem(CHAVE, '{quebrado');
+    avisar('Dado corrompido gravado. Recarregue a página para ver a proteção agir.', 'erro');
+  } catch (erro) {
+    avisar('Armazenamento bloqueado neste navegador.', 'erro');
+  }
+};
+
+// apaga a chave e volta ao estado inicial
+const limpar = () =&gt; {
+  try {
+    localStorage.removeItem(CHAVE);
+  } catch (erro) {
+    avisar('Armazenamento bloqueado neste navegador.', 'erro');
+  }
+  estado = estadoInicial();
+  avisar('Dados apagados.');
+  render();
+};
+
+grade.addEventListener('change', aoMarcar);
+document.querySelector('#btnCorromper').addEventListener('click', corromper);
+document.querySelector('#btnLimpar').addEventListener('click', limpar);
+render();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Marque alguns dias e recarregue a página (F5).</li>
+            <li>Clique em 'Corromper dado salvo' e recarregue de novo.</li>
+            <li>Abra DevTools › Application › Local Storage para ver a chave <code>habito-diario:v1</code>.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>localStorage</code> só guarda texto: sem <code>JSON.stringify</code>, o estado viraria <code>[object Object]</code>.</li>
+            <li>Com o dado corrompido, o <code>JSON.parse</code> lança <code>SyntaxError</code>, o <code>catch</code> avisa e a página abre com o estado inicial em vez de quebrar.</li>
+            <li>O <code>:v1</code> na chave permite mudar o formato do estado no futuro sem ler um dado antigo incompatível.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

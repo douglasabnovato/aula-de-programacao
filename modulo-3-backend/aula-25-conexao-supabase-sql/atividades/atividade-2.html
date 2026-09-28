@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositório Supabase — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Repositório Supabase — Código de Referência</h1>
+        <p class="subtitulo">Aula 25 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um repositório que cumpre o mesmo contrato do adaptador em memória, agora gravando no Postgres do Supabase. O núcleo da aplicação não muda: só a linha de instanciação no <code>server.js</code>.</p>
+        </div>
+        <h2>src/infra/db/supabase.js</h2>
+        <pre>// Início: cliente Supabase único para a API, usando a chave secreta que só existe no servidor
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY, {
+  auth: { persistSession: false }
+});
+
+module.exports = supabase;
+// Fim de supabase.js</pre>
+        <h2>src/infra/repositories/TarefaSupabaseRepository.js</h2>
+        <pre>// Início: repositório que cumpre o contrato de tarefas consultando o Supabase
+const supabase = require('../db/supabase');
+
+class TarefaSupabaseRepository {
+  // devolve todas as tarefas ordenadas por id
+  async buscarTodos() {
+    const { data, error } = await supabase.from('tarefas').select('id, titulo, feita').order('id');
+    if (error) throw error;
+    return data;
+  }
+
+  // devolve a tarefa do id ou null quando não existe
+  async buscarPorId(id) {
+    const { data, error } = await supabase
+      .from('tarefas')
+      .select('id, titulo, feita')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  }
+
+  // grava a tarefa e devolve a linha criada com id
+  async salvar(tarefa) {
+    const { data, error } = await supabase
+      .from('tarefas')
+      .insert({ titulo: tarefa.titulo, feita: tarefa.feita, projeto_id: tarefa.projetoId })
+      .select('id, titulo, feita')
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  // devolve as tarefas com o nome do projeto numa única consulta
+  async buscarComProjeto() {
+    const { data, error } = await supabase.from('tarefas').select('id, titulo, projetos(nome)').order('id');
+    if (error) throw error;
+    return data;
+  }
+}
+
+module.exports = TarefaSupabaseRepository;
+// Fim de TarefaSupabaseRepository.js</pre>
+        <h2>server.js</h2>
+        <pre>// Início: ponto de entrada que escolhe o adaptador de dados na borda do sistema
+require('dotenv').config();
+const criarApp = require('./src/app');
+const TarefaSupabaseRepository = require('./src/infra/repositories/TarefaSupabaseRepository');
+
+const app = criarApp(new TarefaSupabaseRepository());
+const PORTA = process.env.PORT || 3000;
+
+app.listen(PORTA, () =&gt; console.log(`API ligada ao Supabase em http://localhost:${PORTA}`));
+// Fim de server.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install @supabase/supabase-js dotenv</code></li>
+            <li>Preencha <code>SUPABASE_URL</code> e <code>SUPABASE_SECRET_KEY</code> no <code>.env</code></li>
+            <li><code>node server.js</code></li>
+            <li>Crie uma tarefa, reinicie a API e liste de novo</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A entidade <code>Tarefa</code> precisa carregar <code>projetoId</code> para que o repositório saiba em qual projeto gravar.</li>
+            <li><code>maybeSingle</code> devolve <code>null</code> quando não acha; <code>single</code> devolveria erro — a escolha muda quem decide o 404.</li>
+            <li>A chave secreta ignora o RLS: é por isso que ela só pode existir no servidor e nunca num arquivo enviado ao navegador.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

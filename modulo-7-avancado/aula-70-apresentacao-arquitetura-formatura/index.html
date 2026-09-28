@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 70 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a documentar a arquitetura do projeto final com C4, arc42 e ADRs, defendê-la diante de uma banca com trade-offs e números, e fechar a formação com uma entrega publicada e um plano de 90 dias.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 70: Apresentação de Soluções de Arquitetura e Formatura Master</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: DOCUMENTANDO A SOLUÇÃO: C4, ARC42 E ADRS -->
+            <div class="card" id="card-1">
+                <h2>📐 1. Documentando a Solução: C4, arc42 e ADRs</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Para a formatura do Módulo 7, cada aluno apresenta a arquitetura de uma solução para um caso fictício, como a plataforma de telemedicina Saúde Perto. Na banca anterior, metade dos diagramas misturava servidor, classe e tela no mesmo desenho, e ninguém conseguia dizer por que uma tecnologia tinha sido escolhida. Como documentar a solução para que outra pessoa entenda o sistema, as fronteiras e as decisões sem precisar do autor ao lado?</p>
+                </div>
+
+                <p>Documentação de arquitetura boa é curta, em camadas e ligada às decisões. O modelo C4 organiza os diagramas por nível de zoom (contexto, contêineres, componentes), o arc42 dá um esqueleto de seções para o texto e os ADRs registram cada escolha com o custo aceito. Juntos, eles viram o material-base da defesa.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://c4model.com/" target="_blank" rel="noopener noreferrer">📄 The C4 model for visualising software architecture</a>
+                        <span class="link-desc">Os quatro níveis de diagrama e a notação mínima para que cada caixa tenha significado claro.</span>
+                    </li>
+                    <li>
+                        <a href="https://arc42.org/overview" target="_blank" rel="noopener noreferrer">📄 arc42 — visão geral do template</a>
+                        <span class="link-desc">As seções de um documento de arquitetura enxuto, de requisitos de qualidade a riscos.</span>
+                    </li>
+                    <li>
+                        <a href="https://adr.github.io/" target="_blank" rel="noopener noreferrer">📄 Architecture Decision Records</a>
+                        <span class="link-desc">Formatos e exemplos para registrar cada decisão, retomando a prática da aula 61.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams" target="_blank" rel="noopener noreferrer">📄 Creating diagrams — GitHub Docs</a>
+                        <span class="link-desc">Como escrever diagramas Mermaid direto no Markdown para que a documentação viva no repositório.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=lI2gOnIlsHM" target="_blank" rel="noopener noreferrer">▶️ Documente arquitetura de software com o Modelo C4!</a>
+                            <span class="link-desc">Giuliana Bezerra · 19:33 — Mostra como documentar arquitetura de software com o modelo C4.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=n0uPRtQ8wuY" target="_blank" rel="noopener noreferrer">▶️ C4 Model - Documentando a arquitetura do seu software</a>
+                            <span class="link-desc">André Secco · 34:14 — Explica os níveis do C4 Model (contexto, contêiner, componente) e como documentar cada um.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Escrevendo o Documento de Arquitetura do Projeto Final</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha o caso da banca (Saúde Perto ou o seu projeto) e crie <code>docs/arquitetura.md</code> e <code>docs/adr/</code> no repositório.</li>
+                            <li><strong>Objetivos e Qualidade:</strong> escreva os três objetivos de negócio e os três atributos de qualidade prioritários, cada um com um cenário mensurável.</li>
+                            <li><strong>Diagrama de Contexto:</strong> desenhe em Mermaid o sistema como uma caixa só, com usuários e sistemas externos ao redor.</li>
+                            <li><strong>Diagrama de Contêineres:</strong> abra a caixa: aplicações, APIs, bancos e filas, cada um com tecnologia e protocolo nas setas.</li>
+                            <li><strong>Erro Provocado:</strong> desenhe um diagrama misturando contêiner, classe e tela, mostre a um colega por 30 segundos e anote o que ele não conseguiu explicar.</li>
+                            <li><strong>Fluxo Crítico:</strong> descreva a jornada principal passo a passo pelos contêineres, como um trace da aula 67.</li>
+                            <li><strong>Decisões:</strong> escreva três ADRs, usando o que foi estudado no módulo: resiliência, segurança, observabilidade ou IA.</li>
+                            <li><strong>Riscos e Dívidas:</strong> liste os riscos conhecidos da solução, com o que foi feito para mitigar e o que ficou aceito.</li>
+                            <li><strong>Glossário:</strong> defina os termos de negócio usados no documento para que a banca e o time falem a mesma língua.</li>
+                            <li><strong>Validação e Testes:</strong> peça a alguém de outra equipe que leia só o documento e explique o sistema em dois minutos; registre as dúvidas e corrija o texto.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: APRESENTAÇÃO E DEFESA DA ARQUITETURA -->
+            <div class="card" id="card-2">
+                <h2>🎤 2. Apresentação e Defesa da Arquitetura</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Cada aluno tem 15 minutos diante de uma banca de instrutores e convidados do mercado para apresentar sua solução, e mais 10 minutos de perguntas. No ensaio, a maioria gastou 12 minutos em telas e tecnologia e não chegou aos trade-offs, e travou quando perguntaram 'o que acontece se o banco cair?'. Como estruturar a apresentação para que a banca entenda o problema, a solução e as escolhas, e como responder bem a perguntas que expõem as fraquezas do projeto?</p>
+                </div>
+
+                <p>Uma defesa de arquitetura é uma conversa sobre decisões, não um tour pelo código. A estrutura que funciona vai do problema ao contexto, à solução em níveis, aos trade-offs e aos números, e reserva espaço para os riscos. Responder bem a uma pergunta difícil passa por reconhecer o limite, mostrar o raciocínio e dizer o que faria com mais tempo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/workbook/non-abstract-design/" target="_blank" rel="noopener noreferrer">📄 Non-Abstract Large System Design — Google SRE Workbook</a>
+                        <span class="link-desc">Como sair do desenho abstrato e defender a solução com estimativas concretas de capacidade.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/" target="_blank" rel="noopener noreferrer">📄 Design principles — Azure Architecture Center</a>
+                        <span class="link-desc">Princípios de desenho que servem de vocabulário para justificar escolhas diante da banca.</span>
+                    </li>
+                    <li>
+                        <a href="https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/design-patterns" target="_blank" rel="noopener noreferrer">📄 Design patterns that support performance efficiency — Azure Well-Architected</a>
+                        <span class="link-desc">Os padrões e trade-offs de desempenho que costumam aparecer nas perguntas de banca.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/comments.html" target="_blank" rel="noopener noreferrer">📄 How to write code review comments — Google</a>
+                        <span class="link-desc">Como dar e receber crítica técnica com respeito, útil para a rodada de perguntas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=343p-0E_9eE" target="_blank" rel="noopener noreferrer">▶️ Aprenda a criar uma Solução de Arquitetura de Software do ZERO com base em um case</a>
+                            <span class="link-desc">Pisani da ArcH · 22:24 — Mostra como construir e justificar uma solução de arquitetura a partir de um case.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9g7twJrXqoY" target="_blank" rel="noopener noreferrer">▶️ System Design: Escalando uma Arquitetura do Zero a Um Milhão de Usuários | Arquitetura de Software</a>
+                            <span class="link-desc">Renato Augusto · 39:17 — Percorre as decisões de arquitetura para escalar um sistema, explicando o porquê de cada etapa.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Ensaiando a Defesa com Banca Simulada</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o documento de arquitetura do tema anterior e crie <code>docs/apresentacao.md</code> com o roteiro.</li>
+                            <li><strong>Frase de Abertura:</strong> escreva em uma frase qual problema a solução resolve e para quem, sem citar tecnologia.</li>
+                            <li><strong>Estrutura de 15 Minutos:</strong> divida o tempo em problema, contexto, solução, trade-offs, números, riscos e próximos passos, com minutos para cada bloco.</li>
+                            <li><strong>Números da Solução:</strong> prepare três números concretos: capacidade estimada, SLO proposto e custo mensal aproximado, com o cálculo por trás.</li>
+                            <li><strong>Slides Mínimos:</strong> use no máximo dez slides, com os diagramas C4 como centro e nenhum bloco de código maior que dez linhas.</li>
+                            <li><strong>Banco de Perguntas:</strong> escreva as dez perguntas mais difíceis que alguém faria sobre o seu projeto e uma resposta curta para cada.</li>
+                            <li><strong>Erro Provocado:</strong> faça o primeiro ensaio sem cronômetro e sem roteiro; anote em que minuto chegou aos trade-offs.</li>
+                            <li><strong>Ensaio Cronometrado:</strong> repita com o roteiro e o cronômetro visível, ajustando o que passar do tempo.</li>
+                            <li><strong>Banca Simulada:</strong> apresente para três colegas que usam a rubrica e fazem perguntas do banco uns dos outros.</li>
+                            <li><strong>Validação e Testes:</strong> compare as notas da rubrica entre o primeiro e o último ensaio e registre no README as três mudanças que mais melhoraram a apresentação.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: FORMATURA MASTER: ENTREGA FINAL E PRÓXIMOS PASSOS -->
+            <div class="card" id="card-3">
+                <h2>🎓 3. Formatura Master: Entrega Final e Próximos Passos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O aluno termina o Módulo 7 com um projeto documentado, a defesa feita e uma pasta cheia de repositórios das aulas anteriores. Recrutadores e clientes olham um perfil por poucos minutos, e o conhecimento avançado some rápido se não for praticado. Como fechar a formação com uma entrega que prove o nível alcançado e um plano concreto para os três meses seguintes?</p>
+                </div>
+
+                <p>A entrega final reúne o que o módulo construiu: projeto publicado, documentação, decisões, métricas e a gravação da defesa. O próximo passo é escolher uma direção (especialização técnica, consultoria, liderança ou contribuição em código aberto) e transformar essa direção num plano de 90 dias com entregas visíveis.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.github.com/pt/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener noreferrer">📄 Criando um site do GitHub Pages — GitHub Docs</a>
+                        <span class="link-desc">Publicar a documentação e a apresentação do projeto final num endereço público gratuito.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/actions/writing-workflows/quickstart" target="_blank" rel="noopener noreferrer">📄 Início rápido do GitHub Actions — GitHub Docs</a>
+                        <span class="link-desc">Manter o pipeline do projeto final rodando, como evidência de prática de engenharia.</span>
+                    </li>
+                    <li>
+                        <a href="https://opensource.guide/pt/how-to-contribute/" target="_blank" rel="noopener noreferrer">📄 Como contribuir para o código aberto — Open Source Guides</a>
+                        <span class="link-desc">Um caminho para aplicar o nível avançado em projetos reais de outras pessoas.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/developer/" target="_blank" rel="noopener noreferrer">📄 The CL author's guide to getting through code review — Google</a>
+                        <span class="link-desc">Como preparar contribuições que outras equipes consigam revisar e aceitar.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=gRxqAkWDlmA" target="_blank" rel="noopener noreferrer">▶️ Github NÃO Basta! Como Documentar PROJETOS e Criar seu PORTFOLIO | Handshake #30</a>
+                            <span class="link-desc">Programação Dinâmica · 11:35 — Mostra como documentar projetos e montar um portfólio que vá além do GitHub.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=b3IzpXIDWUA" target="_blank" rel="noopener noreferrer">▶️ Construindo um Portfólio de um desenvolvedor Backend: Dicas e Melhores Práticas</a>
+                            <span class="link-desc">Vitor Medeiro - medeirotech · 13:22 — Dá dicas e boas práticas para montar um portfólio de desenvolvedor backend.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Fechando a Entrega e o Plano de 90 Dias</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra o repositório do projeto final e o checklist de entrega da atividade desta aula.</li>
+                            <li><strong>Conferindo o Checklist:</strong> marque item por item o que já existe: README, documento de arquitetura, ADRs, pipeline verde, SLO, modelo de ameaças e eval quando houver IA.</li>
+                            <li><strong>Fechando as Lacunas:</strong> resolva os itens pendentes que levam menos de uma hora e registre os demais como issues abertas e visíveis.</li>
+                            <li><strong>Publicando:</strong> publique a documentação e o roteiro da apresentação com GitHub Pages.</li>
+                            <li><strong>README de Entrada:</strong> reescreva o início do README para que alguém entenda o problema, a solução e as decisões principais em 30 segundos de leitura.</li>
+                            <li><strong>Erro Provocado:</strong> peça a alguém de fora da turma que abra o repositório e cronometre quanto tempo leva para achar o diagrama de arquitetura; se passar de um minuto, reorganize.</li>
+                            <li><strong>Escolhendo a Direção:</strong> escolha uma direção para os próximos três meses: especialização, consultoria, liderança técnica ou código aberto.</li>
+                            <li><strong>Plano de 90 Dias:</strong> escreva três entregas visíveis, uma por mês, cada uma com data e onde ela vai ficar publicada.</li>
+                            <li><strong>Compromisso Público:</strong> compartilhe o plano com a turma no canal da ByteClass e combine um parceiro de acompanhamento.</li>
+                            <li><strong>Validação e Testes:</strong> confira com o instrutor o checklist completo, registre o link do projeto publicado no README e agende a primeira conversa de acompanhamento em 30 dias.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

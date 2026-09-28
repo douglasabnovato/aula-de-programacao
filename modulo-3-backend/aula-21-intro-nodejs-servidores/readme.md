@@ -34,12 +34,12 @@ Esta ementa leva o aluno do primeiro servidor HTTP escrito à mão até uma API 
 
 * **Atividade 1 (Seu Primeiro Servidor HTTP Sem Framework — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-1.html)
 
 * **Atividade 2 (API de Tarefas com Express e Rotas REST — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-2.html)
 
 * **Atividade 3 (Refatorando a API em Camadas com Configuração Externa — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-21-intro-nodejs-servidores/atividades/atividade-3.html)

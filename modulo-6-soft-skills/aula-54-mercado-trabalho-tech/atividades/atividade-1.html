@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Mercado — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Relatório de Mercado — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 54 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um relatório de uma página, preenchido para a aluna fictícia Renata Paiva, que responde a uma pergunta de carreira usando fontes públicas e declara o limite de cada uma. Use como modelo: troque a pergunta e os dados pelos seus.</p>
+        </div>
+        <h2>relatorio-mercado.md</h2>
+        <pre>&lt;!-- Início: relatório de mercado em uma página (exemplo fictício) --&gt;
+# Relatório de Mercado — Renata Paiva
+
+Data da consulta: __/__/____
+
+## Pergunta
+Vale mais estudar frontend ou dados nos próximos seis meses,
+buscando a primeira vaga em Juiz de Fora ou remota?
+
+## Dados
+| Fonte | O que ela mede | O que ela NÃO mede | O que encontrei |
+|---|---|---|---|
+| Novo CAGED (gov.br) | admissões e desligamentos com carteira assinada | vagas PJ, freelas e estágios | (anotar o saldo do setor consultado e o mês) |
+| Stack Overflow Survey 2025 | uso de tecnologias entre respondentes do mundo | proporção de vagas no Brasil | (anotar as 5 tecnologias mais usadas na área) |
+| 10 vagas coletadas (região + remoto) | o que as empresas pedem hoje | quantas vagas existem no total | (anotar tecnologias que se repetem) |
+
+## Conclusão
+As vagas coletadas pedem JavaScript e React em 7 de 10 anúncios de frontend
+e SQL em 4 de 4 anúncios de dados. O Survey confirma que essas tecnologias
+estão entre as mais usadas, mas não diz quantas vagas existem aqui.
+Decisão: seguir frontend, porque já tenho três projetos que provam isso,
+e incluir SQL básico no plano de estudo.
+
+## Próxima revisão
+Refazer a consulta em 90 dias.
+&lt;!-- Fim de relatorio-mercado.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Troque a pergunta pela sua decisão real.</li>
+            <li>Consulte cada fonte e preencha a coluna <em>O que encontrei</em> com o número e o link.</li>
+            <li>Escreva a conclusão citando pelo menos duas fontes diferentes.</li>
+            <li>Agende a próxima revisão.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A coluna <em>O que NÃO mede</em> é a que impede conclusões exageradas.</li>
+            <li>Números sem data envelhecem rápido; toda consulta leva a data ao lado.</li>
+            <li>Os números do exemplo sobre vagas são fictícios: o seu relatório usa os anúncios que você coletou.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

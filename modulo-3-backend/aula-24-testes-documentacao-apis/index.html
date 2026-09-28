@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 24 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a proteger a API de tarefas com testes unitários e de integração em Jest e Supertest e a publicar um contrato OpenAPI navegável no Swagger UI.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 24: Testes Automatizados e Documentação de APIs</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: TESTES UNITÁRIOS DA REGRA DE NEGÓCIO -->
+            <div class="card" id="card-1">
+                <h2>🧪 1. Testes Unitários da Regra de Negócio</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A startup fictícia Rota Certa mexeu na regra que impede tarefa com título vazio e só descobriu três dias depois, quando um cliente reclamou. Ninguém tinha como saber, antes do deploy, que a regra tinha deixado de valer. Como fazer a própria máquina avisar em segundos que uma regra quebrou?</p>
+                </div>
+
+                <p>Teste unitário exercita uma peça isolada — o caso de uso da aula 23 — sem HTTP e sem banco. Ele roda em milissegundos, aponta a linha que quebrou e vira documentação executável da regra.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://jestjs.io/docs/getting-started" target="_blank" rel="noopener noreferrer">📄 Primeiros passos — Jest</a>
+                        <span class="link-desc">Instalação, o primeiro teste e o comando que roda a suíte inteira.</span>
+                    </li>
+                    <li>
+                        <a href="https://jestjs.io/docs/mock-functions" target="_blank" rel="noopener noreferrer">📄 Funções Mock — Jest</a>
+                        <span class="link-desc">Como criar dublês com jest.fn() e verificar quantas vezes e com quais argumentos foram chamados.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/test.html" target="_blank" rel="noopener noreferrer">📄 Test runner nativo — Node.js</a>
+                        <span class="link-desc">A alternativa embutida no Node, útil para comparar o que um framework de teste acrescenta.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank" rel="noopener noreferrer">📄 The Practical Test Pyramid — Martin Fowler</a>
+                        <span class="link-desc">Por que a base da pirâmide tem muitos testes unitários rápidos e poucos testes lentos no topo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Ru6Tr7Q75IQ" target="_blank" rel="noopener noreferrer">▶️ Aprenda testar seu backend Node JS com Jest</a>
+                            <span class="link-desc">Fernanda Kipper · 37:00 — Ensina a escrever testes com Jest para o backend Node.js, isolando a regra de negócio.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=MduPtbLg49M" target="_blank" rel="noopener noreferrer">▶️ Aulão de Unit Tests em Node.js com Jest</a>
+                            <span class="link-desc">LuizTools · 41:18 — Aula longa sobre testes unitários em Node.js com Jest, do setup às asserções.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Testando o Caso de Uso CriarTarefa com Jest</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto da aula 23, rode <code>npm install --save-dev jest</code> e adicione <code>"test": "jest"</code> em <code>scripts</code> no <code>package.json</code>.</li>
+                            <li><strong>Primeiro Arquivo de Teste:</strong> crie <code>tests/unit/CriarTarefa.test.js</code> — o Jest encontra sozinho os arquivos terminados em <code>.test.js</code>.</li>
+                            <li><strong>Estrutura Preparar-Agir-Verificar:</strong> escreva um <code>describe('CriarTarefa')</code> e, dentro dele, um <code>test</code> dividido em três blocos: preparar, agir e verificar.</li>
+                            <li><strong>Dublê do Repositório:</strong> em vez do repositório real, crie um objeto com <code>salvar: jest.fn(async (t) =&gt; ({ ...t, id: 1 }))</code> e passe-o ao construtor do caso de uso.</li>
+                            <li><strong>Caso Feliz:</strong> execute o caso de uso com um título válido e compare o retorno com <code>expect(resultado).toEqual(...)</code>.</li>
+                            <li><strong>Verificando a Interação:</strong> confirme com <code>toHaveBeenCalledTimes(1)</code> que o repositório foi chamado exatamente uma vez.</li>
+                            <li><strong>Erro Provocado:</strong> remova o <code>await</code> antes de <code>caso.executar</code>, rode <code>npm test</code> e leia a falha: o teste comparou uma Promise, não a tarefa. Devolva o <code>await</code>.</li>
+                            <li><strong>Caso de Erro:</strong> teste que título só com espaços rejeita com <code>await expect(...).rejects.toThrow()</code> e que <code>salvar</code> <strong>não</strong> foi chamado.</li>
+                            <li><strong>Medindo a Cobertura:</strong> rode <code>npx jest --coverage</code> e localize as linhas de <code>src/core</code> que nenhum teste percorreu.</li>
+                            <li><strong>Validação e Testes:</strong> quebre de propósito a regra do título na entidade, confirme que o teste fica vermelho, desfaça a mudança e registre no README o comando de teste e a cobertura obtida.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: TESTES DE INTEGRAÇÃO DAS ROTAS HTTP -->
+            <div class="card" id="card-2">
+                <h2>🔌 2. Testes de Integração das Rotas HTTP</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na clínica fictícia Vida Plena, os testes do caso de uso passavam, mas a rota POST /tarefas respondia erro porque alguém apagou o express.json() numa limpeza de código. O teste unitário não viu, porque não passa pelo HTTP. Como testar a API do jeito que o cliente chama, sem subir o servidor na mão?</p>
+                </div>
+
+                <p>O teste de integração dispara requisições reais contra o app Express e confere status, cabeçalhos e corpo. Para isso o app precisa ser criado separado do listen: é essa separação que permite testar sem ocupar porta e com um repositório novo a cada teste.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://github.com/ladjs/supertest" target="_blank" rel="noopener noreferrer">📄 Supertest — repositório oficial</a>
+                        <span class="link-desc">A biblioteca que envia requisições ao app Express direto na memória, com asserções encadeadas.</span>
+                    </li>
+                    <li>
+                        <a href="https://jestjs.io/docs/setup-teardown" target="_blank" rel="noopener noreferrer">📄 Setup and Teardown — Jest</a>
+                        <span class="link-desc">beforeEach e afterAll: como recriar o estado antes de cada teste para um não depender do outro.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status" target="_blank" rel="noopener noreferrer">📄 Códigos de status HTTP — MDN</a>
+                        <span class="link-desc">A referência para decidir qual status cada teste deve esperar.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/testing" target="_blank" rel="noopener noreferrer">📄 Software Testing Guide — Martin Fowler</a>
+                        <span class="link-desc">Índice de artigos sobre tipos de teste, dublês e onde cada um se encaixa.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=L9rHlPtNi3g" target="_blank" rel="noopener noreferrer">▶️ Teste de integração no Node com Jest e SuperTest</a>
+                            <span class="link-desc">Hero Code · 21:32 — Mostra como fazer testes de integração de rotas Express com Jest e SuperTest.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=wEDiOYsiWaU" target="_blank" rel="noopener noreferrer">▶️ Testes de API em Javascript com Supertest + Jest (passo a passo)</a>
+                            <span class="link-desc">Agilizei · 51:14 — Passo a passo de testes de API com Supertest e Jest conferindo status e corpo da resposta.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Testando a API de Tarefas com Supertest</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install --save-dev supertest</code> no mesmo projeto da prática anterior.</li>
+                            <li><strong>Separando App e Servidor:</strong> transforme <code>src/app.js</code> numa função <code>criarApp(repositorio)</code> que devolve o app <strong>sem</strong> chamar <code>listen</code>; o <code>listen</code> vai para <code>server.js</code>.</li>
+                            <li><strong>Primeiro Teste de Rota:</strong> em <code>tests/integration/tarefas.test.js</code>, importe <code>request</code> do supertest e chame <code>await request(app).get('/tarefas')</code>.</li>
+                            <li><strong>Estado Isolado:</strong> use <code>beforeEach</code> para criar um repositório em memória novo e um app novo antes de cada teste.</li>
+                            <li><strong>Testando a Criação:</strong> envie <code>.post('/tarefas').send({ titulo: 'Ligar para fornecedor' })</code> e verifique status <code>201</code> e o <code>id</code> no corpo.</li>
+                            <li><strong>Erro Provocado:</strong> apague temporariamente <code>app.use(express.json())</code>, rode os testes e observe o status que volta no lugar do <code>201</code> e a mensagem de <code>TypeError</code>. Devolva a linha.</li>
+                            <li><strong>Entrada Inválida:</strong> teste que POST sem título devolve <code>400</code> com a mensagem da entidade.</li>
+                            <li><strong>Recurso Inexistente:</strong> teste que <code>GET /tarefas/9999</code> devolve <code>404</code>.</li>
+                            <li><strong>Cabeçalhos:</strong> verifique com <code>expect(resposta.headers['content-type']).toMatch(/json/)</code> que a API responde JSON.</li>
+                            <li><strong>Validação e Testes:</strong> rode <code>npm test</code> e confirme unitários e integração passando juntos; registre no README qual erro cada tipo de teste consegue pegar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: DOCUMENTAÇÃO DA API COM OPENAPI E SWAGGER UI -->
+            <div class="card" id="card-3">
+                <h2>📘 3. Documentação da API com OpenAPI e Swagger UI</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O time de frontend da loja fictícia Casa Aurora pergunta toda semana, no chat, quais campos a rota de tarefas aceita e que erro ela devolve. A resposta muda conforme quem responde. Como publicar um contrato único que o time consulta e testa sem depender de ninguém?</p>
+                </div>
+
+                <p>OpenAPI é um formato padrão, em YAML ou JSON, que descreve rotas, parâmetros, corpos e respostas de uma API HTTP. A partir dele, o Swagger UI gera uma página onde se lê e se testa cada rota, e a documentação passa a ser um arquivo versionado junto do código.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://learn.openapis.org/introduction.html" target="_blank" rel="noopener noreferrer">📄 Introdução ao OpenAPI — OpenAPI Initiative</a>
+                        <span class="link-desc">O que o formato resolve e como um documento OpenAPI é organizado.</span>
+                    </li>
+                    <li>
+                        <a href="https://spec.openapis.org/oas/v3.1.1.html" target="_blank" rel="noopener noreferrer">📄 OpenAPI Specification 3.1.1</a>
+                        <span class="link-desc">A especificação oficial: consulte quando precisar do nome exato de um campo.</span>
+                    </li>
+                    <li>
+                        <a href="https://github.com/scottie1984/swagger-ui-express" target="_blank" rel="noopener noreferrer">📄 swagger-ui-express — repositório oficial</a>
+                        <span class="link-desc">O middleware que serve o Swagger UI a partir do seu documento OpenAPI.</span>
+                    </li>
+                    <li>
+                        <a href="https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/" target="_blank" rel="noopener noreferrer">📄 Swagger UI — Instalação</a>
+                        <span class="link-desc">As formas de distribuir o Swagger UI e o que a página faz com o documento.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=mULWHLquYP0" target="_blank" rel="noopener noreferrer">▶️ Criando API auto-documentável com Node.js e Swagger</a>
+                            <span class="link-desc">Rocketseat · 17:47 — Mostra como documentar uma API Node.js com Swagger a partir da especificação OpenAPI.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=3nl9AzttzBQ" target="_blank" rel="noopener noreferrer">▶️ Swagger (suas APIs documentadas sem esforço) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 7:54 — Explica o que é o Swagger e como ele gera documentação navegável de uma API.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Contrato OpenAPI da API de Tarefas Servido pelo Swagger UI</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install swagger-ui-express yaml</code> e crie o arquivo <code>docs/openapi.yaml</code>.</li>
+                            <li><strong>Cabeçalho do Contrato:</strong> declare <code>openapi: 3.1.0</code>, o bloco <code>info</code> com título e versão, e <code>servers</code> apontando para <code>http://localhost:3000</code>.</li>
+                            <li><strong>Esquema Reutilizável:</strong> em <code>components.schemas</code>, descreva <code>Tarefa</code> com <code>id</code>, <code>titulo</code> e <code>feita</code>, e um esquema <code>Erro</code>.</li>
+                            <li><strong>Primeira Rota:</strong> documente <code>GET /tarefas</code> com resposta <code>200</code> apontando para o esquema via <code>$ref</code>.</li>
+                            <li><strong>Rota com Corpo:</strong> documente <code>POST /tarefas</code> com <code>requestBody</code> obrigatório e <code>titulo</code> do tipo string.</li>
+                            <li><strong>Respostas de Erro:</strong> acrescente <code>400</code> e <code>404</code> usando o esquema <code>Erro</code>: o contrato também diz o que dá errado.</li>
+                            <li><strong>Servindo a Página:</strong> no <code>server.js</code>, leia o YAML com <code>YAML.parse(fs.readFileSync(...))</code> e registre <code>app.use('/docs', swaggerUi.serve, swaggerUi.setup(documento))</code>.</li>
+                            <li><strong>Erro Provocado:</strong> desalinhe a indentação de uma linha do YAML, reinicie o servidor e siga a mensagem do parser até achar a linha e a coluna do problema.</li>
+                            <li><strong>Testando pela Página:</strong> abra <code>http://localhost:3000/docs</code>, use <em>Try it out</em> no POST e compare o resultado com o teste de integração.</li>
+                            <li><strong>Validação e Testes:</strong> confira que toda rota do app aparece no contrato com os mesmos status que os testes verificam e coloque o link <code>/docs</code> no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

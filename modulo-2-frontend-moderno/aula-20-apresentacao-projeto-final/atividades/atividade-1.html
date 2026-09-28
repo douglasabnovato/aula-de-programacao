@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento de Escopo, Mapa de Rotas e Backlog — Modelo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Documento de Escopo, Mapa de Rotas e Backlog — Modelo</h1>
+        <p class="subtitulo">Aula 20 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um modelo de escopo preenchido para um projeto fictício (Reserva Fácil, do coworking Ladeira Hub) que liga cada requisito do Módulo 2 a uma parte concreta do sistema, lista o que fica de fora e registra rotas e estados. O canvas interativo abaixo gera a mesma seção em Markdown enquanto você preenche o seu projeto.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.grade2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .grade2 { grid-template-columns: 1fr; } }
+.campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+textarea { min-height: 54px; resize: vertical; }
+pre.md { white-space: pre-wrap; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: .8rem; max-height: 420px; overflow: auto; }
+.barra { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 6px 0 12px; }
+.barra div { height: 100%; background: var(--primary); transition: width .2s; }
+.item { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.item input[type=text] { grid-column: 2; font-size: .85rem; }
+.ok { color: var(--primary); }
+.estouro { color: var(--erro); }
+.relogio { font-size: 2.4rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.blocos { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.blocos span { border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: .8rem; }
+.blocos span.atual { border-color: var(--primary); color: var(--primary); }
+.blocos span.passou { opacity: .5; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+td, th { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); }
+.linha { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState, useEffect } = React;
+
+// Início: canvas de escopo — gera a seção Escopo do README enquanto o aluno preenche
+const REQUISITOS = [
+  &#x27;Rotas com parâmetro (Aula 14)&#x27;,
+  &#x27;Formulário validado (Aula 16)&#x27;,
+  &#x27;API REST com carregando e erro (Aula 17)&#x27;,
+  &#x27;Estado global com Context (Aula 18)&#x27;,
+  &#x27;Deploy gratuito (Aula 19)&#x27;,
+];
+
+const EXEMPLO = {
+  nome: &#x27;Reserva Fácil&#x27;,
+  problema: &#x27;O coworking fictício Ladeira Hub controla reservas de salas por mensagens e tem conflitos de horário toda semana.&#x27;,
+  publico: &#x27;Pessoas associadas e recepção do coworking&#x27;,
+  atende: [&#x27;/salas/:id mostra a agenda de uma sala&#x27;, &#x27;Nova reserva com checagem de conflito&#x27;, &#x27;Salas e reservas lidas e gravadas na API&#x27;, &#x27;&#x27;, &#x27;GitHub Pages com Actions&#x27;],
+  fora: &#x27;Pagamento\nNotificação por e-mail\nApp nativo&#x27;,
+  rotas: [{ caminho: &#x27;/&#x27;, pagina: &#x27;Início&#x27; }, { caminho: &#x27;/salas/:id&#x27;, pagina: &#x27;Agenda da sala&#x27; }],
+};
+
+// Monta o texto em Markdown a partir do formulário
+function gerarMarkdown(f) {
+  const linhasReq = REQUISITOS.map((r, i) =&gt; `| ${r} | ${f.atende[i] || &#x27;PENDENTE&#x27;} |`).join(&#x27;\n&#x27;);
+  const fora = f.fora.split(&#x27;\n&#x27;).filter(Boolean).map((l) =&gt; `- ${l}`).join(&#x27;\n&#x27;);
+  const rotas = f.rotas.filter((r) =&gt; r.caminho).map((r) =&gt; `| \`${r.caminho}\` | ${r.pagina} |`).join(&#x27;\n&#x27;);
+  return `# ${f.nome} — Escopo\n\n## Problema\n${f.problema}\n\n## Quem usa\n${f.publico}\n\n## Requisitos do Módulo 2\n| Requisito | Onde aparece |\n|---|---|\n${linhasReq}\n\n## Fora do escopo\n${fora}\n\n## Mapa de rotas\n| Rota | Página |\n|---|---|\n${rotas}`;
+}
+
+// Canvas com o formulário à esquerda e a prévia do Markdown à direita
+function App() {
+  const [f, setF] = useState(EXEMPLO);
+  const cobertos = f.atende.filter((a) =&gt; a.trim()).length;
+
+  // Atualiza um campo simples do formulário
+  function mudar(campo, valor) {
+    setF((atual) =&gt; ({ ...atual, [campo]: valor }));
+  }
+
+  // Atualiza a descrição de um requisito
+  function mudarRequisito(indice, valor) {
+    setF((atual) =&gt; ({ ...atual, atende: atual.atende.map((a, i) =&gt; (i === indice ? valor : a)) }));
+  }
+
+  // Atualiza uma linha do mapa de rotas
+  function mudarRota(indice, campo, valor) {
+    setF((atual) =&gt; ({ ...atual, rotas: atual.rotas.map((r, i) =&gt; (i === indice ? { ...r, [campo]: valor } : r)) }));
+  }
+
+  return (
+    &lt;div className=&quot;grade2&quot;&gt;
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;Canvas de Escopo&lt;/h2&gt;
+        &lt;div className=&quot;campo&quot;&gt;&lt;label htmlFor=&quot;nome&quot;&gt;Nome do projeto&lt;/label&gt;&lt;input id=&quot;nome&quot; value={f.nome} onChange={(e) =&gt; mudar(&#x27;nome&#x27;, e.target.value)} /&gt;&lt;/div&gt;
+        &lt;div className=&quot;campo&quot;&gt;&lt;label htmlFor=&quot;problema&quot;&gt;Problema (3 frases)&lt;/label&gt;&lt;textarea id=&quot;problema&quot; value={f.problema} onChange={(e) =&gt; mudar(&#x27;problema&#x27;, e.target.value)} /&gt;&lt;/div&gt;
+        &lt;div className=&quot;campo&quot;&gt;&lt;label htmlFor=&quot;publico&quot;&gt;Quem usa&lt;/label&gt;&lt;input id=&quot;publico&quot; value={f.publico} onChange={(e) =&gt; mudar(&#x27;publico&#x27;, e.target.value)} /&gt;&lt;/div&gt;
+        &lt;p className={cobertos === REQUISITOS.length ? &#x27;ok&#x27; : &#x27;estouro&#x27;}&gt;Requisitos cobertos: {cobertos} de {REQUISITOS.length}&lt;/p&gt;
+        {REQUISITOS.map((r, i) =&gt; (
+          &lt;div className=&quot;campo&quot; key={r}&gt;&lt;label htmlFor={`req-${i}`}&gt;{r}&lt;/label&gt;&lt;input id={`req-${i}`} value={f.atende[i]} placeholder=&quot;Onde aparece no projeto?&quot; onChange={(e) =&gt; mudarRequisito(i, e.target.value)} /&gt;&lt;/div&gt;
+        ))}
+        &lt;div className=&quot;campo&quot;&gt;&lt;label htmlFor=&quot;fora&quot;&gt;Fora do escopo (um por linha)&lt;/label&gt;&lt;textarea id=&quot;fora&quot; value={f.fora} onChange={(e) =&gt; mudar(&#x27;fora&#x27;, e.target.value)} /&gt;&lt;/div&gt;
+        &lt;p&gt;Mapa de rotas&lt;/p&gt;
+        {f.rotas.map((r, i) =&gt; (
+          &lt;div className=&quot;linha&quot; key={i} style={{ marginBottom: 6 }}&gt;
+            &lt;input aria-label=&quot;Caminho&quot; value={r.caminho} onChange={(e) =&gt; mudarRota(i, &#x27;caminho&#x27;, e.target.value)} /&gt;
+            &lt;input aria-label=&quot;Página&quot; value={r.pagina} onChange={(e) =&gt; mudarRota(i, &#x27;pagina&#x27;, e.target.value)} /&gt;
+          &lt;/div&gt;
+        ))}
+        &lt;button className=&quot;secundario&quot; onClick={() =&gt; mudar(&#x27;rotas&#x27;, [...f.rotas, { caminho: &#x27;&#x27;, pagina: &#x27;&#x27; }])}&gt;Adicionar rota&lt;/button&gt;
+      &lt;/section&gt;
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;Prévia do README&lt;/h2&gt;
+        &lt;pre className=&quot;md&quot;&gt;{gerarMarkdown(f)}&lt;/pre&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim do canvas de escopo
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>docs/escopo.md</h2>
+        <pre>&lt;!-- Início: docs/escopo.md — escopo do projeto final (exemplo preenchido) --&gt;
+# Reserva Fácil — Escopo
+
+## Problema
+O coworking fictício Ladeira Hub controla reservas das três salas de reunião por mensagens de celular.
+Duas reservas para o mesmo horário acontecem toda semana e ninguém sabe quais salas estão livres.
+O Reserva Fácil mostra a agenda de cada sala e registra reservas sem conflito de horário.
+
+## Quem usa
+- Pessoas associadas ao coworking (reservam salas)
+- Recepção (confere e cancela reservas)
+
+## Requisitos do Módulo 2 e como o projeto atende
+| Requisito | Onde aparece no projeto |
+|---|---|
+| Rotas com parâmetro (Aula 14) | `/salas/:id` mostra a agenda de uma sala |
+| Formulário validado (Aula 16) | Nova reserva com data, horário e conflito checado |
+| API REST com carregando e erro (Aula 17) | Salas e reservas lidas e gravadas na API |
+| Estado global com Context (Aula 18) | Usuário logado e tema compartilhados |
+| Deploy gratuito (Aula 19) | GitHub Pages com workflow de Actions |
+
+## Fora do escopo
+- Pagamento de reservas
+- Notificação por e-mail
+- Aplicativo de celular nativo
+
+## Mapa de rotas
+| Rota | Página | Dados |
+|---|---|---|
+| `/` | Início | lista de salas |
+| `/salas/:id` | Agenda da sala | reservas da sala |
+| `/reservar` | Nova reserva | formulário |
+| `/minhas-reservas` | Minhas reservas (protegida) | reservas do usuário |
+
+## Onde vive cada estado
+- URL: sala escolhida e data filtrada
+- Contexto: usuário logado e tema
+- Local: campos do formulário, carregando e erro de cada busca
+&lt;!-- Fim de escopo.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Preencha o canvas com o seu projeto até os cinco requisitos aparecerem como cobertos</li>
+            <li>Copie a prévia para <code>docs/escopo.md</code> e para a seção Escopo do README</li>
+            <li>Crie uma issue para cada linha da tabela de requisitos, com critério de aceite em lista de tarefas</li>
+            <li>Organize as issues num quadro do GitHub Projects com as colunas A fazer, Fazendo e Feito</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Requisito sem "onde aparece" é risco de reprovação: o canvas marca como PENDENTE.</li>
+            <li>A lista Fora do escopo protege o prazo tanto quanto a lista do que será feito.</li>
+            <li>Uma issue como "Fazer o site" não tem fim verificável; "Formulário de reserva recusa horário ocupado" tem.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

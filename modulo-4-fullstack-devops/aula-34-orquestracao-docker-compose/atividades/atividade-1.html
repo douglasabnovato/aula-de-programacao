@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API e PostgreSQL com Docker Compose — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>API e PostgreSQL com Docker Compose — Código de Referência</h1>
+        <p class="subtitulo">Aula 34 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um <code>compose.yaml</code> com dois serviços, <code>db</code> e <code>api</code>, e a API de tarefas gravando no PostgreSQL pela rede do Compose. Sobe com <code>docker compose up --build</code> e responde em <code>http://localhost:3000/tarefas</code>.</p>
+        </div>
+        <h2>compose.yaml</h2>
+        <pre># Início: compose.yaml — API de tarefas e PostgreSQL na mesma rede do Compose
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tarefas
+      POSTGRES_PASSWORD: senha_local_exemplo
+      POSTGRES_DB: tarefas
+
+  api:
+    build: ./api
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://tarefas:senha_local_exemplo@db:5432/tarefas
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+# Fim de compose.yaml</pre>
+        <h2>api/src/db.js</h2>
+        <pre>// Início: db.js — pool de conexões com o PostgreSQL a partir de DATABASE_URL
+const { Pool } = require('pg');
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// cria a tabela de tarefas se ela ainda não existir
+async function prepararBanco() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS tarefas (
+      id SERIAL PRIMARY KEY,
+      titulo TEXT NOT NULL,
+      feita BOOLEAN NOT NULL DEFAULT false
+    )
+  `);
+}
+
+module.exports = { pool, prepararBanco };
+// Fim de db.js</pre>
+        <h2>api/app.js</h2>
+        <pre>// Início: app.js — API de tarefas persistindo no PostgreSQL do Compose
+const express = require('express');
+const { pool, prepararBanco } = require('./src/db');
+
+const app = express();
+app.use(express.json());
+
+// lista todas as tarefas
+app.get('/tarefas', async (req, res, next) =&gt; {
+  try {
+    const { rows } = await pool.query('SELECT id, titulo, feita FROM tarefas ORDER BY id');
+    res.json(rows);
+  } catch (erro) {
+    next(erro);
+  }
+});
+
+// cria uma tarefa a partir do título enviado
+app.post('/tarefas', async (req, res, next) =&gt; {
+  try {
+    const { titulo } = req.body;
+    if (!titulo || titulo.trim() === '') {
+      return res.status(400).json({ erro: 'O campo titulo é obrigatório' });
+    }
+    const { rows } = await pool.query(
+      'INSERT INTO tarefas (titulo) VALUES ($1) RETURNING id, titulo, feita',
+      [titulo.trim()]
+    );
+    res.status(201).json(rows[0]);
+  } catch (erro) {
+    next(erro);
+  }
+});
+
+// trata qualquer falha num ponto só
+app.use((erro, req, res, next) =&gt; {
+  console.error(erro.message);
+  res.status(500).json({ erro: 'Erro interno' });
+});
+
+// garante a tabela e só então abre a porta
+async function iniciar() {
+  await prepararBanco();
+  const porta = process.env.PORT || 3000;
+  app.listen(porta, () =&gt; console.log(`API ouvindo na porta ${porta}`));
+}
+
+iniciar().catch((erro) =&gt; {
+  console.error('Falha ao iniciar:', erro.message);
+  process.exit(1);
+});
+// Fim de app.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Na pasta <code>api/</code>, rode <code>npm install express pg</code> e confira o <code>Dockerfile</code> da aula 32</li>
+            <li>Na raiz, rode <code>docker compose up --build</code></li>
+            <li>Crie uma tarefa: <code>curl -X POST localhost:3000/tarefas -H "Content-Type: application/json" -d '{"titulo":"Testar o Compose"}'</code></li>
+            <li>Consulte no banco: <code>docker compose exec db psql -U tarefas -c "SELECT * FROM tarefas"</code></li>
+            <li>Encerre com <code>docker compose down</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O banco não publica porta: a API chega nele pela rede interna do projeto, usando o nome <code>db</code>.</li>
+            <li>Se o banco demorar a subir, a API cai com <code>ECONNREFUSED</code> — o <code>depends_on</code> curto só espera o contêiner iniciar, não o PostgreSQL aceitar conexão.</li>
+            <li>A consulta usa <code>$1</code> em vez de concatenar o título: o driver envia o valor separado do SQL.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

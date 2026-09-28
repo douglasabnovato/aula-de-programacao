@@ -32,6 +32,10 @@
             <!-- TEMA 1: O CONTRATO ENTRE FRONTEND E BACKEND -->
             <div class="card" id="card-1">
                 <h2>🔌 1. O Contrato entre Frontend e Backend</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A equipe fictícia da Distribuidora Vale do Paraibuna tem uma dupla no frontend e outra no backend. Na primeira integração, a tela esperava 'nome' e a API devolvia 'titulo', e cada erro vinha num formato diferente. Como combinar rotas, formatos e status antes de escrever o primeiro fetch?</p>
+                </div>
                 <p>Antes de escrever o fetch, decidir o contrato: que rota, que formato, que status. Integração quebra muito mais por combinação malfeita do que por código errado.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=e_dS43hgaVw" target="_blank" rel="noopener noreferrer">▶️ Contrato de API REST na Prática | Node.js, Express, MySQL e CRUD</a>
+                            <span class="link-desc">Desvendando o Código · 38:22 — Mostra como definir o contrato da API (rotas, formatos e status) que o frontend vai consumir.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=j17w1j_cEl8" target="_blank" rel="noopener noreferrer">▶️ EP06 — CORS, Fetch e Backend: Tudo o que ninguém te explicou direito (até agora)</a>
+                            <span class="link-desc">DevFuleco · 18:39 — Explica a integração entre fetch no frontend e o backend, incluindo os bloqueios de CORS.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: OS TRÊS ESTADOS DE TODA CHAMADA DE REDE -->
             <div class="card" id="card-2">
                 <h2>⏳ 2. Os Três Estados de Toda Chamada de Rede</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O painel de tarefas da Distribuidora Vale do Paraibuna mostra tela branca por três segundos quando a rede está lenta e não mostra nada quando a API cai. O usuário acha que o sistema travou e recarrega a página sem parar. Como a tela deve se comportar enquanto espera, quando falha e quando a lista vem vazia?</p>
+                </div>
                 <p>Carregando, erro e sucesso. A maior parte das telas trata só o terceiro, e é por isso que o usuário vê tela branca quando a rede demora e nada quando a API cai.</p>
 
                 <ul class="links-list">
@@ -104,7 +121,7 @@
                         <span class="link-desc">O guia oficial sobre efeitos, com a seção de busca de dados e limpeza.</span>
                     </li>
                     <li>
-                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/AbortController" target="_blank" rel="noopener noreferrer">📄 AbortController — MDN</a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noopener noreferrer">📄 AbortController — MDN</a>
                         <span class="link-desc">Como cancelar uma requisição quando o componente sai da tela.</span>
                     </li>
                     <li>
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=L6raE_UfweY" target="_blank" rel="noopener noreferrer">▶️ React básico:  o useEffect p/ chamada de API</a>
+                            <span class="link-desc">Rocketseat · 6:17 — Mostra como chamar uma API com useEffect e guardar o resultado no estado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=DTBta08fXGU" target="_blank" rel="noopener noreferrer">▶️ Full React Tutorial #19 - Handling Fetch Errors</a>
+                            <span class="link-desc">Net Ninja · 7:39 · em inglês — Mostra em inglês como tratar erros de busca e exibir os estados de carregamento e erro no React.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: PUBLICANDO AS DUAS METADES -->
             <div class="card" id="card-3">
                 <h2>🚀 3. Publicando as Duas Metades</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na máquina do desenvolvedor, o painel da Distribuidora Vale do Paraibuna funciona. Publicado, o frontend continua chamando localhost e o navegador bloqueia as chamadas por CORS. O que muda quando frontend e API saem do localhost para endereços públicos?</p>
+                </div>
                 <p>Na máquina tudo funciona. O bloco fecha com o que muda quando a API sai do localhost: URL de produção, variável de ambiente no provedor e o CORS que volta a aparecer.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=e_92Fz99q18" target="_blank" rel="noopener noreferrer">▶️ Deploy de projeto React na Vercel - React, Vite e Vercel</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 13:12 — Mostra como publicar um projeto React com Vite na Vercel.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=d5B0_twMSLM" target="_blank" rel="noopener noreferrer">▶️ Como configurar variaveis de ambiente .env no React Js + Vite</a>
+                            <span class="link-desc">Thiago · 4:24 — Explica como configurar variáveis de ambiente .env num projeto React com Vite.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

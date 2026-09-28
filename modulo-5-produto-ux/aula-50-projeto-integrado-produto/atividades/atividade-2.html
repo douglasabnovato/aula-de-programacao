@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Story Map, Roadmap e Métricas | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Story Map, Roadmap e Métricas</h1>
+        <p class="subtitulo">Aula 50 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O story map do Carona Campus com três fatias, o backlog da primeira fatia, as métricas e o resultado do teste do protótipo em papel.</p>
+        </div>
+        <h2>docs/02-plano-de-entrega.md</h2>
+        <pre># Plano de entrega — Carona Campus
+
+## Story map
+Atividades:  Entrar      | Oferecer/pedir  | Combinar         | Viajar          | Avaliar
+-------------+-------------+-----------------+------------------+-----------------+-----------
+Fatia 1      | cadastro    | pedir carona    | ver motoristas   | confirmar que   | —
+(MVP)        | com código  | das 22h         | do horário       | chegou          |
+             | da associação|                |                  |                 |
+-------------+-------------+-----------------+------------------+-----------------+-----------
+Fatia 2      | foto e      | oferecer vaga   | chat curto       | avisar atraso   | nota após
+             | curso       | recorrente      |                  |                 | a viagem
+-------------+-------------+-----------------+------------------+-----------------+-----------
+Fatia 3      | login social| outros horários | sugestão         | compartilhar    | selo de
+             |             |                 | automática       | trajeto         | confiança
+
+## Backlog da fatia 1 (ordenado)
+1. Pedir carona das 22h (Must)
+2. Ver motoristas do mesmo horário (Must)
+3. Cadastro com código da associação (Must)
+4. Confirmar que chegou (Should)
+
+## Métricas
+North Star: caronas concluídas por semana.
+Fatia 1 (HEART / Task success): % de pedidos que viram carona concluída.
+
+## Roadmap
+Agora: fatia 1 | Próximo: fatia 2 | Depois: fatia 3 e outros horários.
+
+## Teste do protótipo em papel (2 pessoas)
+- As duas não entenderam o "código da associação" -&gt; trocado por
+  "código que você recebeu no grupo do bairro".
+- Uma procurou o horário de volta antes do de ida -&gt; tela inicial passa
+  a mostrar primeiro a volta das 22h.
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Escreva a espinha dorsal antes das histórias.</li>
+            <li>Garanta uma história em cada atividade da primeira fatia.</li>
+            <li>Teste o protótipo da primeira fatia e registre o que mudou.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A primeira fatia cruza a jornada inteira, mesmo que de forma simples.</li>
+            <li>Avaliar ficou vazio na fatia 1 porque a confirmação de chegada já gera o dado mínimo.</li>
+            <li>O teste em papel mudou um rótulo e a ordem da tela — sem custo de código.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente com Uso de Ferramentas — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Assistente com Uso de Ferramentas — Código de Referência</h1>
+        <p class="subtitulo">Aula 68 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um assistente de pedidos que declara uma ferramenta, executa a chamada pedida pelo modelo no próprio código, devolve o resultado e repete até a resposta final, com limite de iterações e autorização feita pela aplicação.</p>
+        </div>
+        <h2>src/assistente.js</h2>
+        <pre>// Início: assistente de pedidos da Estante Nova usando tool use da Messages API
+const API_URL = 'https://api.anthropic.com/v1/messages';
+const MAX_ITERACOES = 5;
+
+const PEDIDOS = {
+  '100231': { cliente: 'c-01', status: 'em transporte', previsao: '2026-10-02' },
+  '100232': { cliente: 'c-02', status: 'entregue', previsao: '2026-09-20' },
+};
+
+const FERRAMENTAS = [
+  {
+    name: 'consultar_pedido',
+    description: 'Consulta o status e a previsão de entrega de um pedido do cliente logado. Use quando o cliente perguntar sobre um pedido específico.',
+    input_schema: {
+      type: 'object',
+      properties: { numero: { type: 'string', pattern: '^[0-9]{6}$', description: 'Número do pedido com seis dígitos' } },
+      required: ['numero'],
+    },
+  },
+];
+
+// Executa a ferramenta no código da aplicação, usando o cliente da sessão e não o do modelo
+function executarFerramenta(nome, entrada, clienteLogado) {
+  if (nome !== 'consultar_pedido') return { erro: true, conteudo: 'Ferramenta desconhecida' };
+  if (!/^[0-9]{6}$/.test(entrada.numero || '')) return { erro: true, conteudo: 'Número de pedido inválido' };
+  const pedido = PEDIDOS[entrada.numero];
+  if (!pedido || pedido.cliente !== clienteLogado) return { erro: true, conteudo: 'Pedido não encontrado para este cliente' };
+  return { erro: false, conteudo: JSON.stringify({ status: pedido.status, previsao: pedido.previsao }) };
+}
+
+// Envia a conversa para a API e devolve o corpo da resposta
+async function chamarModelo(mensagens) {
+  const resposta = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: process.env.ANTHROPIC_MODEL,
+      max_tokens: 400,
+      system: 'Você é o assistente de pedidos da Estante Nova. Responda em português, de forma curta, usando apenas dados vindos das ferramentas.',
+      tools: FERRAMENTAS,
+      messages: mensagens,
+    }),
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!resposta.ok) throw new Error(`API respondeu ${resposta.status}`);
+  return resposta.json();
+}
+
+// Conduz a conversa até o modelo parar de pedir ferramentas ou atingir o limite
+async function atender(pergunta, clienteLogado) {
+  const mensagens = [{ role: 'user', content: pergunta }];
+  for (let i = 0; i &lt; MAX_ITERACOES; i++) {
+    const corpo = await chamarModelo(mensagens);
+    mensagens.push({ role: 'assistant', content: corpo.content });
+    if (corpo.stop_reason !== 'tool_use') {
+      return corpo.content.filter((b) =&gt; b.type === 'text').map((b) =&gt; b.text).join('');
+    }
+    const resultados = corpo.content
+      .filter((b) =&gt; b.type === 'tool_use')
+      .map((b) =&gt; {
+        const r = executarFerramenta(b.name, b.input, clienteLogado);
+        return { type: 'tool_result', tool_use_id: b.id, content: r.conteudo, is_error: r.erro };
+      });
+    mensagens.push({ role: 'user', content: resultados });
+  }
+  return 'Não consegui concluir o atendimento agora. Um atendente vai continuar a conversa.';
+}
+
+module.exports = { atender, executarFerramenta };
+// Fim de src/assistente.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Use o mesmo <code>.env</code> da atividade anterior</li>
+            <li><code>node --env-file=.env -e "require('./src/assistente').atender('Onde está o pedido 100231?', 'c-01').then(console.log)"</code></li>
+            <li>Repita com o pedido <code>100232</code> ainda como <code>c-01</code> e observe a resposta de não encontrado</li>
+            <li>Imprima o array <code>mensagens</code> ao final para ver cada rodada de tool_use e tool_result</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O modelo nunca acessa os dados: ele só pede a chamada, e quem decide executá-la é <code>executarFerramenta</code>.</li>
+            <li>O cliente vem da sessão da aplicação; mesmo que alguém convença o modelo a pedir outro número, o pedido de outra pessoa não é devolvido.</li>
+            <li>O limite de iterações impede um laço infinito de chamadas, que custaria tokens sem entregar resposta.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

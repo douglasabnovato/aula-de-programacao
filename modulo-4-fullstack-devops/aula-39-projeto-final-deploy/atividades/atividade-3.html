@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pós-Deploy — Teste de Fumaça, Checagem e Runbook | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Pós-Deploy — Teste de Fumaça, Checagem e Runbook</h1>
+        <p class="subtitulo">Aula 39 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O script de teste de fumaça, o workflow que o executa a cada 30 minutos, o runbook de reversão e o modelo de análise pós-incidente.</p>
+        </div>
+        <h2>scripts/fumaca.sh</h2>
+        <pre>#!/usr/bin/env bash
+# Início: fumaca.sh — confere em segundos se a produção está respondendo
+set -euo pipefail
+
+API_URL="${API_URL:?defina API_URL}"
+FRONT_URL="${FRONT_URL:?defina FRONT_URL}"
+
+curl -fsS --max-time 60 "$API_URL/saude/pronto" &gt; /dev/null &amp;&amp; echo "API pronta"
+curl -fsS --max-time 30 "$FRONT_URL" &gt; /dev/null &amp;&amp; echo "Frontend no ar"
+curl -fsS --max-time 30 "$API_URL/horarios-livres?data=$(date +%F)" &gt; /dev/null &amp;&amp; echo "Consulta pública ok"
+
+echo "Teste de fumaça concluído"
+# Fim de fumaca.sh</pre>
+        <h2>.github/workflows/checagem.yml</h2>
+        <pre># Início: checagem.yml — roda o teste de fumaça contra a produção a cada 30 minutos
+name: Checagem de produção
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  fumaca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/fumaca.sh
+        env:
+          API_URL: ${{ vars.API_URL }}
+          FRONT_URL: ${{ vars.FRONT_URL }}
+# Fim de checagem.yml</pre>
+        <h2>docs/RUNBOOK.md</h2>
+        <pre>&lt;!-- Início: RUNBOOK.md — o que fazer quando a produção da Agenda Lírio quebrar --&gt;
+# Runbook — Agenda Lírio
+
+## 1. Confirmar
+- Rode `scripts/fumaca.sh` e anote qual verificação falhou.
+- Abra o log da API no painel do Render e procure linhas com level de erro.
+
+## 2. Decidir: corrigir ou voltar
+- O problema começou logo após um deploy? Volte primeiro, investigue depois.
+- O problema é de configuração (variável, senha)? Corrija a variável no painel.
+
+## 3. Voltar a versão
+- Render: Events › escolher o deploy anterior › Rollback.
+- Vercel: Deployments › deploy anterior › Promote to Production.
+- Rode o teste de fumaça de novo.
+
+## 4. Comunicar
+- Avise o Studio Lírio: o que parou, desde quando e a previsão de volta.
+
+## 5. Registrar
+- Preencha a análise pós-incidente em até 48 horas.
+&lt;!-- Fim de RUNBOOK.md --&gt;</pre>
+        <h2>docs/incidentes/AAAA-MM-DD.md</h2>
+        <pre>&lt;!-- Início: modelo de análise pós-incidente, sem culpados --&gt;
+# Incidente — login indisponível
+
+- Início: sábado, 10h05 (primeira checagem vermelha)
+- Detecção: checagem agendada do GitHub Actions
+- Fim: sábado, 10h21 (checagem verde após correção)
+- Impacto: recepção sem acesso por 16 minutos
+
+## Linha do tempo
+- 10h00 — senha do banco trocada no painel do Neon
+- 10h05 — checagem falha em /saude/pronto
+- 10h12 — log mostra falha de autenticação no banco
+- 10h19 — DATABASE_URL atualizada no Render
+
+## Causa
+A senha do banco foi trocada sem atualizar a variável da API.
+
+## O que funcionou
+A checagem agendada avisou antes de qualquer usuário.
+
+## Ações
+- [ ] Incluir no runbook: troca de senha do banco exige atualizar DATABASE_URL no mesmo momento.
+&lt;!-- Fim do modelo --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O <code>--max-time 60</code> na primeira chamada dá tempo para a API acordar da hibernação do plano gratuito.</li>
+            <li>As URLs ficam em variáveis do repositório (<code>vars</code>), não em segredo: elas são públicas; o que importa é não repeti-las no código.</li>
+            <li>A análise descreve o que aconteceu com o sistema e o processo, não quem errou.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

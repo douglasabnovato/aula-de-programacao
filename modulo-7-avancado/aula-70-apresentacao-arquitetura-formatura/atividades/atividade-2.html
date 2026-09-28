@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro de Apresentação, Banco de Perguntas e Rubrica — Modelo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Roteiro de Apresentação, Banco de Perguntas e Rubrica — Modelo</h1>
+        <p class="subtitulo">Aula 70 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O roteiro cronometrado da apresentação de 15 minutos, um banco de perguntas difíceis com a estrutura de resposta e a rubrica que a banca usa para avaliar.</p>
+        </div>
+        <h2>Roteiro de 15 minutos</h2>
+        <ol>
+            <li><strong>0:00 a 1:30 — Problema:</strong> quem sofre, quanto custa, por que agora. Uma frase sem tecnologia.</li>
+            <li><strong>1:30 a 3:00 — Contexto:</strong> diagrama C4 nível 1, usuários e sistemas externos.</li>
+            <li><strong>3:00 a 6:00 — Solução:</strong> diagrama de contêineres e o fluxo crítico passo a passo.</li>
+            <li><strong>6:00 a 9:00 — Trade-offs:</strong> as três decisões principais, a alternativa descartada de cada uma e o custo aceito.</li>
+            <li><strong>9:00 a 11:00 — Números:</strong> capacidade estimada, SLO proposto e custo mensal, com o cálculo.</li>
+            <li><strong>11:00 a 13:00 — Riscos:</strong> o que pode dar errado, o que foi mitigado e o que foi aceito.</li>
+            <li><strong>13:00 a 15:00 — Próximos passos:</strong> o que faria com mais seis meses e por quê nessa ordem.</li>
+        </ol>
+        <h2>Banco de perguntas difíceis (responder em até 1 minuto: reconhecer, explicar o raciocínio, dizer o próximo passo)</h2>
+        <ul>
+            <li>O que acontece com um agendamento se o banco cair no meio do pagamento?</li>
+            <li>Por que não microsserviços, se a clínica quer crescer para cem cidades?</li>
+            <li>Como você sabe que 99,5% é a meta certa, e não 99,9%?</li>
+            <li>Um médico consegue ver o exame de um paciente que não é dele? Como você provou isso?</li>
+            <li>Quanto custa por mês e o que faz esse valor dobrar?</li>
+            <li>Qual foi a decisão deste projeto que você tomaria diferente hoje?</li>
+            <li>Se o gateway de pagamento ficar lento por uma hora, o que o paciente vê?</li>
+            <li>Onde está o maior risco de segurança que ainda não foi tratado?</li>
+        </ul>
+        <h2>rubrica-banca.md</h2>
+        <pre>&lt;!-- Início: rubrica de avaliação da defesa de arquitetura (Formatura Master) --&gt;
+| Critério | 1 — Insuficiente | 3 — Adequado | 5 — Referência | Peso |
+|----------|------------------|--------------|----------------|------|
+| Clareza do problema | Começa pela tecnologia | Problema claro, sem impacto medido | Problema, público e custo em uma frase | 2 |
+| Diagramas | Mistura níveis, caixas sem legenda | C4 correto em um nível | Contexto e contêineres coerentes com o fluxo | 2 |
+| Trade-offs | Não cita alternativas | Cita alternativas sem custo | Alternativa descartada e custo aceito em cada decisão | 3 |
+| Números | Nenhum | Números sem cálculo | Capacidade, SLO e custo com o cálculo exposto | 2 |
+| Riscos | Não menciona | Lista riscos | Riscos com mitigação e decisão de aceite | 2 |
+| Perguntas | Evita ou improvisa | Responde parcialmente | Reconhece limite, explica raciocínio e próximo passo | 3 |
+| Tempo | Passa de 18 min | Entre 15 e 18 min | Dentro de 15 min | 1 |
+
+Nota final = soma(nota × peso) / soma(pesos). Aprovação a partir de 3,0.
+&lt;!-- Fim de rubrica-banca.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Trade-offs e perguntas têm peso maior porque são o que diferencia o nível avançado.</li>
+            <li>O roteiro chega aos trade-offs no sexto minuto; se o ensaio passar do nono minuto sem chegar lá, algo precisa sair.</li>
+            <li>A estrutura de resposta (reconhecer, explicar, próximo passo) evita tanto o improviso quanto a defesa a qualquer custo.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

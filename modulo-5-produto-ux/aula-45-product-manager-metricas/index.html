@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 45 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a transformar uma visão de produto em roadmap por problemas, escolher métricas que mudam decisões e ler uma curva de retenção para diagnosticar product-market fit.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 45: Visão de Product Manager (PM), Métricas e Product-Market Fit</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: PM E PO: ESTRATÉGIA, VISÃO E ROADMAP -->
+            <div class="card" id="card-1">
+                <h2>🧭 1. PM e PO: Estratégia, Visão e Roadmap</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia LivroLivre, de troca de livros usados entre estudantes, tem um backlog bem ordenado e entrega toda semana. Mesmo assim, ninguém no time sabe dizer por que o produto existe daqui a um ano nem qual problema ele vai atacar depois. Quem cuida dessa pergunta, e como ela vira um plano que o time consiga seguir?</p>
+                </div>
+
+                <p>O PO cuida do valor que sai de cada sprint; o PM cuida de por que o produto existe e para onde ele vai. Em times pequenos a mesma pessoa faz os dois papéis, mas as perguntas são diferentes: o roadmap orientado a problemas é o que liga a estratégia ao backlog.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/product-manager" target="_blank" rel="noopener noreferrer">📄 O papel do Product Manager — Atlassian</a>
+                        <span class="link-desc">Responsabilidades do PM e onde elas se encostam nas do PO e do time.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/project-management/product-vs-project-management" target="_blank" rel="noopener noreferrer">📄 Gestão de produto × gestão de projeto — Atlassian</a>
+                        <span class="link-desc">A diferença entre cuidar de um resultado contínuo e cuidar de uma entrega com início e fim.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/product-vs-feature-teams/" target="_blank" rel="noopener noreferrer">📄 Product vs Feature Teams — SVPG</a>
+                        <span class="link-desc">O texto de Marty Cagan sobre times que resolvem problemas e times que só entregam funcionalidades.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/product-roadmaps" target="_blank" rel="noopener noreferrer">📄 Guia de roadmap de produto — Atlassian</a>
+                        <span class="link-desc">Tipos de roadmap e como montar um que comunique direção sem prometer datas falsas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=4aJymvSdwfE" target="_blank" rel="noopener noreferrer">▶️ Product Manager vs Product Owner: Entenda as Diferenças e Qual Caminho Seguir na Carreira de Produto</a>
+                            <span class="link-desc">Diogo Becker - Product Management · 20:49 — Explica as diferenças entre Product Manager e Product Owner e como os papéis se complementam.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=MsSywiiCBMk" target="_blank" rel="noopener noreferrer">▶️ O que faz um Product Manager? Entenda os papéis, responsabilidades e entregas de quem lidera produto</a>
+                            <span class="link-desc">Tera · 25:23 — Mostra o que faz um Product Manager: responsabilidades, visão e entregas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Da Visão ao Roadmap Agora/Próximo/Depois</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-45</code> com o arquivo <code>visao-e-roadmap.md</code> e escolha um produto seu ou a LivroLivre fictícia.</li>
+                            <li><strong>Escrevendo a Visão:</strong> descreva em duas frases o mundo em que o produto já deu certo: quem se beneficia e o que mudou na vida dessa pessoa.</li>
+                            <li><strong>Listando os Problemas:</strong> liste de seis a oito problemas do usuário que impedem essa visão de acontecer hoje.</li>
+                            <li><strong>Escolhendo a Estratégia:</strong> escreva qual problema você ataca primeiro e por quê — a estratégia é a ordem das apostas.</li>
+                            <li><strong>Erro Provocado:</strong> monte primeiro um roadmap de funcionalidades com datas, do tipo <em>"março: chat; abril: ranking"</em>. Pergunte-se o que acontece se o chat atrasar ou não resolver nada.</li>
+                            <li><strong>Mudando para Problemas:</strong> reescreva o roadmap em três colunas — <strong>Agora</strong>, <strong>Próximo</strong>, <strong>Depois</strong> — com problemas a resolver, não funcionalidades.</li>
+                            <li><strong>Ligando ao Resultado:</strong> para cada problema da coluna Agora, escreva o resultado esperado que diria se ele foi resolvido.</li>
+                            <li><strong>Separando os Papéis:</strong> marque quais decisões do documento são de PM (visão, estratégia) e quais são de PO (ordem do backlog).</li>
+                            <li><strong>Conectando ao Backlog:</strong> escreva duas histórias de usuário que nascem do primeiro problema da coluna Agora.</li>
+                            <li><strong>Validação e Testes:</strong> mostre o roadmap a um colega e peça que ele explique, sem sua ajuda, por que a coluna Agora vem primeiro; registre no README o que ele entendeu diferente.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: MÉTRICAS QUE ORIENTAM DECISÃO -->
+            <div class="card" id="card-2">
+                <h2>📈 2. Métricas que Orientam Decisão</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O painel da LivroLivre mostra 12 mil visitas no mês e o time comemora. Mas só 40 trocas de livro foram concluídas, e ninguém sabe se isso é bom ou ruim. Quais números o time deveria acompanhar para saber se o produto está cumprindo o que promete?</p>
+                </div>
+
+                <p>Métrica boa é a que muda uma decisão. O framework HEART do Google liga cada objetivo de experiência a um sinal e a uma métrica, e a North Star concentra o time num número que representa o valor entregue ao usuário, não o volume de tráfego.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" target="_blank" rel="noopener noreferrer">📄 HEART — artigo original do Google Research</a>
+                        <span class="link-desc">O artigo que propõe Happiness, Engagement, Adoption, Retention e Task success com o processo Objetivos, Sinais e Métricas.</span>
+                    </li>
+                    <li>
+                        <a href="https://amplitude.com/books/north-star/about-north-star-framework" target="_blank" rel="noopener noreferrer">📄 North Star Framework — Amplitude</a>
+                        <span class="link-desc">Como escolher uma métrica que represente o valor entregue e quais métricas de entrada a movem.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/ux-goals-analytics/" target="_blank" rel="noopener noreferrer">📄 De objetivos de UX para plano de métricas — NN/g</a>
+                        <span class="link-desc">O passo a passo para transformar um objetivo em evento medido no analytics.</span>
+                    </li>
+                    <li>
+                        <a href="https://support.google.com/analytics/answer/9322688?hl=en" target="_blank" rel="noopener noreferrer">📄 Sobre eventos — Ajuda do Google Analytics</a>
+                        <span class="link-desc">Como o analytics registra ações do usuário como eventos, que são a matéria-prima das métricas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=tUTfD_Hx4VU" target="_blank" rel="noopener noreferrer">▶️ Quais métricas de Produto você PRECISA saber</a>
+                            <span class="link-desc">Diogo Becker - Product Management · 11:38 — Apresenta as métricas de produto mais usadas e como elas orientam decisões.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ulQ3NKPBCt0" target="_blank" rel="noopener noreferrer">▶️ Heart Framework: Choosing the Right Metrics for User Experience</a>
+                            <span class="link-desc">zbignev gecis · 9:59 · em inglês — Explica em inglês o framework HEART e como escolher métricas de experiência do usuário.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Montando o Quadro HEART e a North Star de um Produto</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie uma planilha <code>metricas-heart</code> com as colunas <code>dimensão</code>, <code>objetivo</code>, <code>sinal</code> e <code>métrica</code>.</li>
+                            <li><strong>Objetivo de Cada Dimensão:</strong> para cada letra do HEART, escreva em uma frase o que seria sucesso para o usuário do seu produto.</li>
+                            <li><strong>Descartando o que Não Serve:</strong> marque as dimensões que não importam agora — nem todo produto precisa das cinco.</li>
+                            <li><strong>Encontrando o Sinal:</strong> para cada objetivo mantido, descreva qual ação ou resposta do usuário indicaria que ele foi atingido.</li>
+                            <li><strong>Definindo a Métrica:</strong> transforme cada sinal num número com período, como <em>"% de trocas concluídas em 7 dias"</em>.</li>
+                            <li><strong>Erro Provocado:</strong> coloque <em>"visitas no mês"</em> como North Star e pergunte: se ela dobrar, o usuário recebeu mais valor? Anote por que a resposta é incerta.</li>
+                            <li><strong>Escolhendo a North Star:</strong> escolha uma métrica que só sobe quando o usuário recebe valor, como <em>trocas concluídas por semana</em>.</li>
+                            <li><strong>Métricas de Entrada:</strong> liste de duas a quatro métricas que o time consegue mover e que empurram a North Star.</li>
+                            <li><strong>Planejando os Eventos:</strong> escreva os nomes dos eventos que precisam ser registrados no código, como <code>troca_solicitada</code> e <code>troca_concluida</code>.</li>
+                            <li><strong>Validação e Testes:</strong> para cada métrica, escreva a decisão que você tomaria se ela caísse pela metade; registre no README as que não geraram decisão nenhuma e remova-as.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PRODUCT-MARKET FIT E RETENÇÃO -->
+            <div class="card" id="card-3">
+                <h2>🧲 3. Product-Market Fit e Retenção</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A LivroLivre ganhou 900 cadastros depois de um post que viralizou na universidade. Três meses depois, só 30 pessoas ainda fazem trocas. O time quer investir em anúncio para trazer mais gente. Antes de gastar, como saber se o produto já resolve um problema que faz as pessoas voltarem?</p>
+                </div>
+
+                <p>Product-market fit é o ponto em que o mercado puxa o produto: as pessoas voltam, recomendam e sentiriam falta dele. A curva de retenção por coorte é o sinal mais honesto disso — cadastro mostra curiosidade, retenção mostra valor.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://pmarchive.com/guide_to_startups_part4.html" target="_blank" rel="noopener noreferrer">📄 The only thing that matters — Marc Andreessen</a>
+                        <span class="link-desc">O texto original que popularizou o termo product-market fit, no arquivo oficial do autor.</span>
+                    </li>
+                    <li>
+                        <a href="https://a16z.com/12-things-about-product-market-fit/" target="_blank" rel="noopener noreferrer">📄 12 coisas sobre product-market fit — a16z</a>
+                        <span class="link-desc">Sinais práticos de que o produto encontrou mercado, e sinais de que ainda não.</span>
+                    </li>
+                    <li>
+                        <a href="https://amplitude.com/docs/analytics/charts/retention-analysis/retention-analysis-build" target="_blank" rel="noopener noreferrer">📄 Análise de retenção — documentação Amplitude</a>
+                        <span class="link-desc">Como uma curva de retenção por coorte é montada e como lê-la.</span>
+                    </li>
+                    <li>
+                        <a href="https://a16z.com/product-user-fit-comes-before-product-market-fit/" target="_blank" rel="noopener noreferrer">📄 Product-user fit vem antes — a16z</a>
+                        <span class="link-desc">Por que primeiro um grupo pequeno precisa amar o produto antes de o mercado inteiro vir.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=AkU7NbEVT8o" target="_blank" rel="noopener noreferrer">▶️ O que é PMF - Product Market Fit | Alavancando as vendas com tecnologia: Product Market Fit</a>
+                            <span class="link-desc">AWS Developers LATAM · 10:50 — Explica o que é Product-Market Fit e quais sinais mostram que o mercado está puxando o produto.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Tw37PemfcYM" target="_blank" rel="noopener noreferrer">▶️ Como encontrar o PRODUCT MARKET-FIT para sua STARTUP?</a>
+                            <span class="link-desc">StartupHero · 9:56 — Discute caminhos para uma startup encontrar o Product-Market Fit.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Lendo uma Curva de Retenção e Diagnosticando o Fit</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a planilha <code>retencao-coortes</code> e copie a tabela de exemplo da atividade desta aula, com coortes mensais.</li>
+                            <li><strong>Entendendo a Tabela:</strong> identifique o que é linha (mês de cadastro) e o que é coluna (meses desde o cadastro).</li>
+                            <li><strong>Calculando o Percentual:</strong> divida cada célula pelo tamanho da coorte e formate como porcentagem.</li>
+                            <li><strong>Desenhando a Curva:</strong> crie um gráfico de linhas com uma linha por coorte.</li>
+                            <li><strong>Erro Provocado:</strong> faça também um gráfico de cadastros acumulados e observe que ele só sobe. Anote por que esse gráfico esconde o problema.</li>
+                            <li><strong>Procurando o Platô:</strong> verifique se as curvas de retenção se estabilizam num patamar ou continuam caindo até perto de zero.</li>
+                            <li><strong>Comparando Coortes:</strong> veja se as coortes mais novas retêm melhor que as antigas — isso mostra se as mudanças do produto estão funcionando.</li>
+                            <li><strong>Pergunta de Fit:</strong> escreva uma pesquisa curta com a pergunta <em>"Como você se sentiria se não pudesse mais usar o produto?"</em> e as opções muito decepcionado, pouco decepcionado e indiferente.</li>
+                            <li><strong>Diagnóstico:</strong> escreva uma conclusão: há fit, há fit num grupo específico ou ainda não há fit — com o número que sustenta.</li>
+                            <li><strong>Validação e Testes:</strong> responda por escrito se investiria em anúncio agora e por quê; registre no README o gráfico e a decisão.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

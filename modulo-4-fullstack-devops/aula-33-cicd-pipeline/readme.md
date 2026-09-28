@@ -34,12 +34,12 @@ Esta ementa transforma o ritual manual de publicar — rodar teste na mão, buil
 
 * **Atividade 1 (Sua Primeira Esteira Verde — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-1.html)
 
 * **Atividade 2 (Acrescentando Portões que Barram o Commit Ruim — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-2.html)
 
 * **Atividade 3 (Publicando Automaticamente, com Volta Garantida — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-33-cicd-pipeline/atividades/atividade-3.html)

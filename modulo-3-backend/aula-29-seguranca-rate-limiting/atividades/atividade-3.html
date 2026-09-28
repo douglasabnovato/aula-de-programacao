@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria de Segurança — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Auditoria de Segurança — Código de Referência</h1>
+        <p class="subtitulo">Aula 29 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Validação das variáveis de ambiente que impede a API de subir mal configurada, cabeçalhos ajustados para uma API JSON, o modelo <code>.env.example</code> e os scripts que juntam tudo num comando.</p>
+        </div>
+        <h2>src/config/env.js</h2>
+        <pre>// Início: validação das variáveis de ambiente na subida da API
+require('dotenv').config();
+const { z } = require('zod');
+
+const esquema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  PORT: z.coerce.number().int().positive().default(3000),
+  JWT_SECRET: z.string().min(32, { error: 'JWT_SECRET precisa de pelo menos 32 caracteres' }),
+  SUPABASE_URL: z.url({ error: 'SUPABASE_URL precisa ser uma URL' }),
+  SUPABASE_SECRET_KEY: z.string().min(1, { error: 'SUPABASE_SECRET_KEY é obrigatória' }),
+  ORIGENS_PERMITIDAS: z.string().min(1, { error: 'ORIGENS_PERMITIDAS é obrigatória' })
+});
+
+const resultado = esquema.safeParse(process.env);
+
+if (!resultado.success) {
+  console.error('Configuração inválida — a API não vai subir:');
+  resultado.error.issues.forEach((issue) =&gt; console.error(` - ${issue.path.join('.')}: ${issue.message}`));
+  process.exit(1);
+}
+
+module.exports = Object.freeze(resultado.data);
+// Fim de env.js</pre>
+        <h2>src/config/helmet.js</h2>
+        <pre>// Início: cabeçalhos de segurança ajustados para uma API que só devolve JSON
+const helmet = require('helmet');
+
+const cabecalhos = helmet({
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      defaultSrc: ["'none'"],
+      frameAncestors: ["'none'"]
+    }
+  },
+  crossOriginResourcePolicy: { policy: 'same-site' }
+});
+
+module.exports = cabecalhos;
+// Fim de helmet.js</pre>
+        <h2>package.json (trecho)</h2>
+        <pre>{
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "checar:env": "node -e \"require('./src/config/env')\"",
+    "seguranca": "npm run audit:prod &amp;&amp; npm run checar:env"
+  }
+}</pre>
+        <h2>.env.example</h2>
+        <pre># Início: modelo das variáveis de ambiente — copie para .env e preencha
+NODE_ENV=development
+PORT=3000
+JWT_SECRET=
+SUPABASE_URL=
+SUPABASE_SECRET_KEY=
+ORIGENS_PERMITIDAS=http://localhost:5500,http://localhost:5173
+# Fim de .env.example</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install zod helmet dotenv</code></li>
+            <li>Importe <code>src/config/env.js</code> na primeira linha do <code>server.js</code></li>
+            <li><code>npm run seguranca</code></li>
+            <li>Apague uma variável do <code>.env</code> e rode de novo</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A API que não sobe é melhor do que a API que sobe e falha no primeiro login às três da manhã.</li>
+            <li><code>--omit=dev</code> olha só o que vai para produção; falha em ferramenta de teste entra em outra fila de prioridade.</li>
+            <li>A CSP <code>default-src 'none'</code> faz sentido para JSON; a página <code>/docs</code> da aula 24, se ficar no mesmo app, precisa de uma política própria.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

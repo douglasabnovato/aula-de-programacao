@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Entrega de Teste Técnico — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Checklist de Entrega de Teste Técnico — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 56 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O checklist usado pela candidata fictícia Bianca Moura na segunda tentativa e o trecho do README com decisões e suposições.</p>
+        </div>
+        <h2>Checklist antes de enviar</h2>
+        <ul>
+            <li>O projeto roda a partir de um clone limpo seguindo só o README.</li>
+            <li>Nenhuma chave, senha ou token está no código nem no histórico.</li>
+            <li>Existe <code>.env.example</code> com todas as variáveis, sem valores reais.</li>
+            <li>Todos os requisitos obrigatórios estão atendidos e listados no README.</li>
+            <li>Os commits contam a história da construção, em passos pequenos.</li>
+            <li>Há pelo menos um teste automatizado para a regra principal.</li>
+            <li>A seção de decisões explica suposições feitas sem resposta da empresa.</li>
+            <li>A seção 'com mais tempo eu faria' lista no máximo cinco itens, em ordem de prioridade.</li>
+        </ul>
+        <h2>README.md (trecho)</h2>
+        <pre>&lt;!-- Início: trecho de README de teste técnico (exemplo fictício) --&gt;
+## Decisões e Suposições
+
+### 1. Armazenamento em memória
+Contexto: o enunciado não pediu banco de dados.
+Decisão: usar um array em memória atrás de um serviço.
+Consequência: os dados somem ao reiniciar; trocar por banco exige mexer só no serviço.
+
+### 2. Código de rastreio
+Contexto: o formato do código não foi especificado.
+Suposição: 2 letras + 9 dígitos + 2 letras, validado por expressão regular.
+Consequência: códigos fora do padrão recebem 400 com mensagem explicativa.
+
+### 3. Paginação
+Contexto: a listagem pode crescer.
+Decisão: parâmetros page e limit com limite máximo de 50 itens.
+
+## Com mais tempo eu faria
+1. Persistência em PostgreSQL
+2. Testes de integração das rotas
+3. Documentação da API em OpenAPI
+&lt;!-- Fim do trecho de README.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Copie o checklist para o seu repositório de teste.</li>
+            <li>Marque cada item só depois de conferir, não de memória.</li>
+            <li>Adapte a seção de decisões às suposições do seu enunciado.</li>
+            <li>Envie o link junto de um parágrafo curto resumindo o que foi feito.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Suposição escrita transforma uma lacuna do enunciado em sinal de maturidade.</li>
+            <li>Um teste da regra principal pesa mais que vários testes triviais.</li>
+            <li>A lista do que ficou de fora mostra prioridade; não é pedido de desculpas.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

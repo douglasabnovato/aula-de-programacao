@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo de Documento de Escopo — Projeto Final | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo de Documento de Escopo — Projeto Final</h1>
+        <p class="subtitulo">Aula 30 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um modelo de documento de escopo, preenchido com o exemplo da cooperativa Colheita Viva nas partes que servem de referência. Copie para <code>docs/ESCOPO.md</code> no repositório e substitua o que está entre colchetes.</p>
+        </div>
+        <h2>docs/ESCOPO.md</h2>
+        <pre>&lt;!-- Início: modelo de documento de escopo do projeto final de backend --&gt;
+# Escopo — [Nome do Projeto]
+
+## 1. Problema
+[Quem usa] precisa [o quê], mas hoje [por que não funciona].
+
+## 2. Usuários e permissões
+| Perfil | Pode fazer | Não pode fazer |
+|---|---|---|
+| Produtor | registrar e ver as próprias entregas | ver entregas de outros produtores |
+| Galpão | ver todas as entregas do dia e marcar como recebida | alterar dados do produtor |
+
+## 3. Rotas obrigatórias (máximo 6)
+| Método | Rota | Quem chama | Sucesso | Erros previstos |
+|---|---|---|---|---|
+| POST | /auth/login | todos | 200 | 400, 401, 429 |
+| POST | /entregas | produtor | 201 | 400, 401, 422 |
+| GET | /entregas | produtor, galpão | 200 | 401 |
+| POST | /entregas/:id/foto | produtor | 201 | 400, 404, 413, 415 |
+| PATCH | /entregas/:id/receber | galpão | 200 | 401, 403, 404, 422 |
+| GET | /entregas/:id/foto/link | produtor, galpão | 200 | 401, 404 |
+
+## 4. Depois da entrega
+- [funcionalidade adiada] — motivo: [...]
+
+## 5. Modelo de dados
+Arquivo: `db/schema.sql` — tabelas: [...]
+
+## 6. Camadas usadas e por quê
+- Rotas + controladores: [...]
+- Casos de uso: [...]
+- Repositórios: [...]
+
+## 7. Riscos (OWASP API Top 10)
+| Risco | Onde aparece no projeto | Defesa |
+|---|---|---|
+| [...] | [...] | [...] |
+
+## 8. Critério de pronto
+- [ ] Todas as rotas da seção 3 no contrato OpenAPI
+- [ ] Um teste de sucesso e um de erro por rota
+- [ ] API publicada com URL pública no README
+&lt;!-- Fim de ESCOPO.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Copie o modelo para <code>docs/ESCOPO.md</code></li>
+            <li>Preencha as seções 1 a 3 antes de abrir o editor de código</li>
+            <li>Escreva <code>docs/openapi.yaml</code> a partir da tabela de rotas</li>
+            <li>Leve o documento ao instrutor antes de começar a construção</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A coluna de erros previstos vira, depois, a lista de testes de erro de cada rota.</li>
+            <li>A seção <em>Depois da entrega</em> é parte do escopo: dizer o que fica de fora é decisão, não falha.</li>
+            <li>Cada risco da seção 7 precisa apontar um lugar concreto do projeto, não uma frase genérica.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

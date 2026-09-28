@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explicação de Projeto em Cinco Minutos — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Explicação de Projeto em Cinco Minutos — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 56 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O roteiro da candidata fictícia Sofia Andrade para explicar o projeto Agenda de Monitorias, na ordem problema, desenho, decisões, limite e próximo passo.</p>
+        </div>
+        <h2>1. Problema (40 segundos)</h2>
+        <ul>
+            <li>Alunos da escola fictícia marcavam monitoria por mensagem e os horários se sobrepunham.</li>
+            <li>O projeto permite ver horários livres e reservar um horário sem conflito.</li>
+        </ul>
+        <h2>2. Desenho (1 minuto)</h2>
+        <ul>
+            <li>Frontend em React publicado estaticamente.</li>
+            <li>API em Express com rotas de horários e reservas.</li>
+            <li>Banco PostgreSQL com tabelas de monitor, horário e reserva.</li>
+            <li>Camadas: telas (apresentação), regra de conflito no serviço (domínio), repositório SQL (dados).</li>
+        </ul>
+        <h2>3. Três decisões (1 minuto e 30 segundos)</h2>
+        <ul>
+            <li>Regra de conflito no banco com restrição única, e não só no frontend — alternativa descartada: validar só na tela, porque duas pessoas podem reservar ao mesmo tempo.</li>
+            <li>Monólito com uma API só — alternativa descartada: serviço separado para notificações, porque ainda não havia volume que justificasse.</li>
+            <li>Autenticação por e-mail da escola — alternativa descartada: cadastro livre, porque o público é fechado.</li>
+        </ul>
+        <h2>4. Limite conhecido (40 segundos)</h2>
+        <ul>
+            <li>Sem fila de espera: quando o horário lota, o aluno não é avisado se alguém cancelar. Descobri ao testar com a turma.</li>
+        </ul>
+        <h2>5. Próximo passo com dez vezes mais usuários (1 minuto)</h2>
+        <ul>
+            <li>Primeiro, mover configuração para variáveis de ambiente por ambiente e ter réplicas da API sem estado.</li>
+            <li>Depois, índice na coluna de data das reservas, que é a consulta mais frequente.</li>
+        </ul>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A ordem começa pelo problema; as telas aparecem só como consequência.</li>
+            <li>Cada decisão vem com a alternativa descartada — é isso que mostra raciocínio.</li>
+            <li>Dizer um limite real antes de perguntarem aumenta a confiança na explicação.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

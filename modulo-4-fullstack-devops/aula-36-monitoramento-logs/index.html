@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 36 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a instrumentar a API com logs estruturados e métricas, e a definir SLO e alertas que avisam quando o usuário está sendo afetado.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 36: Monitoramento, Logs e Observabilidade</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: LOGS ESTRUTURADOS E O RASTRO DE CADA REQUISIÇÃO -->
+            <div class="card" id="card-1">
+                <h2>📜 1. Logs Estruturados e o Rastro de Cada Requisição</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A clínica veterinária fictícia Bem-Te-Vi recebeu a reclamação de uma tutora: o agendamento das 14h sumiu. O log da API tem 40 mil linhas soltas como 'erro ao salvar' e 'ok', sem data, sem rota e sem como saber quais linhas pertencem ao mesmo pedido. Como escrever logs que respondam em dois minutos o que aconteceu com aquela requisição?</p>
+                </div>
+
+                <p>Log é o relato do que o sistema fez, escrito para ser lido por máquina e por gente sob pressão. Em formato JSON, com nível, contexto e um identificador por requisição, ele deixa de ser texto solto e vira dado que se filtra.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://12factor.net/pt_br/logs" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Logs</a>
+                        <span class="link-desc">Por que a aplicação escreve o log na saída padrão e deixa o ambiente decidir onde guardar.</span>
+                    </li>
+                    <li>
+                        <a href="https://getpino.io/" target="_blank" rel="noopener noreferrer">📄 Pino — documentação oficial</a>
+                        <span class="link-desc">O logger JSON para Node: níveis, filhos com contexto, ocultação de campos e integração com Express.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Logging Cheat Sheet — OWASP</a>
+                        <span class="link-desc">O que registrar, o que nunca registrar e como evitar que o log vire vazamento de dado.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/crypto.html" target="_blank" rel="noopener noreferrer">📄 Módulo crypto — API oficial do Node</a>
+                        <span class="link-desc">Onde está o randomUUID, usado para gerar o identificador único de cada requisição.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=jnriHz6FTEQ" target="_blank" rel="noopener noreferrer">▶️ LOGGING NO NODE JS DO JEITO CERTO (usando o pino) | CodePills #2</a>
+                            <span class="link-desc">Victor Moraes · 11:36 — Mostra como gerar logs estruturados em JSON no Node.js com a biblioteca pino.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=VMb3j1Wzkfw" target="_blank" rel="noopener noreferrer">▶️ Logs Inteligentes: Implementando Correlation ID no Node.js com AsyncHooks</a>
+                            <span class="link-desc">Matheus Mallmann · 14:49 — Implementa um Correlation ID para rastrear cada requisição nos logs de uma aplicação Node.js.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Logs em JSON com Identificador de Requisição</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> na API de agendamentos, rode <code>npm install pino pino-http</code> e crie <code>src/logger.js</code>.</li>
+                            <li><strong>Logger Único:</strong> crie o logger com <code>level</code> vindo de <code>process.env.LOG_LEVEL</code> e campos base <code>servico</code> e <code>ambiente</code>.</li>
+                            <li><strong>Trocando o console.log:</strong> substitua os <code>console.log</code> das rotas por <code>req.log.info({ agendamentoId }, 'agendamento criado')</code>.</li>
+                            <li><strong>Log de Toda Requisição:</strong> registre <code>app.use(pinoHttp({ logger }))</code> antes das rotas e observe método, rota, status e tempo em cada linha.</li>
+                            <li><strong>Identificador de Requisição:</strong> em <code>genReqId</code>, use o cabeçalho <code>x-request-id</code> quando vier ou gere um com <code>randomUUID()</code>, e devolva-o na resposta.</li>
+                            <li><strong>Nível pelo Resultado:</strong> use <code>customLogLevel</code> para gravar <code>warn</code> em <code>4xx</code> e <code>error</code> em <code>5xx</code>.</li>
+                            <li><strong>Erro Provocado:</strong> registre <code>req.log.info({ corpo: req.body }, 'login recebido')</code> na rota de login e encontre a senha em texto puro no terminal.</li>
+                            <li><strong>Ocultando o Sensível:</strong> configure <code>redact</code> com <code>*.senha</code>, <code>req.headers.authorization</code> e <code>req.headers.cookie</code> e confirme o <code>[OCULTO]</code> no lugar.</li>
+                            <li><strong>Lendo em Desenvolvimento:</strong> rode <code>node app.js | npx pino-pretty</code> para ler colorido sem mudar o formato gravado.</li>
+                            <li><strong>Validação e Testes:</strong> faça uma requisição com <code>-H "x-request-id: teste-123"</code>, filtre o log por esse id e registre no README as três perguntas que o log agora responde.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: MÉTRICAS, HEALTH CHECKS E OS QUATRO SINAIS DE OURO -->
+            <div class="card" id="card-2">
+                <h2>📊 2. Métricas, Health Checks e os Quatro Sinais de Ouro</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Bem-Te-Vi só descobre que a API está lenta quando a recepção liga reclamando. Ninguém sabe dizer quantas requisições por minuto o sistema recebe, qual a porcentagem de erro ou se a lentidão começou hoje ou mês passado. Que números a API precisa expor para o problema aparecer num gráfico antes de aparecer no telefone?</p>
+                </div>
+
+                <p>Log conta o que aconteceu em uma requisição; métrica resume milhares delas em números ao longo do tempo. Tráfego, erros, latência e saturação são os quatro sinais que dizem se o serviço está saudável.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/sre-book/monitoring-distributed-systems/" target="_blank" rel="noopener noreferrer">📄 Monitoring Distributed Systems — Google SRE</a>
+                        <span class="link-desc">O capítulo que define os quatro sinais de ouro e o que um bom monitoramento precisa mostrar.</span>
+                    </li>
+                    <li>
+                        <a href="https://prometheus.io/docs/introduction/overview/" target="_blank" rel="noopener noreferrer">📄 Visão Geral do Prometheus — prometheus.io</a>
+                        <span class="link-desc">O modelo de coleta por pull, séries temporais com rótulos e onde o Prometheus se encaixa.</span>
+                    </li>
+                    <li>
+                        <a href="https://prometheus.io/docs/tutorials/getting_started/" target="_blank" rel="noopener noreferrer">📄 Primeiros Passos com Prometheus — prometheus.io</a>
+                        <span class="link-desc">Subir o Prometheus, configurar um alvo e fazer a primeira consulta.</span>
+                    </li>
+                    <li>
+                        <a href="https://prometheus.io/docs/introduction/first_steps/" target="_blank" rel="noopener noreferrer">📄 First Steps — prometheus.io</a>
+                        <span class="link-desc">O arquivo de configuração, a interface web e o uso da linguagem de consulta.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qvwI3OHDovE" target="_blank" rel="noopener noreferrer">▶️ Prometheus + Grafana: Monitore sua aplicação de forma profissional</a>
+                            <span class="link-desc">Full Cycle · 14:53 — Mostra como coletar métricas com Prometheus e visualizá-las em dashboards no Grafana.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=WHJmahuQ3Sw" target="_blank" rel="noopener noreferrer">▶️ Observabilidade - Log, trace e métricas - OpenTelemetry (Loki, Tempo, Prometheus e Grafana)</a>
+                            <span class="link-desc">Wallace Camargo · 17:57 — Explica a diferença entre logs, traces e métricas e como elas se complementam na observabilidade.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Endpoint de Métricas e Prometheus no Compose</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> na API, rode <code>npm install prom-client</code> e crie <code>src/metricas.js</code>.</li>
+                            <li><strong>Registro e Métricas Padrão:</strong> crie um <code>Registry</code> e chame <code>collectDefaultMetrics</code> para expor memória e uso de CPU do processo.</li>
+                            <li><strong>Contador de Requisições:</strong> declare <code>http_requisicoes_total</code> com rótulos <code>metodo</code>, <code>rota</code> e <code>status</code>.</li>
+                            <li><strong>Histograma de Duração:</strong> declare <code>http_duracao_segundos</code> com faixas de <code>0.05</code> a <code>2.5</code> segundos.</li>
+                            <li><strong>Medindo Cada Requisição:</strong> escreva um middleware que inicia o cronômetro e registra as duas métricas no evento <code>finish</code> da resposta.</li>
+                            <li><strong>Erro Provocado:</strong> use <code>req.path</code> como rótulo, faça requisições para <code>/agendamentos/1</code> até <code>/agendamentos/50</code> e conte as séries criadas em <code>/metrics</code>.</li>
+                            <li><strong>Ajuste do Rótulo:</strong> troque por <code>req.baseUrl + req.route.path</code> para agrupar todas em <code>/agendamentos/:id</code>.</li>
+                            <li><strong>Vivo e Pronto:</strong> crie <code>/saude/vivo</code>, sempre <code>200</code>, e <code>/saude/pronto</code>, que roda <code>SELECT 1</code> e devolve <code>503</code> se o banco falhar.</li>
+                            <li><strong>Prometheus no Compose:</strong> acrescente o serviço <code>prom/prometheus</code> com um <code>prometheus.yml</code> apontando para <code>api:3000</code> e publique a porta <code>9090</code>.</li>
+                            <li><strong>Validação e Testes:</strong> gere tráfego com um laço de <code>curl</code>, consulte <code>rate(http_requisicoes_total[1m])</code> na interface do Prometheus e registre no README os quatro sinais e a métrica que representa cada um.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: SLO, ALERTAS E A RESPOSTA AO INCIDENTE -->
+            <div class="card" id="card-3">
+                <h2>🚨 3. SLO, Alertas e a Resposta ao Incidente</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O Prometheus da Bem-Te-Vi já coleta métricas, mas ninguém olha o painel às três da manhã. Na última queda, o time recebeu 200 alertas de CPU e nenhum sobre o que importava: agendamentos falhando. Como decidir qual número merece acordar alguém e o que essa pessoa faz quando o alerta chega?</p>
+                </div>
+
+                <p>Um objetivo de nível de serviço transforma 'a API tem que funcionar' num número combinado, como 99% das requisições sem erro em 30 dias. O alerta dispara quando esse objetivo está ameaçado, e o runbook diz o primeiro passo a tomar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/sre-book/service-level-objectives/" target="_blank" rel="noopener noreferrer">📄 Service Level Objectives — Google SRE</a>
+                        <span class="link-desc">A diferença entre SLI, SLO e SLA e como escolher indicadores que o usuário sente.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/practical-alerting/" target="_blank" rel="noopener noreferrer">📄 Practical Alerting — Google SRE</a>
+                        <span class="link-desc">Como transformar séries temporais em alertas que valem a interrupção de alguém.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/workbook/monitoring/" target="_blank" rel="noopener noreferrer">📄 Monitoring — Google SRE Workbook</a>
+                        <span class="link-desc">O guia prático de quais sinais observar e como organizar alerta e painel.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/workbook/slo-engineering-case-studies/" target="_blank" rel="noopener noreferrer">📄 Casos Reais de SLO — Google SRE Workbook</a>
+                        <span class="link-desc">Como duas empresas implantaram SLO na prática e o que mudou na operação.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JQTaWPEE80w" target="_blank" rel="noopener noreferrer">▶️ Aprenda de vez SLI, SLO e SLA</a>
+                            <span class="link-desc">Fabricio Veronez · 9:39 — Explica a diferença entre SLI, SLO e SLA e como definir metas de disponibilidade.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=0to0iYp6dF0" target="_blank" rel="noopener noreferrer">▶️ Boas práticas de SRE - O que é SLI e SLO?</a>
+                            <span class="link-desc">Sabedoria Podcast · 7:25 — Apresenta SLI e SLO como boas práticas de SRE para medir a confiabilidade de um serviço.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: SLO da API, Regras de Alerta e Runbook</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> com o Prometheus da prática anterior no ar, crie <code>SLO.md</code> e <code>alertas.yml</code> na raiz do projeto.</li>
+                            <li><strong>Escolhendo o Indicador:</strong> escreva no <code>SLO.md</code> o SLI de disponibilidade: requisições sem <code>5xx</code> divididas pelo total.</li>
+                            <li><strong>Definindo o Objetivo:</strong> defina o SLO de 99% em 30 dias e calcule o orçamento de erro: quantas requisições podem falhar.</li>
+                            <li><strong>Segundo Indicador:</strong> acrescente o SLI de latência: 95% das requisições abaixo de 500 ms.</li>
+                            <li><strong>Regra de Taxa de Erro:</strong> em <code>alertas.yml</code>, escreva o alerta <code>TaxaDeErroAlta</code> com a razão entre <code>5xx</code> e o total acima de <code>0.05</code> por dois minutos.</li>
+                            <li><strong>Regra de Latência:</strong> escreva <code>LatenciaP95Alta</code> com <code>histogram_quantile(0.95, ...)</code> acima de <code>0.5</code>.</li>
+                            <li><strong>Carregando as Regras:</strong> acrescente <code>rule_files</code> no <code>prometheus.yml</code>, monte o arquivo no contêiner e confira a aba Alerts.</li>
+                            <li><strong>Erro Provocado:</strong> crie a rota <code>GET /simular-erro</code> que responde <code>500</code>, dispare 100 chamadas e acompanhe o alerta passar de pending para firing.</li>
+                            <li><strong>Runbook:</strong> escreva no <code>SLO.md</code> o que fazer quando cada alerta disparar: onde olhar primeiro, como confirmar e como mitigar.</li>
+                            <li><strong>Validação e Testes:</strong> pare o tráfego de erro, confirme que o alerta volta ao estado inativo e registre no README o tempo entre o primeiro erro e o firing.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

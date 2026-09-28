@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 66 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a modelar as ameaças de um sistema, explorar e corrigir num laboratório próprio as falhas de controle de acesso e injeção, e automatizar a detecção de segredos e dependências vulneráveis no pipeline.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 66: Segurança Ofensiva e Defensiva (SecOps)</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MODELAGEM DE AMEAÇAS: PENSAR COMO QUEM ATACA -->
+            <div class="card" id="card-1">
+                <h2>🗺️ 1. Modelagem de Ameaças: Pensar como Quem Ataca</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A startup fictícia Consulta Já vai lançar um aplicativo em que pacientes enviam exames para médicos parceiros. O time já configurou HTTPS, CORS e rate limiting, e acha que isso basta. Antes do lançamento, quais caminhos um atacante usaria para ler o exame de outra pessoa, e como descobrir isso no papel antes de descobrir em produção?</p>
+                </div>
+
+                <p>Modelagem de ameaças é o exercício de desenhar o sistema, marcar onde os dados cruzam fronteiras de confiança e perguntar, em cada ponto, o que pode dar errado. Feita antes do código, ela transforma segurança de lista genérica em riscos específicos, priorizados e com dono. A aula 29 tratou das defesas de borda; aqui o olhar vai para o sistema inteiro.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Threat Modeling Cheat Sheet — OWASP</a>
+                        <span class="link-desc">As quatro perguntas da modelagem de ameaças, o uso do STRIDE e como registrar os resultados.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Attack_Surface_Analysis_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Attack Surface Analysis Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Como inventariar todos os pontos de entrada do sistema e medir quando a superfície cresce.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">📄 OWASP Top Ten</a>
+                        <span class="link-desc">As categorias de risco mais comuns em aplicações web, usadas como lista de verificação do modelo.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/www-project-application-security-verification-standard" target="_blank" rel="noopener noreferrer">📄 Application Security Verification Standard — OWASP</a>
+                        <span class="link-desc">Requisitos verificáveis de segurança, por nível, para transformar cada ameaça em critério de aceite.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=xb-5jiLCPVg" target="_blank" rel="noopener noreferrer">▶️ 4 etapas de Threat Modeling. Código Seguro #072 | Cássio B. Pereira</a>
+                            <span class="link-desc">Cássio Batista Pereira · 6:23 — Apresenta as quatro etapas da modelagem de ameaças aplicadas a código seguro.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=UWDqnhJsafY" target="_blank" rel="noopener noreferrer">▶️ Treinamento Starter - Aula 03 - Modelagem de Ameaças</a>
+                            <span class="link-desc">Conviso Application Security · 8:28 — Aula introdutória sobre modelagem de ameaças e como identificar riscos em cada parte do sistema.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Modelando as Ameaças de um Sistema com STRIDE</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>docs/seguranca/modelo-de-ameacas.md</code> no projeto final do Módulo 4.</li>
+                            <li><strong>Desenhando o Fluxo:</strong> faça o diagrama de fluxo de dados: usuário, frontend, API, banco, armazenamento de arquivos e serviços externos.</li>
+                            <li><strong>Marcando as Fronteiras:</strong> trace as fronteiras de confiança, como internet para API e API para banco, e numere cada fluxo que cruza uma delas.</li>
+                            <li><strong>Inventário da Superfície:</strong> liste todas as rotas públicas, uploads, webhooks e painéis administrativos com o tipo de autenticação de cada um.</li>
+                            <li><strong>Aplicando STRIDE:</strong> para cada fluxo que cruza fronteira, escreva uma ameaça por letra aplicável: falsificação, adulteração, repúdio, vazamento, negação de serviço e elevação de privilégio.</li>
+                            <li><strong>Erro de Escopo:</strong> tente listar ameaças sem o diagrama e compare com a lista feita a partir dele; anote quantas ficaram de fora na primeira tentativa.</li>
+                            <li><strong>Pontuando o Risco:</strong> dê nota de 1 a 3 para probabilidade e impacto e ordene as ameaças pelo produto.</li>
+                            <li><strong>Definindo a Mitigação:</strong> para as cinco primeiras, escreva a defesa, o requisito ASVS correspondente e quem é responsável.</li>
+                            <li><strong>Convertendo em Trabalho:</strong> transforme cada mitigação em issue com critério de aceite verificável.</li>
+                            <li><strong>Validação e Testes:</strong> apresente o modelo a um colega que fará o papel de atacante e registre no documento as ameaças novas que ele encontrar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: OFENSIVA CONTROLADA: EXPLORANDO E CORRIGINDO IDOR E INJEÇÃO -->
+            <div class="card" id="card-2">
+                <h2>🗡️ 2. Ofensiva Controlada: Explorando e Corrigindo IDOR e Injeção</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia Nota Certa, de emissão de notas fiscais para microempresas, tem uma rota GET /notas/:id que confere se o usuário está logado. Um cliente percebeu que, trocando o número na URL, consegue baixar a nota de outra empresa, e a busca por nome ainda monta o SQL concatenando texto. Como reproduzir o ataque num ambiente de laboratório, provar a falha e corrigir de forma que ela não volte?</p>
+                </div>
+
+                <p>Segurança ofensiva, feita com autorização e em ambiente próprio, é a forma mais direta de entender por que uma defesa existe. Controle de acesso quebrado (IDOR) e injeção de SQL continuam entre os riscos mais comuns: o primeiro nasce de confundir autenticação com autorização; o segundo, de misturar dado com comando.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/" target="_blank" rel="noopener noreferrer">📄 A01:2021 Broken Access Control — OWASP Top 10</a>
+                        <span class="link-desc">A categoria que inclui IDOR, com cenários de ataque e formas de prevenção.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Authorization Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Como verificar a permissão em cada requisição, negando por padrão.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 SQL Injection Prevention Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Consultas parametrizadas como defesa principal e o que fazer quando não é possível usá-las.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection" target="_blank" rel="noopener noreferrer">📄 Testing for SQL Injection — OWASP WSTG</a>
+                        <span class="link-desc">O roteiro de teste usado por profissionais para confirmar uma injeção de SQL.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=rLJF2HucyZM" target="_blank" rel="noopener noreferrer">▶️ Broken Access Control - Insecure Direct Object References (aka IDOR)</a>
+                            <span class="link-desc">z3nsh3ll · 6:16 · em inglês — Explica em inglês o que é IDOR (controle de acesso quebrado) e como ele é explorado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FsB_nRGdeLs" target="_blank" rel="noopener noreferrer">▶️ API Security Explained: Rate Limiting, CORS, SQL Injection, CSRF, XSS &amp; More</a>
+                            <span class="link-desc">Hayk Simonyan · 8:41 · em inglês — Resume em inglês ameaças comuns a APIs, como injeção de SQL, XSS e CSRF, e como se defender.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Laboratório de Ataque e Correção numa API Própria</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> suba a API de laboratório com PostgreSQL em contêiner, crie duas empresas e três notas para cada uma. Faça isso só no seu ambiente: atacar sistema de terceiros sem autorização é crime.</li>
+                            <li><strong>Mapeando o Alvo:</strong> liste as rotas que recebem identificador na URL ou texto livre de busca.</li>
+                            <li><strong>Explorando o IDOR:</strong> faça login como a empresa A e peça <code>GET /notas/4</code>, que pertence à empresa B; registre a resposta 200 com os dados alheios.</li>
+                            <li><strong>Explorando a Injeção:</strong> na busca, envie <code>' OR '1'='1</code> como nome e observe a lista trazer notas de todas as empresas.</li>
+                            <li><strong>Escrevendo o Teste que Falha:</strong> antes de corrigir, escreva dois testes automatizados que reproduzem os ataques e confirme que eles passam contra o código vulnerável, provando a falha.</li>
+                            <li><strong>Corrigindo a Autorização:</strong> inclua <code>empresa_id</code> da sessão no <code>WHERE</code> da consulta e responda 404 quando a nota não pertence ao usuário.</li>
+                            <li><strong>Corrigindo a Injeção:</strong> troque a concatenação por consulta parametrizada com <code>$1</code> e passe o termo no array de valores.</li>
+                            <li><strong>Invertendo os Testes:</strong> ajuste os testes para esperar 404 no IDOR e lista vazia na injeção, e confirme que agora passam.</li>
+                            <li><strong>Buscando Irmãos:</strong> procure no resto do código com <code>grep</code> por <code>req.params.id</code> sem filtro de dono e por consultas montadas com template string.</li>
+                            <li><strong>Validação e Testes:</strong> rode a suíte completa, registre no README o antes e depois de cada ataque e a regra de revisão que impede a falha de voltar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: DEVSECOPS: SEGURANÇA AUTOMATIZADA NO PIPELINE -->
+            <div class="card" id="card-3">
+                <h2>🔐 3. DevSecOps: Segurança Automatizada no Pipeline</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na agência fictícia Pixel Norte, uma chave de API de pagamento foi parar num commit público e só foi descoberta quando a conta recebeu cobranças estranhas. No mesmo mês, uma biblioteca antiga com vulnerabilidade conhecida seguiu em produção por semanas. Como fazer o pipeline encontrar segredos e dependências vulneráveis antes do merge, sem depender da memória de ninguém?</p>
+                </div>
+
+                <p>DevSecOps é colocar verificações de segurança no mesmo fluxo automatizado que já roda testes e deploy. Varredura de segredos, auditoria de dependências, análise estática de segurança e atualização automática de pacotes funcionam como camadas: cada uma pega o que a outra deixa passar, e todas rodam em cada pull request.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 CI/CD Security Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Os riscos do próprio pipeline e as verificações que ele deve executar.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Secrets Management Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Onde guardar segredos, como rotacioná-los e o que fazer quando um vaza.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Vulnerable Dependency Management Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Como decidir entre atualizar, mitigar ou aceitar o risco de uma dependência vulnerável.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.npmjs.com/cli/audit" target="_blank" rel="noopener noreferrer">📄 npm audit — documentação do npm</a>
+                        <span class="link-desc">O comando que compara as dependências instaladas com o banco de vulnerabilidades conhecidas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=zV9yZZzZGpU" target="_blank" rel="noopener noreferrer">▶️ Mantendo projeto atualizado com Dependabot e Github Actions</a>
+                            <span class="link-desc">Willian Justen · 18:14 — Mostra como usar Dependabot com GitHub Actions para manter dependências atualizadas e seguras.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ZUquwnJnfNw" target="_blank" rel="noopener noreferrer">▶️ Best DevOps SAST Security Tool | Gitleaks | DevOps</a>
+                            <span class="link-desc">DevOps Shack · 24:01 · em inglês — Mostra em inglês como usar o Gitleaks para detectar segredos expostos no código.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Montando um Pipeline de Segurança em Camadas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no repositório do projeto, crie <code>.github/workflows/secops.yml</code> e <code>.github/dependabot.yml</code>.</li>
+                            <li><strong>Segredo Plantado:</strong> numa branch de teste, crie um arquivo com uma chave falsa no formato de token conhecido e faça commit, para ter o que detectar.</li>
+                            <li><strong>Varredura de Segredos:</strong> adicione o job de gitleaks com <code>fetch-depth: 0</code>, para varrer o histórico inteiro, e confirme que ele falha apontando o commit.</li>
+                            <li><strong>Corrigindo o Vazamento:</strong> remova o arquivo, mova o valor para <code>process.env</code> e escreva no README por que apagar o arquivo não basta: a chave real precisaria ser revogada.</li>
+                            <li><strong>Auditoria de Dependências:</strong> adicione <code>npm audit --audit-level=high</code> e instale de propósito uma versão antiga de pacote com vulnerabilidade conhecida para ver o job falhar.</li>
+                            <li><strong>Análise Estática de Segurança:</strong> adicione o CodeQL para JavaScript e aguarde o primeiro resultado na aba de segurança do repositório.</li>
+                            <li><strong>Atualização Automática:</strong> configure o Dependabot para abrir PRs semanais de atualização de pacotes npm e de actions.</li>
+                            <li><strong>Menor Privilégio no Pipeline:</strong> declare <code>permissions</code> explícitas em cada job, dando escrita apenas onde o CodeQL precisa publicar resultado.</li>
+                            <li><strong>Tornando Obrigatório:</strong> marque os jobs de segredos e de dependências como verificações obrigatórias na proteção da branch.</li>
+                            <li><strong>Validação e Testes:</strong> abra um PR limpo e confirme todos os jobs verdes; registre no README o que cada camada detecta e o que nenhuma delas detecta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

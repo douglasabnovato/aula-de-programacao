@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 65 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a auditar um código com métricas objetivas, transformar essas métricas num portão de qualidade no pipeline, estruturar a revisão de código de uma equipe e priorizar a dívida técnica pelos hotspots do histórico.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 65: Auditoria de Software, Qualidade e Code Review Avançado</h1>
+        <p>Módulo 7: Avançado (Engenharia e Arquitetura Master) — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ANÁLISE ESTÁTICA E O PORTÃO DE QUALIDADE -->
+            <div class="card" id="card-1">
+                <h2>📏 1. Análise Estática e o Portão de Qualidade</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A software house fictícia Trilha Digital herdou o código de um aplicativo de delivery com 40 mil linhas e nenhum padrão. Cada revisão de código vira discussão de estilo, e funções de 300 linhas continuam entrando porque ninguém tem tempo de apontar. Como fazer a máquina barrar o que é mensurável para que a revisão humana cuide do que só uma pessoa enxerga?</p>
+                </div>
+
+                <p>Complexidade ciclomática, profundidade de aninhamento, tamanho de função e duplicação podem ser medidos por ferramenta. Quando essas métricas viram regra no lint e condição obrigatória no pipeline (quality gate), a auditoria deixa de ser opinião e passa a ser um número que bloqueia o merge.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://eslint.org/docs/latest/rules/complexity" target="_blank" rel="noopener noreferrer">📄 Regra complexity — ESLint</a>
+                        <span class="link-desc">Como o ESLint calcula a complexidade ciclomática de cada função e como definir o limite.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.sonarsource.com/sonarqube-cloud/standards/managing-quality-gates/introduction-to-quality-gates" target="_blank" rel="noopener noreferrer">📄 Understanding quality gates — SonarQube Cloud</a>
+                        <span class="link-desc">O conceito de portão de qualidade aplicado só ao código novo, sem exigir que o legado seja zerado.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank" rel="noopener noreferrer">📄 About protected branches — GitHub Docs</a>
+                        <span class="link-desc">Como exigir que as verificações passem antes de permitir o merge na branch principal.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/DesignStaminaHypothesis.html" target="_blank" rel="noopener noreferrer">📄 Design Stamina Hypothesis — Martin Fowler</a>
+                        <span class="link-desc">Por que investir em qualidade interna acelera a entrega depois de um certo ponto do projeto.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=4sdX_mGko_M" target="_blank" rel="noopener noreferrer">▶️ Analisando a Qualidade de seus projetos com GitHub Actions e Sonar</a>
+                            <span class="link-desc">Julio Arruda · 13:12 — Mostra como analisar a qualidade do código com Sonar integrado ao GitHub Actions.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Kr4VxMbF3LY" target="_blank" rel="noopener noreferrer">▶️ Lint Like a Senior Developer w/ eslint + husky + lint staged + github actions</a>
+                            <span class="link-desc">Syntax · 20:19 · em inglês — Mostra em inglês como usar ESLint, Husky e GitHub Actions como portão de qualidade.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Montando um Portão de Qualidade no Pipeline</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> abra a API do projeto final do Módulo 4 e instale <code>npm install -D eslint @eslint/js globals</code>.</li>
+                            <li><strong>Medindo o Ponto de Partida:</strong> rode o ESLint com a regra <code>complexity</code> em modo aviso e salve a lista das dez funções mais complexas.</li>
+                            <li><strong>Escolhendo os Limites:</strong> defina <code>complexity</code> em 10, <code>max-depth</code> em 3 e <code>max-lines-per-function</code> em 60, anotando no README o motivo de cada número.</li>
+                            <li><strong>Configurando o Lint:</strong> crie o <code>eslint.config.js</code> no formato flat com as regras como erro e rode <code>npx eslint src</code>.</li>
+                            <li><strong>Provocando a Reprovação:</strong> escreva de propósito uma função com cinco <code>if</code> aninhados e confirme a mensagem de erro com o valor medido.</li>
+                            <li><strong>Separando Novo de Legado:</strong> para não travar o time, limite o erro aos arquivos alterados usando <code>git diff --name-only origin/main</code> no script de verificação.</li>
+                            <li><strong>Script de Auditoria:</strong> adicione ao <code>package.json</code> o script <code>audit:qualidade</code> que roda lint, testes com cobertura e <code>npm audit --audit-level=high</code>.</li>
+                            <li><strong>Pipeline:</strong> crie o workflow <code>.github/workflows/qualidade.yml</code> que roda o script em todo pull request.</li>
+                            <li><strong>Bloqueando o Merge:</strong> na proteção da branch <code>main</code>, marque o job de qualidade como verificação obrigatória.</li>
+                            <li><strong>Validação e Testes:</strong> abra um PR com a função complexa, confirme o bloqueio, refatore até passar e registre no README as métricas antes e depois.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: CODE REVIEW AVANÇADO: CRITÉRIO, TAMANHO E RESPONSÁVEIS -->
+            <div class="card" id="card-2">
+                <h2>🔍 2. Code Review Avançado: Critério, Tamanho e Responsáveis</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na fintech fictícia Moeda Clara, pull requests de 2.000 linhas ficam dias parados e voltam aprovados com um único comentário: 'LGTM'. Um desses PRs levou para produção um cálculo de juros errado que ninguém leu de verdade. Como organizar a revisão para que ela encontre problemas de design e de regra de negócio, e não só vírgula fora do lugar?</p>
+                </div>
+
+                <p>Uma revisão útil depende de três coisas: PRs pequenos o bastante para serem lidos, um critério explícito do que olhar (design, funcionalidade, complexidade, testes, nomes) e responsáveis definidos por área do código. O Google publica o guia que usa internamente, e o GitHub oferece os mecanismos para colocar isso em prática.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/looking-for.html" target="_blank" rel="noopener noreferrer">📄 What to look for in a code review — Google</a>
+                        <span class="link-desc">A lista ordenada do que o revisor deve examinar, do design aos comentários.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/developer/small-cls.html" target="_blank" rel="noopener noreferrer">📄 Small CLs — Google</a>
+                        <span class="link-desc">Por que mudanças pequenas são revisadas melhor e como quebrar uma mudança grande.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners" target="_blank" rel="noopener noreferrer">📄 About code owners — GitHub Docs</a>
+                        <span class="link-desc">Como o arquivo CODEOWNERS pede revisão automática das pessoas responsáveis por cada pasta.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">📄 Creating a pull request template — GitHub Docs</a>
+                        <span class="link-desc">Como padronizar a descrição de todo PR com contexto, risco e forma de testar.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=3wr0G5jz7_o" target="_blank" rel="noopener noreferrer">▶️ Dicas para melhorar seus Pull Requests e Code Reviews!</a>
+                            <span class="link-desc">Waldemar Neto - Dev Lab · 16:36 — Dá dicas para abrir pull requests menores e fazer revisões mais úteis.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=wdi6y5cYIzg" target="_blank" rel="noopener noreferrer">▶️ Essas BOAS PRÁTICAS de CODE REVIEW aumentam a EFICIÊNCIA do time</a>
+                            <span class="link-desc">Andre Okazaki · 29:40 — Apresenta boas práticas de code review para dar critério e agilidade à revisão do time.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Estruturando o Processo de Revisão de um Repositório</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um repositório de equipe (ou o da turma) e crie a pasta <code>.github/</code> na raiz.</li>
+                            <li><strong>Medindo a Situação Atual:</strong> levante os últimos dez PRs: linhas alteradas, tempo até a primeira revisão e número de comentários de cada um.</li>
+                            <li><strong>Definindo o Limite de Tamanho:</strong> com base nos dados, escolha um teto (por exemplo, 400 linhas) e escreva no <code>CONTRIBUTING.md</code> como dividir o que passar disso.</li>
+                            <li><strong>Modelo de PR:</strong> crie <code>.github/pull_request_template.md</code> com as seções contexto, o que mudou, como testar, riscos e checklist.</li>
+                            <li><strong>Responsáveis por Área:</strong> crie <code>.github/CODEOWNERS</code> ligando <code>src/pagamentos/</code> e <code>src/auth/</code> às pessoas ou times responsáveis.</li>
+                            <li><strong>Critério do Revisor:</strong> escreva um checklist de revisão em ordem de prioridade: design, regra de negócio, casos de borda, testes, nomes e só por último estilo.</li>
+                            <li><strong>Classificando Comentários:</strong> combine prefixos como <code>bloqueante:</code>, <code>sugestão:</code> e <code>dúvida:</code> para que o autor saiba o que precisa mudar.</li>
+                            <li><strong>Revisão Provocada:</strong> abra um PR grande de propósito e peça revisão; depois divida o mesmo conteúdo em três PRs e compare a qualidade dos comentários recebidos.</li>
+                            <li><strong>Exigindo a Revisão:</strong> na proteção da branch, exija aprovação de code owners antes do merge.</li>
+                            <li><strong>Validação e Testes:</strong> abra um PR que altera <code>src/pagamentos/</code>, confirme que o responsável foi marcado automaticamente e registre no README o antes e depois das métricas.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: HOTSPOTS: ONDE A DÍVIDA TÉCNICA CUSTA MAIS -->
+            <div class="card" id="card-3">
+                <h2>🔥 3. Hotspots: Onde a Dívida Técnica Custa Mais</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A diretoria da empresa fictícia Rota Fácil Logística aprovou duas semanas para 'pagar dívida técnica', e o time não sabe por onde começar: há centenas de arquivos feios. Refatorar um arquivo que ninguém toca há três anos não devolve nada ao negócio. Como escolher, com dados, os poucos arquivos em que a melhoria vai acelerar o trabalho de verdade?</p>
+                </div>
+
+                <p>Nem toda dívida técnica cobra juros. O custo aparece onde código complexo encontra mudança frequente: o histórico do Git mostra quais arquivos mudam mais, a análise estática mostra quais são mais complexos, e o cruzamento dos dois aponta os hotspots que justificam o investimento.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://git-scm.com/docs/git-log" target="_blank" rel="noopener noreferrer">📄 git log — documentação oficial do Git</a>
+                        <span class="link-desc">As opções de formatação e filtro que transformam o histórico em dado analisável, como --numstat e --since.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html" target="_blank" rel="noopener noreferrer">📄 Technical Debt Quadrant — Martin Fowler</a>
+                        <span class="link-desc">Os quatro tipos de dívida técnica e por que a origem dela muda a forma de tratar.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/standard.html" target="_blank" rel="noopener noreferrer">📄 The Standard of Code Review — Google</a>
+                        <span class="link-desc">O critério de aprovar o que melhora a saúde do código, útil para decidir até onde refatorar.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/developer/" target="_blank" rel="noopener noreferrer">📄 The CL author's guide — Google</a>
+                        <span class="link-desc">Como apresentar uma refatoração para revisão sem misturá-la com mudança de comportamento.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7VmpPsF1VuY" target="_blank" rel="noopener noreferrer">▶️ Débito Técnico (A Dívida Técnica da Programação) // Dicionário do Programador</a>
+                            <span class="link-desc">Código Fonte TV · 11:40 — Explica o que é dívida técnica e como ela gera custo ao longo do tempo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=H6uhm8cvND4" target="_blank" rel="noopener noreferrer">▶️ [Curso de Git e GitHub - 2023] Aula 5.2: na prática - como analisar o histórico de commits</a>
+                            <span class="link-desc">Pietro Martins De Oliveira · 15:19 — Mostra como analisar o histórico de commits do Git, base para encontrar arquivos que mudam com frequência.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Mapeando os Hotspots de um Repositório Real</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> clone um repositório com pelo menos um ano de histórico e crie o arquivo <code>scripts/hotspots.js</code>.</li>
+                            <li><strong>Lendo o Histórico:</strong> rode <code>git log --since=12.months --numstat --format=</code> e observe as colunas de linhas adicionadas, removidas e o caminho.</li>
+                            <li><strong>Contando Mudanças:</strong> no script, agrupe a saída por arquivo e conte quantos commits alteraram cada um.</li>
+                            <li><strong>Medindo Tamanho:</strong> para cada arquivo, conte as linhas atuais como aproximação de complexidade.</li>
+                            <li><strong>Erro Provocado:</strong> rode o script sem filtrar arquivos gerados e observe <code>package-lock.json</code> no topo; ajuste o filtro para ignorar lockfiles e pastas de build.</li>
+                            <li><strong>Calculando o Hotspot:</strong> multiplique mudanças por tamanho normalizado e ordene do maior para o menor.</li>
+                            <li><strong>Cruzando com o Lint:</strong> para os cinco primeiros, rode o ESLint com a regra <code>complexity</code> e anote a função mais complexa de cada um.</li>
+                            <li><strong>Classificando a Dívida:</strong> encaixe cada hotspot num quadrante de Fowler: deliberada ou inadvertida, prudente ou imprudente.</li>
+                            <li><strong>Priorizando:</strong> escolha até três arquivos e escreva para cada um: o problema, a refatoração proposta e qual tarefa de negócio ela acelera.</li>
+                            <li><strong>Validação e Testes:</strong> apresente a tabela de hotspots a um colega e confirme que ele chegaria às mesmas três prioridades lendo só o README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

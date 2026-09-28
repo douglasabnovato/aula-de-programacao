@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch de Sete Minutos — Roteiro e Checklist de Demonstração | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Pitch de Sete Minutos — Roteiro e Checklist de Demonstração</h1>
+        <p class="subtitulo">Aula 40 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O roteiro cronometrado do pitch com a divisão de falas e o checklist que a equipe confere 30 minutos antes de apresentar.</p>
+        </div>
+        <h2>Roteiro cronometrado (7 minutos)</h2>
+        <ol>
+            <li><strong>0:00–1:00 — O problema.</strong> Situação do cliente com um número: "o Studio Lírio perdia 8 clientes por semana". Nenhuma tela de código.</li>
+            <li><strong>1:00–1:30 — A solução em uma frase.</strong> O que o sistema faz e para quem.</li>
+            <li><strong>1:30–4:30 — Demonstração ao vivo.</strong> Login, agenda do dia, criar agendamento, tentar criar um conflito e mostrar a mensagem, cancelar.</li>
+            <li><strong>4:30–5:30 — Uma decisão técnica.</strong> Um ADR: problema, escolha, custo aceito.</li>
+            <li><strong>5:30–6:30 — Como foi construído.</strong> Arquitetura em um slide, esteira, deploy gratuito e o que foi aprendido.</li>
+            <li><strong>6:30–7:00 — Fechamento.</strong> Próximo passo do projeto e agradecimento; abrir para perguntas.</li>
+        </ol>
+        <h2>Divisão de falas</h2>
+        <ul>
+            <li>Integrante 1: problema, solução e fechamento.</li>
+            <li>Integrante 2: demonstração ao vivo.</li>
+            <li>Integrante 3: decisão técnica e como foi construído.</li>
+            <li>Todos: preparados para responder perguntas sobre qualquer parte.</li>
+        </ul>
+        <h2>Checklist 30 minutos antes</h2>
+        <ul>
+            <li>[ ] API acordada: <code>/saude/pronto</code> respondeu nos últimos 5 minutos.</li>
+            <li>[ ] Dados de exemplo no banco de produção, com nomes fictícios.</li>
+            <li>[ ] Usuário e senha de demonstração testados.</li>
+            <li>[ ] Navegador em janela anônima, zoom em 125%, notificações desligadas.</li>
+            <li>[ ] Vídeo do fluxo aberto em outra aba como plano B.</li>
+            <li>[ ] Slides com contraste conferido no projetor da sala.</li>
+            <li>[ ] Cronômetro visível para quem está apresentando.</li>
+        </ul>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O conflito de horário aparece de propósito na demonstração: mostrar o sistema recusando o erro prova a regra de negócio.</li>
+            <li>A arquitetura ocupa um slide; o detalhe fica para as perguntas.</li>
+            <li>Se a demonstração falhar, a frase combinada leva ao vídeo sem pedir desculpas longas: o tempo é da banca.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

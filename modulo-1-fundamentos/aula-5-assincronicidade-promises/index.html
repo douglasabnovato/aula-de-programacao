@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 5 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a entender por que o navegador não pode esperar parado e a escrever fluxos assíncronos com callbacks, Promises e async/await, tratando falhas sem travar a interface.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 5: Assincronicidade e Promises</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: CÓDIGO ASSÍNCRONO, CALLBACKS E O EVENT LOOP -->
+            <div class="card" id="card-1">
+                <h2>⏳ 1. Código Assíncrono, Callbacks e o Event Loop</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A central fictícia de entregas Rota Certa consulta o status de cada pacote num sistema que demora alguns segundos para responder. Na primeira versão, o código fica num laço esperando a resposta e, enquanto isso, nenhum botão da página responde ao clique. Por que a tela congela e como pedir ao navegador para avisar quando o dado chegar, em vez de ficar parado esperando?</p>
+                </div>
+
+                <p>O JavaScript do navegador roda numa única linha de execução: enquanto um trecho está rodando, nada mais acontece na página. Tarefas demoradas são entregues ao navegador com uma função de retorno (callback), e o event loop devolve essa função para a fila quando o resultado fica pronto.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Introducing" target="_blank" rel="noopener noreferrer">📄 Introducing asynchronous JavaScript — MDN Learn</a>
+                        <span class="link-desc">O problema do código síncrono demorado e por que o navegador trava com ele.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Glossary/Callback_function" target="_blank" rel="noopener noreferrer">📄 Callback function — Glossário MDN</a>
+                        <span class="link-desc">O que é passar uma função para outra chamar depois, com exemplo curto.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout" target="_blank" rel="noopener noreferrer">📄 setTimeout() — MDN</a>
+                        <span class="link-desc">Como agendar uma função e por que o atraso é um mínimo, não uma garantia.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop" target="_blank" rel="noopener noreferrer">📄 JavaScript execution model — MDN</a>
+                        <span class="link-desc">Pilha de chamadas, fila de tarefas e o laço de eventos explicados pela documentação.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=6lbBaM18X3g" target="_blank" rel="noopener noreferrer">▶️ Você PRECISA ENTENDER o conteúdo DESSE | Callbacks, Sincrono, Assíncrono e Event Loop no JavaScript</a>
+                            <span class="link-desc">Mario Souto - Dev Soutinho · 17:35 — Explica callbacks, a diferença entre código síncrono e assíncrono e o papel do event loop.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=jdVFUznQbH0" target="_blank" rel="noopener noreferrer">▶️ Explicando o JavaScript por baixo dos panos (event loop, call stack, event queue)</a>
+                            <span class="link-desc">Mayk Brito · 12:54 — Mostra o que acontece por baixo dos panos com call stack, fila de eventos e event loop.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Simulador de Espera: Bloqueante x Callback</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-5-espera</code> com <code>index.html</code>, <code>style.css</code> e <code>script.js</code> e um <code>&lt;ul id="log"&gt;</code> para registrar eventos.</li>
+                            <li><strong>Função de Registro:</strong> crie <code>registrar(texto)</code> que adiciona uma linha com o horário no log usando <code>insertAdjacentHTML</code>.</li>
+                            <li><strong>Botão de Controle:</strong> adicione um contador de cliques: ele será o termômetro para saber se a página está respondendo.</li>
+                            <li><strong>Erro Provocado:</strong> crie <code>esperarBloqueando(ms)</code> com um <code>while (Date.now() &lt; fim)</code> e clique no contador enquanto ele roda.</li>
+                            <li><strong>Lendo o Sintoma:</strong> observe que os cliques só aparecem depois da espera e anote no README por que a tela congelou.</li>
+                            <li><strong>Função com Callback:</strong> crie <code>consultarEntrega(codigo, callback)</code> que chama <code>callback</code> dentro de um <code>setTimeout</code> de 2 segundos.</li>
+                            <li><strong>Comparando as Esperas:</strong> clique no botão da versão com callback e confirme que o contador continua respondendo.</li>
+                            <li><strong>A Ordem de Execução:</strong> registre '1', agende '3' com <code>setTimeout(..., 0)</code> e registre '2' logo depois; observe a ordem na tela.</li>
+                            <li><strong>Organização:</strong> transforme cada ação de botão numa função nomeada e ligue tudo com <code>addEventListener</code> no fim do arquivo.</li>
+                            <li><strong>Validação e Testes:</strong> rode os três botões, confira a ordem 1-2-3 no log e registre no README a diferença entre esperar e agendar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PROMISES: THEN, CATCH E PROMISE.ALL -->
+            <div class="card" id="card-2">
+                <h2>🤝 2. Promises: then, catch e Promise.all</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A loja fictícia Estação Games monta a tela de um pedido juntando três respostas: dados do cliente, itens comprados e prazo de frete. Com callbacks, o código virou uma escada de funções dentro de funções e, quando o frete falha, ninguém vê o erro. Como encadear as três etapas, tratar a falha num lugar só e ainda buscar tudo ao mesmo tempo?</p>
+                </div>
+
+                <p>Uma Promise é um objeto que representa um resultado que ainda vai chegar: ela começa pendente e termina cumprida ou rejeitada. Com then, catch e finally o fluxo fica numa cadeia plana, e Promise.all espera várias operações em paralelo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" target="_blank" rel="noopener noreferrer">📄 Using promises — MDN</a>
+                        <span class="link-desc">Encadeamento, propagação de erro e por que sempre retornar a Promise dentro do then.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="noopener noreferrer">📄 Promise — referência MDN</a>
+                        <span class="link-desc">Estados pendente, cumprida e rejeitada, e o construtor com resolve e reject.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="noopener noreferrer">📄 Promise.all() — MDN</a>
+                        <span class="link-desc">Esperar várias Promises ao mesmo tempo e o que acontece quando uma delas falha.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Promises" target="_blank" rel="noopener noreferrer">📄 How to use promises — MDN Learn</a>
+                        <span class="link-desc">Passo a passo guiado sobre then, catch e combinação de Promises.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=87gWRVGRZ5o" target="_blank" rel="noopener noreferrer">▶️ Aprenda tudo sobre Promises de JavaScript em 20 minutos</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 23:23 — Apresenta Promises do zero: estados, then, catch e encadeamento de resultados.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=DHvZLI7Db8E" target="_blank" rel="noopener noreferrer">▶️ JavaScript Promises In 10 Minutes</a>
+                            <span class="link-desc">Web Dev Simplified · 11:31 · em inglês — Explica em inglês como criar e consumir Promises, incluindo o tratamento de rejeições.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Montando um Pedido com Promises Encadeadas e Promise.all</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-5-pedido</code> com os três arquivos, dois botões (sequencial e paralelo) e uma caixa de saída.</li>
+                            <li><strong>Promise de Atraso:</strong> crie <code>atraso(ms, valor, falhar)</code> que devolve <code>new Promise((resolve, reject) =&gt; ...)</code> com <code>setTimeout</code>.</li>
+                            <li><strong>Três Fontes Simuladas:</strong> crie <code>buscarCliente()</code>, <code>buscarItens()</code> e <code>calcularFrete()</code>, cada uma com um tempo diferente.</li>
+                            <li><strong>Encadeando com then:</strong> em <code>buscarSequencial()</code>, chame uma etapa depois da outra retornando a próxima Promise em cada <code>then</code>.</li>
+                            <li><strong>Erro Provocado:</strong> tire o <code>return</code> de dentro de um <code>then</code> e observe o valor <code>undefined</code> chegando na etapa seguinte.</li>
+                            <li><strong>Um Único catch:</strong> adicione <code>.catch(mostrarErro)</code> no fim da cadeia e marque o checkbox de falha no frete para testar.</li>
+                            <li><strong>Limpando com finally:</strong> use <code>.finally(() =&gt; alternarBotoes(false))</code> para reabilitar os botões com ou sem erro.</li>
+                            <li><strong>Em Paralelo:</strong> crie <code>buscarParalelo()</code> com <code>Promise.all([buscarCliente(), buscarItens(), calcularFrete()])</code>.</li>
+                            <li><strong>Medindo o Tempo:</strong> guarde <code>Date.now()</code> no início e mostre o tempo total para comparar as duas estratégias.</li>
+                            <li><strong>Validação e Testes:</strong> rode os dois botões com e sem falha, anote os tempos no README e explique por que o paralelo é mais rápido.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ASYNC/AWAIT E TRATAMENTO DE FALHAS -->
+            <div class="card" id="card-3">
+                <h2>✍️ 3. async/await e Tratamento de Falhas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O app fictício Agenda Vet confirma consultas em duas etapas: verifica se o horário está livre e depois faz a reserva. O código com then ficou difícil de ler e, quando a reserva falha, o botão fica travado em 'Confirmando...' para sempre. Como escrever o mesmo fluxo de cima para baixo, como código comum, garantindo que o botão volte ao normal com ou sem erro?</p>
+                </div>
+
+                <p>async e await são outra forma de escrever código com Promises: a função pausa no await até o resultado chegar, sem travar a página. Erros de Promises rejeitadas passam a ser capturados com try/catch, e finally garante a limpeza da interface.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank" rel="noopener noreferrer">📄 async function — MDN</a>
+                        <span class="link-desc">O que muda numa função marcada como async e por que ela sempre devolve uma Promise.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await" target="_blank" rel="noopener noreferrer">📄 await — MDN</a>
+                        <span class="link-desc">Como a pausa funciona e o que acontece quando a Promise esperada é rejeitada.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled" target="_blank" rel="noopener noreferrer">📄 Promise.allSettled() — MDN</a>
+                        <span class="link-desc">Esperar várias operações e receber o resultado de cada uma, inclusive das que falharam.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Bad_await" target="_blank" rel="noopener noreferrer">📄 SyntaxError: await is only valid in async functions — MDN</a>
+                        <span class="link-desc">O erro mais comum de quem começa com await, explicado com a correção.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dEqo8xwGaD0" target="_blank" rel="noopener noreferrer">▶️ Programação Assíncrona Async Await com JavaScript</a>
+                            <span class="link-desc">Hashtag Programação · 18:54 — Mostra como reescrever código com Promises usando async e await.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dUSLm948F7c" target="_blank" rel="noopener noreferrer">▶️ Promise e Callback no JavaScript - Aprenda usar o async e await e o then e catch  (Tutorial)</a>
+                            <span class="link-desc">Coffstack · 28:15 — Compara callbacks, then/catch e async/await, incluindo o tratamento de erros.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Confirmação de Agendamento com async/await</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-5-agenda</code> com os três arquivos, um <code>&lt;select&gt;</code> de horários, um botão Confirmar e uma caixa de mensagem.</li>
+                            <li><strong>Serviços Simulados:</strong> crie <code>verificarHorario(hora)</code> e <code>reservar(hora)</code> devolvendo Promises com <code>setTimeout</code>, e deixe dois horários ocupados.</li>
+                            <li><strong>Erro Provocado:</strong> escreva <code>const livre = await verificarHorario(h)</code> numa função comum e leia o <code>SyntaxError</code> no console.</li>
+                            <li><strong>Marcando como async:</strong> transforme a função em <code>async function confirmar()</code> e confirme que o erro sumiu.</li>
+                            <li><strong>Fluxo de Cima para Baixo:</strong> aguarde a verificação, lance <code>throw new Error('Horário ocupado')</code> se não estiver livre e só então aguarde a reserva.</li>
+                            <li><strong>Capturando Falhas:</strong> envolva o fluxo em <code>try/catch</code> e mostre <code>erro.message</code> na caixa de mensagem.</li>
+                            <li><strong>Garantindo a Limpeza:</strong> no <code>finally</code>, reabilite o botão e volte o texto para 'Confirmar'.</li>
+                            <li><strong>Simulando Queda:</strong> adicione um checkbox que faz <code>reservar</code> rejeitar e confirme que o botão volta ao normal.</li>
+                            <li><strong>Vários Horários de Uma Vez:</strong> crie <code>verDisponibilidade()</code> com <code>await Promise.allSettled(...)</code> e liste o resultado de cada horário.</li>
+                            <li><strong>Validação e Testes:</strong> teste horário livre, ocupado e queda do servidor e registre no README a comparação entre then/catch e async/await.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

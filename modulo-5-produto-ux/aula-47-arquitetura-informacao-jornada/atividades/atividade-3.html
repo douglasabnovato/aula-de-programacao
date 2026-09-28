@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Persona, Mapa de Jornada e Fluxo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Persona, Mapa de Jornada e Fluxo</h1>
+        <p class="subtitulo">Aula 47 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma persona leve, o mapa de jornada do pedido de alvará de reforma em Vale Serrano e o fluxo de telas da etapa mais dolorosa.</p>
+        </div>
+        <h2>jornada.md</h2>
+        <pre># Jornada — Alvará de reforma, Vale Serrano
+
+## Persona (leve)
+Marcos, 41 anos, dono de uma casa antiga, quer trocar o telhado.
+Objetivo: começar a obra no próximo mês sem multa.
+Frustrações: não sabe quais documentos precisa; só pode ir à prefeitura no sábado.
+
+## Mapa
+| Etapa            | Ação / canal                      | Pensa                               | Sente |
+|------------------|-----------------------------------|-------------------------------------|-------|
+| Descobrir        | busca no Google, cai no portal    | "Preciso de alvará pra telhado?"    |  0    |
+| Entender regras  | lê página da Sec. Obras           | "Que documentos são esses?"         | -1    |
+| Enviar pedido    | formulário online                 | "Até que foi rápido"                | +1    |
+| Complementar     | e-mail pede documento presencial  | "Por que não pediram antes?"        | -2    |
+| Aguardar         | sem notícias por 20 dias          | "Será que perderam?"                | -2    |
+| Receber alvará   | e-mail com PDF                    | "Finalmente"                        | +1    |
+
+## Dor principal
+Etapa Complementar: a lista de documentos só aparece depois do envio.
+
+## Oportunidade
+Mostrar a lista completa de documentos antes de o cidadão começar o pedido.
+
+## Fluxo da etapa (texto)
+[Página do serviço] -&gt; &lt;Tipo de obra?&gt;
+  -- telhado/pintura --&gt; [Lista curta de documentos] -&gt; [Formulário]
+  -- estrutura/ampliação --&gt; [Lista longa + aviso de projeto assinado] -&gt; [Formulário]
+[Formulário] -&gt; &lt;Todos os anexos enviados?&gt;
+  -- sim --&gt; [Protocolo com prazo de resposta]
+  -- não --&gt; [Aviso do que falta, sem perder o que já foi preenchido]
+</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Escreva a persona só com dados que mudam decisão.</li>
+            <li>Monte a jornada com ações, canais, pensamentos e sentimentos.</li>
+            <li>Desenhe o fluxo apenas da etapa mais dolorosa.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A dor principal não está em nenhuma tela: está entre o formulário e o e-mail.</li>
+            <li>O fluxo novo pergunta o tipo de obra antes, para mostrar a lista certa.</li>
+            <li>A etapa Aguardar pede outra oportunidade: informar o prazo no protocolo.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana Tech — Inscrição com Validação por Exceções | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Semana Tech — Inscrição com Validação por Exceções</h1>
+        <p class="subtitulo">Aula 9 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um formulário de inscrição que valida os dados lançando <code>ErroValidacao</code>, mostra a mensagem no campo certo e separa erro do usuário de falha interna com <code>instanceof</code>. Um checkbox simula um erro de programação para ver o outro caminho.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+form label.linha {
+  flex-direction: row;
+}
+
+.msg {
+  display: block;
+  min-height: 1.1em;
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
+input.invalido {
+  border-color: var(--danger);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Semana Tech Serra Azul — inscrição&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Idade entre 14 e 99. Todos os campos são obrigatórios.&lt;/p&gt;
+  &lt;form id=&quot;formInscricao&quot; novalidate&gt;
+    &lt;label&gt;Nome &lt;input name=&quot;nome&quot;&gt;&lt;/label&gt;
+    &lt;small class=&quot;msg&quot; data-msg=&quot;nome&quot;&gt;&lt;/small&gt;
+    &lt;label&gt;E-mail &lt;input name=&quot;email&quot;&gt;&lt;/label&gt;
+    &lt;small class=&quot;msg&quot; data-msg=&quot;email&quot;&gt;&lt;/small&gt;
+    &lt;label&gt;Idade &lt;input name=&quot;idade&quot;&gt;&lt;/label&gt;
+    &lt;small class=&quot;msg&quot; data-msg=&quot;idade&quot;&gt;&lt;/small&gt;
+    &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;simularFalha&quot;&gt; Simular falha interna&lt;/label&gt;
+    &lt;button id=&quot;btnEnviar&quot; type=&quot;submit&quot;&gt;Inscrever&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id=&quot;resultado&quot;&gt;&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: inscrição com validação por exceções e tipos de erro separados
+class ErroValidacao extends Error {
+  // guarda o campo com problema junto da mensagem
+  constructor(campo, mensagem) {
+    super(mensagem);
+    this.name = &#x27;ErroValidacao&#x27;;
+    this.campo = campo;
+  }
+}
+
+const formInscricao = document.querySelector(&#x27;#formInscricao&#x27;);
+const btnEnviar = document.querySelector(&#x27;#btnEnviar&#x27;);
+const resultado = document.querySelector(&#x27;#resultado&#x27;);
+const simularFalha = document.querySelector(&#x27;#simularFalha&#x27;);
+
+// confere cada regra e lança ErroValidacao na primeira que falhar
+const validarInscricao = ({ nome, email, idade }) =&gt; {
+  if (nome.trim().length &lt; 3) {
+    throw new ErroValidacao(&#x27;nome&#x27;, &#x27;Informe seu nome com pelo menos 3 letras.&#x27;);
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new ErroValidacao(&#x27;email&#x27;, &#x27;Informe um e-mail no formato nome@dominio.com.&#x27;);
+  }
+  const numero = Number(idade);
+  if (!Number.isInteger(numero) || numero &lt; 14 || numero &gt; 99) {
+    throw new ErroValidacao(&#x27;idade&#x27;, &#x27;Informe a idade em números, entre 14 e 99.&#x27;);
+  }
+  return { nome: nome.trim(), email, idade: numero };
+};
+
+// monta o comprovante; com a falha simulada, acessa um dado que não existe
+const gerarComprovante = (inscricao) =&gt; {
+  const origem = simularFalha.checked ? undefined : { canal: &#x27;site&#x27; };
+  return `Inscrição confirmada: ${inscricao.nome} (${inscricao.idade} anos) via ${origem.canal}.`;
+};
+
+// limpa mensagens e destaques de todos os campos
+const limparErros = () =&gt; {
+  formInscricao.querySelectorAll(&#x27;.msg&#x27;).forEach((msg) =&gt; {
+    msg.textContent = &#x27;&#x27;;
+  });
+  formInscricao.querySelectorAll(&#x27;input&#x27;).forEach((campo) =&gt; campo.classList.remove(&#x27;invalido&#x27;));
+};
+
+// valida, gera o comprovante e trata cada tipo de erro
+const inscrever = (evento) =&gt; {
+  evento.preventDefault();
+  btnEnviar.disabled = true;
+  limparErros();
+  try {
+    const dados = Object.fromEntries(new FormData(formInscricao));
+    const inscricao = validarInscricao(dados);
+    resultado.textContent = gerarComprovante(inscricao);
+    resultado.className = &#x27;ok&#x27;;
+  } catch (erro) {
+    if (erro instanceof ErroValidacao) {
+      formInscricao.elements[erro.campo].classList.add(&#x27;invalido&#x27;);
+      formInscricao.querySelector(`[data-msg=&quot;${erro.campo}&quot;]`).textContent = erro.message;
+      resultado.textContent = &#x27;Corrija o campo destacado.&#x27;;
+    } else {
+      console.error(&#x27;Falha interna na inscrição:&#x27;, erro);
+      resultado.textContent = &#x27;Algo deu errado do nosso lado. Tente de novo em instantes.&#x27;;
+    }
+    resultado.className = &#x27;erro&#x27;;
+  } finally {
+    btnEnviar.disabled = false;
+  }
+};
+
+formInscricao.addEventListener(&#x27;submit&#x27;, inscrever);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Semana Tech — Inscrição com Validação por Exceções --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Semana Tech — Inscrição com Validação por Exceções&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Semana Tech Serra Azul — inscrição&lt;/h1&gt;
+    &lt;p class="sub"&gt;Idade entre 14 e 99. Todos os campos são obrigatórios.&lt;/p&gt;
+    &lt;form id="formInscricao" novalidate&gt;
+      &lt;label&gt;Nome &lt;input name="nome"&gt;&lt;/label&gt;
+      &lt;small class="msg" data-msg="nome"&gt;&lt;/small&gt;
+      &lt;label&gt;E-mail &lt;input name="email"&gt;&lt;/label&gt;
+      &lt;small class="msg" data-msg="email"&gt;&lt;/small&gt;
+      &lt;label&gt;Idade &lt;input name="idade"&gt;&lt;/label&gt;
+      &lt;small class="msg" data-msg="idade"&gt;&lt;/small&gt;
+      &lt;label class="linha"&gt;&lt;input type="checkbox" id="simularFalha"&gt; Simular falha interna&lt;/label&gt;
+      &lt;button id="btnEnviar" type="submit"&gt;Inscrever&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p id="resultado"&gt;&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+form label.linha {
+  flex-direction: row;
+}
+
+.msg {
+  display: block;
+  min-height: 1.1em;
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
+input.invalido {
+  border-color: var(--danger);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: inscrição com validação por exceções e tipos de erro separados
+class ErroValidacao extends Error {
+  // guarda o campo com problema junto da mensagem
+  constructor(campo, mensagem) {
+    super(mensagem);
+    this.name = 'ErroValidacao';
+    this.campo = campo;
+  }
+}
+
+const formInscricao = document.querySelector('#formInscricao');
+const btnEnviar = document.querySelector('#btnEnviar');
+const resultado = document.querySelector('#resultado');
+const simularFalha = document.querySelector('#simularFalha');
+
+// confere cada regra e lança ErroValidacao na primeira que falhar
+const validarInscricao = ({ nome, email, idade }) =&gt; {
+  if (nome.trim().length &lt; 3) {
+    throw new ErroValidacao('nome', 'Informe seu nome com pelo menos 3 letras.');
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new ErroValidacao('email', 'Informe um e-mail no formato nome@dominio.com.');
+  }
+  const numero = Number(idade);
+  if (!Number.isInteger(numero) || numero &lt; 14 || numero &gt; 99) {
+    throw new ErroValidacao('idade', 'Informe a idade em números, entre 14 e 99.');
+  }
+  return { nome: nome.trim(), email, idade: numero };
+};
+
+// monta o comprovante; com a falha simulada, acessa um dado que não existe
+const gerarComprovante = (inscricao) =&gt; {
+  const origem = simularFalha.checked ? undefined : { canal: 'site' };
+  return `Inscrição confirmada: ${inscricao.nome} (${inscricao.idade} anos) via ${origem.canal}.`;
+};
+
+// limpa mensagens e destaques de todos os campos
+const limparErros = () =&gt; {
+  formInscricao.querySelectorAll('.msg').forEach((msg) =&gt; {
+    msg.textContent = '';
+  });
+  formInscricao.querySelectorAll('input').forEach((campo) =&gt; campo.classList.remove('invalido'));
+};
+
+// valida, gera o comprovante e trata cada tipo de erro
+const inscrever = (evento) =&gt; {
+  evento.preventDefault();
+  btnEnviar.disabled = true;
+  limparErros();
+  try {
+    const dados = Object.fromEntries(new FormData(formInscricao));
+    const inscricao = validarInscricao(dados);
+    resultado.textContent = gerarComprovante(inscricao);
+    resultado.className = 'ok';
+  } catch (erro) {
+    if (erro instanceof ErroValidacao) {
+      formInscricao.elements[erro.campo].classList.add('invalido');
+      formInscricao.querySelector(`[data-msg="${erro.campo}"]`).textContent = erro.message;
+      resultado.textContent = 'Corrija o campo destacado.';
+    } else {
+      console.error('Falha interna na inscrição:', erro);
+      resultado.textContent = 'Algo deu errado do nosso lado. Tente de novo em instantes.';
+    }
+    resultado.className = 'erro';
+  } finally {
+    btnEnviar.disabled = false;
+  }
+};
+
+formInscricao.addEventListener('submit', inscrever);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Envie o formulário vazio, depois com idade <code>abc</code> e com e-mail sem <code>@</code>.</li>
+            <li>Preencha tudo certo e envie; depois marque 'Simular falha interna' e envie de novo com o console aberto.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Erros de validação viram mensagem no campo; o <code>TypeError</code> da falha simulada vai para o <code>console.error</code> e o usuário recebe uma mensagem genérica.</li>
+            <li><code>erro instanceof ErroValidacao</code> só funciona porque a classe estende <code>Error</code> e chama <code>super(mensagem)</code>.</li>
+            <li>O <code>finally</code> reabilita o botão tanto no sucesso quanto nos dois tipos de erro.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

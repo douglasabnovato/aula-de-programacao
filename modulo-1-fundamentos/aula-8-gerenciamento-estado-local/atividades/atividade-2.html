@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feira da Semana — Delegação e Ações | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Feira da Semana — Delegação e Ações</h1>
+        <p class="subtitulo">Aula 8 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma lista de compras com botões de aumentar, diminuir e remover em cada item, controlados por um único ouvinte na lista. Os botões carregam <code>data-acao</code> e <code>data-id</code>, e toda mudança passa por <code>despachar</code>, que registra a ação num log.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.acoes {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.acoes button {
+  padding: 4px 10px;
+}
+
+.acoes button[data-acao=&quot;remover&quot;] {
+  background: var(--danger);
+}
+
+h2 {
+  font-size: 0.9rem;
+}
+
+.log {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  max-height: 140px;
+  overflow: auto;
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Feira da Semana&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Um único ouvinte de clique controla todos os botões da lista.&lt;/p&gt;
+  &lt;form id=&quot;formItem&quot; class=&quot;linha&quot;&gt;
+    &lt;input id=&quot;campoItem&quot; placeholder=&quot;Novo item&quot; aria-label=&quot;Novo item&quot; required&gt;
+    &lt;button type=&quot;submit&quot;&gt;Adicionar&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;ul id=&quot;lista&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+  &lt;h2 class=&quot;muted&quot;&gt;Log de ações&lt;/h2&gt;
+  &lt;ol id=&quot;log&quot; class=&quot;log&quot;&gt;&lt;/ol&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: lista de compras com delegação de eventos e ações nomeadas
+let estado = {
+  proximoId: 4,
+  itens: [
+    { id: 1, nome: &#x27;Tomate&#x27;, qtd: 6 },
+    { id: 2, nome: &#x27;Alface&#x27;, qtd: 1 },
+    { id: 3, nome: &#x27;Banana (dúzia)&#x27;, qtd: 2 }
+  ]
+};
+
+const lista = document.querySelector(&#x27;#lista&#x27;);
+const log = document.querySelector(&#x27;#log&#x27;);
+const formItem = document.querySelector(&#x27;#formItem&#x27;);
+const campoItem = document.querySelector(&#x27;#campoItem&#x27;);
+
+// calcula o estado novo para cada tipo de ação, sem alterar o anterior
+const atualizar = (atual, acao) =&gt; {
+  switch (acao.tipo) {
+    case &#x27;adicionar&#x27;:
+      return { proximoId: atual.proximoId + 1, itens: [...atual.itens, { id: atual.proximoId, nome: acao.nome, qtd: 1 }] };
+    case &#x27;aumentar&#x27;:
+      return { ...atual, itens: atual.itens.map((i) =&gt; (i.id === acao.id ? { ...i, qtd: i.qtd + 1 } : i)) };
+    case &#x27;diminuir&#x27;:
+      return { ...atual, itens: atual.itens.map((i) =&gt; (i.id === acao.id ? { ...i, qtd: Math.max(1, i.qtd - 1) } : i)) };
+    case &#x27;remover&#x27;:
+      return { ...atual, itens: atual.itens.filter((i) =&gt; i.id !== acao.id) };
+    default:
+      return atual;
+  }
+};
+
+// redesenha a lista com os botões marcados por data-attributes
+const render = () =&gt; {
+  lista.innerHTML = estado.itens
+    .map((i) =&gt; `&lt;li&gt;&lt;span&gt;${i.nome}&lt;/span&gt;&lt;span class=&quot;acoes&quot;&gt;&lt;button data-acao=&quot;diminuir&quot; data-id=&quot;${i.id}&quot;&gt;-&lt;/button&gt;&lt;strong&gt;${i.qtd}&lt;/strong&gt;&lt;button data-acao=&quot;aumentar&quot; data-id=&quot;${i.id}&quot;&gt;+&lt;/button&gt;&lt;button data-acao=&quot;remover&quot; data-id=&quot;${i.id}&quot;&gt;x&lt;/button&gt;&lt;/span&gt;&lt;/li&gt;`)
+    .join(&#x27;&#x27;) || &#x27;&lt;li class=&quot;muted&quot;&gt;Lista vazia.&lt;/li&gt;&#x27;;
+};
+
+// aplica uma ação, registra no log e redesenha
+const despachar = (acao) =&gt; {
+  estado = atualizar(estado, acao);
+  log.insertAdjacentHTML(&#x27;afterbegin&#x27;, `&lt;li&gt;${JSON.stringify(acao)}&lt;/li&gt;`);
+  render();
+};
+
+// único ouvinte da lista: descobre o botão clicado e despacha a ação
+const aoClicarNaLista = (evento) =&gt; {
+  const botao = evento.target.closest(&#x27;button[data-acao]&#x27;);
+  if (!botao) return;
+  despachar({ tipo: botao.dataset.acao, id: Number(botao.dataset.id) });
+};
+
+// adiciona um item novo a partir do formulário
+const aoEnviarItem = (evento) =&gt; {
+  evento.preventDefault();
+  despachar({ tipo: &#x27;adicionar&#x27;, nome: campoItem.value.trim() });
+  formItem.reset();
+};
+
+lista.addEventListener(&#x27;click&#x27;, aoClicarNaLista);
+formItem.addEventListener(&#x27;submit&#x27;, aoEnviarItem);
+render();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Feira da Semana — Delegação e Ações --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Feira da Semana — Delegação e Ações&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Feira da Semana&lt;/h1&gt;
+    &lt;p class="sub"&gt;Um único ouvinte de clique controla todos os botões da lista.&lt;/p&gt;
+    &lt;form id="formItem" class="linha"&gt;
+      &lt;input id="campoItem" placeholder="Novo item" aria-label="Novo item" required&gt;
+      &lt;button type="submit"&gt;Adicionar&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;ul id="lista" class="lista"&gt;&lt;/ul&gt;
+    &lt;h2 class="muted"&gt;Log de ações&lt;/h2&gt;
+    &lt;ol id="log" class="log"&gt;&lt;/ol&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.acoes {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.acoes button {
+  padding: 4px 10px;
+}
+
+.acoes button[data-acao="remover"] {
+  background: var(--danger);
+}
+
+h2 {
+  font-size: 0.9rem;
+}
+
+.log {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  max-height: 140px;
+  overflow: auto;
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: lista de compras com delegação de eventos e ações nomeadas
+let estado = {
+  proximoId: 4,
+  itens: [
+    { id: 1, nome: 'Tomate', qtd: 6 },
+    { id: 2, nome: 'Alface', qtd: 1 },
+    { id: 3, nome: 'Banana (dúzia)', qtd: 2 }
+  ]
+};
+
+const lista = document.querySelector('#lista');
+const log = document.querySelector('#log');
+const formItem = document.querySelector('#formItem');
+const campoItem = document.querySelector('#campoItem');
+
+// calcula o estado novo para cada tipo de ação, sem alterar o anterior
+const atualizar = (atual, acao) =&gt; {
+  switch (acao.tipo) {
+    case 'adicionar':
+      return { proximoId: atual.proximoId + 1, itens: [...atual.itens, { id: atual.proximoId, nome: acao.nome, qtd: 1 }] };
+    case 'aumentar':
+      return { ...atual, itens: atual.itens.map((i) =&gt; (i.id === acao.id ? { ...i, qtd: i.qtd + 1 } : i)) };
+    case 'diminuir':
+      return { ...atual, itens: atual.itens.map((i) =&gt; (i.id === acao.id ? { ...i, qtd: Math.max(1, i.qtd - 1) } : i)) };
+    case 'remover':
+      return { ...atual, itens: atual.itens.filter((i) =&gt; i.id !== acao.id) };
+    default:
+      return atual;
+  }
+};
+
+// redesenha a lista com os botões marcados por data-attributes
+const render = () =&gt; {
+  lista.innerHTML = estado.itens
+    .map((i) =&gt; `&lt;li&gt;&lt;span&gt;${i.nome}&lt;/span&gt;&lt;span class="acoes"&gt;&lt;button data-acao="diminuir" data-id="${i.id}"&gt;-&lt;/button&gt;&lt;strong&gt;${i.qtd}&lt;/strong&gt;&lt;button data-acao="aumentar" data-id="${i.id}"&gt;+&lt;/button&gt;&lt;button data-acao="remover" data-id="${i.id}"&gt;x&lt;/button&gt;&lt;/span&gt;&lt;/li&gt;`)
+    .join('') || '&lt;li class="muted"&gt;Lista vazia.&lt;/li&gt;';
+};
+
+// aplica uma ação, registra no log e redesenha
+const despachar = (acao) =&gt; {
+  estado = atualizar(estado, acao);
+  log.insertAdjacentHTML('afterbegin', `&lt;li&gt;${JSON.stringify(acao)}&lt;/li&gt;`);
+  render();
+};
+
+// único ouvinte da lista: descobre o botão clicado e despacha a ação
+const aoClicarNaLista = (evento) =&gt; {
+  const botao = evento.target.closest('button[data-acao]');
+  if (!botao) return;
+  despachar({ tipo: botao.dataset.acao, id: Number(botao.dataset.id) });
+};
+
+// adiciona um item novo a partir do formulário
+const aoEnviarItem = (evento) =&gt; {
+  evento.preventDefault();
+  despachar({ tipo: 'adicionar', nome: campoItem.value.trim() });
+  formItem.reset();
+};
+
+lista.addEventListener('click', aoClicarNaLista);
+formItem.addEventListener('submit', aoEnviarItem);
+render();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Adicione dois itens e use os botões + , - e x.</li>
+            <li>Acompanhe o log de ações e, no DevTools, confira em Elements que a <code>&lt;ul&gt;</code> tem um único ouvinte.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O ouvinte é registrado uma vez, fora do <code>render</code>: redesenhar a lista não cria ouvintes novos.</li>
+            <li><code>closest('button[data-acao]')</code> resolve o clique mesmo que ele caia num elemento dentro do botão.</li>
+            <li><code>atualizar</code> não mexe no DOM nem no estado antigo: recebe estado e ação e devolve o estado novo, o que facilita testar.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Três Páginas com BrowserRouter, Routes e Link — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Três Páginas com BrowserRouter, Routes e Link — Resposta</h1>
+        <p class="subtitulo">Aula 14 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A Livraria Ipê com três páginas (Início, Catálogo e Contato), cada uma com o próprio endereço, um menu que troca de tela sem recarregar e uma página para endereços inexistentes. O demo abaixo usa <code>MemoryRouter</code>, porque roda dentro de um iframe; no projeto real o roteador é o <code>BrowserRouter</code> do <code>main.jsx</code>.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.endereco { background: var(--surface); border: 1px dashed var(--border); border-radius: 6px; padding: 6px 10px; font-size: .85rem; color: var(--muted); }
+.endereco code { color: var(--primary); }
+nav.menu { display: flex; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; flex-wrap: wrap; }
+nav.menu a { text-decoration: none; color: var(--text); }
+nav.menu a.ativo { color: var(--primary); font-weight: 700; border-bottom: 2px solid var(--primary); }
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filtros button.ativo { outline: 2px solid var(--text); }
+ul.lista { list-style: none; padding: 0; }
+ul.lista li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.conta { display: grid; grid-template-columns: 160px 1fr; gap: 16px; }
+.conta aside { display: flex; flex-direction: column; gap: 8px; border-right: 1px solid var(--border); padding-right: 12px; }
+.conta aside a { text-decoration: none; color: var(--text); }
+.conta aside a.ativo { color: var(--primary); font-weight: 700; }
+@media (max-width: 520px) { .conta { grid-template-columns: 1fr; } .conta aside { border-right: 0; flex-direction: row; } }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@remix-run/router@1.15.3/dist/router.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router@6.22.3/dist/umd/react-router.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-router-dom@6.22.3/dist/umd/react-router-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+const { MemoryRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useParams, useNavigate, useSearchParams, useLocation } = ReactRouterDOM;
+
+// Início: src/pages/Inicio.jsx
+// Página inicial da livraria
+function Inicio() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Livraria Ipê&lt;/h1&gt;
+      &lt;p&gt;Livros novos e usados, entregues em Juiz de Fora e região.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Inicio.jsx
+
+// Início: src/pages/Catalogo.jsx
+// Página com a vitrine resumida do catálogo
+function Catalogo() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Catálogo&lt;/h1&gt;
+      &lt;p&gt;Ficção, técnicos e infantis. A lista completa chega na próxima prática.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Catalogo.jsx
+
+// Início: src/pages/Contato.jsx
+// Página de contato da loja
+function Contato() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Contato&lt;/h1&gt;
+      &lt;p&gt;E-mail: atendimento@livrariaipe.exemplo&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Contato.jsx
+
+// Início: src/pages/NaoEncontrada.jsx
+// Página exibida quando nenhuma rota corresponde ao endereço
+function NaoEncontrada() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Página não encontrada&lt;/h1&gt;
+      &lt;p&gt;O endereço digitado não existe. Use o menu acima para voltar.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de NaoEncontrada.jsx
+
+// Início: src/components/Menu.jsx — menu presente em todas as páginas
+
+// Menu principal com links que trocam a rota sem recarregar a página
+function Menu() {
+  return (
+    &lt;nav className=&quot;menu&quot;&gt;
+      &lt;Link to=&quot;/&quot;&gt;Início&lt;/Link&gt;
+      &lt;Link to=&quot;/catalogo&quot;&gt;Catálogo&lt;/Link&gt;
+      &lt;Link to=&quot;/contato&quot;&gt;Contato&lt;/Link&gt;
+    &lt;/nav&gt;
+  );
+}
+// Fim de Menu.jsx
+
+// Início: src/App.jsx — mapa de rotas da aplicação
+
+// Componente raiz: menu fixo e a área que muda conforme o endereço
+function App() {
+  return (
+    &lt;&gt;
+      &lt;Menu /&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Inicio /&gt;} /&gt;
+        &lt;Route path=&quot;/catalogo&quot; element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path=&quot;/contato&quot; element={&lt;Contato /&gt;} /&gt;
+        &lt;Route path=&quot;*&quot; element={&lt;NaoEncontrada /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx
+
+// Barra que mostra o endereço atual (só no demo, porque o iframe não tem barra de endereço)
+function BarraEndereco() {
+  const local = useLocation();
+  return &lt;p className=&quot;endereco&quot;&gt;Endereço: &lt;code&gt;{local.pathname + local.search}&lt;/code&gt;&lt;/p&gt;;
+}
+
+// Links de teste para endereços que não existem no menu
+function Atalhos() {
+  return &lt;p className=&quot;muted&quot;&gt;Teste também: &lt;Link to=&quot;/qualquer-coisa&quot;&gt;/qualquer-coisa&lt;/Link&gt;&lt;/p&gt;;
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(
+  &lt;MemoryRouter&gt;
+    &lt;BarraEndereco /&gt;
+    &lt;App /&gt;
+    &lt;Atalhos /&gt;
+  &lt;/MemoryRouter&gt;
+);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/main.jsx</h2>
+        <pre>// Início: main.jsx — ponto de entrada que liga o roteador à aplicação
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
+import App from './App.jsx';
+
+createRoot(document.getElementById('root')).render(
+  &lt;StrictMode&gt;
+    &lt;BrowserRouter&gt;
+      &lt;App /&gt;
+    &lt;/BrowserRouter&gt;
+  &lt;/StrictMode&gt;
+);
+// Fim de main.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — mapa de rotas da aplicação
+import { Routes, Route } from 'react-router';
+import Menu from './components/Menu.jsx';
+import Inicio from './pages/Inicio.jsx';
+import Catalogo from './pages/Catalogo.jsx';
+import Contato from './pages/Contato.jsx';
+import NaoEncontrada from './pages/NaoEncontrada.jsx';
+
+// Componente raiz: menu fixo e a área que muda conforme o endereço
+export default function App() {
+  return (
+    &lt;&gt;
+      &lt;Menu /&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Inicio /&gt;} /&gt;
+        &lt;Route path="/catalogo" element={&lt;Catalogo /&gt;} /&gt;
+        &lt;Route path="/contato" element={&lt;Contato /&gt;} /&gt;
+        &lt;Route path="*" element={&lt;NaoEncontrada /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>src/components/Menu.jsx</h2>
+        <pre>// Início: src/components/Menu.jsx — menu presente em todas as páginas
+import { Link } from 'react-router';
+
+// Menu principal com links que trocam a rota sem recarregar a página
+export default function Menu() {
+  return (
+    &lt;nav className="menu"&gt;
+      &lt;Link to="/"&gt;Início&lt;/Link&gt;
+      &lt;Link to="/catalogo"&gt;Catálogo&lt;/Link&gt;
+      &lt;Link to="/contato"&gt;Contato&lt;/Link&gt;
+    &lt;/nav&gt;
+  );
+}
+// Fim de Menu.jsx</pre>
+        <h2>src/pages/ (4 arquivos)</h2>
+        <pre>// Início: src/pages/Inicio.jsx
+// Página inicial da livraria
+export default function Inicio() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Livraria Ipê&lt;/h1&gt;
+      &lt;p&gt;Livros novos e usados, entregues em Juiz de Fora e região.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Inicio.jsx
+
+// Início: src/pages/Catalogo.jsx
+// Página com a vitrine resumida do catálogo
+export default function Catalogo() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Catálogo&lt;/h1&gt;
+      &lt;p&gt;Ficção, técnicos e infantis. A lista completa chega na próxima prática.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Catalogo.jsx
+
+// Início: src/pages/Contato.jsx
+// Página de contato da loja
+export default function Contato() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Contato&lt;/h1&gt;
+      &lt;p&gt;E-mail: atendimento@livrariaipe.exemplo&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de Contato.jsx
+
+// Início: src/pages/NaoEncontrada.jsx
+// Página exibida quando nenhuma rota corresponde ao endereço
+export default function NaoEncontrada() {
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Página não encontrada&lt;/h1&gt;
+      &lt;p&gt;O endereço digitado não existe. Use o menu acima para voltar.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}
+// Fim de NaoEncontrada.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm create vite@latest livraria-ipe -- --template react</code> e <code>cd livraria-ipe</code></li>
+            <li><code>npm install</code> e depois <code>npm install react-router</code></li>
+            <li>Crie as pastas <code>src/pages</code> e <code>src/components</code> e salve os arquivos acima</li>
+            <li><code>npm run dev</code> e abra o endereço que o Vite mostrar no terminal</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Na aba Rede do DevTools, clicar num <code>Link</code> não baixa o documento de novo; um <code>&lt;a href&gt;</code> baixaria.</li>
+            <li>Os botões voltar e avançar do navegador funcionam, porque o roteador grava cada troca no histórico.</li>
+            <li>A rota <code>path="*"</code> fica por último na leitura, mas o React Router escolhe pela especificidade, não pela ordem.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

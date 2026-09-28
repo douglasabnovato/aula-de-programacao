@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline de Segurança com GitHub Actions — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Pipeline de Segurança com GitHub Actions — Código de Referência</h1>
+        <p class="subtitulo">Aula 66 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um workflow com três camadas de verificação (segredos, dependências e análise estática) e a configuração do Dependabot. Nenhum segredo real aparece no repositório: tudo que é sensível vem de <code>process.env</code> ou dos secrets do GitHub.</p>
+        </div>
+        <h2>.github/workflows/secops.yml</h2>
+        <pre># Início: verificações de segurança executadas em todo push e pull request
+name: secops
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'
+permissions:
+  contents: read
+jobs:
+  segredos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  dependencias:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high --omit=dev
+  codeql:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+      - uses: github/codeql-action/analyze@v3
+# Fim de .github/workflows/secops.yml</pre>
+        <h2>.github/dependabot.yml</h2>
+        <pre># Início: atualização semanal de dependências npm e de actions
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+# Fim de .github/dependabot.yml</pre>
+        <h2>src/config.js</h2>
+        <pre>// Início: leitura centralizada de segredos, falhando cedo se algum faltar
+const OBRIGATORIAS = ['DATABASE_URL', 'JWT_SECRET', 'PAGAMENTO_API_KEY'];
+
+// Confere as variáveis obrigatórias e devolve a configuração da aplicação
+function carregarConfig() {
+  const faltando = OBRIGATORIAS.filter((nome) =&gt; !process.env[nome]);
+  if (faltando.length) throw new Error(`Variáveis de ambiente ausentes: ${faltando.join(', ')}`);
+  return {
+    databaseUrl: process.env.DATABASE_URL,
+    jwtSecret: process.env.JWT_SECRET,
+    pagamentoApiKey: process.env.PAGAMENTO_API_KEY,
+  };
+}
+
+module.exports = { carregarConfig };
+// Fim de src/config.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Salve os arquivos e envie para o GitHub</li>
+            <li>Numa branch de teste, faça commit de um arquivo com chave falsa e abra um PR: o job <code>segredos</code> falha</li>
+            <li>Instale uma versão antiga de pacote vulnerável e veja o job <code>dependencias</code> falhar</li>
+            <li>Acompanhe os alertas do CodeQL na aba Security do repositório</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O gitleaks varre o histórico inteiro: apagar o arquivo num commit novo não esconde a chave, por isso ela precisa ser revogada.</li>
+            <li>O bloco <code>permissions</code> no topo dá só leitura; o job do CodeQL recebe escrita de eventos de segurança porque precisa publicar o resultado.</li>
+            <li>O agendamento semanal pega vulnerabilidades novas em dependências que não mudaram, o que um pipeline só de PR não perceberia.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

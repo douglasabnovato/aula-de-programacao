@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Limiting em Camadas — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Rate Limiting em Camadas — Código de Referência</h1>
+        <p class="subtitulo">Aula 29 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Quatro limitadores com propósitos diferentes — global, rota cara, por usuário e login — registrados na ordem certa, com resposta 429 em Problem Details e um script para medir o comportamento.</p>
+        </div>
+        <h2>src/middlewares/limites.js</h2>
+        <pre>// Início: limites de requisição em camadas — global, rota cara, por usuário e login
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
+
+// resposta 429 no formato Problem Details com o tempo de espera
+function responderLimite(req, res, proximo, opcoes) {
+  const segundos = Math.ceil(opcoes.windowMs / 1000);
+  res.status(opcoes.statusCode).type('application/problem+json').json({
+    type: 'about:blank',
+    title: 'Limite de requisições atingido',
+    status: opcoes.statusCode,
+    detail: `Tente novamente em até ${segundos} segundos.`,
+    instance: req.originalUrl,
+    requestId: req.id
+  });
+}
+
+const base = { standardHeaders: 'draft-8', legacyHeaders: false, handler: responderLimite };
+
+const limiteGlobal = rateLimit({ ...base, windowMs: 15 * 60 * 1000, limit: 300 });
+
+const limiteRelatorios = rateLimit({ ...base, windowMs: 60 * 1000, limit: 20 });
+
+const limitePorUsuario = rateLimit({
+  ...base,
+  windowMs: 60 * 1000,
+  limit: 60,
+  // usa o usuário autenticado como chave e o IP como reserva
+  keyGenerator(req) {
+    return req.usuarioId ? `usuario:${req.usuarioId}` : ipKeyGenerator(req.ip);
+  }
+});
+
+const limiteLogin = rateLimit({
+  ...base,
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  skipSuccessfulRequests: true
+});
+
+module.exports = { limiteGlobal, limiteRelatorios, limitePorUsuario, limiteLogin };
+// Fim de limites.js</pre>
+        <h2>src/app.js</h2>
+        <pre>// Início: onde cada camada de limite entra no app
+const express = require('express');
+const helmet = require('helmet');
+const corsConfigurado = require('./config/cors');
+const autenticar = require('./middlewares/auth.middleware');
+const { limiteGlobal, limiteRelatorios, limitePorUsuario, limiteLogin } = require('./middlewares/limites');
+const rotasAuth = require('./routes/auth.routes');
+const rotasTarefas = require('./routes/tarefas.routes');
+const rotasRelatorios = require('./routes/relatorios.routes');
+
+const app = express();
+
+app.set('trust proxy', 1);
+app.use(helmet());
+app.use(corsConfigurado);
+app.use(limiteGlobal);
+app.use(express.json({ limit: '10kb' }));
+
+app.use('/auth/login', limiteLogin);
+app.use('/auth', rotasAuth);
+
+app.use(autenticar);
+app.use(limitePorUsuario);
+app.use('/tarefas', rotasTarefas);
+app.use('/relatorios', limiteRelatorios, rotasRelatorios);
+
+module.exports = app;
+// Fim de app.js</pre>
+        <h2>scripts/rajada.js</h2>
+        <pre>// Início: dispara uma rajada de chamadas e conta os status recebidos
+const URL_ALVO = process.env.URL_ALVO || 'http://localhost:3000/relatorios';
+const TOKEN = process.env.TOKEN_TESTE || '';
+
+// executa as chamadas em sequência e imprime o resumo
+async function rajada(total = 30) {
+  const contagem = {};
+  for (let i = 0; i &lt; total; i += 1) {
+    const resposta = await fetch(URL_ALVO, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    contagem[resposta.status] = (contagem[resposta.status] || 0) + 1;
+    if (resposta.status === 429 &amp;&amp; !contagem.primeiro429) contagem.primeiro429 = i + 1;
+  }
+  console.log(contagem);
+}
+
+rajada();
+// Fim de rajada.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install express-rate-limit</code> (versão 8 ou superior, que exporta <code>ipKeyGenerator</code>)</li>
+            <li><code>node server.js</code></li>
+            <li><code>TOKEN_TESTE=... node scripts/rajada.js</code></li>
+            <li>Compare a contagem de status com os limites configurados</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li><code>limitePorUsuario</code> vem depois de <code>autenticar</code>: antes dele, <code>req.usuarioId</code> ainda não existe.</li>
+            <li><code>trust proxy</code> faz o <code>req.ip</code> ser o do cliente quando a API roda atrás do proxy da hospedagem; sem isso, todos parecem o mesmo IP.</li>
+            <li>O store padrão guarda a contagem na memória do processo; com mais de uma instância, cada uma conta separado.</li>
+        </ul>
+    </div>
+</body>
+
+</html>
