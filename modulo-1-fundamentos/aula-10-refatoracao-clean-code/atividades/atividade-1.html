@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa do Tempero — Nomes e Funções Pequenas | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Casa do Tempero — Nomes e Funções Pequenas</h1>
+        <p class="subtitulo">Aula 10 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma calculadora de pedidos com duas implementações: a função <code>f</code> original, com nomes de uma letra, e a versão refatorada em funções pequenas com nomes do negócio. A tela mostra o resultado das duas e confirma que são idênticos.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 1" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.resultado {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+form label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Casa do Tempero — resumo do pedido&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Desconto de 10% acima de R$ 200 para cliente fiel. Frete grátis acima de R$ 150 na cidade sede.&lt;/p&gt;
+  &lt;form id=&quot;formPedido&quot; class=&quot;linha&quot;&gt;
+    &lt;label&gt;Subtotal &lt;input name=&quot;subtotal&quot; type=&quot;number&quot; step=&quot;0.01&quot; value=&quot;220&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;fiel&quot; checked&gt; Cliente fiel&lt;/label&gt;
+    &lt;select name=&quot;cidade&quot; aria-label=&quot;Cidade&quot;&gt;
+      &lt;option value=&quot;sede&quot;&gt;Cidade sede&lt;/option&gt;
+      &lt;option value=&quot;regiao&quot;&gt;Região&lt;/option&gt;
+      &lt;option value=&quot;outra&quot;&gt;Outra cidade&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;button type=&quot;submit&quot;&gt;Calcular&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id=&quot;saidaNova&quot; class=&quot;resultado&quot;&gt;&lt;/p&gt;
+  &lt;p id=&quot;comparacao&quot;&gt;&lt;/p&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: comparação entre a função f original e a versão refatorada
+
+// versão original, mantida só para comparação de resultados
+function f(x, c, d) {
+  let y = 0;
+  let tmp = 0;
+  if (x &gt; 200 &amp;&amp; c) {
+    y = x * 0.1;
+  }
+  if (d === &#x27;sede&#x27;) {
+    tmp = x - y &gt;= 150 ? 0 : 12;
+  } else if (d === &#x27;regiao&#x27;) {
+    tmp = 25;
+  } else {
+    tmp = 40;
+  }
+  return &#x27;Subtotal R$ &#x27; + x.toFixed(2) + &#x27; | desconto R$ &#x27; + y.toFixed(2) + &#x27; | frete R$ &#x27; + tmp.toFixed(2) + &#x27; | total R$ &#x27; + (x - y + tmp).toFixed(2);
+}
+
+const LIMITE_DESCONTO_FIDELIDADE = 200;
+const PERCENTUAL_DESCONTO_FIDELIDADE = 0.1;
+const LIMITE_FRETE_GRATIS = 150;
+const FRETE_POR_CIDADE = { sede: 12, regiao: 25, outra: 40 };
+
+// calcula o desconto de fidelidade sobre o subtotal
+const calcularDesconto = (subtotal, clienteFiel) =&gt; {
+  const ganhaDescontoFidelidade = clienteFiel &amp;&amp; subtotal &gt; LIMITE_DESCONTO_FIDELIDADE;
+  return ganhaDescontoFidelidade ? subtotal * PERCENTUAL_DESCONTO_FIDELIDADE : 0;
+};
+
+// calcula o frete conforme a cidade e o valor já com desconto
+const calcularFrete = (valorComDesconto, cidade) =&gt; {
+  const temFreteGratis = cidade === &#x27;sede&#x27; &amp;&amp; valorComDesconto &gt;= LIMITE_FRETE_GRATIS;
+  return temFreteGratis ? 0 : FRETE_POR_CIDADE[cidade];
+};
+
+// junta as regras e devolve os números do pedido
+const resumirPedido = (subtotal, clienteFiel, cidade) =&gt; {
+  const desconto = calcularDesconto(subtotal, clienteFiel);
+  const frete = calcularFrete(subtotal - desconto, cidade);
+  return { subtotal, desconto, frete, total: subtotal - desconto + frete };
+};
+
+// transforma o resumo no texto exibido na tela
+const formatarMensagem = ({ subtotal, desconto, frete, total }) =&gt; [
+  `Subtotal R$ ${subtotal.toFixed(2)}`,
+  `desconto R$ ${desconto.toFixed(2)}`,
+  `frete R$ ${frete.toFixed(2)}`,
+  `total R$ ${total.toFixed(2)}`
+].join(&#x27; | &#x27;);
+
+const formPedido = document.querySelector(&#x27;#formPedido&#x27;);
+const saidaNova = document.querySelector(&#x27;#saidaNova&#x27;);
+const comparacao = document.querySelector(&#x27;#comparacao&#x27;);
+
+// calcula com as duas versões e mostra se os resultados batem
+const calcular = (evento) =&gt; {
+  if (evento) evento.preventDefault();
+  const campos = formPedido.elements;
+  const subtotal = Number(campos.subtotal.value);
+  const clienteFiel = campos.fiel.checked;
+  const cidade = campos.cidade.value;
+  const textoNovo = formatarMensagem(resumirPedido(subtotal, clienteFiel, cidade));
+  const textoAntigo = f(subtotal, clienteFiel, cidade);
+  saidaNova.textContent = textoNovo;
+  comparacao.textContent = textoNovo === textoAntigo ? &#x27;Resultado idêntico ao da função f original.&#x27; : `Diferente da original: ${textoAntigo}`;
+  comparacao.className = textoNovo === textoAntigo ? &#x27;ok&#x27; : &#x27;erro&#x27;;
+};
+
+formPedido.addEventListener(&#x27;submit&#x27;, calcular);
+calcular();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Casa do Tempero — Nomes e Funções Pequenas --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Casa do Tempero — Nomes e Funções Pequenas&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Casa do Tempero — resumo do pedido&lt;/h1&gt;
+    &lt;p class="sub"&gt;Desconto de 10% acima de R$ 200 para cliente fiel. Frete grátis acima de R$ 150 na cidade sede.&lt;/p&gt;
+    &lt;form id="formPedido" class="linha"&gt;
+      &lt;label&gt;Subtotal &lt;input name="subtotal" type="number" step="0.01" value="220"&gt;&lt;/label&gt;
+      &lt;label&gt;&lt;input type="checkbox" name="fiel" checked&gt; Cliente fiel&lt;/label&gt;
+      &lt;select name="cidade" aria-label="Cidade"&gt;
+        &lt;option value="sede"&gt;Cidade sede&lt;/option&gt;
+        &lt;option value="regiao"&gt;Região&lt;/option&gt;
+        &lt;option value="outra"&gt;Outra cidade&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;button type="submit"&gt;Calcular&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p id="saidaNova" class="resultado"&gt;&lt;/p&gt;
+    &lt;p id="comparacao"&gt;&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.resultado {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+form label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: comparação entre a função f original e a versão refatorada
+
+// versão original, mantida só para comparação de resultados
+function f(x, c, d) {
+  let y = 0;
+  let tmp = 0;
+  if (x &gt; 200 &amp;&amp; c) {
+    y = x * 0.1;
+  }
+  if (d === 'sede') {
+    tmp = x - y &gt;= 150 ? 0 : 12;
+  } else if (d === 'regiao') {
+    tmp = 25;
+  } else {
+    tmp = 40;
+  }
+  return 'Subtotal R$ ' + x.toFixed(2) + ' | desconto R$ ' + y.toFixed(2) + ' | frete R$ ' + tmp.toFixed(2) + ' | total R$ ' + (x - y + tmp).toFixed(2);
+}
+
+const LIMITE_DESCONTO_FIDELIDADE = 200;
+const PERCENTUAL_DESCONTO_FIDELIDADE = 0.1;
+const LIMITE_FRETE_GRATIS = 150;
+const FRETE_POR_CIDADE = { sede: 12, regiao: 25, outra: 40 };
+
+// calcula o desconto de fidelidade sobre o subtotal
+const calcularDesconto = (subtotal, clienteFiel) =&gt; {
+  const ganhaDescontoFidelidade = clienteFiel &amp;&amp; subtotal &gt; LIMITE_DESCONTO_FIDELIDADE;
+  return ganhaDescontoFidelidade ? subtotal * PERCENTUAL_DESCONTO_FIDELIDADE : 0;
+};
+
+// calcula o frete conforme a cidade e o valor já com desconto
+const calcularFrete = (valorComDesconto, cidade) =&gt; {
+  const temFreteGratis = cidade === 'sede' &amp;&amp; valorComDesconto &gt;= LIMITE_FRETE_GRATIS;
+  return temFreteGratis ? 0 : FRETE_POR_CIDADE[cidade];
+};
+
+// junta as regras e devolve os números do pedido
+const resumirPedido = (subtotal, clienteFiel, cidade) =&gt; {
+  const desconto = calcularDesconto(subtotal, clienteFiel);
+  const frete = calcularFrete(subtotal - desconto, cidade);
+  return { subtotal, desconto, frete, total: subtotal - desconto + frete };
+};
+
+// transforma o resumo no texto exibido na tela
+const formatarMensagem = ({ subtotal, desconto, frete, total }) =&gt; [
+  `Subtotal R$ ${subtotal.toFixed(2)}`,
+  `desconto R$ ${desconto.toFixed(2)}`,
+  `frete R$ ${frete.toFixed(2)}`,
+  `total R$ ${total.toFixed(2)}`
+].join(' | ');
+
+const formPedido = document.querySelector('#formPedido');
+const saidaNova = document.querySelector('#saidaNova');
+const comparacao = document.querySelector('#comparacao');
+
+// calcula com as duas versões e mostra se os resultados batem
+const calcular = (evento) =&gt; {
+  if (evento) evento.preventDefault();
+  const campos = formPedido.elements;
+  const subtotal = Number(campos.subtotal.value);
+  const clienteFiel = campos.fiel.checked;
+  const cidade = campos.cidade.value;
+  const textoNovo = formatarMensagem(resumirPedido(subtotal, clienteFiel, cidade));
+  const textoAntigo = f(subtotal, clienteFiel, cidade);
+  saidaNova.textContent = textoNovo;
+  comparacao.textContent = textoNovo === textoAntigo ? 'Resultado idêntico ao da função f original.' : `Diferente da original: ${textoAntigo}`;
+  comparacao.className = textoNovo === textoAntigo ? 'ok' : 'erro';
+};
+
+formPedido.addEventListener('submit', calcular);
+calcular();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Teste subtotais de 100, 180, 220 e 250 nas três cidades, com e sem cliente fiel.</li>
+            <li>Compare a leitura de <code>f</code> com a de <code>resumirPedido</code> no código.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Os números <code>200</code>, <code>0.1</code>, <code>150</code>, <code>12</code>, <code>25</code> e <code>40</code> ganharam nomes: a regra pode ser lida sem abrir a especificação.</li>
+            <li>Cada função nova faz uma coisa: duas calculam, uma junta os números e uma só monta o texto.</li>
+            <li>A comparação com <code>f</code> na tela é a garantia de que a refatoração não mudou o comportamento.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

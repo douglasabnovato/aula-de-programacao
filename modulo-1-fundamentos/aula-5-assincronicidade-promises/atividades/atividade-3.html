@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Vet — Confirmação com async/await | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Agenda Vet — Confirmação com async/await</h1>
+        <p class="subtitulo">Aula 5 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma tela de confirmação de consulta escrita com <code>async/await</code>: verifica o horário, reserva, trata falhas com <code>try/catch/finally</code> e consulta a disponibilidade de todos os horários com <code>Promise.allSettled</code>.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Agenda Vet — confirmar consulta&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Escolha um horário. Os horários 10:00 e 15:00 já estão ocupados.&lt;/p&gt;
+  &lt;div class=&quot;linha&quot;&gt;
+    &lt;select id=&quot;seletorHorario&quot; aria-label=&quot;Horário&quot;&gt;
+      &lt;option&gt;09:00&lt;/option&gt;
+      &lt;option&gt;10:00&lt;/option&gt;
+      &lt;option&gt;11:00&lt;/option&gt;
+      &lt;option&gt;14:00&lt;/option&gt;
+      &lt;option&gt;15:00&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;button id=&quot;btnConfirmar&quot;&gt;Confirmar&lt;/button&gt;
+    &lt;button id=&quot;btnDisponibilidade&quot; class=&quot;neutro&quot;&gt;Ver disponibilidade&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;simularQueda&quot;&gt; Simular queda do servidor de reservas&lt;/label&gt;
+  &lt;p id=&quot;mensagem&quot; class=&quot;muted&quot;&gt;Nenhuma confirmação feita.&lt;/p&gt;
+  &lt;ul id=&quot;listaHorarios&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: confirmação de agendamento com async/await
+const HORARIOS = [&#x27;09:00&#x27;, &#x27;10:00&#x27;, &#x27;11:00&#x27;, &#x27;14:00&#x27;, &#x27;15:00&#x27;];
+const OCUPADOS = [&#x27;10:00&#x27;, &#x27;15:00&#x27;];
+
+const seletorHorario = document.querySelector(&#x27;#seletorHorario&#x27;);
+const btnConfirmar = document.querySelector(&#x27;#btnConfirmar&#x27;);
+const simularQueda = document.querySelector(&#x27;#simularQueda&#x27;);
+const mensagem = document.querySelector(&#x27;#mensagem&#x27;);
+const listaHorarios = document.querySelector(&#x27;#listaHorarios&#x27;);
+
+// simula a consulta de um horário no servidor
+const verificarHorario = (hora) =&gt; new Promise((resolve) =&gt; {
+  setTimeout(() =&gt; resolve(!OCUPADOS.includes(hora)), 700);
+});
+
+// simula a reserva, que pode falhar se o servidor cair
+const reservar = (hora) =&gt; new Promise((resolve, reject) =&gt; {
+  setTimeout(() =&gt; {
+    if (simularQueda.checked) {
+      reject(new Error(&#x27;servidor de reservas fora do ar, tente de novo&#x27;));
+      return;
+    }
+    resolve(`AV-${hora.replace(&#x27;:&#x27;, &#x27;&#x27;)}-${Math.floor(Math.random() * 900 + 100)}`);
+  }, 900);
+});
+
+// mostra uma mensagem com a classe de cor indicada
+const avisar = (texto, classe) =&gt; {
+  mensagem.textContent = texto;
+  mensagem.className = classe;
+};
+
+// fluxo completo de confirmação, escrito de cima para baixo
+async function confirmar() {
+  const hora = seletorHorario.value;
+  btnConfirmar.disabled = true;
+  btnConfirmar.textContent = &#x27;Confirmando...&#x27;;
+  avisar(`Verificando ${hora}...`, &#x27;muted&#x27;);
+  try {
+    const livre = await verificarHorario(hora);
+    if (!livre) {
+      throw new Error(`o horário ${hora} já está ocupado`);
+    }
+    const protocolo = await reservar(hora);
+    avisar(`Consulta confirmada às ${hora}. Protocolo ${protocolo}.`, &#x27;ok&#x27;);
+  } catch (erro) {
+    avisar(`Não foi possível confirmar: ${erro.message}.`, &#x27;erro&#x27;);
+  } finally {
+    btnConfirmar.disabled = false;
+    btnConfirmar.textContent = &#x27;Confirmar&#x27;;
+  }
+}
+
+// consulta todos os horários ao mesmo tempo e lista o resultado de cada um
+async function verDisponibilidade() {
+  listaHorarios.innerHTML = &#x27;&lt;li class=&quot;muted&quot;&gt;Consultando...&lt;/li&gt;&#x27;;
+  const resultados = await Promise.allSettled(HORARIOS.map((hora) =&gt; verificarHorario(hora)));
+  listaHorarios.innerHTML = resultados
+    .map((resultado, i) =&gt; `&lt;li&gt;&lt;span&gt;${HORARIOS[i]}&lt;/span&gt;&lt;strong class=&quot;${resultado.value ? &#x27;ok&#x27; : &#x27;erro&#x27;}&quot;&gt;${resultado.value ? &#x27;livre&#x27; : &#x27;ocupado&#x27;}&lt;/strong&gt;&lt;/li&gt;`)
+    .join(&#x27;&#x27;);
+}
+
+btnConfirmar.addEventListener(&#x27;click&#x27;, confirmar);
+document.querySelector(&#x27;#btnDisponibilidade&#x27;).addEventListener(&#x27;click&#x27;, verDisponibilidade);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Agenda Vet — Confirmação com async/await --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Agenda Vet — Confirmação com async/await&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Agenda Vet — confirmar consulta&lt;/h1&gt;
+    &lt;p class="sub"&gt;Escolha um horário. Os horários 10:00 e 15:00 já estão ocupados.&lt;/p&gt;
+    &lt;div class="linha"&gt;
+      &lt;select id="seletorHorario" aria-label="Horário"&gt;
+        &lt;option&gt;09:00&lt;/option&gt;
+        &lt;option&gt;10:00&lt;/option&gt;
+        &lt;option&gt;11:00&lt;/option&gt;
+        &lt;option&gt;14:00&lt;/option&gt;
+        &lt;option&gt;15:00&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;button id="btnConfirmar"&gt;Confirmar&lt;/button&gt;
+      &lt;button id="btnDisponibilidade" class="neutro"&gt;Ver disponibilidade&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label class="linha"&gt;&lt;input type="checkbox" id="simularQueda"&gt; Simular queda do servidor de reservas&lt;/label&gt;
+    &lt;p id="mensagem" class="muted"&gt;Nenhuma confirmação feita.&lt;/p&gt;
+    &lt;ul id="listaHorarios" class="lista"&gt;&lt;/ul&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+button.neutro {
+  background: var(--border);
+  color: var(--text);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: confirmação de agendamento com async/await
+const HORARIOS = ['09:00', '10:00', '11:00', '14:00', '15:00'];
+const OCUPADOS = ['10:00', '15:00'];
+
+const seletorHorario = document.querySelector('#seletorHorario');
+const btnConfirmar = document.querySelector('#btnConfirmar');
+const simularQueda = document.querySelector('#simularQueda');
+const mensagem = document.querySelector('#mensagem');
+const listaHorarios = document.querySelector('#listaHorarios');
+
+// simula a consulta de um horário no servidor
+const verificarHorario = (hora) =&gt; new Promise((resolve) =&gt; {
+  setTimeout(() =&gt; resolve(!OCUPADOS.includes(hora)), 700);
+});
+
+// simula a reserva, que pode falhar se o servidor cair
+const reservar = (hora) =&gt; new Promise((resolve, reject) =&gt; {
+  setTimeout(() =&gt; {
+    if (simularQueda.checked) {
+      reject(new Error('servidor de reservas fora do ar, tente de novo'));
+      return;
+    }
+    resolve(`AV-${hora.replace(':', '')}-${Math.floor(Math.random() * 900 + 100)}`);
+  }, 900);
+});
+
+// mostra uma mensagem com a classe de cor indicada
+const avisar = (texto, classe) =&gt; {
+  mensagem.textContent = texto;
+  mensagem.className = classe;
+};
+
+// fluxo completo de confirmação, escrito de cima para baixo
+async function confirmar() {
+  const hora = seletorHorario.value;
+  btnConfirmar.disabled = true;
+  btnConfirmar.textContent = 'Confirmando...';
+  avisar(`Verificando ${hora}...`, 'muted');
+  try {
+    const livre = await verificarHorario(hora);
+    if (!livre) {
+      throw new Error(`o horário ${hora} já está ocupado`);
+    }
+    const protocolo = await reservar(hora);
+    avisar(`Consulta confirmada às ${hora}. Protocolo ${protocolo}.`, 'ok');
+  } catch (erro) {
+    avisar(`Não foi possível confirmar: ${erro.message}.`, 'erro');
+  } finally {
+    btnConfirmar.disabled = false;
+    btnConfirmar.textContent = 'Confirmar';
+  }
+}
+
+// consulta todos os horários ao mesmo tempo e lista o resultado de cada um
+async function verDisponibilidade() {
+  listaHorarios.innerHTML = '&lt;li class="muted"&gt;Consultando...&lt;/li&gt;';
+  const resultados = await Promise.allSettled(HORARIOS.map((hora) =&gt; verificarHorario(hora)));
+  listaHorarios.innerHTML = resultados
+    .map((resultado, i) =&gt; `&lt;li&gt;&lt;span&gt;${HORARIOS[i]}&lt;/span&gt;&lt;strong class="${resultado.value ? 'ok' : 'erro'}"&gt;${resultado.value ? 'livre' : 'ocupado'}&lt;/strong&gt;&lt;/li&gt;`)
+    .join('');
+}
+
+btnConfirmar.addEventListener('click', confirmar);
+document.querySelector('#btnDisponibilidade').addEventListener('click', verDisponibilidade);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Confirme 09:00, depois 10:00.</li>
+            <li>Marque 'Simular queda' e confirme 11:00: o botão precisa voltar ao normal.</li>
+            <li>Clique em 'Ver disponibilidade'.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O código de <code>confirmar</code> lê como uma receita: verifica, decide, reserva. Não há <code>then</code> aninhado.</li>
+            <li>Tanto o <code>throw</code> do horário ocupado quanto a rejeição da reserva caem no mesmo <code>catch</code>.</li>
+            <li>O <code>finally</code> roda nos três cenários, por isso o botão nunca fica travado em 'Confirmando...'.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 6 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a buscar e enviar dados para APIs públicas com fetch, mostrando na tela os estados de carregamento, sucesso, vazio e erro de cada requisição.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 6: Consumo de APIs com Fetch</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: FETCH, JSON E RENDERIZAÇÃO DE DADOS EXTERNOS -->
+            <div class="card" id="card-1">
+                <h2>🌐 1. fetch, JSON e Renderização de Dados Externos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O blog fictício Café com Código quer mostrar na página inicial os posts mais recentes, mas hoje alguém copia os títulos à mão no HTML toda semana. Os posts já existem numa API que devolve JSON. Como buscar esses dados com JavaScript e transformar a resposta em cards na tela, carregando mais quando o leitor pedir?</p>
+                </div>
+
+                <p>fetch é a função do navegador para fazer requisições HTTP. Ela devolve uma Promise com a resposta, e o corpo em JSON precisa ser lido com response.json(), que também é assíncrono. Com os dados em mãos, a tela é montada com os mesmos métodos de array da Aula 4.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="noopener noreferrer">📄 Using the Fetch API — MDN</a>
+                        <span class="link-desc">O guia completo: fazer a requisição, ler o corpo e configurar método e cabeçalhos.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/json" target="_blank" rel="noopener noreferrer">📄 Response: json() — MDN</a>
+                        <span class="link-desc">Por que ler o corpo é uma segunda etapa assíncrona e o que acontece se o corpo não for JSON.</span>
+                    </li>
+                    <li>
+                        <a href="https://jsonplaceholder.typicode.com/guide/" target="_blank" rel="noopener noreferrer">📄 JSONPlaceholder — Guide</a>
+                        <span class="link-desc">Os recursos disponíveis na API de testes e exemplos de filtro e paginação pela URL.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Network_requests" target="_blank" rel="noopener noreferrer">📄 Making network requests — MDN Learn</a>
+                        <span class="link-desc">O fluxo requisição → resposta → atualização da página com exemplos guiados.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=CisMh-qrd5c" target="_blank" rel="noopener noreferrer">▶️ Aprenda Fetch API em 12 Minutos (com Exemplos Práticos)</a>
+                            <span class="link-desc">Hashtag Dev · 12:39 — Mostra como usar fetch para buscar dados, ler o JSON da resposta e exibir o resultado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qIGYM4S8x50" target="_blank" rel="noopener noreferrer">▶️ APRENDA FETCH API DE JAVASCRIPT COM PROJETO</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 45:05 — Constrói um projeto consumindo uma API com fetch e renderizando os dados na página.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Mural de Posts com fetch e JSONPlaceholder</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-6-mural</code> com os três arquivos, uma <code>&lt;section id="mural"&gt;</code> vazia e um botão 'Carregar mais'.</li>
+                            <li><strong>Explorando a API:</strong> abra <code>https://jsonplaceholder.typicode.com/posts?_limit=3</code> no navegador e leia o formato de cada post.</li>
+                            <li><strong>Primeira Requisição:</strong> chame <code>fetch(url)</code> e imprima o resultado no console para ver o objeto <code>Response</code>.</li>
+                            <li><strong>Erro Provocado:</strong> tente usar <code>resposta.title</code> direto e observe o <code>undefined</code>: o corpo ainda não foi lido.</li>
+                            <li><strong>Lendo o JSON:</strong> use <code>const posts = await resposta.json()</code> dentro de uma função <code>async</code>.</li>
+                            <li><strong>Montando a URL:</strong> monte a URL com <code>_start</code> e <code>_limit</code> a partir de uma variável <code>pagina</code>, usando template literal.</li>
+                            <li><strong>Renderizando Cards:</strong> transforme cada post num <code>&lt;article&gt;</code> com <code>map</code> e acrescente ao mural com <code>insertAdjacentHTML</code>.</li>
+                            <li><strong>Paginação:</strong> no clique de 'Carregar mais', some 1 em <code>pagina</code> e busque o próximo lote sem apagar os anteriores.</li>
+                            <li><strong>Fim da Lista:</strong> quando a API devolver menos itens que o limite, desabilite o botão e troque o texto para 'Fim dos posts'.</li>
+                            <li><strong>Validação e Testes:</strong> acompanhe as requisições na aba Rede do DevTools, confira o status 200 e registre no README o formato da resposta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ESTADOS DE CARREGAMENTO, ERRO E RESPOSTA VAZIA -->
+            <div class="card" id="card-2">
+                <h2>🚦 2. Estados de Carregamento, Erro e Resposta Vazia</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na loja fictícia Vitrine Norte, quando a API demora a tela fica em branco; quando ela devolve 404, a página mostra 'undefined' no lugar do nome; e quando não há resultados, aparece só um espaço vazio. Os clientes acham que o site quebrou. Como a interface pode avisar o que está acontecendo em cada situação: carregando, deu certo, veio vazio ou falhou?</p>
+                </div>
+
+                <p>Uma requisição tem pelo menos quatro desfechos que a interface precisa mostrar. O fetch só rejeita em falha de rede; respostas 404 ou 500 chegam como sucesso, e quem confere é o código, com response.ok e response.status. Um tempo limite evita a espera infinita.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/ok" target="_blank" rel="noopener noreferrer">📄 Response: ok — MDN</a>
+                        <span class="link-desc">A propriedade que diz se o status está entre 200 e 299, e por que o fetch não rejeita em 404.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/status" target="_blank" rel="noopener noreferrer">📄 Response: status — MDN</a>
+                        <span class="link-desc">Como ler o código numérico da resposta para escolher a mensagem certa.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status" target="_blank" rel="noopener noreferrer">📄 HTTP response status codes — MDN</a>
+                        <span class="link-desc">O significado de cada faixa de status: 2xx, 4xx e 5xx.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static" target="_blank" rel="noopener noreferrer">📄 AbortSignal.timeout() — MDN</a>
+                        <span class="link-desc">Como cancelar uma requisição que passou do tempo limite com uma linha.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=KmQtzdGz-Po" target="_blank" rel="noopener noreferrer">▶️ Tratamento de erros com Fetch API - Curso PWA #30</a>
+                            <span class="link-desc">Fellyph Cintra · 12:49 — Mostra como tratar erros de requisição com Fetch API, incluindo respostas com status de erro.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=gURHWqFyVZg" target="_blank" rel="noopener noreferrer">▶️ JavaScript puro: implementando e refatorando funções de tratamento de erros | try, then, catch</a>
+                            <span class="link-desc">Roger Melo | JavaScript · 17:18 — Implementa e refatora funções de tratamento de erros com try, then e catch em JavaScript puro.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Lista de Tarefas por Usuário com os Quatro Estados da Interface</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-6-estados</code> com os três arquivos, um campo numérico de usuário e um botão Buscar.</li>
+                            <li><strong>Mapeando os Estados:</strong> escreva no README os quatro estados — carregando, sucesso, vazio e erro — e o que a tela mostra em cada um.</li>
+                            <li><strong>Função de Estado:</strong> crie <code>mostrarEstado(tipo, conteudo)</code> que troca a classe e o conteúdo de uma única caixa de resultado.</li>
+                            <li><strong>Estado de Carregamento:</strong> chame <code>mostrarEstado('carregando', ...)</code> antes do <code>fetch</code> e desabilite o botão.</li>
+                            <li><strong>Erro Provocado:</strong> troque a rota para <code>/todoss</code>, rode e observe que o <code>catch</code> não é chamado: o fetch considera 404 um sucesso.</li>
+                            <li><strong>Conferindo o Status:</strong> depois do fetch, verifique <code>if (!resposta.ok)</code> e lance um <code>Error</code> com <code>resposta.status</code> na mensagem.</li>
+                            <li><strong>Estado Vazio:</strong> busque o usuário 11 e trate o array vazio com uma mensagem própria, diferente do erro.</li>
+                            <li><strong>Tempo Limite:</strong> passe <code>{ signal: AbortSignal.timeout(5000) }</code> como opção do fetch.</li>
+                            <li><strong>Finalizando:</strong> use <code>finally</code> para reabilitar o botão em todos os desfechos.</li>
+                            <li><strong>Validação e Testes:</strong> teste usuário 1, usuário 11 e a rota quebrada, e registre no README um print de cada estado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PARÂMETROS NA URL, ENVIO DE DADOS E FORMULÁRIO DE CEP -->
+            <div class="card" id="card-3">
+                <h2>📮 3. Parâmetros na URL, Envio de Dados e Formulário de CEP</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A transportadora fictícia Leva Já perde entregas porque os clientes digitam o endereço errado no cadastro. A ideia é pedir só o CEP, preencher rua, bairro e cidade sozinho e depois enviar o cadastro para o servidor. Como montar a URL da consulta a partir do que o usuário digitou, validar o formato antes de chamar a API e tratar o CEP que não existe?</p>
+                </div>
+
+                <p>O dado que o usuário digita vira parte da URL de uma requisição GET, por isso precisa ser limpo e validado antes. Para enviar dados, o mesmo fetch recebe method, headers e body. APIs como o ViaCEP também têm regras próprias, como responder com erro dentro de um JSON de status 200.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://viacep.com.br/" target="_blank" rel="noopener noreferrer">📄 ViaCEP — documentação oficial</a>
+                        <span class="link-desc">O formato da URL de consulta, a resposta em JSON e o campo de erro para CEP inexistente.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch" target="_blank" rel="noopener noreferrer">📄 Window: fetch() — MDN</a>
+                        <span class="link-desc">As opções do fetch: method, headers e body para enviar dados ao servidor.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener noreferrer">📄 encodeURIComponent() — MDN</a>
+                        <span class="link-desc">Por que texto digitado pelo usuário deve ser codificado antes de entrar numa URL.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/pattern" target="_blank" rel="noopener noreferrer">📄 Atributo pattern — MDN</a>
+                        <span class="link-desc">Validar o formato do campo no próprio HTML antes de qualquer requisição.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=imk6Y0viabg" target="_blank" rel="noopener noreferrer">▶️ Como Consumir API de CEP com JavaScript Puro (Sem IA e Atualizado)</a>
+                            <span class="link-desc">Fernando Leonid · 38:14 — Constrói um formulário de consulta de CEP com JavaScript puro consumindo a API ViaCEP.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ktUF6kyY1eY" target="_blank" rel="noopener noreferrer">▶️ CONSUMINDO API VIACEP COM JAVASCRIPT UTILIZANDO FETCH</a>
+                            <span class="link-desc">Rogers · 13:13 — Consome a API ViaCEP com fetch, montando a URL a partir do CEP digitado.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Cadastro de Endereço com ViaCEP e Envio por POST</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-6-cep</code> com os três arquivos e um formulário com CEP, rua, bairro, cidade, UF e número.</li>
+                            <li><strong>Validação no HTML:</strong> no campo CEP, use <code>inputmode="numeric"</code> e <code>pattern="\d{5}-?\d{3}"</code> com uma mensagem de ajuda.</li>
+                            <li><strong>Limpando a Entrada:</strong> crie <code>limparCep(valor)</code> que remove tudo que não for dígito com <code>replace(/\D/g, '')</code>.</li>
+                            <li><strong>Montando a URL:</strong> monte <code>https://viacep.com.br/ws/${cep}/json/</code> com <code>encodeURIComponent</code> e só chame a API se houver 8 dígitos.</li>
+                            <li><strong>Consulta no blur:</strong> busque o endereço quando o campo CEP perder o foco (evento <code>blur</code>) e mostre 'Buscando...'.</li>
+                            <li><strong>Erro Provocado:</strong> consulte o CEP <code>99999-999</code> e observe que a resposta tem status 200 com <code>{ "erro": true }</code>.</li>
+                            <li><strong>Tratando a Regra da API:</strong> verifique <code>dados.erro</code> e mostre 'CEP não encontrado' limpando os campos.</li>
+                            <li><strong>Preenchendo o Formulário:</strong> copie <code>logradouro</code>, <code>bairro</code>, <code>localidade</code> e <code>uf</code> para os campos e leve o foco para Número.</li>
+                            <li><strong>Enviando com POST:</strong> no <code>submit</code>, envie o cadastro para <code>https://jsonplaceholder.typicode.com/users</code> com <code>method: 'POST'</code>, cabeçalho JSON e <code>JSON.stringify</code>.</li>
+                            <li><strong>Validação e Testes:</strong> teste um CEP válido, um inexistente e um incompleto, confira o status 201 do POST na aba Rede e registre no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

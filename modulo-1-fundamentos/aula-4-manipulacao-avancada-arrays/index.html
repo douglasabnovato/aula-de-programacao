@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 4 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a transformar, filtrar, resumir, buscar e ordenar listas de dados com os métodos nativos de array, sem alterar os dados originais por engano.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 4: Manipulação Avançada de Arrays</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MAP, FILTER E REDUCE: TRANSFORMAR, SELECIONAR E RESUMIR -->
+            <div class="card" id="card-1">
+                <h2>🧮 1. map, filter e reduce: Transformar, Selecionar e Resumir</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A padaria fictícia Forno da Serra registra as vendas do dia num array de objetos. O dono quer ver só as vendas acima de um valor mínimo, com o preço já formatado em reais e o faturamento somado no rodapé, e hoje isso é feito com três laços for que ninguém mais entende. Como chegar no mesmo resultado encadeando três métodos de array?</p>
+                </div>
+
+                <p>Quase todo dado que chega numa interface é uma lista. map transforma cada item, filter escolhe quais ficam e reduce resume a lista num único valor — três perguntas diferentes, três métodos que devolvem algo novo sem alterar o array original.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank" rel="noopener noreferrer">📄 Array.prototype.map() — MDN</a>
+                        <span class="link-desc">Como gerar um array novo aplicando a mesma transformação em cada item.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank" rel="noopener noreferrer">📄 Array.prototype.filter() — MDN</a>
+                        <span class="link-desc">Como manter só os itens que passam num teste, sem remover nada do original.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce" target="_blank" rel="noopener noreferrer">📄 Array.prototype.reduce() — MDN (pt-BR)</a>
+                        <span class="link-desc">O acumulador, o valor inicial e por que esquecer o segundo argumento dá erro em lista vazia.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Arrays" target="_blank" rel="noopener noreferrer">📄 Arrays — MDN Learn</a>
+                        <span class="link-desc">Revisão curta de criação, acesso por índice e os métodos mais usados no dia a dia.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=mgnSSwgTiFU" target="_blank" rel="noopener noreferrer">▶️ Curso de JavaScript #04 - Map, Filter &amp; Reduce</a>
+                            <span class="link-desc">Felipe Rocha · 11:29 — Mostra como map, filter e reduce criam novos arrays ou um valor único a partir de uma lista.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=A8ATE1d_2xM" target="_blank" rel="noopener noreferrer">▶️ Array map, filter e reduce - manipulação de arrays em javascript | Programação funcional</a>
+                            <span class="link-desc">Vinicius Dacal · 16:54 — Pratica map, filter e reduce com exemplos de manipulação de arrays no estilo funcional.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Painel de Vendas do Dia com map, filter e reduce</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-4-vendas</code> com <code>index.html</code>, <code>style.css</code> e <code>script.js</code> ligados entre si.</li>
+                            <li><strong>Estrutura de Dados:</strong> declare <code>const vendas</code> com oito objetos no formato <code>{ id, cliente, produto, valor }</code>.</li>
+                            <li><strong>Pensando Antes de Codar:</strong> escreva no README as três perguntas do painel: quais vendas mostrar, como exibir cada uma e quanto somam.</li>
+                            <li><strong>Selecionando com filter:</strong> crie <code>filtrarVendas(lista, minimo)</code> usando <code>lista.filter((venda) =&gt; venda.valor &gt;= minimo)</code>.</li>
+                            <li><strong>Transformando com map:</strong> crie <code>montarItens(lista)</code> que devolve um array de strings <code>&lt;li&gt;</code> com template literals.</li>
+                            <li><strong>Erro Provocado:</strong> coloque o resultado do map direto no <code>innerHTML</code> e observe as vírgulas entre os itens; corrija com <code>.join('')</code>.</li>
+                            <li><strong>Resumindo com reduce:</strong> crie <code>somarVendas(lista)</code> com <code>reduce((total, venda) =&gt; total + venda.valor, 0)</code>.</li>
+                            <li><strong>Teste do Valor Inicial:</strong> remova o <code>0</code> do reduce, filtre um mínimo alto que não deixe nenhuma venda e leia o <code>TypeError</code> no console.</li>
+                            <li><strong>Ligando à Interface:</strong> adicione um <code>&lt;input type="range"&gt;</code> e chame <code>renderizar()</code> no evento <code>input</code>.</li>
+                            <li><strong>Validação e Testes:</strong> mova o controle até os extremos, confira a soma com uma calculadora e registre no README o que cada método devolve.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: BUSCAR, VERIFICAR E ORDENAR: FIND, SOME, EVERY E SORT -->
+            <div class="card" id="card-2">
+                <h2>🔎 2. Buscar, Verificar e Ordenar: find, some, every e sort</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A biblioteca fictícia Leitura Viva tem o acervo num array. A atendente precisa achar um livro pelo código, saber se algum está atrasado, confirmar se todos têm autor preenchido e listar por título em ordem alfabética — com o título acentuado no lugar certo. Qual método responde cada pergunta sem escrever um laço para cada uma?</p>
+                </div>
+
+                <p>Nem toda pergunta sobre uma lista devolve outra lista. find devolve um item, some e every devolvem verdadeiro ou falso, e sort reorganiza a lista — mas altera o array original e compara texto de um jeito que surpreende quem não passa uma função de comparação.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find" target="_blank" rel="noopener noreferrer">📄 Array.prototype.find() — MDN</a>
+                        <span class="link-desc">Como achar o primeiro item que satisfaz uma condição e o que acontece quando nenhum satisfaz.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank" rel="noopener noreferrer">📄 Array.prototype.some() — MDN</a>
+                        <span class="link-desc">Responder 'existe pelo menos um?' parando no primeiro acerto.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every" target="_blank" rel="noopener noreferrer">📄 Array.prototype.every() — MDN</a>
+                        <span class="link-desc">Responder 'todos obedecem à regra?' e o resultado curioso com array vazio.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank" rel="noopener noreferrer">📄 Array.prototype.sort() — MDN</a>
+                        <span class="link-desc">A função de comparação, o fato de o sort alterar o array e o uso de localeCompare para texto.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=0VNJhKTXqKs" target="_blank" rel="noopener noreferrer">▶️ JavaScript: Array sort, reduce, filter, some, every e find</a>
+                            <span class="link-desc">Patrick Stival · 23:38 — Demonstra find, some, every e sort em exemplos lado a lado, junto com filter e reduce.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qVKSb0OPQPQ" target="_blank" rel="noopener noreferrer">▶️ COMO ORDENAR ELEMENTOS COM SORT - HoFs - #05</a>
+                            <span class="link-desc">Gustavo Caetano · 7:36 — Explica como o sort ordena elementos e como escrever a função de comparação.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Consulta de Acervo com find, some, every e sort</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-4-acervo</code> com os três arquivos e um <code>&lt;ul class="lista"&gt;</code> vazio no HTML.</li>
+                            <li><strong>Estrutura de Dados:</strong> declare <code>const livros</code> com oito objetos <code>{ codigo, titulo, autor, ano, atrasado }</code>, incluindo um título que comece com acento.</li>
+                            <li><strong>Busca por Código:</strong> crie <code>buscarPorCodigo(codigo)</code> com <code>livros.find(...)</code> e normalize o texto com <code>trim().toUpperCase()</code>.</li>
+                            <li><strong>Tratando o Não Encontrado:</strong> digite um código inexistente, observe o <code>undefined</code> e mostre uma mensagem clara com um operador ternário.</li>
+                            <li><strong>Pergunta de Existência:</strong> use <code>livros.some((livro) =&gt; livro.atrasado)</code> para acender o indicador de atraso.</li>
+                            <li><strong>Pergunta de Regra Geral:</strong> use <code>livros.every((livro) =&gt; livro.autor.trim() !== '')</code> para validar o cadastro.</li>
+                            <li><strong>Erro Provocado:</strong> ordene os anos com <code>sort()</code> sem função e depois os títulos; observe onde o título acentuado vai parar.</li>
+                            <li><strong>Função de Comparação:</strong> ordene números com <code>(a, b) =&gt; a.ano - b.ano</code> e texto com <code>a.titulo.localeCompare(b.titulo, 'pt-BR')</code>.</li>
+                            <li><strong>Preservando o Original:</strong> ordene uma cópia com <code>[...livros].sort(...)</code> e confira no console que <code>livros</code> continua na ordem de cadastro.</li>
+                            <li><strong>Validação e Testes:</strong> teste busca, indicadores e as duas ordenações e registre no README qual método devolve item, booleano ou lista.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: IMUTABILIDADE: SPREAD, DESESTRUTURAÇÃO E CÓPIAS -->
+            <div class="card" id="card-3">
+                <h2>🧊 3. Imutabilidade: Spread, Desestruturação e Cópias</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No app fictício Carrinho Rápido, ao aplicar um cupom de 10% no carrinho, o pedido original também muda de valor — e o suporte não consegue mais mostrar quanto o cliente pagaria sem o cupom. O problema está numa linha que altera os objetos existentes em vez de criar novos. Como aplicar o desconto sem tocar nos dados originais?</p>
+                </div>
+
+                <p>Em JavaScript, arrays e objetos são passados por referência: duas variáveis podem apontar para o mesmo dado. Spread e desestruturação permitem criar cópias e extrair campos de forma legível, e entender a diferença entre cópia rasa e profunda evita bugs que só aparecem longe de onde foram criados.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank" rel="noopener noreferrer">📄 Spread syntax (...) — MDN</a>
+                        <span class="link-desc">Como copiar arrays e objetos e sobrescrever só um campo numa linha.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring" target="_blank" rel="noopener noreferrer">📄 Desestruturação — MDN</a>
+                        <span class="link-desc">Extrair campos de objetos e posições de arrays direto nos parâmetros da função.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener noreferrer">📄 Array.prototype.slice() — MDN</a>
+                        <span class="link-desc">Um método que copia parte do array sem alterar o original, ao contrário do splice.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy" target="_blank" rel="noopener noreferrer">📄 Shallow copy — Glossário MDN</a>
+                        <span class="link-desc">Por que uma cópia rasa ainda compartilha os objetos de dentro com o original.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=untlAXBwwmM" target="_blank" rel="noopener noreferrer">▶️ Para que serve o spread operator do JavaScript | Imutabilidade no JavaScript</a>
+                            <span class="link-desc">Vinicius Dacal · 9:36 — Mostra como o spread operator cria cópias de arrays e objetos para manter a imutabilidade.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ruoHSuTKp-U" target="_blank" rel="noopener noreferrer">▶️ Desestruturação no javascript com exemplos - Destructuring Assignment JS</a>
+                            <span class="link-desc">Mayk Brito · 16:44 — Ensina a desestruturar arrays e objetos com exemplos práticos de destructuring assignment.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Carrinho com Cupom sem Alterar o Pedido Original</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-4-carrinho</code> com os três arquivos e duas colunas no HTML: pedido original e com cupom.</li>
+                            <li><strong>Fábrica de Dados:</strong> crie <code>criarPedido()</code> que devolve um array novo de itens <code>{ id, nome, preco, qtd }</code> a cada chamada.</li>
+                            <li><strong>Desestruturando nos Parâmetros:</strong> escreva <code>totalDe(itens)</code> com <code>reduce((soma, { preco, qtd }) =&gt; soma + preco * qtd, 0)</code>.</li>
+                            <li><strong>Renderizando as Duas Colunas:</strong> crie <code>renderizar()</code> que mostra os itens e o total de cada carrinho.</li>
+                            <li><strong>Erro Provocado:</strong> crie <code>aplicarMutando()</code> que faz <code>item.preco = ...</code> dentro de um <code>forEach</code> e observe o original mudar junto.</li>
+                            <li><strong>Investigando a Referência:</strong> no console, compare <code>original[0] === comCupom[0]</code> e explique o <code>true</code> no README.</li>
+                            <li><strong>Cópia com Spread:</strong> crie <code>aplicarImutavel()</code> com <code>original.map((item) =&gt; ({ ...item, preco: item.preco * 0.9 }))</code>.</li>
+                            <li><strong>Conferindo a Independência:</strong> repita a comparação do passo 6 e confirme que agora o resultado é <code>false</code>.</li>
+                            <li><strong>Restaurando o Estado:</strong> crie <code>restaurar()</code> chamando <code>criarPedido()</code> de novo, sem reaproveitar o array alterado.</li>
+                            <li><strong>Validação e Testes:</strong> aplique o cupom várias vezes nas duas versões, anote no README a diferença de totais e quando usar cópia rasa.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

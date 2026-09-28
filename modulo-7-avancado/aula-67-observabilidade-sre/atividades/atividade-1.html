@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de SLI e Orçamento de Erro — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Cálculo de SLI e Orçamento de Erro — Código de Referência</h1>
+        <p class="subtitulo">Aula 67 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um script que lê logs estruturados de requisições, calcula os SLIs de disponibilidade e latência e mostra quanto do orçamento de erro foi consumido, junto com a definição dos SLOs em arquivo versionado.</p>
+        </div>
+        <h2>slo.yaml</h2>
+        <pre># Início: definição dos SLOs da jornada de busca de horários do Vai de Van
+servico: api-vai-de-van
+jornada: buscar-horarios
+rotas:
+  - GET /linhas
+  - GET /linhas/:id/horarios
+janela_dias: 28
+slos:
+  - nome: disponibilidade
+    sli: requisições com status &lt; 500 / total
+    meta: 0.995
+  - nome: latencia
+    sli: requisições com duração &lt; 300 ms / total
+    meta: 0.95
+politica_orcamento:
+  "50%": avisar no canal do time e revisar os deploys da semana
+  "75%": congelar lançamentos de risco, só correções e melhorias de confiabilidade
+  "100%": congelar lançamentos até o SLI voltar acima da meta por 7 dias
+# Fim de slo.yaml</pre>
+        <h2>scripts/slo.js</h2>
+        <pre>// Início: calcula SLIs e consumo do orçamento de erro a partir de logs JSON por linha
+const fs = require('fs');
+const readline = require('readline');
+
+const ARQUIVO = process.argv[2] || 'logs/requisicoes.jsonl';
+const ROTAS = [/^\/linhas$/, /^\/linhas\/[^/]+\/horarios$/];
+const METAS = { disponibilidade: 0.995, latencia: 0.95 };
+const LIMITE_LATENCIA_MS = 300;
+
+// Indica se a linha de log pertence à jornada medida
+function pertenceAJornada(registro) {
+  return registro.method === 'GET' &amp;&amp; ROTAS.some((rota) =&gt; rota.test(registro.path));
+}
+
+// Calcula o SLI e o percentual do orçamento consumido para uma meta
+function avaliar(bons, total, meta) {
+  const sli = total ? bons / total : 1;
+  const permitidos = total * (1 - meta);
+  const ruins = total - bons;
+  const consumido = permitidos ? (ruins / permitidos) * 100 : 0;
+  return { sli: +(sli * 100).toFixed(3), ruins, permitidos: Math.floor(permitidos), orcamentoConsumido: +consumido.toFixed(1) };
+}
+
+// Lê o arquivo linha a linha e imprime o relatório
+async function main() {
+  const leitor = readline.createInterface({ input: fs.createReadStream(ARQUIVO) });
+  let total = 0;
+  let disponiveis = 0;
+  let rapidas = 0;
+  for await (const linha of leitor) {
+    if (!linha.trim()) continue;
+    const registro = JSON.parse(linha);
+    if (!pertenceAJornada(registro)) continue;
+    total += 1;
+    if (registro.status &lt; 500) disponiveis += 1;
+    if (registro.durationMs &lt; LIMITE_LATENCIA_MS) rapidas += 1;
+  }
+  console.table({
+    disponibilidade: avaliar(disponiveis, total, METAS.disponibilidade),
+    latencia: avaliar(rapidas, total, METAS.latencia),
+  });
+}
+
+main();
+// Fim de scripts/slo.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Gere tráfego com o k6 e salve os logs em <code>logs/requisicoes.jsonl</code>, um JSON por linha com <code>method</code>, <code>path</code>, <code>status</code> e <code>durationMs</code></li>
+            <li><code>node scripts/slo.js logs/requisicoes.jsonl</code></li>
+            <li>Pare o banco por um minuto durante uma nova carga e rode o script de novo</li>
+            <li>Compare o <code>orcamentoConsumido</code> das duas execuções</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O SLI só conta as rotas da jornada: um erro no painel administrativo não consome o orçamento do passageiro.</li>
+            <li>Um minuto de queda com tráfego alto pode consumir uma fatia grande do orçamento de 28 dias, o que torna o custo da instabilidade visível.</li>
+            <li>A política está versionada ao lado do SLO: a decisão de congelar lançamentos foi combinada antes do problema, não durante.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

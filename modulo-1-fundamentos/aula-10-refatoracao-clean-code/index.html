@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 10 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a melhorar a legibilidade de um código que já funciona — nomes, funções pequenas, regras centralizadas — sem mudar o comportamento, usando testes como proteção.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 10: Refatoração e Clean Code</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: NOMES QUE EXPLICAM E FUNÇÕES PEQUENAS -->
+            <div class="card" id="card-1">
+                <h2>🏷️ 1. Nomes que Explicam e Funções Pequenas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O script de pedidos da loja fictícia Casa do Tempero tem uma função chamada f, com variáveis x, y e tmp, que, num bloco só, calcula subtotal, desconto, frete e ainda monta a mensagem da tela. Funciona, mas ninguém tem coragem de mexer quando a regra de desconto muda. Como reescrever para que o código diga o que faz sem precisar de comentário, mantendo exatamente o mesmo resultado?</p>
+                </div>
+
+                <p>Código é lido muito mais vezes do que escrito. Nomes que revelam intenção e funções que fazem uma coisa só reduzem o tempo que alguém leva para entender e alterar um trecho. Renomear, extrair variável e extrair função são as refatorações mais usadas no dia a dia.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://refactoring.guru/rename-method" target="_blank" rel="noopener noreferrer">📄 Rename Method — Refactoring.Guru</a>
+                        <span class="link-desc">Quando o nome não diz o que a função faz, e como renomear com segurança.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/extract-variable" target="_blank" rel="noopener noreferrer">📄 Extract Variable — Refactoring.Guru</a>
+                        <span class="link-desc">Dar nome a uma expressão complicada para ela se explicar sozinha.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/extract-method" target="_blank" rel="noopener noreferrer">📄 Extract Method — Refactoring.Guru</a>
+                        <span class="link-desc">Separar um trecho de uma função longa numa função nova com nome claro.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/mdn/guidelines/code_guidelines/javascript" target="_blank" rel="noopener noreferrer">📄 JavaScript code guidelines — MDN</a>
+                        <span class="link-desc">As convenções que a própria MDN usa para nomes, funções e estilo em JavaScript.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Rm25zZE8rwc" target="_blank" rel="noopener noreferrer">▶️ Os 5 maiores erros ao nomear variáveis, funções e objetos - Clean Code 01 | JavaScript</a>
+                            <span class="link-desc">Roger Melo | JavaScript · 5:09 — Aponta erros comuns ao nomear variáveis, funções e objetos e como corrigi-los.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=HZPS_uxT6sw" target="_blank" rel="noopener noreferrer">▶️ 4 dicas para escrever código limpo em JavaScript (Clean Code para Iniciantes)</a>
+                            <span class="link-desc">Rocketseat · 24:15 — Apresenta dicas de código limpo em JavaScript, como nomes claros e funções menores.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Refatorando a Função f da Casa do Tempero</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-10-nomes</code> com os três arquivos e cole a função <code>f</code> original num bloco separado do código.</li>
+                            <li><strong>Entendendo Antes de Mexer:</strong> rode <code>f</code> com três pedidos diferentes e anote as entradas e saídas no README: esse é o comportamento a preservar.</li>
+                            <li><strong>Renomeando a Função:</strong> troque <code>f</code> por <code>resumirPedido</code> e cada variável de uma letra por um nome do negócio, como <code>subtotal</code> e <code>desconto</code>.</li>
+                            <li><strong>Extraindo Variáveis:</strong> transforme a condição <code>x &gt; 200 &amp;&amp; c</code> em <code>const ganhaDescontoFidelidade</code>.</li>
+                            <li><strong>Extraindo a Primeira Função:</strong> mova o cálculo do desconto para <code>calcularDesconto(subtotal, clienteFiel)</code>.</li>
+                            <li><strong>Extraindo as Demais:</strong> faça o mesmo com <code>calcularFrete(subtotal, cidade)</code> e <code>formatarMensagem(resumo)</code>.</li>
+                            <li><strong>Erro Provocado:</strong> ao extrair o frete, esqueça de passar <code>cidade</code> como parâmetro e observe o <code>ReferenceError</code>.</li>
+                            <li><strong>Uma Coisa por Função:</strong> confira que nenhuma função nova mistura cálculo com montagem de texto.</li>
+                            <li><strong>Comparando com a Original:</strong> para cada pedido do passo 2, compare o resultado de <code>f</code> e de <code>resumirPedido</code>.</li>
+                            <li><strong>Validação e Testes:</strong> confirme que os resultados são idênticos e registre no README o antes e depois de cada nome.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: DUPLICAÇÃO E NÚMEROS MÁGICOS -->
+            <div class="card" id="card-2">
+                <h2>♻️ 2. Duplicação e Números Mágicos</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>No sistema de ingressos fictício do Cine Largo, o desconto da meia-entrada (50%) e a taxa de conveniência (R$ 3,50) aparecem digitados em vários lugares do código. Quando a taxa subiu, só parte dos lugares foi atualizada e dois tipos de ingresso ficaram com o preço antigo. Como fazer cada regra de negócio morar num lugar só?</p>
+                </div>
+
+                <p>Número mágico é um valor solto no código cujo significado só o autor conhece. Duplicação é a mesma regra escrita mais de uma vez. As duas coisas fazem uma mudança de regra exigir caça ao tesouro. Constantes com nome e dados que descrevem as variações substituem blocos de if copiados.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://refactoring.guru/smells/duplicate-code" target="_blank" rel="noopener noreferrer">📄 Duplicate Code — Refactoring.Guru</a>
+                        <span class="link-desc">Por que código duplicado aparece e as técnicas para eliminar cada tipo.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/replace-magic-number-with-symbolic-constant" target="_blank" rel="noopener noreferrer">📄 Replace Magic Number with Symbolic Constant — Refactoring.Guru</a>
+                        <span class="link-desc">Trocar um número solto por uma constante que explica o que ele significa.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/smells/long-method" target="_blank" rel="noopener noreferrer">📄 Long Method — Refactoring.Guru</a>
+                        <span class="link-desc">O sinal de que uma função está fazendo coisas demais e como quebrá-la.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/refactoring/smells" target="_blank" rel="noopener noreferrer">📄 Code Smells — Refactoring.Guru</a>
+                        <span class="link-desc">O catálogo de sinais de problema no código, agrupados por categoria.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=r_4vHs8y8sc" target="_blank" rel="noopener noreferrer">▶️ Números Mágicos - Dicas de Programação | TriadWorks</a>
+                            <span class="link-desc">TriadWorks - Ensino e Formação Java · 4:04 — Explica o que são números mágicos e como substituí-los por constantes com nome.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=sKDDbcx4NHk" target="_blank" rel="noopener noreferrer">▶️ 5 Técnicas Rápidas de Refatoração Para Você Aplicar no seu Código Diariamente</a>
+                            <span class="link-desc">Código Fonte TV · 27:24 — Mostra técnicas rápidas de refatoração, incluindo extrair trechos repetidos e dar nome a valores.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Tabela de Ingressos com Regras em Um Lugar Só</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-10-ingressos</code> com os três arquivos e uma tabela vazia de tipos de ingresso.</li>
+                            <li><strong>Mapeando a Duplicação:</strong> na versão original com <code>if/else</code>, marque no README cada lugar onde <code>0.5</code>, <code>3.5</code> e <code>28</code> aparecem.</li>
+                            <li><strong>Constantes com Nome:</strong> crie <code>const REGRAS = Object.freeze({ PRECO_BASE: 28, TAXA_CONVENIENCIA: 3.5, ... })</code>.</li>
+                            <li><strong>Dados em Vez de if:</strong> descreva cada tipo de ingresso num array <code>{ id, nome, fator }</code> em vez de um <code>if</code> por tipo.</li>
+                            <li><strong>Uma Função de Preço:</strong> crie <code>precoDoIngresso(tipo, regras)</code> que usa só o <code>fator</code> do tipo e as constantes.</li>
+                            <li><strong>Erro Provocado:</strong> mude a taxa só num <code>if</code> da versão antiga e compare os preços com a nova versão.</li>
+                            <li><strong>Regra Editável:</strong> ligue um campo de taxa da tela a uma cópia das regras e recalcule toda a tabela ao mudar o valor.</li>
+                            <li><strong>Novo Tipo Sem Código Novo:</strong> adicione o tipo 'Professor' só incluindo um objeto no array.</li>
+                            <li><strong>Nomes e Formatação:</strong> extraia <code>formatarMoeda</code> e garanta que nenhum número solto sobrou fora de <code>REGRAS</code>.</li>
+                            <li><strong>Validação e Testes:</strong> altere a taxa e confirme que todos os tipos mudaram juntos; registre no README quantos lugares a regra ocupa agora.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: REFATORAÇÃO SEGURA: TESTES ANTES, PASSOS PEQUENOS E RESPONSABILIDADES -->
+            <div class="card" id="card-3">
+                <h2>🛡️ 3. Refatoração Segura: Testes Antes, Passos Pequenos e Responsabilidades</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A equipe do app fictício Placar Amador quer reorganizar o arquivo único que calcula a tabela do campeonato do bairro. Da última vez que alguém 'limpou' esse código, o empate passou a valer zero ponto e ninguém percebeu por uma semana. Como mudar a estrutura sem mudar o comportamento — e provar isso?</p>
+                </div>
+
+                <p>Refatorar é mudar a estrutura interna sem mudar o comportamento observável. Para isso ser verdade, o comportamento precisa estar protegido por testes antes da primeira alteração, e cada passo precisa ser pequeno o bastante para ser desfeito. Separar dados, regras e interface deixa cada parte testável.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/DefinitionOfRefactoring.html" target="_blank" rel="noopener noreferrer">📄 Definition Of Refactoring — Martin Fowler</a>
+                        <span class="link-desc">A definição de quem cunhou o termo: estrutura muda, comportamento não.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/refactoring/how-to" target="_blank" rel="noopener noreferrer">📄 How to refactor — Refactoring.Guru</a>
+                        <span class="link-desc">O checklist: código mais limpo, sem funcionalidade nova e com todos os testes passando.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/OpportunisticRefactoring.html" target="_blank" rel="noopener noreferrer">📄 Opportunistic Refactoring — Martin Fowler</a>
+                        <span class="link-desc">Refatorar um pouco a cada visita ao código, em vez de esperar um grande momento.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank" rel="noopener noreferrer">📄 JavaScript modules — MDN</a>
+                        <span class="link-desc">O próximo passo da organização: separar dados, regras e interface em arquivos com import e export.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=2fqZvJtmgyw" target="_blank" rel="noopener noreferrer">▶️ TDD: como refatorar um código coberto por testes | JavaScript | Jest</a>
+                            <span class="link-desc">Roger Melo | JavaScript · 3:14 — Mostra como refatorar com segurança um código já coberto por testes com Jest.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Se5kADko16w" target="_blank" rel="noopener noreferrer">▶️ Curso Refatoração para JS Funcional - aula 01 - 00/01</a>
+                            <span class="link-desc">AllasCode - FullAgenticStack · 25:46 — Apresenta refatoração de código JavaScript em pequenos passos rumo ao estilo funcional.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Tabela do Campeonato Refatorada com Testes de Proteção</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-10-placar</code> com os três arquivos e uma lista de jogos de exemplo em array.</li>
+                            <li><strong>Testes de Caracterização:</strong> antes de mexer, escreva testes que registram o resultado atual: pontos, saldo e ordem de três times.</li>
+                            <li><strong>Rodando a Base:</strong> rode os testes e confirme que todos passam com o código original.</li>
+                            <li><strong>Separando os Dados:</strong> agrupe no topo do arquivo os jogos e as constantes <code>PONTOS_VITORIA</code> e <code>PONTOS_EMPATE</code>.</li>
+                            <li><strong>Separando as Regras:</strong> extraia <code>calcularTabela(jogos, pontos)</code> como função pura, sem acessar o DOM.</li>
+                            <li><strong>Separando a Interface:</strong> deixe <code>renderizarTabela(tabela)</code> como a única função que escreve no HTML.</li>
+                            <li><strong>Um Passo de Cada Vez:</strong> rode os testes depois de cada extração; se algum falhar, desfaça só o último passo.</li>
+                            <li><strong>Erro Provocado:</strong> simule uma 'limpeza' que troca o empate para 0 ponto e veja quais testes denunciam a mudança.</li>
+                            <li><strong>Critério de Desempate:</strong> extraia <code>compararTimes(a, b)</code> com pontos, vitórias e saldo, e confirme a ordem com os testes.</li>
+                            <li><strong>Validação e Testes:</strong> rode a suíte final, anote no README a estrutura antes e depois e em que ordem você fez os passos.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

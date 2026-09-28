@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compose por Ambiente — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Compose por Ambiente — Código de Referência</h1>
+        <p class="subtitulo">Aula 34 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um <code>compose.yaml</code> base sem segredo, um <code>compose.override.yaml</code> lido automaticamente em desenvolvimento, um <code>compose.prod.yaml</code> combinado por <code>-f</code> e um serviço de apoio que só sobe com perfil.</p>
+        </div>
+        <h2>.env.example</h2>
+        <pre># Início: .env.example — copie para .env e troque os valores; o .env não vai para o Git
+POSTGRES_USER=tarefas
+POSTGRES_DB=tarefas
+POSTGRES_PASSWORD=troque-aqui
+# Fim de .env.example</pre>
+        <h2>compose.yaml</h2>
+        <pre># Início: compose.yaml — descrição base da aplicação, igual em todos os ambientes
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tarefas}
+      POSTGRES_DB: ${POSTGRES_DB:-tarefas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - dados-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tarefas} -d ${POSTGRES_DB:-tarefas}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./api
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER:-tarefas}:${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}@db:5432/${POSTGRES_DB:-tarefas}
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  adminer:
+    image: adminer
+    profiles: ["ferramentas"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  dados-pg:
+# Fim de compose.yaml</pre>
+        <h2>compose.override.yaml</h2>
+        <pre># Início: compose.override.yaml — só desenvolvimento; lido automaticamente pelo docker compose
+services:
+  db:
+    ports:
+      - "5432:5432"
+
+  api:
+    environment:
+      NODE_ENV: development
+    command: ["node", "--watch", "app.js"]
+    develop:
+      watch:
+        - action: sync
+          path: ./api/src
+          target: /app/src
+        - action: sync
+          path: ./api/app.js
+          target: /app/app.js
+        - action: rebuild
+          path: ./api/package.json
+# Fim de compose.override.yaml</pre>
+        <h2>compose.prod.yaml</h2>
+        <pre># Início: compose.prod.yaml — só produção; combinado com o base usando -f
+services:
+  api:
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+
+  db:
+    restart: unless-stopped
+# Fim de compose.prod.yaml</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Copie <code>.env.example</code> para <code>.env</code> e defina a senha</li>
+            <li>Desenvolvimento: <code>docker compose watch</code> (usa base + override)</li>
+            <li>Com o painel do banco: <code>docker compose --profile ferramentas up</code> e abra <code>http://localhost:8080</code></li>
+            <li>Produção: <code>docker compose -f compose.yaml -f compose.prod.yaml up -d --build</code></li>
+            <li>Para conferir qualquer combinação antes de subir: acrescente <code>config</code> no lugar de <code>up</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O override só é lido quando nenhum <code>-f</code> é passado; em produção ele fica de fora e a porta 5432 não é publicada.</li>
+            <li>A sintaxe <code>${VAR:?mensagem}</code> faz o Compose parar antes de subir qualquer coisa se a variável faltar.</li>
+            <li>O <code>adminer</code> não aparece em <code>docker compose ps</code> sem o perfil: serviço opcional não pesa no dia a dia.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

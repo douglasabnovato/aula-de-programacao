@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 26 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a montar a cadeia de middlewares globais da API, transformar falhas em erros de domínio com resposta padronizada e validar entradas com esquemas antes que cheguem aos controladores.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 26: Middlewares Globais e Tratamento de Erros</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: A CADEIA DE MIDDLEWARES GLOBAIS -->
+            <div class="card" id="card-1">
+                <h2>⛓️ 1. A Cadeia de Middlewares Globais</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O suporte da transportadora fictícia Serra Log recebe a reclamação "o sistema deu erro às 14h" e ninguém consegue achar, no log, qual requisição foi. As linhas de várias pessoas se misturam e não há como ligar uma à outra. Como marcar cada requisição do começo ao fim para rastrear um problema específico?</p>
+                </div>
+
+                <p>Middleware é uma função que roda no caminho entre a requisição e a resposta, na ordem em que foi registrada. Na aula 21 ele apareceu como um log simples; aqui a cadeia vira infraestrutura: identificador por requisição, tempo de resposta medido e log estruturado em JSON.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/en/guide/writing-middleware/" target="_blank" rel="noopener noreferrer">📄 Writing middleware — Express</a>
+                        <span class="link-desc">A assinatura (req, res, next) e o que acontece quando next não é chamado.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/en/guide/using-middleware/" target="_blank" rel="noopener noreferrer">📄 Using middleware — Express</a>
+                        <span class="link-desc">Middleware de aplicação, de roteador e de erro, e por que a ordem de registro importa.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/crypto.html" target="_blank" rel="noopener noreferrer">📄 Crypto — Node.js</a>
+                        <span class="link-desc">Onde está crypto.randomUUID, usado para gerar o identificador de cada requisição.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Logging Cheat Sheet — OWASP</a>
+                        <span class="link-desc">O que registrar, o que nunca registrar e por que log estruturado facilita a investigação.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=-d2DLqOHOGM" target="_blank" rel="noopener noreferrer">▶️ Dicas: NodeJS/Express: Middlewares (para que serve app.use?)</a>
+                            <span class="link-desc">DevPleno · 11:18 — Explica para que servem os middlewares no Express e como o app.use define a ordem de execução.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=m43FLDDQ-TE" target="_blank" rel="noopener noreferrer">▶️ Entendendo de uma vez o que é uma Middleware | Mini Curso Node #05 - Middleware</a>
+                            <span class="link-desc">Tsunode · 13:54 — Explica o conceito de middleware no Node e como a requisição passa de um para o outro.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Request ID, Tempo de Resposta e Log Estruturado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no projeto da aula 25, crie a pasta <code>src/middlewares/</code> e confirme com <code>npm ls express</code> que a versão instalada é a 5.</li>
+                            <li><strong>Identificador da Requisição:</strong> em <code>requestId.js</code>, gere <code>crypto.randomUUID()</code>, guarde em <code>req.id</code> e devolva no cabeçalho <code>X-Request-Id</code>.</li>
+                            <li><strong>Reaproveitando o Id Recebido:</strong> se o cliente já mandou um <code>X-Request-Id</code> curto e válido, use o dele — é assim que um mesmo id atravessa vários serviços.</li>
+                            <li><strong>Medindo o Tempo:</strong> em <code>logRequisicao.js</code>, marque <code>process.hrtime.bigint()</code> na entrada e escute <code>res.on('finish')</code>.</li>
+                            <li><strong>Log em JSON:</strong> no <code>finish</code>, imprima uma linha com <code>JSON.stringify</code> contendo id, método, rota, status e duração em milissegundos.</li>
+                            <li><strong>Erro Provocado:</strong> registre o middleware de log <strong>depois</strong> das rotas, faça uma chamada e observe que nada é impresso; volte-o para o topo e explique por quê.</li>
+                            <li><strong>Esquecendo o next:</strong> remova <code>proximo()</code> do <code>requestId</code>, faça uma chamada e veja a requisição ficar pendurada; devolva a chamada.</li>
+                            <li><strong>Middleware de Roteador:</strong> aplique um middleware só nas rotas de tarefas com <code>router.use</code> e compare com o global.</li>
+                            <li><strong>Organização:</strong> exporte os middlewares por <code>src/middlewares/index.js</code> e deixe o <code>app.js</code> legível de cima a baixo, na ordem em que a requisição passa.</li>
+                            <li><strong>Validação e Testes:</strong> faça três chamadas, confira o <code>X-Request-Id</code> na aba Rede, encontre cada uma no log pelo id e registre no README a ordem da cadeia.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ERROS DE DOMÍNIO E RESPOSTA PADRONIZADA -->
+            <div class="card" id="card-2">
+                <h2>🚨 2. Erros de Domínio e Resposta Padronizada</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na API da Serra Log, uma rota devolve { erro }, outra { message } e uma terceira devolve o stack trace inteiro com o caminho das pastas do servidor. O app mobile precisa de um tratamento diferente para cada rota. Como fazer toda falha sair da API no mesmo formato e com o status certo?</p>
+                </div>
+
+                <p>Nem todo erro é 500: tarefa inexistente é 404, regra violada é 422, entrada malformada é 400. Classes de erro próprias carregam o status junto, e um único middleware de erro traduz tudo para o formato Problem Details da RFC 9457, escondendo do cliente o que é detalhe interno.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://expressjs.com/en/guide/error-handling/" target="_blank" rel="noopener noreferrer">📄 Error Handling — Express</a>
+                        <span class="link-desc">O middleware de quatro argumentos e como erros síncronos e assíncronos chegam até ele.</span>
+                    </li>
+                    <li>
+                        <a href="https://expressjs.com/en/guide/migrating-5/" target="_blank" rel="noopener noreferrer">📄 Upgrade to Express v5 — Express</a>
+                        <span class="link-desc">A mudança que faz Promises rejeitadas irem direto para o tratador de erro.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Error" target="_blank" rel="noopener noreferrer">📄 Error — MDN</a>
+                        <span class="link-desc">O objeto Error do JavaScript e como estendê-lo com class ... extends Error.</span>
+                    </li>
+                    <li>
+                        <a href="https://datatracker.ietf.org/doc/html/rfc9457" target="_blank" rel="noopener noreferrer">📄 RFC 9457 — Problem Details for HTTP APIs</a>
+                        <span class="link-desc">O formato padrão de erro com type, title, status, detail e instance.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=qHfZxpRqxYw" target="_blank" rel="noopener noreferrer">▶️ Tratamento de erros no express em rotas com async/await</a>
+                            <span class="link-desc">Otávio Miranda · 23:52 — Mostra como tratar erros em rotas Express com async/await sem derrubar o servidor.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=SnxAq9ktyuo" target="_blank" rel="noopener noreferrer">▶️ Tratamento de erros no Express.js com TypeScript</a>
+                            <span class="link-desc">Guido Cerqueira · 43:25 — Implementa tratamento de erros no Express com TypeScript, com classes de erro e respostas padronizadas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Classes de Erro e Middleware no Formato Problem Details</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>src/erros/AppError.js</code> com uma classe que estende <code>Error</code> e guarda <code>status</code> e <code>titulo</code>.</li>
+                            <li><strong>Erros Específicos:</strong> derive <code>NaoEncontrado</code> (404) e <code>RegraViolada</code> (422) de <code>AppError</code> no mesmo arquivo.</li>
+                            <li><strong>Lançando na Camada Certa:</strong> troque o <code>return res.status(404)</code> do controlador por <code>throw new NaoEncontrado('Tarefa', id)</code> no serviço.</li>
+                            <li><strong>Rota Assíncrona:</strong> escreva o controlador com <code>async</code> e sem <code>try/catch</code>: no Express 5, a Promise rejeitada já chega ao middleware de erro.</li>
+                            <li><strong>Tradutor Único:</strong> em <code>erro.middleware.js</code>, use o status do erro quando ele for <code>AppError</code> e <code>500</code> em qualquer outro caso.</li>
+                            <li><strong>Formato Padronizado:</strong> responda com <code>Content-Type: application/problem+json</code> e os campos <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code> e <code>instance</code>.</li>
+                            <li><strong>Ligando ao Rastreio:</strong> inclua o <code>req.id</code> da prática anterior no corpo do erro e na linha de log.</li>
+                            <li><strong>Erro Provocado:</strong> lance <code>new Error('falha ao conectar no banco')</code> numa rota e confira que o cliente recebe só "Erro interno", enquanto a mensagem e o stack ficam no log.</li>
+                            <li><strong>Rota Inexistente:</strong> registre, depois das rotas e antes do middleware de erro, um handler final que transforma qualquer caminho desconhecido em <code>NaoEncontrado</code>.</li>
+                            <li><strong>Validação e Testes:</strong> provoque 404, 422 e 500, compare os três corpos e escreva um teste Supertest que verifica o <code>content-type</code> <code>application/problem+json</code>.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: VALIDAÇÃO DE ENTRADA COM ESQUEMAS -->
+            <div class="card" id="card-3">
+                <h2>✅ 3. Validação de Entrada com Esquemas</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Um parceiro da Serra Log enviou o campo prazo como o texto "amanhã" e a prioridade como 99. A API aceitou, gravou e o relatório do fim do mês quebrou. Os ifs de validação estão espalhados por seis controladores e cada um checa uma coisa diferente. Como declarar num lugar só o formato exato que cada rota aceita?</p>
+                </div>
+
+                <p>Um esquema descreve o formato esperado — tipos, limites, campos obrigatórios — e valida o dado de uma vez. Com Zod, o esquema vira um middleware reutilizável que recusa a requisição antes do controlador e aponta cada problema com o nome exato do campo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://zod.dev/basics" target="_blank" rel="noopener noreferrer">📄 Basic usage — Zod</a>
+                        <span class="link-desc">Definir um esquema e validar com parse e safeParse.</span>
+                    </li>
+                    <li>
+                        <a href="https://zod.dev/api" target="_blank" rel="noopener noreferrer">📄 Defining schemas — Zod</a>
+                        <span class="link-desc">Strings, números, datas, objetos estritos e coerção de tipo.</span>
+                    </li>
+                    <li>
+                        <a href="https://zod.dev/error-customization" target="_blank" rel="noopener noreferrer">📄 Customizing errors — Zod</a>
+                        <span class="link-desc">Como escrever mensagens de erro em português para cada regra.</span>
+                    </li>
+                    <li>
+                        <a href="https://github.com/colinhacks/zod" target="_blank" rel="noopener noreferrer">📄 Zod — repositório oficial</a>
+                        <span class="link-desc">Código-fonte, versões e o histórico de mudanças da biblioteca.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=pC27vH0vRTc" target="_blank" rel="noopener noreferrer">▶️ Criando validações com Zod em uma requisição HTTP</a>
+                            <span class="link-desc">Rocketseat · 9:32 — Mostra como validar os dados de uma requisição HTTP com esquemas Zod.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=8yMdifqLhos" target="_blank" rel="noopener noreferrer">▶️ Criando validações com Zod e TypeScript | NODE.JS #04</a>
+                            <span class="link-desc">Júlio Henrique · 33:54 — Cria validações com Zod e TypeScript numa API Node.js.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Middleware validar(esquema) com Zod</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install zod</code> e crie <code>src/esquemas/tarefa.esquema.js</code>.</li>
+                            <li><strong>Primeiro Esquema:</strong> declare <code>z.strictObject({ titulo: z.string().trim().min(3).max(120) })</code>.</li>
+                            <li><strong>Campos Opcionais com Regra:</strong> acrescente <code>prioridade: z.number().int().min(1).max(5).optional()</code> e <code>prazo: z.coerce.date().optional()</code>.</li>
+                            <li><strong>Middleware Genérico:</strong> escreva <code>validar(esquema)</code>, que devolve um middleware chamando <code>esquema.safeParse(req.body)</code>.</li>
+                            <li><strong>Substituindo o Corpo:</strong> em caso de sucesso, troque <code>req.body</code> por <code>resultado.data</code> — já sem espaços sobrando e com a data convertida.</li>
+                            <li><strong>Campos Desconhecidos:</strong> envie um campo extra <code>admin: true</code> e observe a recusa causada pelo <code>strictObject</code>.</li>
+                            <li><strong>Erro Provocado:</strong> envie <code>prioridade: "3"</code> como texto, leia a mensagem e decida se o contrato deve aceitar conversão ou recusar.</li>
+                            <li><strong>Resposta de Validação:</strong> lance um <code>ValidacaoFalhou</code> (400) que liste <code>campo</code> e <code>mensagem</code> de cada problema, no mesmo formato Problem Details da prática anterior.</li>
+                            <li><strong>Aplicando nas Rotas:</strong> use <code>router.post('/', validar(criarTarefaEsquema), controlador.criar)</code> e apague os ifs antigos do controlador.</li>
+                            <li><strong>Validação e Testes:</strong> envie cinco corpos inválidos diferentes, confira que todos voltam 400 com o campo certo apontado e registre no README o esquema de cada rota.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

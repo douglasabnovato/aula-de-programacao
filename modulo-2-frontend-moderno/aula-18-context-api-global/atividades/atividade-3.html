@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provedores Separados, Value Memorizado e Carrinho Persistido — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Provedores Separados, Value Memorizado e Carrinho Persistido — Resposta</h1>
+        <p class="subtitulo">Aula 18 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A Tear Mineiro com tema e carrinho em provedores separados, cada value memorizado com <code>useMemo</code>, a busca de produtos de volta ao estado local da vitrine e o carrinho salvo no <code>localStorage</code>. Os contadores de renderização na tela mostram quem é afetado por cada mudança.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.loja { border-radius: 12px; padding: 16px; transition: background .2s, color .2s; }
+.loja.claro { background: #F7F3EA; color: #2B2118; }
+.loja.escuro { background: #1B1712; color: #F1E9DC; }
+.loja header { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.produto { border: 1px solid #C9B79C; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.loja.escuro .produto { border-color: #5A4A36; }
+.carrinho { margin-top: 16px; border-top: 1px dashed #C9B79C; padding-top: 12px; }
+.carrinho li { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+.carrinho ul { list-style: none; padding: 0; }
+.renders { font-size: .75rem; opacity: .7; }
+.loja input { background: #fff; color: #2B2118; border-color: #C9B79C; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { createContext, useContext, useState, useReducer, useEffect, useMemo, useRef } = React;
+const { memo } = React;
+
+// Início: src/data/produtos.js — produtos fictícios da loja Tear Mineiro
+const produtos = [
+  { id: 1, nome: &#x27;Tapete de tear&#x27;, preco: 180 },
+  { id: 2, nome: &#x27;Toalha bordada&#x27;, preco: 95 },
+  { id: 3, nome: &#x27;Cesto de palha&#x27;, preco: 62 },
+  { id: 4, nome: &#x27;Almofada de crochê&#x27;, preco: 74 },
+];
+
+// Formata um número como valor em reais
+function brl(valor) {
+  return valor.toLocaleString(&#x27;pt-BR&#x27;, { style: &#x27;currency&#x27;, currency: &#x27;BRL&#x27; });
+}
+// Fim de produtos.js
+
+// Início: src/contexts/carrinhoReducer.js — regras do carrinho num arquivo próprio
+// Aplica cada ação ao carrinho devolvendo sempre um array novo
+function carrinhoReducer(itens, acao) {
+  switch (acao.type) {
+    case &#x27;adicionado&#x27;: {
+      const existe = itens.find((i) =&gt; i.id === acao.produto.id);
+      if (existe) {
+        return itens.map((i) =&gt; (i.id === acao.produto.id ? { ...i, quantidade: i.quantidade + 1 } : i));
+      }
+      return [...itens, { ...acao.produto, quantidade: 1 }];
+    }
+    case &#x27;removido&#x27;:
+      return itens.filter((i) =&gt; i.id !== acao.id);
+    case &#x27;esvaziado&#x27;:
+      return [];
+    default:
+      throw new Error(`Ação desconhecida: ${acao.type}`);
+  }
+}
+// Fim de carrinhoReducer.js
+
+// Início: src/contexts/CarrinhoContext.jsx — carrinho persistido e com value estável
+
+const CarrinhoContext = createContext(null);
+const CHAVE = &#x27;tear-carrinho&#x27;;
+
+// Lê o carrinho salvo; se o storage estiver indisponível ou corrompido, começa vazio
+function carregarInicial() {
+  try {
+    const salvo = localStorage.getItem(CHAVE);
+    return salvo ? JSON.parse(salvo) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Provedor que inicia pelo storage, grava a cada mudança e memoriza o value
+function CarrinhoProvider({ children }) {
+  const [itens, dispatch] = useReducer(carrinhoReducer, undefined, carregarInicial);
+
+  useEffect(() =&gt; {
+    try {
+      localStorage.setItem(CHAVE, JSON.stringify(itens));
+    } catch {
+      console.warn(&#x27;Não foi possível salvar o carrinho neste navegador.&#x27;);
+    }
+  }, [itens]);
+
+  const valor = useMemo(() =&gt; ({ itens, dispatch }), [itens]);
+  return &lt;CarrinhoContext.Provider value={valor}&gt;{children}&lt;/CarrinhoContext.Provider&gt;;
+}
+
+// Lê o carrinho e calcula a quantidade total de itens
+function useCarrinho() {
+  const contexto = useContext(CarrinhoContext);
+  if (!contexto) {
+    throw new Error(&#x27;useCarrinho precisa ser usado dentro de &lt;CarrinhoProvider&gt;.&#x27;);
+  }
+  const quantidade = contexto.itens.reduce((soma, i) =&gt; soma + i.quantidade, 0);
+  return { ...contexto, quantidade };
+}
+// Fim de CarrinhoContext.jsx
+
+// Início: src/contexts/TemaContext.jsx — tema com value memorizado
+
+const TemaContext = createContext(null);
+
+// Provedor do tema; o value só muda quando o tema muda
+function TemaProvider({ children }) {
+  const [tema, setTema] = useState(&#x27;claro&#x27;);
+  const valor = useMemo(
+    () =&gt; ({ tema, alternarTema: () =&gt; setTema((t) =&gt; (t === &#x27;claro&#x27; ? &#x27;escuro&#x27; : &#x27;claro&#x27;)) }),
+    [tema]
+  );
+  return &lt;TemaContext.Provider value={valor}&gt;{children}&lt;/TemaContext.Provider&gt;;
+}
+
+// Lê o tema com mensagem clara fora do provedor
+function useTema() {
+  const contexto = useContext(TemaContext);
+  if (!contexto) {
+    throw new Error(&#x27;useTema precisa ser usado dentro de &lt;TemaProvider&gt;.&#x27;);
+  }
+  return contexto;
+}
+// Fim de TemaContext.jsx
+
+// Início: src/components/Loja.jsx — busca local, contadores de renderização e contextos separados
+
+// Conta quantas vezes o componente renderizou, sem provocar nova renderização
+function useRenders() {
+  const renders = useRef(0);
+  renders.current += 1;
+  return renders.current;
+}
+
+// Cabeçalho: depende do tema e da quantidade do carrinho
+function Cabecalho() {
+  const { tema, alternarTema } = useTema();
+  const { quantidade, dispatch } = useCarrinho();
+  const renders = useRenders();
+  return (
+    &lt;header&gt;
+      &lt;h2&gt;Tear Mineiro &lt;span className=&quot;renders&quot;&gt;(renders: {renders})&lt;/span&gt;&lt;/h2&gt;
+      &lt;span&gt;Carrinho: {quantidade}&lt;/span&gt;
+      &lt;button className=&quot;secundario&quot; onClick={() =&gt; dispatch({ type: &#x27;esvaziado&#x27; })}&gt;Esvaziar&lt;/button&gt;
+      &lt;button onClick={alternarTema}&gt;{tema === &#x27;claro&#x27; ? &#x27;Tema escuro&#x27; : &#x27;Tema claro&#x27;}&lt;/button&gt;
+    &lt;/header&gt;
+  );
+}
+
+// Vitrine: a busca é estado local, porque só ela usa o texto digitado
+function Vitrine() {
+  const [busca, setBusca] = useState(&#x27;&#x27;);
+  const { dispatch } = useCarrinho();
+  const renders = useRenders();
+  const visiveis = produtos.filter((p) =&gt; p.nome.toLowerCase().includes(busca.toLowerCase()));
+  return (
+    &lt;section&gt;
+      &lt;p className=&quot;renders&quot;&gt;Vitrine renders: {renders}&lt;/p&gt;
+      &lt;input value={busca} onChange={(e) =&gt; setBusca(e.target.value)} placeholder=&quot;Buscar produto&quot; aria-label=&quot;Buscar produto&quot; /&gt;
+      &lt;div className=&quot;vitrine&quot; style={{ marginTop: 10 }}&gt;
+        {visiveis.map((p) =&gt; (
+          &lt;article key={p.id} className=&quot;produto&quot;&gt;
+            &lt;strong&gt;{p.nome}&lt;/strong&gt;
+            &lt;span&gt;{brl(p.preco)}&lt;/span&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: &#x27;adicionado&#x27;, produto: p })}&gt;Comprar&lt;/button&gt;
+          &lt;/article&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+
+// Rodapé memorizado: não lê nenhum contexto, então não renderiza quando eles mudam
+const Rodape = memo(function Rodape() {
+  const renders = useRenders();
+  return &lt;p className=&quot;renders&quot;&gt;Rodapé renders: {renders} · Tear Mineiro, artesanato de Minas.&lt;/p&gt;;
+});
+
+// Moldura da loja com a classe do tema
+function Loja() {
+  const { tema } = useTema();
+  return (
+    &lt;div className={`loja ${tema}`}&gt;
+      &lt;Cabecalho /&gt;
+      &lt;Vitrine /&gt;
+      &lt;Rodape /&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de Loja.jsx
+
+// Início: src/App.jsx — provedores separados e compostos num só lugar
+
+// Reúne os provedores globais da aplicação, cada um com uma responsabilidade
+function Provedores({ children }) {
+  return (
+    &lt;TemaProvider&gt;
+      &lt;CarrinhoProvider&gt;{children}&lt;/CarrinhoProvider&gt;
+    &lt;/TemaProvider&gt;
+  );
+}
+
+// Componente raiz
+function App() {
+  return (
+    &lt;Provedores&gt;
+      &lt;Loja /&gt;
+    &lt;/Provedores&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/contexts/carrinhoReducer.js</h2>
+        <pre>// Início: src/contexts/carrinhoReducer.js — regras do carrinho num arquivo próprio
+// Aplica cada ação ao carrinho devolvendo sempre um array novo
+export function carrinhoReducer(itens, acao) {
+  switch (acao.type) {
+    case 'adicionado': {
+      const existe = itens.find((i) =&gt; i.id === acao.produto.id);
+      if (existe) {
+        return itens.map((i) =&gt; (i.id === acao.produto.id ? { ...i, quantidade: i.quantidade + 1 } : i));
+      }
+      return [...itens, { ...acao.produto, quantidade: 1 }];
+    }
+    case 'removido':
+      return itens.filter((i) =&gt; i.id !== acao.id);
+    case 'esvaziado':
+      return [];
+    default:
+      throw new Error(`Ação desconhecida: ${acao.type}`);
+  }
+}
+// Fim de carrinhoReducer.js</pre>
+        <h2>src/contexts/CarrinhoContext.jsx</h2>
+        <pre>// Início: src/contexts/CarrinhoContext.jsx — carrinho persistido e com value estável
+import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { carrinhoReducer } from './carrinhoReducer.js';
+
+const CarrinhoContext = createContext(null);
+const CHAVE = 'tear-carrinho';
+
+// Lê o carrinho salvo; se o storage estiver indisponível ou corrompido, começa vazio
+function carregarInicial() {
+  try {
+    const salvo = localStorage.getItem(CHAVE);
+    return salvo ? JSON.parse(salvo) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Provedor que inicia pelo storage, grava a cada mudança e memoriza o value
+export function CarrinhoProvider({ children }) {
+  const [itens, dispatch] = useReducer(carrinhoReducer, undefined, carregarInicial);
+
+  useEffect(() =&gt; {
+    try {
+      localStorage.setItem(CHAVE, JSON.stringify(itens));
+    } catch {
+      console.warn('Não foi possível salvar o carrinho neste navegador.');
+    }
+  }, [itens]);
+
+  const valor = useMemo(() =&gt; ({ itens, dispatch }), [itens]);
+  return &lt;CarrinhoContext.Provider value={valor}&gt;{children}&lt;/CarrinhoContext.Provider&gt;;
+}
+
+// Lê o carrinho e calcula a quantidade total de itens
+export function useCarrinho() {
+  const contexto = useContext(CarrinhoContext);
+  if (!contexto) {
+    throw new Error('useCarrinho precisa ser usado dentro de &lt;CarrinhoProvider&gt;.');
+  }
+  const quantidade = contexto.itens.reduce((soma, i) =&gt; soma + i.quantidade, 0);
+  return { ...contexto, quantidade };
+}
+// Fim de CarrinhoContext.jsx</pre>
+        <h2>src/contexts/TemaContext.jsx</h2>
+        <pre>// Início: src/contexts/TemaContext.jsx — tema com value memorizado
+import { createContext, useContext, useMemo, useState } from 'react';
+
+const TemaContext = createContext(null);
+
+// Provedor do tema; o value só muda quando o tema muda
+export function TemaProvider({ children }) {
+  const [tema, setTema] = useState('claro');
+  const valor = useMemo(
+    () =&gt; ({ tema, alternarTema: () =&gt; setTema((t) =&gt; (t === 'claro' ? 'escuro' : 'claro')) }),
+    [tema]
+  );
+  return &lt;TemaContext.Provider value={valor}&gt;{children}&lt;/TemaContext.Provider&gt;;
+}
+
+// Lê o tema com mensagem clara fora do provedor
+export function useTema() {
+  const contexto = useContext(TemaContext);
+  if (!contexto) {
+    throw new Error('useTema precisa ser usado dentro de &lt;TemaProvider&gt;.');
+  }
+  return contexto;
+}
+// Fim de TemaContext.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — provedores separados e compostos num só lugar
+import { TemaProvider } from './contexts/TemaContext.jsx';
+import { CarrinhoProvider } from './contexts/CarrinhoContext.jsx';
+import Loja from './components/Loja.jsx';
+
+// Reúne os provedores globais da aplicação, cada um com uma responsabilidade
+function Provedores({ children }) {
+  return (
+    &lt;TemaProvider&gt;
+      &lt;CarrinhoProvider&gt;{children}&lt;/CarrinhoProvider&gt;
+    &lt;/TemaProvider&gt;
+  );
+}
+
+// Componente raiz
+export default function App() {
+  return (
+    &lt;Provedores&gt;
+      &lt;Loja /&gt;
+    &lt;/Provedores&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>src/components/Loja.jsx</h2>
+        <pre>// Início: src/components/Loja.jsx — busca local, contadores de renderização e contextos separados
+import { memo, useRef, useState } from 'react';
+import { useTema } from '../contexts/TemaContext.jsx';
+import { useCarrinho } from '../contexts/CarrinhoContext.jsx';
+import { produtos, brl } from '../data/produtos.js';
+
+// Conta quantas vezes o componente renderizou, sem provocar nova renderização
+function useRenders() {
+  const renders = useRef(0);
+  renders.current += 1;
+  return renders.current;
+}
+
+// Cabeçalho: depende do tema e da quantidade do carrinho
+function Cabecalho() {
+  const { tema, alternarTema } = useTema();
+  const { quantidade, dispatch } = useCarrinho();
+  const renders = useRenders();
+  return (
+    &lt;header&gt;
+      &lt;h2&gt;Tear Mineiro &lt;span className="renders"&gt;(renders: {renders})&lt;/span&gt;&lt;/h2&gt;
+      &lt;span&gt;Carrinho: {quantidade}&lt;/span&gt;
+      &lt;button className="secundario" onClick={() =&gt; dispatch({ type: 'esvaziado' })}&gt;Esvaziar&lt;/button&gt;
+      &lt;button onClick={alternarTema}&gt;{tema === 'claro' ? 'Tema escuro' : 'Tema claro'}&lt;/button&gt;
+    &lt;/header&gt;
+  );
+}
+
+// Vitrine: a busca é estado local, porque só ela usa o texto digitado
+function Vitrine() {
+  const [busca, setBusca] = useState('');
+  const { dispatch } = useCarrinho();
+  const renders = useRenders();
+  const visiveis = produtos.filter((p) =&gt; p.nome.toLowerCase().includes(busca.toLowerCase()));
+  return (
+    &lt;section&gt;
+      &lt;p className="renders"&gt;Vitrine renders: {renders}&lt;/p&gt;
+      &lt;input value={busca} onChange={(e) =&gt; setBusca(e.target.value)} placeholder="Buscar produto" aria-label="Buscar produto" /&gt;
+      &lt;div className="vitrine" style={{ marginTop: 10 }}&gt;
+        {visiveis.map((p) =&gt; (
+          &lt;article key={p.id} className="produto"&gt;
+            &lt;strong&gt;{p.nome}&lt;/strong&gt;
+            &lt;span&gt;{brl(p.preco)}&lt;/span&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: 'adicionado', produto: p })}&gt;Comprar&lt;/button&gt;
+          &lt;/article&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+
+// Rodapé memorizado: não lê nenhum contexto, então não renderiza quando eles mudam
+const Rodape = memo(function Rodape() {
+  const renders = useRenders();
+  return &lt;p className="renders"&gt;Rodapé renders: {renders} · Tear Mineiro, artesanato de Minas.&lt;/p&gt;;
+});
+
+// Moldura da loja com a classe do tema
+export default function Loja() {
+  const { tema } = useTema();
+  return (
+    &lt;div className={`loja ${tema}`}&gt;
+      &lt;Cabecalho /&gt;
+      &lt;Vitrine /&gt;
+      &lt;Rodape /&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de Loja.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Mantenha <code>src/data/produtos.js</code> e salve os cinco arquivos acima</li>
+            <li><code>npm run dev</code> e digite na busca observando os contadores</li>
+            <li>Compre dois produtos e recarregue a página: o carrinho continua lá</li>
+            <li>Na aba Application do DevTools, veja a chave <code>tear-carrinho</code> no Local Storage</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Digitar na busca renderiza só a Vitrine; se a busca estivesse num contexto global, o Cabeçalho também contaria.</li>
+            <li>O <code>Rodape</code> com <code>memo</code> não lê contexto e não recebe props, então não renderiza quando o tema ou o carrinho mudam.</li>
+            <li>O terceiro argumento do <code>useReducer</code> lê o storage uma vez só, na montagem; o <code>try/catch</code> protege contra navegador sem storage ou JSON corrompido.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Meta de Produto e Mapa de Stakeholders | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Meta de Produto e Mapa de Stakeholders</h1>
+        <p class="subtitulo">Aula 44 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um exemplo completo de <strong>Product Goal</strong> e <strong>mapa de stakeholders</strong> para o app fictício Agenda Pet, com os pedidos filtrados pela meta. Use como referência para conferir a sua versão.</p>
+        </div>
+        <h2>meta-de-produto.md</h2>
+        <pre># Meta de Produto — Agenda Pet
+
+## Product Goal
+Até o fim do semestre, tutores de Juiz de Fora conseguem agendar,
+remarcar e cancelar banho e tosa pelo app sem ligar para o pet shop,
+e as ligações de agendamento caem pela metade.
+
+## Mapa de stakeholders
+| Pessoa             | Influência | Interesse | Como tratar            |
+|--------------------|------------|-----------|------------------------|
+| Sócia comercial    | alta       | alto      | revisar backlog junto  |
+| Sócio financeiro   | alta       | baixo     | resumo mensal          |
+| Atendente da loja  | baixa      | alto      | ouvir toda semana      |
+| Tutores (usuários) | baixa      | alto      | entrevistas e métricas |
+
+## Pedidos filtrados pela meta
+| Pedido                          | Quem pediu      | Decisão    |
+|---------------------------------|-----------------|------------|
+| Remarcar horário pelo app       | tutores         | serve      |
+| Lembrete 24h antes              | atendente       | serve      |
+| Loja de rações dentro do app    | sócia comercial | não serve  |
+| Relatório de faturamento        | sócio financ.   | depende    |
+| Modo escuro                     | dev             | não serve  |
+</pre>
+        <h2>Resposta a um pedido recusado</h2>
+        <ul>
+            <li><em>"A loja de rações é uma boa ideia de receita, mas a meta deste semestre é tirar o agendamento do telefone. Ela volta para a mesa quando as ligações caírem pela metade."</em></li>
+            <li>A resposta cita a meta, não a opinião do PO.</li>
+            <li>A resposta diz quando o pedido pode voltar a ser avaliado.</li>
+        </ul>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Troque a Agenda Pet pelo seu produto.</li>
+            <li>Escreva a meta antes de olhar os pedidos.</li>
+            <li>Filtre os pedidos e confira se a meta eliminou pelo menos um.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Uma meta que aprova todos os pedidos não é meta, é slogan.</li>
+            <li>Quem tem alta influência e baixo interesse precisa de pouca informação, mas no momento certo.</li>
+            <li>O "depende" deve virar pergunta a responder, não item esquecido.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

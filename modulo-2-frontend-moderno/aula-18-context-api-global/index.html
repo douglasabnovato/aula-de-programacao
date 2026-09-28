@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 18 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a eliminar o repasse de props com Context, concentrar regras de estado global com useReducer e organizar os provedores para evitar renderizações desnecessárias e preservar dados entre visitas.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 18: Context API e Gerenciamento Global</h1>
+        <p>Módulo 2: Frontend Moderno — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: PROP DRILLING E A CONTEXT API -->
+            <div class="card" id="card-1">
+                <h2>🌗 1. Prop Drilling e a Context API</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na loja virtual fictícia Tear Mineiro, a escolha entre tema claro e escuro fica no App e precisa chegar ao botão do cabeçalho e aos cards de produto. Hoje a prop tema atravessa quatro componentes que não fazem nada com ela além de repassar. Como entregar esse dado direto a quem precisa?</p>
+                </div>
+
+                <p>Prop drilling é passar uma prop por componentes intermediários só para ela chegar lá embaixo. O Context cria um canal: um Provider no alto da árvore fornece o valor e qualquer descendente lê com useContext. Serve para dados usados por muitos componentes em níveis diferentes, como tema, usuário e idioma.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/learn/passing-data-deeply-with-context" target="_blank" rel="noopener noreferrer">📄 Passando dados profundamente com contexto — React</a>
+                        <span class="link-desc">O problema do prop drilling e o passo a passo de criar, fornecer e ler um contexto.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/reference/react/createContext" target="_blank" rel="noopener noreferrer">📄 createContext — React</a>
+                        <span class="link-desc">Referência da função que cria o contexto e do componente Provider.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/reference/react/useContext" target="_blank" rel="noopener noreferrer">📄 useContext — React</a>
+                        <span class="link-desc">Como um componente lê o contexto mais próximo acima dele na árvore.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noopener noreferrer">📄 Compartilhando estado entre componentes — React</a>
+                        <span class="link-desc">Elevar o estado, a alternativa que vem antes de pensar em contexto.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=OLtpJLQLOeM" target="_blank" rel="noopener noreferrer">▶️ Como usar o useContext para compartilhar dados - SIMPLIFICANDO OS HOOKS DO REACT</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 20:37 — Mostra como usar o useContext para compartilhar dados sem passar props por vários níveis.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=06_575UN55A" target="_blank" rel="noopener noreferrer">▶️ A Context API é um state management?! A forma CORRETA de utilizar a CONTEXT API do React.js</a>
+                            <span class="link-desc">Dev Junior Alves · 27:06 — Discute quando a Context API resolve o prop drilling e como usá-la da forma correta.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Tema Claro e Escuro com createContext, Provider e useContext</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o projeto <code>tear-mineiro</code> com Vite e monte a árvore <code>App → Layout → Cabecalho → BotaoTema</code> e <code>Layout → Vitrine → CardProduto</code>.</li>
+                            <li><strong>Versão com Props:</strong> passe <code>tema</code> e <code>alternarTema</code> por todos os níveis e conte quantos componentes só repassam o valor.</li>
+                            <li><strong>Criando o Contexto:</strong> crie <code>src/contexts/TemaContext.jsx</code> com <code>export const TemaContext = createContext(null)</code>.</li>
+                            <li><strong>Provedor:</strong> no mesmo arquivo, escreva <code>TemaProvider</code> com o <code>useState</code> do tema e devolva <code>&lt;TemaContext.Provider value={{ tema, alternarTema }}&gt;</code>.</li>
+                            <li><strong>Envolvendo a Árvore:</strong> no <code>App.jsx</code>, coloque <code>&lt;TemaProvider&gt;</code> em volta do <code>&lt;Layout /&gt;</code>.</li>
+                            <li><strong>Consumindo:</strong> no <code>BotaoTema</code>, leia <code>const { tema, alternarTema } = useContext(TemaContext)</code>.</li>
+                            <li><strong>Removendo o Repasse:</strong> apague as props de tema de <code>Cabecalho</code> e <code>Vitrine</code> e confirme que tudo continua funcionando.</li>
+                            <li><strong>Erro Provocado: Fora do Provedor:</strong> renderize um <code>&lt;BotaoTema /&gt;</code> fora do <code>TemaProvider</code> e observe o erro ao desestruturar <code>null</code>.</li>
+                            <li><strong>Hook de Acesso:</strong> crie <code>useTema()</code>, que lê o contexto e lança um erro com mensagem clara quando ele for <code>null</code>, e use-o nos componentes.</li>
+                            <li><strong>Validação e Testes:</strong> alterne o tema e confira no React Developer Tools que os intermediários não têm mais props de tema; registre no README o antes e o depois da árvore.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: ESTADO GLOBAL COM USEREDUCER E CONTEXT -->
+            <div class="card" id="card-2">
+                <h2>🛒 2. Estado Global com useReducer e Context</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O carrinho da Tear Mineiro é alterado em quatro lugares: o botão Comprar, o contador do cabeçalho, o painel do carrinho e o botão de esvaziar. Cada lugar tem um setCarrinho com uma lógica um pouco diferente, e o total já apareceu errado duas vezes. Como concentrar as regras do carrinho num lugar só e deixar qualquer componente disparar ações?</p>
+                </div>
+
+                <p>O useReducer move as regras de atualização para uma função pura, reducer(estado, acao). Junto com o Context, estado e dispatch ficam disponíveis na árvore, e os componentes passam a dizer o que aconteceu, como um produto adicionado, em vez de como o estado deve mudar.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/learn/extracting-state-logic-into-a-reducer" target="_blank" rel="noopener noreferrer">📄 Extraindo lógica de estado para um reducer — React</a>
+                        <span class="link-desc">Quando trocar vários setState por um reducer e como escrever as ações.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/reference/react/useReducer" target="_blank" rel="noopener noreferrer">📄 useReducer — React</a>
+                        <span class="link-desc">Referência do hook, incluindo a função de inicialização usada na próxima prática.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/scaling-up-with-reducer-and-context" target="_blank" rel="noopener noreferrer">📄 Escalando com reducer e contexto — React</a>
+                        <span class="link-desc">O padrão de combinar os dois para um estado global previsível.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank" rel="noopener noreferrer">📄 Sintaxe de espalhamento — MDN</a>
+                        <span class="link-desc">O spread que cria arrays e objetos novos dentro do reducer.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Q1cNCSNWSnY" target="_blank" rel="noopener noreferrer">▶️ Como usar o useReducer - React Hooks #Dia8</a>
+                            <span class="link-desc">Kanto Nerd · 18:47 — Explica o useReducer: estado, ação e a função reducer que calcula o próximo estado.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7SyjAOfuVZk" target="_blank" rel="noopener noreferrer">▶️ useReducer | O React Hook mais PODEROSO e IGNORADO (Avançado)</a>
+                            <span class="link-desc">Coffstack · 34:58 — Aprofunda o useReducer com exemplos de regras de atualização concentradas numa função pura.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Carrinho de Compras com Reducer e Contexto</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>src/contexts/CarrinhoContext.jsx</code> e reaproveite <code>src/data/produtos.js</code> com quatro produtos fictícios.</li>
+                            <li><strong>Esqueleto do Reducer:</strong> escreva <code>carrinhoReducer(itens, acao)</code> com um <code>switch</code> para <code>adicionado</code>, <code>quantidade_alterada</code>, <code>removido</code> e <code>esvaziado</code>.</li>
+                            <li><strong>Regra de Adição:</strong> se o produto já estiver no carrinho, some 1 na quantidade com <code>map</code>; se não, inclua com <code>quantidade: 1</code>.</li>
+                            <li><strong>Erro Provocado: Mutação:</strong> no caso <code>adicionado</code>, use <code>itens.push(...)</code> e <code>return itens</code>, clique em Comprar e observe a tela parada.</li>
+                            <li><strong>Ajuste Imutável:</strong> volte para <code>[...itens, { ...acao.produto, quantidade: 1 }]</code> e confirme que a tela atualiza.</li>
+                            <li><strong>Provedor:</strong> crie <code>CarrinhoProvider</code> com <code>useReducer(carrinhoReducer, [])</code> e entregue <code>{ itens, dispatch }</code> no value.</li>
+                            <li><strong>Valores Derivados:</strong> em <code>useCarrinho()</code>, calcule <code>quantidade</code> e <code>total</code> com <code>reduce</code>, sem criar estado para eles.</li>
+                            <li><strong>Disparando Ações:</strong> no botão Comprar, chame <code>dispatch({ type: 'adicionado', produto })</code>, e no cabeçalho mostre a quantidade.</li>
+                            <li><strong>Painel do Carrinho:</strong> liste os itens com botões −, +, Remover e Esvaziar, cada um disparando sua ação.</li>
+                            <li><strong>Validação e Testes:</strong> compre o mesmo produto duas vezes, ajuste quantidades até zero e esvazie; registre no README uma tabela com cada ação, seus dados e o efeito no carrinho.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ORGANIZAÇÃO, PERSISTÊNCIA E LIMITES DO CONTEXTO -->
+            <div class="card" id="card-3">
+                <h2>🧭 3. Organização, Persistência e Limites do Contexto</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Tear Mineiro colocou tema, carrinho e o texto da busca num único contexto. Agora, a cada letra digitada na busca, a página inteira renderiza de novo, e quem recarrega a página perde o carrinho. Como dividir os contextos, guardar o carrinho entre visitas e decidir o que realmente precisa ser global?</p>
+                </div>
+
+                <p>Todo componente que lê um contexto renderiza quando o value muda, por isso cada contexto deve ter uma responsabilidade e o value deve ser estável. Estado usado por uma só parte da tela continua local. Guardar o carrinho no localStorage é um efeito sincronizado com o estado.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/reference/react/useMemo" target="_blank" rel="noopener noreferrer">📄 useMemo — React</a>
+                        <span class="link-desc">Como manter o mesmo objeto de value entre renderizações enquanto os dados não mudam.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/thinking-in-react" target="_blank" rel="noopener noreferrer">📄 Pensando em React — React</a>
+                        <span class="link-desc">O passo de decidir onde cada estado deve viver, que evita globalizar o que é local.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/understanding-your-ui-as-a-tree" target="_blank" rel="noopener noreferrer">📄 Entendendo sua UI como uma árvore — React</a>
+                        <span class="link-desc">A árvore de renderização que explica quem renderiza de novo quando algo muda.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API" target="_blank" rel="noopener noreferrer">📄 Usando a Web Storage API — MDN</a>
+                        <span class="link-desc">setItem, getItem e os limites do armazenamento local do navegador.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JtO6UwQs8I0" target="_blank" rel="noopener noreferrer">▶️ React - Tornando a Context API mais performática - Code/drops #77</a>
+                            <span class="link-desc">Rocketseat · 23:07 — Mostra como evitar renderizações desnecessárias ao usar a Context API.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=oaDdTH2JQrA" target="_blank" rel="noopener noreferrer">▶️ LocalStorage em React - Curso de React - Aula 20</a>
+                            <span class="link-desc">CFBCursos · 11:15 — Ensina a salvar e recuperar estado do React no localStorage.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Provedores Separados, Value Memorizado e Carrinho Persistido</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie um hook <code>useRenders()</code> com <code>useRef</code> e mostre em Cabeçalho, Vitrine e Rodapé quantas vezes cada um renderizou.</li>
+                            <li><strong>Mapa de Uso:</strong> liste quem lê tema, carrinho e busca, e marque que só a Vitrine usa o texto da busca.</li>
+                            <li><strong>Erro Provocado: Busca Global:</strong> coloque a busca no mesmo contexto do carrinho, digite algumas letras e observe o contador do Cabeçalho subir junto.</li>
+                            <li><strong>Busca Local:</strong> mova a busca para um <code>useState</code> dentro da Vitrine e repita o teste.</li>
+                            <li><strong>Provedores Separados:</strong> mantenha <code>TemaProvider</code> e <code>CarrinhoProvider</code> em arquivos distintos e componha os dois num componente <code>Provedores</code>.</li>
+                            <li><strong>Value Estável:</strong> envolva o value em <code>useMemo(() =&gt; ({ itens, dispatch }), [itens])</code> e faça o mesmo no tema.</li>
+                            <li><strong>Carregando do Storage:</strong> passe uma função <code>carregarInicial</code> como terceiro argumento do <code>useReducer</code>, lendo <code>localStorage.getItem('tear-carrinho')</code> dentro de <code>try/catch</code>.</li>
+                            <li><strong>Gravando a Cada Mudança:</strong> crie um <code>useEffect</code> com <code>[itens]</code> que grava <code>JSON.stringify(itens)</code> no storage.</li>
+                            <li><strong>Componente Isolado:</strong> envolva o Rodapé com <code>memo</code> e confirme que ele não renderiza quando tema ou carrinho mudam.</li>
+                            <li><strong>Validação e Testes:</strong> digite na busca, alterne o tema, compre e recarregue a página conferindo contadores e carrinho; registre no README o que ficou global e o que ficou local, com o motivo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

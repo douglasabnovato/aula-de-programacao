@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokens da Marca e Componente Botao com Variantes — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Tokens da Marca e Componente Botao com Variantes — Resposta</h1>
+        <p class="subtitulo">Aula 15 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>As cores e a fonte da marca Pulso Fit declaradas uma vez no <code>@theme</code>, gerando utilitários como <code>bg-marca</code>, e um componente <code>Botao</code> que concentra as classes repetidas em variantes (primário, contorno, discreto) e tamanhos. Trocar a cor da marca passa a ser uma edição de uma linha.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;style type=&quot;text/tailwindcss&quot;&gt;
+@theme {
+  --color-marca: #22c55e;
+  --color-marca-escura: #15803d;
+  --color-tinta: #0f172a;
+  --font-titulo: &quot;Trebuchet MS&quot;, system-ui, sans-serif;
+}
+&lt;/style&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState } = React;
+
+// Início: src/components/Botao.jsx — botão único com variantes e tamanhos
+const variantes = {
+  primario: &#x27;bg-marca text-white hover:bg-marca-escura&#x27;,
+  contorno: &#x27;border-2 border-marca text-marca hover:bg-marca hover:text-white&#x27;,
+  discreto: &#x27;text-tinta underline-offset-4 hover:underline&#x27;,
+};
+
+const tamanhos = {
+  sm: &#x27;px-3 py-1 text-sm&#x27;,
+  md: &#x27;px-5 py-2 text-base&#x27;,
+};
+
+// Junta as classes fixas com as da variante e do tamanho escolhidos
+function Botao({ variante = &#x27;primario&#x27;, tamanho = &#x27;md&#x27;, children, ...resto }) {
+  const classes = [
+    &#x27;rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca&#x27;,
+    variantes[variante],
+    tamanhos[tamanho],
+  ].join(&#x27; &#x27;);
+
+  return (
+    &lt;button className={classes} {...resto}&gt;
+      {children}
+    &lt;/button&gt;
+  );
+}
+// Fim de Botao.jsx
+
+// Início: src/App.jsx — vitrine dos tokens e do componente Botao
+
+// Componente raiz: mostra as variantes e conta os cliques de teste
+function App() {
+  const [cliques, setCliques] = useState(0);
+
+  return (
+    &lt;main className=&quot;min-h-screen space-y-6 bg-white p-8 text-tinta&quot;&gt;
+      &lt;h1 className=&quot;font-titulo text-3xl font-bold text-marca&quot;&gt;Pulso Fit&lt;/h1&gt;
+      &lt;p&gt;Todos os botões abaixo vêm do mesmo componente. Cliques: {cliques}&lt;/p&gt;
+      &lt;div className=&quot;flex flex-wrap items-center gap-3&quot;&gt;
+        &lt;Botao onClick={() =&gt; setCliques(cliques + 1)}&gt;Assinar&lt;/Botao&gt;
+        &lt;Botao variante=&quot;contorno&quot; onClick={() =&gt; setCliques(cliques + 1)}&gt;Ver planos&lt;/Botao&gt;
+        &lt;Botao variante=&quot;discreto&quot; tamanho=&quot;sm&quot;&gt;Falar com a recepção&lt;/Botao&gt;
+        &lt;Botao disabled&gt;Esgotado&lt;/Botao&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/index.css</h2>
+        <pre>/* Início: src/index.css — tokens da marca Pulso Fit */
+@import "tailwindcss";
+
+@theme {
+  --color-marca: #22c55e;
+  --color-marca-escura: #15803d;
+  --color-tinta: #0f172a;
+  --font-titulo: "Trebuchet MS", system-ui, sans-serif;
+}
+/* Fim de index.css */</pre>
+        <h2>src/components/Botao.jsx</h2>
+        <pre>// Início: src/components/Botao.jsx — botão único com variantes e tamanhos
+const variantes = {
+  primario: 'bg-marca text-white hover:bg-marca-escura',
+  contorno: 'border-2 border-marca text-marca hover:bg-marca hover:text-white',
+  discreto: 'text-tinta underline-offset-4 hover:underline',
+};
+
+const tamanhos = {
+  sm: 'px-3 py-1 text-sm',
+  md: 'px-5 py-2 text-base',
+};
+
+// Junta as classes fixas com as da variante e do tamanho escolhidos
+export default function Botao({ variante = 'primario', tamanho = 'md', children, ...resto }) {
+  const classes = [
+    'rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca',
+    variantes[variante],
+    tamanhos[tamanho],
+  ].join(' ');
+
+  return (
+    &lt;button className={classes} {...resto}&gt;
+      {children}
+    &lt;/button&gt;
+  );
+}
+// Fim de Botao.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — vitrine dos tokens e do componente Botao
+import { useState } from 'react';
+import Botao from './components/Botao.jsx';
+
+// Componente raiz: mostra as variantes e conta os cliques de teste
+export default function App() {
+  const [cliques, setCliques] = useState(0);
+
+  return (
+    &lt;main className="min-h-screen space-y-6 bg-white p-8 text-tinta"&gt;
+      &lt;h1 className="font-titulo text-3xl font-bold text-marca"&gt;Pulso Fit&lt;/h1&gt;
+      &lt;p&gt;Todos os botões abaixo vêm do mesmo componente. Cliques: {cliques}&lt;/p&gt;
+      &lt;div className="flex flex-wrap items-center gap-3"&gt;
+        &lt;Botao onClick={() =&gt; setCliques(cliques + 1)}&gt;Assinar&lt;/Botao&gt;
+        &lt;Botao variante="contorno" onClick={() =&gt; setCliques(cliques + 1)}&gt;Ver planos&lt;/Botao&gt;
+        &lt;Botao variante="discreto" tamanho="sm"&gt;Falar com a recepção&lt;/Botao&gt;
+        &lt;Botao disabled&gt;Esgotado&lt;/Botao&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>No projeto com Tailwind, substitua o <code>index.css</code> pelo arquivo acima</li>
+            <li>Crie <code>src/components/Botao.jsx</code> e substitua o <code>App.jsx</code></li>
+            <li><code>npm run dev</code> e confira as três variantes</li>
+            <li>Troque <code>--color-marca</code> por outra cor, salve e veja todos os botões mudarem</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O Tailwind lê os arquivos como texto: uma classe montada como <code>`bg-${cor}-500`</code> não é gerada. Por isso as variantes são strings completas.</li>
+            <li>Cada variável <code>--color-*</code> do <code>@theme</code> vira <code>bg-*</code>, <code>text-*</code> e <code>border-*</code> automaticamente.</li>
+            <li>O <code>...resto</code> repassa <code>onClick</code>, <code>disabled</code> e outras props nativas ao <code>&lt;button&gt;</code>. O estado desabilitado vem de <code>disabled:</code>, sem classe extra.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

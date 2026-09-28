@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras de Burn Rate e Modelo de Postmortem — Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Regras de Burn Rate e Modelo de Postmortem — Referência</h1>
+        <p class="subtitulo">Aula 67 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>As regras do Prometheus que calculam a taxa de erro em várias janelas e disparam alertas por velocidade de consumo do orçamento, e o modelo de postmortem sem culpa preenchido com um incidente fictício.</p>
+        </div>
+        <h2>prometheus/regras-slo.yml</h2>
+        <pre># Início: regras de gravação e alertas de burn rate para SLO de 99,5% de disponibilidade
+groups:
+  - name: slo-disponibilidade
+    rules:
+      - record: job:taxa_erro:5m
+        expr: sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))
+      - record: job:taxa_erro:30m
+        expr: sum(rate(http_requests_total{status=~"5.."}[30m])) / sum(rate(http_requests_total[30m]))
+      - record: job:taxa_erro:1h
+        expr: sum(rate(http_requests_total{status=~"5.."}[1h])) / sum(rate(http_requests_total[1h]))
+      - record: job:taxa_erro:6h
+        expr: sum(rate(http_requests_total{status=~"5.."}[6h])) / sum(rate(http_requests_total[6h]))
+      - alert: OrcamentoQueimandoRapido
+        expr: job:taxa_erro:1h &gt; (14.4 * 0.005) and job:taxa_erro:5m &gt; (14.4 * 0.005)
+        labels:
+          severidade: pagina
+        annotations:
+          resumo: "Consumo de 2% do orçamento mensal em 1 hora"
+          runbook: "docs/runbooks/orcamento-queimando.md"
+      - alert: OrcamentoQueimandoDevagar
+        expr: job:taxa_erro:6h &gt; (6 * 0.005) and job:taxa_erro:30m &gt; (6 * 0.005)
+        labels:
+          severidade: ticket
+        annotations:
+          resumo: "Consumo de 5% do orçamento mensal em 6 horas"
+          runbook: "docs/runbooks/orcamento-queimando.md"
+# Fim de prometheus/regras-slo.yml</pre>
+        <h2>docs/postmortems/2026-09-banco-sem-conexoes.md</h2>
+        <pre>&lt;!-- Início: postmortem sem culpa do incidente fictício do Hotel Serra Azul --&gt;
+# Postmortem: reservas indisponíveis por esgotamento de conexões
+
+**Status:** concluído · **Autores:** time de plataforma · **Severidade:** página
+
+## Impacto
+38 minutos com 22% das requisições de reserva falhando; cerca de 410 tentativas de reserva perdidas; 9% do orçamento de erro mensal consumido.
+
+## Linha do tempo
+- 14:02 deploy da versão 3.8 com novo relatório de ocupação
+- 14:09 alerta OrcamentoQueimandoRapido dispara
+- 14:14 plantonista confirma erros 500 com "timeout acquiring connection"
+- 14:27 relatório identificado como consumidor das conexões
+- 14:40 rollback para 3.7; taxa de erro volta ao normal
+
+## Causa
+O relatório abria uma transação por hotel sem liberar a conexão em caso de erro, esgotando o pool compartilhado com as reservas.
+
+## O que funcionou
+O alerta por burn rate disparou em 7 minutos; o runbook levou direto ao painel de conexões.
+
+## O que não funcionou
+Não havia teste de carga para a rota nova; o pool era compartilhado entre relatório e reserva.
+
+## Ações
+| Ação | Tipo | Dono | Prazo |
+|------|------|------|-------|
+| Pool separado para relatórios (bulkhead) | prevenção | Ana (plataforma) | 2 semanas |
+| Liberar conexão em `finally` e teste que cobre o erro | correção | Bruno (reservas) | 1 semana |
+| Teste de carga da rota nova no pipeline | detecção | Carla (qualidade) | 3 semanas |
+&lt;!-- Fim de postmortem --&gt;</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Aponte o <code>rule_files</code> do <code>prometheus.yml</code> para <code>regras-slo.yml</code></li>
+            <li><code>promtool check rules prometheus/regras-slo.yml</code></li>
+            <li>Reinicie o Prometheus e abra a aba Alerts</li>
+            <li>Gere erros com o k6 em 1% e depois em 20% e observe qual alerta dispara em cada caso</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O fator 14,4 significa consumir 2% do orçamento de 30 dias em uma hora; o 6 significa consumir 5% em seis horas.</li>
+            <li>A janela curta junto com a longa faz o alerta parar logo depois que o problema acaba, em vez de continuar tocando por uma hora.</li>
+            <li>O postmortem descreve sistemas e decisões, nunca pessoas culpadas, e toda ação tem tipo, dono e prazo.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

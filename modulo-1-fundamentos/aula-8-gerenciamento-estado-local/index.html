@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 8 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a organizar os dados de uma interface num estado único, centralizar as mudanças em ações e manter esse estado salvo no navegador com localStorage.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 8: Gerenciamento de Estado Local</h1>
+        <p>Módulo 1: Fundamentos — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: ESTADO ÚNICO E RENDERIZAÇÃO A PARTIR DOS DADOS -->
+            <div class="card" id="card-1">
+                <h2>🗂️ 1. Estado Único e Renderização a partir dos Dados</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O quadro de tarefas fictício da equipe Mutirão Digital guarda informação em dois lugares: num array do JavaScript e nas classes CSS do HTML. Quando alguém marca uma tarefa como feita, a lista muda, mas o contador no topo e o filtro 'pendentes' continuam mostrando o valor antigo, porque cada parte da tela é alterada por um trecho de código diferente. Como fazer a tela inteira sempre refletir uma única fonte de dados?</p>
+                </div>
+
+                <p>Estado é o conjunto de dados que decide o que aparece na tela. Quando ele fica num único objeto e toda mudança passa por uma função que atualiza o estado e redesenha a interface, a tela deixa de ter partes desencontradas. É a mesma ideia que o React usa, aqui escrita à mão.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://react.dev/learn/reacting-to-input-with-state" target="_blank" rel="noopener noreferrer">📄 Reacting to Input with State — react.dev</a>
+                        <span class="link-desc">Pensar a interface como estados descritos por dados, e não como uma sequência de alterações no DOM.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/choosing-the-state-structure" target="_blank" rel="noopener noreferrer">📄 Choosing the State Structure — react.dev</a>
+                        <span class="link-desc">Evitar estado duplicado ou derivado: guardar o mínimo e calcular o resto.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze" target="_blank" rel="noopener noreferrer">📄 Object.freeze() — MDN</a>
+                        <span class="link-desc">Congelar o estado para provocar erro quando alguém tenta alterá-lo por fora.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList" target="_blank" rel="noopener noreferrer">📄 Element: classList — MDN</a>
+                        <span class="link-desc">Aplicar classes a partir do estado, em vez de usar a classe como fonte de verdade.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=nSub52r1HMo" target="_blank" rel="noopener noreferrer">▶️ [ReactJS] #04 - Entendendo Estado (STATE), Render e Hooks (useState &amp; useEffect) c/ ReactJS</a>
+                            <span class="link-desc">Silvio Sampaio | Finalmente DEV · 15:54 — Explica a relação entre estado e renderização: quando o dado muda, a tela é redesenhada (exemplo em React).</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=AjZ7KPBYYqs" target="_blank" rel="noopener noreferrer">▶️ Renderização no React.js: Guia Completo</a>
+                            <span class="link-desc">Dev Junior Alves · 13:42 — Mostra quando e por que uma interface é renderizada novamente a partir de mudanças de estado (exemplo em React).</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Quadro de Tarefas com Estado Único e Função render</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-8-quadro</code> com os três arquivos, um contador no topo, botões de filtro e uma lista vazia.</li>
+                            <li><strong>Desenhando o Estado:</strong> escreva no README o objeto <code>estado = { tarefas, filtro }</code> e o que a tela mostra a partir dele.</li>
+                            <li><strong>Estado Inicial:</strong> declare <code>let estado</code> com quatro tarefas <code>{ id, texto, feita }</code> e <code>filtro: 'todas'</code>.</li>
+                            <li><strong>Dado Derivado:</strong> calcule o número de pendentes dentro do <code>render</code> com <code>filter</code>, em vez de guardar um contador separado.</li>
+                            <li><strong>Função render:</strong> crie <code>render()</code> que redesenha contador, botões de filtro e lista a partir de <code>estado</code>.</li>
+                            <li><strong>Função de Atualização:</strong> crie <code>setEstado(parcial)</code> que faz <code>estado = { ...estado, ...parcial }</code> e chama <code>render()</code>.</li>
+                            <li><strong>Erro Provocado:</strong> altere <code>estado.filtro</code> direto no console e observe que a tela não muda até o próximo <code>setEstado</code>.</li>
+                            <li><strong>Protegendo o Estado:</strong> use <code>Object.freeze</code> no estado novo dentro de <code>setEstado</code> e repita o teste para ver a alteração ser ignorada.</li>
+                            <li><strong>Marcando Tarefas:</strong> no clique de uma tarefa, gere um array novo com <code>map</code> trocando <code>feita</code> e passe para <code>setEstado</code>.</li>
+                            <li><strong>Validação e Testes:</strong> marque tarefas com cada filtro ativo, confira que contador e lista sempre concordam e registre no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: AÇÕES, DELEGAÇÃO DE EVENTOS E DATA-ATTRIBUTES -->
+            <div class="card" id="card-2">
+                <h2>🎯 2. Ações, Delegação de Eventos e data-attributes</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A lista de compras do app fictício Feira da Semana tem dezenas de itens, e cada botão de aumentar, diminuir e remover recebe um addEventListener novo a cada renderização. A página fica lenta e, às vezes, um clique conta duas vezes. Como ouvir todos esses cliques com um único ouvinte e decidir o que fazer pelo tipo de ação?</p>
+                </div>
+
+                <p>Eventos sobem do elemento clicado até os ancestrais (bubbling). Com um único ouvinte no container, event.target e closest descobrem qual botão foi clicado, e atributos data-* dizem qual ação e qual item. As mudanças de estado ficam concentradas numa função que recebe a ação e devolve o estado novo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling" target="_blank" rel="noopener noreferrer">📄 Event bubbling — MDN Learn</a>
+                        <span class="link-desc">Como o evento sobe pela árvore e por que isso permite a delegação.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Event/target" target="_blank" rel="noopener noreferrer">📄 Event: target — MDN</a>
+                        <span class="link-desc">Descobrir exatamente qual elemento recebeu o clique.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset" target="_blank" rel="noopener noreferrer">📄 HTMLElement: dataset — MDN</a>
+                        <span class="link-desc">Ler atributos data-* no JavaScript e a conversão de nomes com hífen.</span>
+                    </li>
+                    <li>
+                        <a href="https://react.dev/learn/extracting-state-logic-into-a-reducer" target="_blank" rel="noopener noreferrer">📄 Extracting State Logic into a Reducer — react.dev</a>
+                        <span class="link-desc">A ideia de concentrar as mudanças de estado numa função que recebe ações.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=mGXHxF4Lnlk" target="_blank" rel="noopener noreferrer">▶️ Vanilla Javascript - #20 Delegação de eventos</a>
+                            <span class="link-desc">Webdesign em Foco · 8:54 — Ensina delegação de eventos em JavaScript puro com um único ouvinte no elemento pai.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=esXH65f7_n8" target="_blank" rel="noopener noreferrer">▶️ Eventos JavaScript: entenda Capturing e Bubbling</a>
+                            <span class="link-desc">dpw · 7:10 — Explica as fases de capturing e bubbling, base para entender a delegação de eventos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Lista de Compras com Um Ouvinte e Ações Nomeadas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-8-feira</code> com os três arquivos, um formulário de novo item e uma <code>&lt;ul&gt;</code> vazia.</li>
+                            <li><strong>Estado da Lista:</strong> declare <code>estado = { itens: [...] }</code> com itens <code>{ id, nome, qtd }</code>.</li>
+                            <li><strong>Botões com Dados:</strong> no <code>render</code>, gere botões com <code>data-acao="aumentar"</code>, <code>"diminuir"</code> ou <code>"remover"</code> e <code>data-id</code> do item.</li>
+                            <li><strong>Erro Provocado:</strong> adicione um ouvinte em cada botão dentro do <code>render</code>, sem remover os antigos, e conte quantas vezes o clique roda.</li>
+                            <li><strong>Um Único Ouvinte:</strong> apague esses ouvintes e registre um só <code>click</code> na <code>&lt;ul&gt;</code>, fora do <code>render</code>.</li>
+                            <li><strong>Descobrindo o Botão:</strong> use <code>evento.target.closest('button[data-acao]')</code> e ignore cliques fora de botões.</li>
+                            <li><strong>Lendo os Dados:</strong> leia <code>botao.dataset.acao</code> e <code>Number(botao.dataset.id)</code>.</li>
+                            <li><strong>Função de Ações:</strong> crie <code>atualizar(estado, acao)</code> com <code>switch (acao.tipo)</code> devolvendo sempre um estado novo.</li>
+                            <li><strong>Despachando:</strong> crie <code>despachar(acao)</code> que calcula o estado novo, registra a ação num log e chama <code>render()</code>.</li>
+                            <li><strong>Validação e Testes:</strong> clique rápido em vários botões, confira o log de ações e registre no README por que um ouvinte basta.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PERSISTÊNCIA COM LOCALSTORAGE -->
+            <div class="card" id="card-3">
+                <h2>💾 3. Persistência com localStorage</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O app fictício Hábito Diário perde todos os check-ins da semana quando o usuário atualiza a página, e as pessoas desistem de usar no segundo dia. O projeto ainda não tem backend. Como guardar o estado no próprio navegador, restaurá-lo ao abrir a página e não quebrar a tela quando o dado salvo estiver corrompido?</p>
+                </div>
+
+                <p>localStorage guarda pares de texto no navegador, por site, e sobrevive ao recarregamento. Como só aceita strings, o estado vai com JSON.stringify e volta com JSON.parse. Uma chave com versão e uma leitura protegida por try/catch evitam que um dado velho ou inválido derrube a aplicação.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API" target="_blank" rel="noopener noreferrer">📄 Using the Web Storage API — MDN</a>
+                        <span class="link-desc">Guia com setItem, getItem, removeItem e o cuidado com navegadores que bloqueiam o armazenamento.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noopener noreferrer">📄 Window: localStorage — MDN</a>
+                        <span class="link-desc">Onde os dados ficam, quanto tempo duram e por que tudo vira string.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" target="_blank" rel="noopener noreferrer">📄 JSON.stringify() — MDN</a>
+                        <span class="link-desc">Transformar o objeto de estado em texto para salvar.</span>
+                    </li>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noopener noreferrer">📄 JSON.parse() — MDN</a>
+                        <span class="link-desc">Voltar o texto para objeto e o SyntaxError quando o texto está corrompido.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FXlAf_iIDeo" target="_blank" rel="noopener noreferrer">▶️ Aprenda tudo sobre localStorage e sessionStorage de JavaScript</a>
+                            <span class="link-desc">Matheus Battisti - Hora de Codar · 31:00 — Mostra como gravar, ler e remover dados com localStorage e sessionStorage.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ieii6fjTXYo" target="_blank" rel="noopener noreferrer">▶️ [BR][Front-end] Entenda JSON e LocalStorage de uma vez por todas</a>
+                            <span class="link-desc">ncesar · 11:30 — Explica como usar JSON.stringify e JSON.parse para salvar objetos no localStorage.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Rastreador de Hábitos que Sobrevive ao Recarregar</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>aula-8-habitos</code> com os três arquivos e uma grade vazia para hábitos x dias da semana.</li>
+                            <li><strong>Estado e Chave:</strong> declare <code>CHAVE = 'habito-diario:v1'</code> e um <code>estadoInicial</code> com três hábitos e sete dias marcados como <code>false</code>.</li>
+                            <li><strong>Render da Grade:</strong> crie <code>render()</code> que desenha um checkbox por dia, com <code>data-habito</code> e <code>data-dia</code>.</li>
+                            <li><strong>Erro Provocado:</strong> salve o objeto direto com <code>localStorage.setItem(CHAVE, estado)</code> e leia no DevTools o texto <code>[object Object]</code>.</li>
+                            <li><strong>Salvando como JSON:</strong> crie <code>salvar()</code> com <code>JSON.stringify(estado)</code> e chame-a em toda mudança de estado.</li>
+                            <li><strong>Carregando na Abertura:</strong> crie <code>carregar()</code> que lê a chave e usa <code>JSON.parse</code>, devolvendo <code>estadoInicial</code> se não houver nada.</li>
+                            <li><strong>Protegendo a Leitura:</strong> envolva <code>carregar()</code> em <code>try/catch</code>: se o JSON estiver inválido, avise e volte ao estado inicial.</li>
+                            <li><strong>Testando Corrupção:</strong> grave <code>'{quebrado'</code> na chave pelo console, recarregue e confirme que a página abre com o aviso.</li>
+                            <li><strong>Limpando:</strong> adicione um botão que chama <code>localStorage.removeItem(CHAVE)</code> e restaura o estado inicial.</li>
+                            <li><strong>Validação e Testes:</strong> marque dias, recarregue a página, confira a aba Application do DevTools e registre no README o que fica salvo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

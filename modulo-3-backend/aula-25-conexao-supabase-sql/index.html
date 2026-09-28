@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 25 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a modelar tabelas relacionais no Postgres do Supabase, trocar o repositório em memória por um repositório que consulta o banco e proteger os dados com Row Level Security.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 25: Conexão Avançada com Supabase e SQL</h1>
+        <p>Módulo 3: Backend e Banco de Dados — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: MODELAGEM RELACIONAL E SQL NO POSTGRES DO SUPABASE -->
+            <div class="card" id="card-1">
+                <h2>🗄️ 1. Modelagem Relacional e SQL no Postgres do Supabase</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A escola de idiomas fictícia Fala Fácil guardava as tarefas dos professores numa planilha e já perdeu registros por nomes de turma digitados com grafias diferentes. Agora cada tarefa precisa pertencer a um projeto, e projeto apagado não pode deixar tarefa órfã. Como fazer o próprio banco recusar dado inconsistente, mesmo quando o código esquece de validar?</p>
+                </div>
+
+                <p>O Supabase entrega um Postgres completo, e a API só é tão confiável quanto as tabelas por baixo dela. Chave primária, chave estrangeira, NOT NULL e CHECK fazem o banco recusar dado errado na origem, e o índice certo mantém a consulta rápida quando a tabela cresce.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://supabase.com/docs/guides/database/tables" target="_blank" rel="noopener noreferrer">📄 Tables and data — Supabase Docs</a>
+                        <span class="link-desc">Como criar tabelas pelo painel ou por SQL e quais tipos de dado usar.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/ddl-basics.html" target="_blank" rel="noopener noreferrer">📄 Table Basics — PostgreSQL</a>
+                        <span class="link-desc">CREATE TABLE, colunas e tipos, direto da documentação oficial do Postgres.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/ddl-constraints.html" target="_blank" rel="noopener noreferrer">📄 Constraints — PostgreSQL</a>
+                        <span class="link-desc">NOT NULL, CHECK, UNIQUE, chave primária e chave estrangeira com ON DELETE.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/tutorial-fk.html" target="_blank" rel="noopener noreferrer">📄 Foreign Keys (tutorial) — PostgreSQL</a>
+                        <span class="link-desc">O exemplo curto de integridade referencial entre duas tabelas.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JOPvpQHrsG8" target="_blank" rel="noopener noreferrer">▶️ Como usar comandos SQL no Supabase em tabelas e relacionamentos</a>
+                            <span class="link-desc">Gotas de Tecnologia · 8:23 — Mostra como usar comandos SQL no Supabase para criar tabelas e relacionamentos.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=o-I9l30GEnw" target="_blank" rel="noopener noreferrer">▶️ Curso rápido MySQL #12 - Como criar tabela com relacionamento (chave estrangeira/foreign key)</a>
+                            <span class="link-desc">Descompila · 6:00 — Explica como criar tabelas relacionadas com chave estrangeira em SQL.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Criando as Tabelas projetos e tarefas no SQL Editor</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie um projeto no plano gratuito do Supabase e abra o <strong>SQL Editor</strong> no painel.</li>
+                            <li><strong>Tabela Pai:</strong> crie <code>projetos</code> com <code>id bigint generated always as identity primary key</code> e <code>nome text not null unique</code>.</li>
+                            <li><strong>Tabela Filha:</strong> crie <code>tarefas</code> com <code>projeto_id bigint not null references projetos(id) on delete cascade</code>.</li>
+                            <li><strong>Regra no Banco:</strong> acrescente ao título <code>check (char_length(trim(titulo)) &gt; 0)</code> — a mesma regra da entidade, agora também no banco.</li>
+                            <li><strong>Datas Automáticas:</strong> adicione <code>criada_em timestamptz not null default now()</code>.</li>
+                            <li><strong>Dados de Exemplo:</strong> insira dois projetos e quatro tarefas com <code>insert into ... values</code>.</li>
+                            <li><strong>Erro Provocado:</strong> tente inserir uma tarefa com <code>projeto_id = 999</code> e leia a mensagem de violação de chave estrangeira; depois tente um título só com espaços e leia a violação do CHECK.</li>
+                            <li><strong>Consulta com Junção:</strong> rode <code>select t.titulo, p.nome from tarefas t join projetos p on p.id = t.projeto_id</code>.</li>
+                            <li><strong>Índice na Chave Estrangeira:</strong> crie <code>create index tarefas_projeto_id_idx on tarefas (projeto_id)</code> e anote por que a coluna mais usada em filtro merece índice.</li>
+                            <li><strong>Validação e Testes:</strong> apague um projeto, confirme que as tarefas dele sumiram pelo <code>cascade</code> e salve todo o script em <code>db/schema.sql</code> no repositório.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: REPOSITÓRIO SUPABASE NA API NODE -->
+            <div class="card" id="card-2">
+                <h2>🔗 2. Repositório Supabase na API Node</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A API da Fala Fácil perde todas as tarefas a cada reinício do servidor, porque o repositório ainda é um array em memória. A arquitetura da aula 23 prometeu que trocar o armazenamento não mexeria no núcleo. Como cumprir essa promessa ligando a API ao Supabase?</p>
+                </div>
+
+                <p>O cliente supabase-js conversa com o banco pela API que o Supabase gera a partir das tabelas. Encapsulado num repositório com o mesmo contrato do adaptador em memória, ele entra na borda do sistema sem que os casos de uso percebam a troca.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.npmjs.com/package/@supabase/supabase-js" target="_blank" rel="noopener noreferrer">📄 @supabase/supabase-js — npm</a>
+                        <span class="link-desc">Instalação e criação do cliente com URL e chave do projeto.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/reference/javascript/select" target="_blank" rel="noopener noreferrer">📄 JavaScript API Reference — Supabase</a>
+                        <span class="link-desc">select, insert, filtros como eq e modificadores como single e order.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/database/joins-and-nesting" target="_blank" rel="noopener noreferrer">📄 Joins e tabelas aninhadas — Supabase</a>
+                        <span class="link-desc">Como trazer dados de tabelas relacionadas numa única chamada.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.postgresql.org/docs/current/tutorial-join.html" target="_blank" rel="noopener noreferrer">📄 Joins Between Tables — PostgreSQL</a>
+                        <span class="link-desc">O JOIN em SQL puro, para entender o que o cliente faz por baixo.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=RFhoSQUOHQI" target="_blank" rel="noopener noreferrer">▶️ API com Banco de Dados na Nuvem GRATUITO (Supabase + Node.js) | Atualizado 2025</a>
+                            <span class="link-desc">Desvendando o Código · 24:43 — Conecta uma API Node.js ao banco na nuvem do Supabase usando o cliente oficial.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=C7qlPBjHMMA" target="_blank" rel="noopener noreferrer">▶️ Visual Backend: Implementing Auth &amp; CRUD with Supabase &amp; Node.js</a>
+                            <span class="link-desc">John Yeo · 14:03 · em inglês — Mostra em inglês como implementar autenticação e CRUD com Supabase numa API Node.js.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Trocando o Adaptador em Memória pelo TarefaSupabaseRepository</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> instale <code>npm install @supabase/supabase-js</code> e coloque <code>SUPABASE_URL</code> e <code>SUPABASE_SECRET_KEY</code> no <code>.env</code>, copiados de <em>Project Settings → API Keys</em>.</li>
+                            <li><strong>Cliente Único:</strong> crie <code>src/infra/db/supabase.js</code> que chama <code>createClient</code> uma vez e exporta a instância.</li>
+                            <li><strong>Esqueleto do Adaptador:</strong> crie <code>src/infra/repositories/TarefaSupabaseRepository.js</code> com <code>buscarTodos</code>, <code>buscarPorId</code> e <code>salvar</code> — o mesmo contrato do repositório em memória.</li>
+                            <li><strong>Listagem:</strong> implemente <code>supabase.from('tarefas').select('id, titulo, feita').order('id')</code>.</li>
+                            <li><strong>Tratando o Retorno:</strong> toda chamada devolve <code>{ data, error }</code>; se <code>error</code> existir, lance-o para o middleware de erro em vez de devolver <code>data</code> vazio.</li>
+                            <li><strong>Detalhe sem Erro Falso:</strong> use <code>.eq('id', id).maybeSingle()</code>: ele devolve <code>null</code> quando não encontra, e o caso de uso decide o 404.</li>
+                            <li><strong>Gravação:</strong> implemente <code>.insert({ titulo, feita, projeto_id }).select().single()</code> para receber de volta a linha criada com id.</li>
+                            <li><strong>Erro Provocado:</strong> crie uma tarefa com <code>projetoId</code> inexistente, veja o erro do Postgres chegar até a resposta como 500 e decida qual status ele deveria virar.</li>
+                            <li><strong>Junção Embutida:</strong> acrescente <code>buscarComProjeto</code> usando <code>select('id, titulo, projetos(nome)')</code> e observe o objeto aninhado no resultado.</li>
+                            <li><strong>Validação e Testes:</strong> troque só a linha de instanciação no <code>server.js</code>, reinicie a API e confirme que as tarefas continuam lá; confirme também que os testes da aula 24 seguem passando com o repositório em memória.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: ROW LEVEL SECURITY E O USO CORRETO DAS CHAVES -->
+            <div class="card" id="card-3">
+                <h2>🔐 3. Row Level Security e o Uso Correto das Chaves</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Um estagiário da Fala Fácil colou a chave secreta do Supabase no JavaScript do site para testar rapidinho. Qualquer visitante que abre o DevTools consegue ler e apagar as tarefas de todos os professores. Como garantir que, mesmo com a chave pública no navegador, cada professor só enxergue o que é dele?</p>
+                </div>
+
+                <p>No Supabase, a chave publicável (a antiga anon) pode ir para o navegador; a chave secreta (a antiga service_role) ignora qualquer política e só vive no servidor. Row Level Security é o recurso do Postgres que filtra linha por linha conforme quem pergunta, e é ele que torna a chave pública segura.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://supabase.com/docs/guides/database/postgres/row-level-security" target="_blank" rel="noopener noreferrer">📄 Row Level Security — Supabase Docs</a>
+                        <span class="link-desc">Como ligar o RLS e escrever políticas com auth.uid().</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/getting-started/api-keys" target="_blank" rel="noopener noreferrer">📄 API keys — Supabase Docs</a>
+                        <span class="link-desc">A diferença entre chave publicável e chave secreta e onde cada uma pode estar.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/api/securing-your-api" target="_blank" rel="noopener noreferrer">📄 Securing your API — Supabase Docs</a>
+                        <span class="link-desc">O que fica exposto pela API automática e como fechar.</span>
+                    </li>
+                    <li>
+                        <a href="https://supabase.com/docs/guides/troubleshooting/rls-simplified-BJTcS8" target="_blank" rel="noopener noreferrer">📄 RLS Simplified — Supabase Docs</a>
+                        <span class="link-desc">Exemplos curtos de políticas para os casos mais comuns.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=VEf0amJlclY" target="_blank" rel="noopener noreferrer">▶️ Como Funcionam as Políticas de Segurança no Supabase</a>
+                            <span class="link-desc">DATA7 Apps · 19:50 — Explica como funcionam as políticas de segurança (RLS) no Supabase.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=TAWVb2nT7wI" target="_blank" rel="noopener noreferrer">▶️ Protegendo seus dados com Row Level Security (PostgreSQL)</a>
+                            <span class="link-desc">Techt4lks · 11:10 — Mostra como proteger dados com Row Level Security direto no PostgreSQL.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Políticas de Acesso por Dono na Tabela tarefas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> no SQL Editor, adicione a coluna <code>dono_id uuid references auth.users(id)</code> à tabela <code>tarefas</code>.</li>
+                            <li><strong>Diagnóstico Inicial:</strong> com o RLS desligado, consulte a tabela com a chave publicável usando <code>curl "$SUPABASE_URL/rest/v1/tarefas?select=*" -H "apikey: $SUPABASE_PUBLISHABLE_KEY"</code> e veja todas as linhas.</li>
+                            <li><strong>Ligando o RLS:</strong> rode <code>alter table tarefas enable row level security</code> e repita a consulta.</li>
+                            <li><strong>Lendo o Resultado:</strong> registre por que a resposta virou lista vazia: sem nenhuma política, o RLS nega tudo por padrão.</li>
+                            <li><strong>Política de Leitura:</strong> crie <code>create policy "dono le as suas" on tarefas for select to authenticated using ((select auth.uid()) = dono_id)</code>.</li>
+                            <li><strong>Política de Escrita:</strong> crie a política de <code>insert</code> com <code>with check ((select auth.uid()) = dono_id)</code>.</li>
+                            <li><strong>Usuários de Teste:</strong> crie dois usuários em <em>Authentication → Users</em> e, num script com a chave publicável, faça <code>signInWithPassword</code> com cada um.</li>
+                            <li><strong>Erro Provocado:</strong> logado como o usuário A, tente inserir uma tarefa com o <code>dono_id</code> do usuário B e leia a mensagem de violação de política.</li>
+                            <li><strong>Chave Secreta no Lugar Certo:</strong> confirme que a API Node lê a chave secreta só do <code>.env</code> e que ela não aparece em nenhum arquivo servido ao navegador.</li>
+                            <li><strong>Validação e Testes:</strong> logado como A, liste e veja só as tarefas de A; repita como B; registre no README qual chave vive em qual lado e por que a chave secreta ignora o RLS.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

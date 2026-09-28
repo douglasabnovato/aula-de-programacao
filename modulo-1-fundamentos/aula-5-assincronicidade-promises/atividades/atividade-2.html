@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido com Promises — then, catch e Promise.all | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Pedido com Promises — then, catch e Promise.all</h1>
+        <p class="subtitulo">Aula 5 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma tela que monta um pedido a partir de três fontes simuladas. O botão sequencial encadeia <code>then</code>, o paralelo usa <code>Promise.all</code>, e um checkbox faz o frete falhar para testar o <code>catch</code> e o <code>finally</code>.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.saida {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  min-height: 90px;
+}
+
+.saida p {
+  margin: 4px 0;
+}
+
+.tempo {
+  color: var(--muted);
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Estação Games — montar pedido&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Compare o tempo das duas estratégias e simule uma falha no frete.&lt;/p&gt;
+  &lt;div class=&quot;linha&quot;&gt;
+    &lt;button id=&quot;btnSequencial&quot;&gt;Buscar em sequência&lt;/button&gt;
+    &lt;button id=&quot;btnParalelo&quot;&gt;Buscar em paralelo&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;label class=&quot;linha&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;simularFalha&quot;&gt; Simular falha no frete&lt;/label&gt;
+  &lt;div id=&quot;saida&quot; class=&quot;saida muted&quot;&gt;Nenhuma busca feita.&lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: montagem de pedido com Promises, then/catch e Promise.all
+const btnSequencial = document.querySelector(&#x27;#btnSequencial&#x27;);
+const btnParalelo = document.querySelector(&#x27;#btnParalelo&#x27;);
+const simularFalha = document.querySelector(&#x27;#simularFalha&#x27;);
+const saida = document.querySelector(&#x27;#saida&#x27;);
+
+// cria uma Promise que resolve (ou rejeita) depois de alguns milissegundos
+const atraso = (ms, valor, falhar = false) =&gt; new Promise((resolve, reject) =&gt; {
+  setTimeout(() =&gt; (falhar ? reject(new Error(valor)) : resolve(valor)), ms);
+});
+
+// simula a busca dos dados do cliente
+const buscarCliente = () =&gt; atraso(800, { nome: &#x27;Marina Tavares&#x27;, cidade: &#x27;Serra Azul&#x27; });
+
+// simula a busca dos itens do pedido
+const buscarItens = () =&gt; atraso(1200, [&#x27;Controle sem fio&#x27;, &#x27;Headset com microfone&#x27;]);
+
+// simula o cálculo do frete, com opção de falhar
+const calcularFrete = () =&gt; (simularFalha.checked
+  ? atraso(1000, &#x27;serviço de frete indisponível&#x27;, true)
+  : atraso(1000, &#x27;3 dias úteis&#x27;));
+
+// habilita ou desabilita os botões durante a busca
+const alternarBotoes = (desabilitar) =&gt; {
+  btnSequencial.disabled = desabilitar;
+  btnParalelo.disabled = desabilitar;
+};
+
+// prepara a tela e devolve o horário de início
+const iniciar = () =&gt; {
+  saida.textContent = &#x27;Carregando...&#x27;;
+  saida.className = &#x27;saida muted&#x27;;
+  alternarBotoes(true);
+  return Date.now();
+};
+
+// escreve o pedido completo na tela
+const mostrarPedido = ([cliente, itens, frete], inicio) =&gt; {
+  saida.innerHTML = `&lt;p&gt;&lt;strong&gt;${cliente.nome}&lt;/strong&gt; (${cliente.cidade})&lt;/p&gt;&lt;p&gt;Itens: ${itens.join(&#x27;, &#x27;)}&lt;/p&gt;&lt;p&gt;Frete: ${frete}&lt;/p&gt;&lt;p class=&quot;tempo&quot;&gt;Tempo total: ${Date.now() - inicio} ms&lt;/p&gt;`;
+  saida.className = &#x27;saida ok&#x27;;
+};
+
+// mostra a mensagem de erro de qualquer etapa
+const mostrarErro = (erro) =&gt; {
+  saida.textContent = `Falha: ${erro.message}`;
+  saida.className = &#x27;saida erro&#x27;;
+};
+
+// busca as três partes, uma depois da outra
+const buscarSequencial = () =&gt; {
+  const inicio = iniciar();
+  const partes = [];
+  buscarCliente()
+    .then((cliente) =&gt; {
+      partes.push(cliente);
+      return buscarItens();
+    })
+    .then((itens) =&gt; {
+      partes.push(itens);
+      return calcularFrete();
+    })
+    .then((frete) =&gt; mostrarPedido([...partes, frete], inicio))
+    .catch(mostrarErro)
+    .finally(() =&gt; alternarBotoes(false));
+};
+
+// busca as três partes ao mesmo tempo
+const buscarParalelo = () =&gt; {
+  const inicio = iniciar();
+  Promise.all([buscarCliente(), buscarItens(), calcularFrete()])
+    .then((resultado) =&gt; mostrarPedido(resultado, inicio))
+    .catch(mostrarErro)
+    .finally(() =&gt; alternarBotoes(false));
+};
+
+btnSequencial.addEventListener(&#x27;click&#x27;, buscarSequencial);
+btnParalelo.addEventListener(&#x27;click&#x27;, buscarParalelo);
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Pedido com Promises — then, catch e Promise.all --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Pedido com Promises — then, catch e Promise.all&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Estação Games — montar pedido&lt;/h1&gt;
+    &lt;p class="sub"&gt;Compare o tempo das duas estratégias e simule uma falha no frete.&lt;/p&gt;
+    &lt;div class="linha"&gt;
+      &lt;button id="btnSequencial"&gt;Buscar em sequência&lt;/button&gt;
+      &lt;button id="btnParalelo"&gt;Buscar em paralelo&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label class="linha"&gt;&lt;input type="checkbox" id="simularFalha"&gt; Simular falha no frete&lt;/label&gt;
+    &lt;div id="saida" class="saida muted"&gt;Nenhuma busca feita.&lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.saida {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  min-height: 90px;
+}
+
+.saida p {
+  margin: 4px 0;
+}
+
+.tempo {
+  color: var(--muted);
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: montagem de pedido com Promises, then/catch e Promise.all
+const btnSequencial = document.querySelector('#btnSequencial');
+const btnParalelo = document.querySelector('#btnParalelo');
+const simularFalha = document.querySelector('#simularFalha');
+const saida = document.querySelector('#saida');
+
+// cria uma Promise que resolve (ou rejeita) depois de alguns milissegundos
+const atraso = (ms, valor, falhar = false) =&gt; new Promise((resolve, reject) =&gt; {
+  setTimeout(() =&gt; (falhar ? reject(new Error(valor)) : resolve(valor)), ms);
+});
+
+// simula a busca dos dados do cliente
+const buscarCliente = () =&gt; atraso(800, { nome: 'Marina Tavares', cidade: 'Serra Azul' });
+
+// simula a busca dos itens do pedido
+const buscarItens = () =&gt; atraso(1200, ['Controle sem fio', 'Headset com microfone']);
+
+// simula o cálculo do frete, com opção de falhar
+const calcularFrete = () =&gt; (simularFalha.checked
+  ? atraso(1000, 'serviço de frete indisponível', true)
+  : atraso(1000, '3 dias úteis'));
+
+// habilita ou desabilita os botões durante a busca
+const alternarBotoes = (desabilitar) =&gt; {
+  btnSequencial.disabled = desabilitar;
+  btnParalelo.disabled = desabilitar;
+};
+
+// prepara a tela e devolve o horário de início
+const iniciar = () =&gt; {
+  saida.textContent = 'Carregando...';
+  saida.className = 'saida muted';
+  alternarBotoes(true);
+  return Date.now();
+};
+
+// escreve o pedido completo na tela
+const mostrarPedido = ([cliente, itens, frete], inicio) =&gt; {
+  saida.innerHTML = `&lt;p&gt;&lt;strong&gt;${cliente.nome}&lt;/strong&gt; (${cliente.cidade})&lt;/p&gt;&lt;p&gt;Itens: ${itens.join(', ')}&lt;/p&gt;&lt;p&gt;Frete: ${frete}&lt;/p&gt;&lt;p class="tempo"&gt;Tempo total: ${Date.now() - inicio} ms&lt;/p&gt;`;
+  saida.className = 'saida ok';
+};
+
+// mostra a mensagem de erro de qualquer etapa
+const mostrarErro = (erro) =&gt; {
+  saida.textContent = `Falha: ${erro.message}`;
+  saida.className = 'saida erro';
+};
+
+// busca as três partes, uma depois da outra
+const buscarSequencial = () =&gt; {
+  const inicio = iniciar();
+  const partes = [];
+  buscarCliente()
+    .then((cliente) =&gt; {
+      partes.push(cliente);
+      return buscarItens();
+    })
+    .then((itens) =&gt; {
+      partes.push(itens);
+      return calcularFrete();
+    })
+    .then((frete) =&gt; mostrarPedido([...partes, frete], inicio))
+    .catch(mostrarErro)
+    .finally(() =&gt; alternarBotoes(false));
+};
+
+// busca as três partes ao mesmo tempo
+const buscarParalelo = () =&gt; {
+  const inicio = iniciar();
+  Promise.all([buscarCliente(), buscarItens(), calcularFrete()])
+    .then((resultado) =&gt; mostrarPedido(resultado, inicio))
+    .catch(mostrarErro)
+    .finally(() =&gt; alternarBotoes(false));
+};
+
+btnSequencial.addEventListener('click', buscarSequencial);
+btnParalelo.addEventListener('click', buscarParalelo);
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Clique em 'Buscar em sequência', anote o tempo, depois em 'Buscar em paralelo'.</li>
+            <li>Marque 'Simular falha no frete' e repita os dois botões.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O sequencial leva a soma dos tempos (cerca de 3 s); o paralelo leva o tempo da etapa mais lenta (cerca de 1,2 s).</li>
+            <li>Um único <code>.catch</code> no fim pega a falha de qualquer etapa da cadeia, e o <code>finally</code> reabilita os botões nos dois casos.</li>
+            <li>Com <code>Promise.all</code>, basta uma Promise rejeitar para o conjunto inteiro cair no <code>catch</code>.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

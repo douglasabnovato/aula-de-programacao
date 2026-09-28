@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 39 | ByteClass</title>
+    <meta name="description" content="Esta ementa leva o aluno a preparar o projeto final para produção, publicá-lo em três serviços gratuitos e deixar verificação, checagem agendada e plano de reversão prontos antes de precisar deles.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 39: Projeto Final Fullstack — Parte 3 (Deploy e Produção)</h1>
+        <p>Módulo 4: Fullstack, DevOps e Projeto Final — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: PREPARANDO O PROJETO PARA PRODUÇÃO -->
+            <div class="card" id="card-1">
+                <h2>🧾 1. Preparando o Projeto para Produção</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Agenda Lírio roda perfeita no Compose, mas a API tem a porta 3000 escrita no código, o CORS libera qualquer origem, a mensagem de erro devolve a pilha inteira e a URL do banco só funciona sem SSL. A dona do Studio Lírio quer começar a usar na segunda-feira. O que precisa mudar no código antes de ele sair da sua máquina?</p>
+                </div>
+
+                <p>Produção é outro ambiente com as mesmas regras: configuração vem de variável, serviços de apoio são endereços trocáveis e nada que ajuda a depurar pode vazar para o usuário. A preparação é uma lista verificável, não uma sensação.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://12factor.net/pt_br/dev-prod-parity" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Paridade entre Desenvolvimento e Produção</a>
+                        <span class="link-desc">Por que manter desenvolvimento e produção o mais parecidos possível reduz surpresa no deploy.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/port-binding" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Vínculo de Portas</a>
+                        <span class="link-desc">A aplicação exporta o serviço numa porta que o ambiente define, não numa porta escrita no código.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/backing-services" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Serviços de Apoio</a>
+                        <span class="link-desc">O banco como recurso anexado por URL, trocável sem mudar código.</span>
+                    </li>
+                    <li>
+                        <a href="https://helmetjs.github.io/" target="_blank" rel="noopener noreferrer">📄 Helmet — documentação oficial</a>
+                        <span class="link-desc">Os cabeçalhos de segurança HTTP que o Express passa a enviar com uma linha.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=zi8qHEL-Ilk" target="_blank" rel="noopener noreferrer">▶️ Suba sua Aplicação Node.js em Produção usando PM2 (TUTORIAL PASSO A PASSO)</a>
+                            <span class="link-desc">Código Fonte TV · 16:49 — Mostra como rodar uma aplicação Node.js em produção com PM2.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=WqGTBIdIRoo" target="_blank" rel="noopener noreferrer">▶️ Node.js API [C07P03] - Producionalização - Boas práticas em erros de API</a>
+                            <span class="link-desc">Waldemar Neto - Dev Lab · 25:59 — Apresenta boas práticas de tratamento de erros ao preparar uma API Node.js para produção.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Checklist de Prontidão para Produção</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a branch <code>preparo-producao</code> e abra o checklist da atividade 1 ao lado do código.</li>
+                            <li><strong>Porta do Ambiente:</strong> troque a porta fixa por <code>process.env.PORT</code> com valor padrão só para desenvolvimento.</li>
+                            <li><strong>Banco por URL:</strong> leia a conexão só de <code>DATABASE_URL</code> e ative SSL quando <code>NODE_ENV</code> for <code>production</code>.</li>
+                            <li><strong>Origem Restrita:</strong> configure o CORS com a origem de <code>process.env.ORIGEM_FRONT</code>, sem <code>*</code>.</li>
+                            <li><strong>Cabeçalhos de Segurança:</strong> rode <code>npm install helmet</code> e registre <code>app.use(helmet())</code> antes das rotas.</li>
+                            <li><strong>Erro Provocado:</strong> com <code>NODE_ENV=production</code>, force um erro numa rota e observe se a resposta ainda traz a pilha e o caminho dos arquivos.</li>
+                            <li><strong>Erro sem Vazamento:</strong> no middleware de erro, devolva só a mensagem genérica e o <code>requestId</code>, mantendo a pilha apenas no log.</li>
+                            <li><strong>Scripts de Produção:</strong> confira que existem <code>npm start</code> sem ferramentas de desenvolvimento e <code>npm run migrar</code> para rodar as migrações.</li>
+                            <li><strong>Configuração Completa:</strong> revise os <code>.env.example</code> da API e do frontend para listar toda variável que a produção precisa.</li>
+                            <li><strong>Validação e Testes:</strong> suba localmente com <code>NODE_ENV=production</code> e as variáveis de produção simuladas, marque cada item do checklist e registre no README o que precisou ser alterado.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: DEPLOY EM HOSPEDAGEM GRATUITA: BANCO, API E FRONTEND -->
+            <div class="card" id="card-2">
+                <h2>🚀 2. Deploy em Hospedagem Gratuita: Banco, API e Frontend</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O Studio Lírio não tem orçamento para servidor, e a Agenda Lírio precisa estar num endereço público para a banca e para a recepção testarem. São três partes para publicar, cada uma num serviço diferente, e a primeira tentativa do time terminou com o frontend no ar chamando localhost. Em que ordem publicar cada parte, e como ligar uma à outra sem pagar nada?</p>
+                </div>
+
+                <p>Cada parte tem um tipo de hospedagem: banco gerenciado, serviço web para a API e hospedagem estática para o frontend. A ordem importa porque cada parte precisa do endereço da anterior, e o frontend recebe a URL da API no momento do build.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://vitejs.dev/guide/build.html" target="_blank" rel="noopener noreferrer">📄 Vite — Construindo para Produção</a>
+                        <span class="link-desc">O que o build gera e como a pasta de saída é servida por uma hospedagem estática.</span>
+                    </li>
+                    <li>
+                        <a href="https://vitejs.dev/guide/env-and-mode.html" target="_blank" rel="noopener noreferrer">📄 Vite — Variáveis de Ambiente e Modos</a>
+                        <span class="link-desc">Por que a URL da API entra no build e precisa estar configurada no provedor antes dele.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/disposability" target="_blank" rel="noopener noreferrer">📄 Twelve-Factor — Descartabilidade</a>
+                        <span class="link-desc">Processo que inicia rápido e encerra com elegância, o que importa quando o plano gratuito hiberna a API.</span>
+                    </li>
+                    <li>
+                        <a href="https://docs.github.com/pt/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener noreferrer">📄 Criando um site no GitHub Pages — GitHub</a>
+                        <span class="link-desc">A alternativa gratuita de hospedagem estática direto do repositório.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=OX_pPHI63gg" target="_blank" rel="noopener noreferrer">▶️ Como fazer Deploy Grátis Full Stack (MERN) do ZERO — MongoDB, React, Node e Express!</a>
+                            <span class="link-desc">Hashtag Dev · 24:12 — Faz o deploy gratuito de uma aplicação full stack: banco, API Node e frontend React.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=0v74FFEPcrU" target="_blank" rel="noopener noreferrer">▶️ Como Hospedar seu Servidor Node gratis no Render</a>
+                            <span class="link-desc">Fernando Leonid · 5:32 — Mostra como hospedar gratuitamente uma API Node.js no Render.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Publicando as Três Partes em Planos Gratuitos</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie contas gratuitas no Neon (ou Supabase), no Render e na Vercel (ou Netlify), todas ligadas à sua conta do GitHub.</li>
+                            <li><strong>Banco Primeiro:</strong> crie o projeto PostgreSQL no plano free, copie a connection string e guarde-a só no gerenciador de senhas, nunca no repositório.</li>
+                            <li><strong>Migrações em Produção:</strong> rode <code>npm run migrar</code> da sua máquina com <code>DATABASE_URL</code> apontando para o banco de produção e confira as tabelas no painel.</li>
+                            <li><strong>API no Render:</strong> crie um Web Service no plano free apontando para a pasta <code>api/</code>, com <code>npm ci</code> como build e <code>npm start</code> como início.</li>
+                            <li><strong>Variáveis da API:</strong> cadastre no painel do Render <code>DATABASE_URL</code>, <code>JWT_SECRET</code>, <code>NODE_ENV=production</code> e <code>ORIGEM_FRONT</code> provisória.</li>
+                            <li><strong>Health Check:</strong> configure o caminho <code>/saude/pronto</code> como health check e acompanhe o primeiro deploy pelo log do painel.</li>
+                            <li><strong>Erro Provocado:</strong> publique o frontend na Vercel sem definir <code>VITE_API_URL</code> e veja no DevTools as chamadas indo para localhost.</li>
+                            <li><strong>Frontend Ligado:</strong> defina <code>VITE_API_URL</code> com a URL pública da API, refaça o deploy e confirme a nova URL no JS gerado.</li>
+                            <li><strong>Fechando o CORS:</strong> troque <code>ORIGEM_FRONT</code> no Render pela URL definitiva do frontend e aguarde a API reiniciar.</li>
+                            <li><strong>Validação e Testes:</strong> percorra o fluxo completo num celular pela rede móvel, meça o tempo da primeira requisição depois de 20 minutos parado e registre na ficha de deploy as três URLs e esse tempo.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: PÓS-DEPLOY: VERIFICAÇÃO, MONITORAMENTO E PLANO DE VOLTA -->
+            <div class="card" id="card-3">
+                <h2>🩺 3. Pós-Deploy: Verificação, Monitoramento e Plano de Volta</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Agenda Lírio foi publicada na sexta e na segunda a recepção avisou que o login não funcionava desde sábado. O time só soube pelo telefone, e ninguém sabia se o certo era corrigir às pressas ou voltar a versão anterior. Como saber em minutos que a produção quebrou e ter o caminho de volta escrito antes de precisar dele?</p>
+                </div>
+
+                <p>Publicar não termina o trabalho. Um teste de fumaça logo após cada deploy, uma checagem periódica do endereço público e um runbook com o passo de reversão transformam o incidente de pânico em procedimento.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://sre.google/sre-book/release-engineering/" target="_blank" rel="noopener noreferrer">📄 Release Engineering — Google SRE</a>
+                        <span class="link-desc">Publicação repetível e reversível como parte do processo, não como evento.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/managing-incidents/" target="_blank" rel="noopener noreferrer">📄 Managing Incidents — Google SRE</a>
+                        <span class="link-desc">Papéis, comunicação e registro durante um incidente, mesmo num time pequeno.</span>
+                    </li>
+                    <li>
+                        <a href="https://sre.google/sre-book/postmortem-culture/" target="_blank" rel="noopener noreferrer">📄 Postmortem Culture — Google SRE</a>
+                        <span class="link-desc">Como escrever a análise pós-incidente sem culpados e com ações que evitam a repetição.</span>
+                    </li>
+                    <li>
+                        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">📄 Error Handling Cheat Sheet — OWASP</a>
+                        <span class="link-desc">Tratar erro em produção sem expor detalhe interno ao usuário.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=mHjrqMDjx4Q" target="_blank" rel="noopener noreferrer">▶️ Smoke Tests: Aumentando as chances dos principais fluxos da aplicação realmente estarem funcionando</a>
+                            <span class="link-desc">Dev Eficiente · 24:39 — Explica como smoke tests verificam se os fluxos principais funcionam após uma mudança.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Mpa30aWK5YE" target="_blank" rel="noopener noreferrer">▶️ Smoke Test: Aprenda a Realizar Testes Iniciais para Garantir a Estabilidade do Sistema!</a>
+                            <span class="link-desc">Priscila Caimi · 12:04 — Explica o que é smoke test e como fazer as verificações iniciais de estabilidade de um sistema.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Teste de Fumaça, Checagem Agendada e Runbook de Reversão</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>scripts/fumaca.sh</code> e <code>docs/RUNBOOK.md</code> no repositório do projeto.</li>
+                            <li><strong>Teste de Fumaça:</strong> no script, chame com <code>curl -f</code> o <code>/saude/pronto</code>, a página inicial do frontend e a rota pública de consulta.</li>
+                            <li><strong>Rodando após o Deploy:</strong> execute o script contra as URLs de produção e confirme que ele termina com código de saída <code>0</code>.</li>
+                            <li><strong>Checagem Agendada:</strong> crie um workflow no GitHub Actions com gatilho <code>schedule</code> a cada 30 minutos rodando o mesmo script.</li>
+                            <li><strong>Aviso de Falha:</strong> configure o repositório para que a falha do workflow gere notificação por e-mail para o time.</li>
+                            <li><strong>Erro Provocado:</strong> troque a senha do banco no painel sem atualizar a <code>DATABASE_URL</code> no Render e acompanhe a checagem ficar vermelha.</li>
+                            <li><strong>Reversão:</strong> use o botão de voltar a um deploy anterior no painel do Render e cronometre até a checagem voltar ao verde.</li>
+                            <li><strong>Runbook:</strong> escreva no <code>RUNBOOK.md</code> como diagnosticar, reverter e comunicar, com os links dos três painéis.</li>
+                            <li><strong>Pós-Incidente:</strong> preencha o modelo de análise da atividade 3 para o incidente provocado.</li>
+                            <li><strong>Validação e Testes:</strong> peça a um colega que siga só o runbook para reverter um deploy e registre no README o tempo total e o que ele precisou perguntar.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

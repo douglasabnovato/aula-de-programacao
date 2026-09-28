@@ -333,3 +333,42 @@ footer {
 }
 
 /* Fim de aula.css */
+
+/* Desafio de abertura e vídeos de apoio — acrescentados em set/2026 junto com a grade completa */
+.desafio {
+    background-color: rgba(0, 255, 102, 0.06);
+    border: 1px solid rgba(0, 255, 102, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.desafio-rotulo,
+.videos-rotulo {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+}
+
+.card .desafio p {
+    color: var(--text-main);
+    margin-bottom: 0;
+}
+
+.videos {
+    margin-top: 18px;
+}
+
+.videos-list {
+    margin-bottom: 0;
+}
+
+.videos-pendente {
+    margin-top: 14px;
+    opacity: 0.75;
+}
+/* fim do bloco de desafio e vídeos */

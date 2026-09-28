@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Largo — Regras em Um Lugar Só | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Cine Largo — Regras em Um Lugar Só</h1>
+        <p class="subtitulo">Aula 10 · Módulo 1: Fundamentos · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma tabela de preços de ingressos em que as regras (preço base e taxa) ficam num único objeto e as variações de ingresso são dados num array. Alterar a taxa na tela recalcula todos os tipos de uma vez.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+ul.lista li small {
+  display: block;
+  color: var(--muted);
+}
+
+.preco {
+  color: var(--primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* Fim de style.css */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;card&quot;&gt;
+  &lt;h1&gt;Cine Largo — preços de hoje&lt;/h1&gt;
+  &lt;p class=&quot;sub&quot;&gt;Mude a taxa ou o preço base: todos os tipos de ingresso acompanham.&lt;/p&gt;
+  &lt;form id=&quot;formRegras&quot; class=&quot;linha&quot;&gt;
+    &lt;label&gt;Preço base &lt;input name=&quot;precoBase&quot; type=&quot;number&quot; step=&quot;0.5&quot; value=&quot;28&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;Taxa de conveniência &lt;input name=&quot;taxa&quot; type=&quot;number&quot; step=&quot;0.5&quot; value=&quot;3.5&quot;&gt;&lt;/label&gt;
+  &lt;/form&gt;
+  &lt;ul id=&quot;tabela&quot; class=&quot;lista&quot;&gt;&lt;/ul&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// Início: tabela de ingressos com regras centralizadas
+const REGRAS_PADRAO = Object.freeze({ PRECO_BASE: 28, TAXA_CONVENIENCIA: 3.5 });
+
+const TIPOS_INGRESSO = [
+  { id: &#x27;inteira&#x27;, nome: &#x27;Inteira&#x27;, fator: 1, regra: &#x27;preço cheio&#x27; },
+  { id: &#x27;meia&#x27;, nome: &#x27;Meia-entrada&#x27;, fator: 0.5, regra: &#x27;estudantes e idosos&#x27; },
+  { id: &#x27;crianca&#x27;, nome: &#x27;Criança até 10 anos&#x27;, fator: 0.4, regra: &#x27;com responsável&#x27; },
+  { id: &#x27;professor&#x27;, nome: &#x27;Professor&#x27;, fator: 0.5, regra: &#x27;com comprovante&#x27; }
+];
+
+const formRegras = document.querySelector(&#x27;#formRegras&#x27;);
+const tabela = document.querySelector(&#x27;#tabela&#x27;);
+
+// formata um valor em reais
+const formatarMoeda = (valor) =&gt; valor.toLocaleString(&#x27;pt-BR&#x27;, { style: &#x27;currency&#x27;, currency: &#x27;BRL&#x27; });
+
+// calcula o preço final de um tipo a partir das regras
+const precoDoIngresso = (tipo, regras) =&gt; regras.PRECO_BASE * tipo.fator + regras.TAXA_CONVENIENCIA;
+
+// lê as regras da tela, caindo no padrão se o campo estiver vazio
+const lerRegras = () =&gt; {
+  const campos = formRegras.elements;
+  return Object.freeze({
+    PRECO_BASE: Number(campos.precoBase.value) || REGRAS_PADRAO.PRECO_BASE,
+    TAXA_CONVENIENCIA: campos.taxa.value === &#x27;&#x27; ? REGRAS_PADRAO.TAXA_CONVENIENCIA : Number(campos.taxa.value)
+  });
+};
+
+// desenha a tabela inteira a partir dos dados e das regras
+const renderizar = () =&gt; {
+  const regras = lerRegras();
+  tabela.innerHTML = TIPOS_INGRESSO
+    .map((tipo) =&gt; `&lt;li&gt;&lt;div&gt;&lt;strong&gt;${tipo.nome}&lt;/strong&gt;&lt;small&gt;${tipo.regra} · ${tipo.fator * 100}% do base + taxa&lt;/small&gt;&lt;/div&gt;&lt;span class=&quot;preco&quot;&gt;${formatarMoeda(precoDoIngresso(tipo, regras))}&lt;/span&gt;&lt;/li&gt;`)
+    .join(&#x27;&#x27;);
+};
+
+formRegras.addEventListener(&#x27;input&#x27;, renderizar);
+renderizar();
+// Fim de script.js
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>index.html</h2>
+        <pre>&lt;!-- Início: Cine Largo — Regras em Um Lugar Só --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Cine Largo — Regras em Um Lugar Só&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;h1&gt;Cine Largo — preços de hoje&lt;/h1&gt;
+    &lt;p class="sub"&gt;Mude a taxa ou o preço base: todos os tipos de ingresso acompanham.&lt;/p&gt;
+    &lt;form id="formRegras" class="linha"&gt;
+      &lt;label&gt;Preço base &lt;input name="precoBase" type="number" step="0.5" value="28"&gt;&lt;/label&gt;
+      &lt;label&gt;Taxa de conveniência &lt;input name="taxa" type="number" step="0.5" value="3.5"&gt;&lt;/label&gt;
+    &lt;/form&gt;
+    &lt;ul id="tabela" class="lista"&gt;&lt;/ul&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de index.html --&gt;</pre>
+        <h2>style.css</h2>
+        <pre>/* Início: estilos da atividade (paleta ByteClass) */
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --primary: #00FF66;
+  --text: #FFFFFF;
+  --muted: #8B949E;
+  --border: #30363D;
+  --danger: #FF6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 9px 12px;
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+ul.lista {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+ul.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.ok {
+  color: var(--primary);
+}
+
+.erro {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+ul.lista li small {
+  display: block;
+  color: var(--muted);
+}
+
+.preco {
+  color: var(--primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* Fim de style.css */</pre>
+        <h2>script.js</h2>
+        <pre>// Início: tabela de ingressos com regras centralizadas
+const REGRAS_PADRAO = Object.freeze({ PRECO_BASE: 28, TAXA_CONVENIENCIA: 3.5 });
+
+const TIPOS_INGRESSO = [
+  { id: 'inteira', nome: 'Inteira', fator: 1, regra: 'preço cheio' },
+  { id: 'meia', nome: 'Meia-entrada', fator: 0.5, regra: 'estudantes e idosos' },
+  { id: 'crianca', nome: 'Criança até 10 anos', fator: 0.4, regra: 'com responsável' },
+  { id: 'professor', nome: 'Professor', fator: 0.5, regra: 'com comprovante' }
+];
+
+const formRegras = document.querySelector('#formRegras');
+const tabela = document.querySelector('#tabela');
+
+// formata um valor em reais
+const formatarMoeda = (valor) =&gt; valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+// calcula o preço final de um tipo a partir das regras
+const precoDoIngresso = (tipo, regras) =&gt; regras.PRECO_BASE * tipo.fator + regras.TAXA_CONVENIENCIA;
+
+// lê as regras da tela, caindo no padrão se o campo estiver vazio
+const lerRegras = () =&gt; {
+  const campos = formRegras.elements;
+  return Object.freeze({
+    PRECO_BASE: Number(campos.precoBase.value) || REGRAS_PADRAO.PRECO_BASE,
+    TAXA_CONVENIENCIA: campos.taxa.value === '' ? REGRAS_PADRAO.TAXA_CONVENIENCIA : Number(campos.taxa.value)
+  });
+};
+
+// desenha a tabela inteira a partir dos dados e das regras
+const renderizar = () =&gt; {
+  const regras = lerRegras();
+  tabela.innerHTML = TIPOS_INGRESSO
+    .map((tipo) =&gt; `&lt;li&gt;&lt;div&gt;&lt;strong&gt;${tipo.nome}&lt;/strong&gt;&lt;small&gt;${tipo.regra} · ${tipo.fator * 100}% do base + taxa&lt;/small&gt;&lt;/div&gt;&lt;span class="preco"&gt;${formatarMoeda(precoDoIngresso(tipo, regras))}&lt;/span&gt;&lt;/li&gt;`)
+    .join('');
+};
+
+formRegras.addEventListener('input', renderizar);
+renderizar();
+// Fim de script.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie uma pasta com os arquivos <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            <li>Cole cada bloco de código acima no arquivo com o mesmo nome.</li>
+            <li>Abra o <code>index.html</code> no navegador (duplo clique ou Live Server no VS Code).</li>
+            <li>Mude a taxa de 3,5 para 4 e veja os quatro preços mudarem.</li>
+            <li>No código, adicione um tipo novo no array <code>TIPOS_INGRESSO</code> e recarregue.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O preço base e a taxa aparecem uma vez cada: a função <code>precoDoIngresso</code> não tem nenhum número solto.</li>
+            <li>Os tipos de ingresso são dados, não <code>if</code>s: um tipo novo é um objeto a mais no array.</li>
+            <li><code>Object.freeze</code> nas regras impede que alguma função altere o preço base sem querer no meio do cálculo.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

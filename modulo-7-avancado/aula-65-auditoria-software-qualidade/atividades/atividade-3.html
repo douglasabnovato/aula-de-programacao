@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script de Hotspots a partir do Histórico do Git — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Script de Hotspots a partir do Histórico do Git — Código de Referência</h1>
+        <p class="subtitulo">Aula 65 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um script Node que lê o histórico do Git, conta quantas vezes cada arquivo mudou, cruza com o tamanho atual e imprime o ranking de hotspots. É o ponto de partida do relatório de auditoria.</p>
+        </div>
+        <h2>scripts/hotspots.js</h2>
+        <pre>// Início: ranking de hotspots cruzando frequência de mudança e tamanho de arquivo
+const { execSync } = require('child_process');
+const fs = require('fs');
+
+const PERIODO = process.argv[2] || '12.months';
+const IGNORAR = [/package-lock\.json$/, /yarn\.lock$/, /^dist\//, /^build\//, /\.min\.js$/, /\.md$/];
+
+// Lê o histórico e devolve um mapa arquivo -&gt; número de commits que o alteraram
+function contarMudancas(periodo) {
+  const saida = execSync(`git log --since=${periodo} --numstat --format=`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 });
+  const mudancas = new Map();
+  for (const linha of saida.split('\n')) {
+    const partes = linha.split('\t');
+    if (partes.length !== 3) continue;
+    const arquivo = partes[2];
+    if (IGNORAR.some((padrao) =&gt; padrao.test(arquivo))) continue;
+    mudancas.set(arquivo, (mudancas.get(arquivo) || 0) + 1);
+  }
+  return mudancas;
+}
+
+// Conta as linhas atuais do arquivo, ou zero se ele não existe mais
+function contarLinhas(arquivo) {
+  if (!fs.existsSync(arquivo)) return 0;
+  return fs.readFileSync(arquivo, 'utf8').split('\n').length;
+}
+
+// Monta o ranking com pontuação normalizada entre 0 e 1
+function calcularHotspots(mudancas) {
+  const itens = [...mudancas]
+    .map(([arquivo, commits]) =&gt; ({ arquivo, commits, linhas: contarLinhas(arquivo) }))
+    .filter((item) =&gt; item.linhas &gt; 0);
+  const maxCommits = Math.max(...itens.map((i) =&gt; i.commits));
+  const maxLinhas = Math.max(...itens.map((i) =&gt; i.linhas));
+  return itens
+    .map((i) =&gt; ({ ...i, pontuacao: +((i.commits / maxCommits) * (i.linhas / maxLinhas)).toFixed(3) }))
+    .sort((a, b) =&gt; b.pontuacao - a.pontuacao);
+}
+
+// Imprime os dez primeiros em formato de tabela
+function main() {
+  const ranking = calcularHotspots(contarMudancas(PERIODO)).slice(0, 10);
+  console.table(ranking);
+}
+
+main();
+// Fim de scripts/hotspots.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Entre na raiz de um repositório Git com histórico</li>
+            <li><code>node scripts/hotspots.js 12.months</code></li>
+            <li>Rode com <code>6.months</code> e compare se o ranking muda</li>
+            <li>Para os cinco primeiros, rode <code>npx eslint --rule 'complexity: [warn, 10]' caminho/do/arquivo.js</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Arquivo grande que ninguém altera fica com pontuação baixa: não é ali que a dívida cobra juros.</li>
+            <li>Sem a lista <code>IGNORAR</code>, o lockfile domina o ranking, o que mostra por que todo dado precisa de limpeza antes da análise.</li>
+            <li>O número de linhas é uma aproximação grosseira; o cruzamento com a complexidade do lint confirma ou descarta cada candidato.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

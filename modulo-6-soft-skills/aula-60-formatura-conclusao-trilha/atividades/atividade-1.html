@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Entrega do Portfólio — Modelo | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Checklist de Entrega do Portfólio — Modelo</h1>
+        <p class="subtitulo">Aula 60 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O checklist que cada aluno entrega à banca junto com o link do portfólio, preenchido com data em cada item conferido.</p>
+        </div>
+        <h2>checklist-portfolio.md</h2>
+        <pre>&lt;!-- Início: checklist de entrega do portfólio de formatura --&gt;
+# Checklist de Entrega — Portfólio de Formatura
+
+Aluno(a): ______________________   Data da revisão: __/__/____
+Posicionamento (uma linha): ______________________________________
+
+## Página de entrada
+- [ ] Posicionamento em três linhas no topo
+- [ ] Ordem sugerida de leitura dos projetos
+- [ ] Links para LinkedIn e GitHub funcionando
+
+## Para cada projeto (de 3 a 6)
+- [ ] Link publicado abre em janela anônima e no celular
+- [ ] README com problema, como rodar, tecnologias, decisões e link
+- [ ] Projeto roda a partir de um clone limpo seguindo o README
+- [ ] Nenhum segredo no código ou no histórico; existe .env.example
+- [ ] Contraste, texto alternativo e navegação por teclado conferidos
+- [ ] Riscos do OWASP Top 10 revisados nos projetos com backend
+
+## Teste dos dez minutos
+- [ ] Avaliador 1: ____________ — desistiu em: ____________
+- [ ] Avaliador 2: ____________ — desistiu em: ____________
+- [ ] Correções feitas após cada teste
+
+## Materiais de carreira
+- [ ] Currículo em PDF de uma página atualizado
+- [ ] Perfil do LinkedIn com título e destaques revisados
+- [ ] Pelo menos um artigo técnico ou contribuição publicada
+&lt;!-- Fim de checklist-portfolio.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Copie o checklist para o repositório do portfólio.</li>
+            <li>Marque cada item só depois de conferir, anotando a data.</li>
+            <li>Faça o teste dos dez minutos com duas pessoas diferentes.</li>
+            <li>Entregue o link do checklist junto com o do portfólio.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O teste dos dez minutos mede o que um recrutador realmente consegue ver.</li>
+            <li>Corrigir o ponto de desistência vem antes de qualquer melhoria estética.</li>
+            <li>O checklist reúne critérios de todos os módulos: é a trilha inteira revisada num documento.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

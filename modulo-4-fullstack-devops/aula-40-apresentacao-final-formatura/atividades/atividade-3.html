@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banca de Defesa — Rubrica, Perguntas e Plano de 90 Dias | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Banca de Defesa — Rubrica, Perguntas e Plano de 90 Dias</h1>
+        <p class="subtitulo">Aula 40 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A rubrica que a banca usa, as perguntas de preparo por tema e o modelo do plano de 90 dias que cada aluno publica no README depois da formatura.</p>
+        </div>
+        <h2>Rubrica de avaliação (0 a 4 por critério)</h2>
+        <ul>
+            <li><strong>Problema e escopo:</strong> o problema é claro, tem número e o MVP resolve o que foi prometido.</li>
+            <li><strong>Funcionamento:</strong> o fluxo principal funciona no endereço público durante a apresentação.</li>
+            <li><strong>Arquitetura e decisões:</strong> as partes estão documentadas e as decisões têm ADR com alternativa descartada.</li>
+            <li><strong>Qualidade de código:</strong> camadas separadas, testes dos critérios de aceite e esteira verde.</li>
+            <li><strong>Segurança e produção:</strong> autenticação correta, segredos fora do código e runbook existente.</li>
+            <li><strong>Comunicação:</strong> pitch no tempo, demonstração clara e respostas com decisão, motivo e custo.</li>
+            <li><strong>Trabalho em equipe:</strong> pull requests revisados e todos respondem sobre partes que não escreveram.</li>
+        </ul>
+        <h2>Perguntas de preparo</h2>
+        <ol>
+            <li>Por que esta arquitetura e não uma alternativa mais simples?</li>
+            <li>O que acontece se duas pessoas salvarem o mesmo dado ao mesmo tempo?</li>
+            <li>Como a senha é guardada, e o que o token carrega?</li>
+            <li>O que o teste automatizado garante e o que ele não cobre?</li>
+            <li>Se a API cair agora, como vocês ficam sabendo e o que fazem?</li>
+            <li>Qual decisão vocês mudariam se começassem hoje?</li>
+            <li>Qual o limite do plano gratuito e quando ele deixaria de servir?</li>
+        </ol>
+        <h2>PROXIMOS-PASSOS.md</h2>
+        <pre>&lt;!-- Início: PROXIMOS-PASSOS.md — plano de 90 dias depois da formatura --&gt;
+# Próximos 90 dias
+
+## Críticas recebidas na banca
+- 
+- 
+
+## Evolução do projeto
+| Mês | Meta verificável                                       | Pronto quando                       |
+|-----|--------------------------------------------------------|-------------------------------------|
+| 1   | Lembrete por e-mail um dia antes do horário            | PR mesclado e testado em produção   |
+| 2   | Relatório mensal de ocupação                           | Tela publicada com dados de exemplo |
+| 3   | Cobertura de testes nas rotas de remarcação            | Esteira com os novos testes verdes  |
+
+## Estudo
+| Mês | Tema                         | Evidência pública                         |
+|-----|------------------------------|-------------------------------------------|
+| 1   | TypeScript na API            | Branch com a migração de uma rota         |
+| 2   | Testes de ponta a ponta      | Um fluxo coberto e rodando na esteira     |
+| 3   | Escrita técnica              | Um artigo sobre um ADR do projeto         |
+
+## Revisão
+Data da revisão do plano: ___/___/______
+&lt;!-- Fim de PROXIMOS-PASSOS.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A rubrica avalia raciocínio e comunicação tanto quanto código: um projeto menor bem defendido pontua mais que um grande sem explicação.</li>
+            <li>Cada meta do plano tem um Pronto quando: sem isso, o plano vira lista de desejos.</li>
+            <li>As críticas da banca entram no topo do plano: o feedback vira ação, não só nota.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

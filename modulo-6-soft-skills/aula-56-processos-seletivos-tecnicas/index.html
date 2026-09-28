@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 56 | ByteClass</title>
+    <meta name="description" content="Esta ementa prepara o aluno para as três formas mais comuns de avaliação técnica — teste para casa, live coding e conversa sobre o próprio projeto — com foco em tornar o raciocínio visível.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 56: Processos Seletivos em Tech: Entrevistas Técnicas</h1>
+        <p>Módulo 6: Soft Skills, Carreira e Inteligência Emocional — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: TESTE TÉCNICO PARA CASA: ENTREGAR COMO SE FOSSE PRODUÇÃO -->
+            <div class="card" id="card-1">
+                <h2>📨 1. Teste Técnico para Casa: Entregar Como se Fosse Produção</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A candidata fictícia Bianca Moura recebeu da empresa fictícia Rota Log um teste técnico: uma API de rastreamento de encomendas, com prazo de cinco dias. Ela entregou funcionando, mas foi reprovada com o comentário 'difícil de avaliar'. O que um avaliador procura num teste para casa além de o código rodar?</p>
+                </div>
+
+                <p>O teste para casa simula o trabalho real: alguém vai abrir o repositório, tentar rodar e revisar o código como numa revisão de Pull Request. Por isso contam tanto a clareza do README, os commits e as decisões registradas quanto a solução em si. Os guias de revisão de código do Google descrevem exatamente o que um revisor olha, e servem como checklist para quem entrega.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/developer/" target="_blank" rel="noopener noreferrer">📄 Guia do autor de mudanças — Google Engineering Practices</a>
+                        <span class="link-desc">Como preparar uma entrega pequena, bem descrita e fácil de revisar.</span>
+                    </li>
+                    <li>
+                        <a href="https://google.github.io/eng-practices/review/reviewer/standard.html" target="_blank" rel="noopener noreferrer">📄 O padrão do revisor — Google Engineering Practices</a>
+                        <span class="link-desc">O critério que o avaliador usa: a entrega melhora o sistema, mesmo sem ser perfeita?</span>
+                    </li>
+                    <li>
+                        <a href="https://adr.github.io/" target="_blank" rel="noopener noreferrer">📄 Architectural Decision Records — ADR</a>
+                        <span class="link-desc">Registrar em poucas linhas por que você escolheu cada caminho.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/config" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App — Configuração</a>
+                        <span class="link-desc">Configuração fora do código: o erro de segredo no repositório reprova testes com frequência.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=n2h5HGfH2OE" target="_blank" rel="noopener noreferrer">▶️ Teste Técnico de JÚNIOR: 5 Coisas que Você PRECISA Saber Para Ser Aprovado!</a>
+                            <span class="link-desc">O Novo Programador · 18:33 — Aponta o que avaliadores observam num teste técnico de júnior e como se preparar.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=T6mnQQwGRjc" target="_blank" rel="noopener noreferrer">▶️ Resolvendo um TESTE TÉCNICO REAL para uma VAGA de Júnior em 2026</a>
+                            <span class="link-desc">Dev Victor Navarro · 21:57 — Resolve um teste técnico real de vaga júnior, mostrando o processo do início à entrega.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Entregando um Teste Técnico Simulado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha um enunciado de teste técnico de até quatro horas (o instrutor fornece um) e crie um repositório novo e vazio para ele.</li>
+                            <li><strong>Lendo o Enunciado:</strong> separe em lista o que é obrigatório, o que é diferencial e o que não foi especificado.</li>
+                            <li><strong>Perguntas por Escrito:</strong> escreva as dúvidas que enviaria à empresa e, para cada uma, a suposição que você vai adotar se não houver resposta.</li>
+                            <li><strong>Planejando o Tempo:</strong> divida o prazo em blocos: estrutura, requisitos obrigatórios, testes, README e revisão final.</li>
+                            <li><strong>Commits Pequenos:</strong> faça um commit por passo lógico, com mensagem que diga o que mudou e por quê.</li>
+                            <li><strong>Erro Provocado:</strong> deixe uma chave de exemplo escrita direto no código, rode o projeto e depois peça a um colega para revisar com o padrão do revisor do Google; observe o que ele aponta primeiro.</li>
+                            <li><strong>Ajustando:</strong> mova a configuração para variáveis de ambiente e documente as variáveis num <code>.env.example</code>.</li>
+                            <li><strong>Registrando Decisões:</strong> escreva no README uma seção <strong>Decisões e Suposições</strong> com três itens no formato de ADR curto.</li>
+                            <li><strong>O que Ficou de Fora:</strong> liste o que você faria com mais tempo; isso mostra noção de prioridade.</li>
+                            <li><strong>Validação e Testes:</strong> clone o repositório numa pasta nova, siga só o README até o projeto rodar e registre quanto tempo levou.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: LIVE CODING: RESOLVER EM VOZ ALTA -->
+            <div class="card" id="card-2">
+                <h2>⌨️ 2. Live Coding: Resolver em Voz Alta</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na entrevista ao vivo da empresa fictícia Maré Pagamentos, o candidato fictício Otávio Reis recebeu o problema 'agrupar transações por cliente e somar os valores'. Ele ficou oito minutos em silêncio digitando, errou um detalhe e não teve tempo de corrigir. O entrevistador disse depois que não conseguiu avaliar o raciocínio. Como conduzir os mesmos trinta minutos de forma que o raciocínio apareça mesmo se o código não ficar perfeito?</p>
+                </div>
+
+                <p>No live coding, o entrevistador avalia o processo tanto quanto o resultado: como você entende o problema, que casos considera, como testa e como reage ao erro. Pensar em voz alta é uma técnica conhecida de pesquisa com usuários, e a lógica é a mesma: tornar visível o que está na cabeça. Escrever a solução mais simples que funciona antes de otimizar evita ficar sem nada no fim do tempo.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/thinking-aloud-the-1-usability-tool/" target="_blank" rel="noopener noreferrer">📄 Pensar em voz alta — Nielsen Norman Group</a>
+                        <span class="link-desc">A técnica de verbalizar o raciocínio enquanto se executa uma tarefa, e por que ela funciona.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/Yagni.html" target="_blank" rel="noopener noreferrer">📄 YAGNI — Martin Fowler</a>
+                        <span class="link-desc">Não construir o que o problema ainda não pediu: a primeira solução é a simples.</span>
+                    </li>
+                    <li>
+                        <a href="https://nodejs.org/api/test.html" target="_blank" rel="noopener noreferrer">📄 Executor de testes nativo — Node.js</a>
+                        <span class="link-desc">Escrever dois ou três testes rápidos para provar a solução durante a entrevista.</span>
+                    </li>
+                    <li>
+                        <a href="https://refactoring.guru/pt-br/refactoring/smells" target="_blank" rel="noopener noreferrer">📄 Code Smells — Refactoring Guru</a>
+                        <span class="link-desc">Os sinais de código difícil de manter que o entrevistador percebe mesmo sem comentar.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9duht5jjPpQ" target="_blank" rel="noopener noreferrer">▶️ Entrevistas: Como ir bem na etapa de live code | LIVE Coding like a PRO</a>
+                            <span class="link-desc">Mario Souto - Dev Soutinho · 8:23 — Dá dicas para ir bem no live coding, pensando em voz alta durante a resolução.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=i__U_n3raZY" target="_blank" rel="noopener noreferrer">▶️ Live Coding na Entrevista de Emprego?</a>
+                            <span class="link-desc">Programadores Visie · 17:36 — Discute como funciona o live coding em entrevistas e o que o entrevistador avalia.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Simulado de Live Coding em Duplas</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> forme duplas, crie o arquivo <code>solucao.js</code> e deixe um cronômetro de 30 minutos visível.</li>
+                            <li><strong>Repetindo o Problema:</strong> quem resolve repete o enunciado com as próprias palavras antes de escrever qualquer linha.</li>
+                            <li><strong>Perguntando os Limites:</strong> pergunte o formato da entrada, o que fazer com lista vazia e se a ordem do resultado importa.</li>
+                            <li><strong>Exemplo à Mão:</strong> escreva um exemplo pequeno de entrada e a saída esperada como comentário no início do arquivo.</li>
+                            <li><strong>Solução Simples:</strong> implemente primeiro com um laço e um objeto acumulador, narrando cada decisão.</li>
+                            <li><strong>Erro Provocado:</strong> rode com uma transação cujo valor venha como texto, por exemplo <code>'10.50'</code>, observe a concatenação no lugar da soma e explique em voz alta o que aconteceu.</li>
+                            <li><strong>Ajustando:</strong> converta o valor com <code>Number()</code> e decida em voz alta o que fazer se a conversão falhar.</li>
+                            <li><strong>Testando:</strong> escreva dois testes com <code>node:test</code>: um caso comum e a lista vazia.</li>
+                            <li><strong>Melhorando se Sobrar Tempo:</strong> só depois de passar nos testes, proponha a versão com <code>reduce</code> e compare legibilidade.</li>
+                            <li><strong>Validação e Testes:</strong> a dupla troca de papel; quem entrevistou anota em que momento o raciocínio ficou invisível e os dois registram no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: CONVERSA TÉCNICA SOBRE O SEU PROJETO -->
+            <div class="card" id="card-3">
+                <h2>🏗️ 3. Conversa Técnica sobre o Seu Projeto</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na última etapa da empresa fictícia Trilha Educação, o tech lead pediu à candidata fictícia Sofia Andrade: 'me explique a arquitetura do seu projeto e o que você mudaria se ele tivesse dez mil usuários'. Ela descreveu as telas, mas não soube explicar por que escolheu aquela estrutura. Como preparar uma explicação de projeto que responda por que, e não só o quê?</p>
+                </div>
+
+                <p>Em vagas júnior, a conversa de arquitetura quase sempre parte de um projeto do próprio candidato. O entrevistador quer ver se você entende as camadas, as decisões e os limites do que construiu, e se sabe raciocinar sobre o próximo passo sem inventar complexidade. Os artigos de Martin Fowler sobre camadas e sobre começar por um monólito dão vocabulário para essa conversa.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://martinfowler.com/bliki/PresentationDomainDataLayering.html" target="_blank" rel="noopener noreferrer">📄 Camadas de apresentação, domínio e dados — Martin Fowler</a>
+                        <span class="link-desc">O vocabulário básico para descrever como o seu projeto está dividido.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/bliki/MonolithFirst.html" target="_blank" rel="noopener noreferrer">📄 Monolith First — Martin Fowler</a>
+                        <span class="link-desc">Por que começar simples é uma decisão defensável, e quando deixa de ser.</span>
+                    </li>
+                    <li>
+                        <a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener noreferrer">📄 Guia de Arquitetura de Software — Martin Fowler</a>
+                        <span class="link-desc">O que conta como decisão de arquitetura e por que ela é difícil de mudar depois.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App</a>
+                        <span class="link-desc">Doze critérios práticos para discutir como o projeto se comportaria em produção.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9qo7Gu1mfvM" target="_blank" rel="noopener noreferrer">▶️ Dicas para ENTREVISTA TÉCNICA de programação ( Guia programador )</a>
+                            <span class="link-desc">Attekita Dev · 9:56 — Dá dicas para entrevistas técnicas de programação, incluindo como explicar seu código.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ogqtSovsLYw" target="_blank" rel="noopener noreferrer">▶️ Entrevista técnica de back-end [DICAS]</a>
+                            <span class="link-desc">Ayrton Teshima - Programador a Bordo · 17:12 — Apresenta dicas para entrevistas técnicas de back-end e as perguntas comuns sobre projetos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Roteiro de Explicação do Projeto em Cinco Minutos</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> escolha o projeto mais completo do seu portfólio e abra o repositório e a versão publicada.</li>
+                            <li><strong>Desenho em Caixas:</strong> desenhe no papel as partes do sistema: navegador, frontend, API, banco e serviços externos, com setas de comunicação.</li>
+                            <li><strong>Nomeando as Camadas:</strong> marque no desenho onde fica apresentação, domínio e dados.</li>
+                            <li><strong>Três Decisões:</strong> escreva três decisões que você tomou e, para cada uma, a alternativa que descartou e o motivo.</li>
+                            <li><strong>Um Limite Conhecido:</strong> escreva uma limitação real do projeto e como você a descobriu.</li>
+                            <li><strong>Erro Provocado:</strong> explique o projeto para um colega em cinco minutos começando pelas telas; peça que ele pergunte 'por quê' a cada frase e note onde você trava.</li>
+                            <li><strong>Ajustando a Ordem:</strong> reorganize a fala: problema, desenho, decisões, limite e próximo passo.</li>
+                            <li><strong>Cenário de Escala:</strong> escreva o que mudaria primeiro com dez vezes mais usuários, usando um dos doze fatores como argumento.</li>
+                            <li><strong>Perguntas Difíceis:</strong> liste três perguntas que você teme e escreva a resposta honesta, inclusive 'não sei, e eu investigaria assim'.</li>
+                            <li><strong>Validação e Testes:</strong> grave a explicação de cinco minutos, assista e registre no README o tempo gasto em cada parte.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 60 | ByteClass</title>
+    <meta name="description" content="Esta ementa fecha a trilha com a auditoria do portfólio, um plano de 90 dias com metas verificáveis e a apresentação à banca de formatura avaliada por rubrica.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 60: Formatura, Conclusão de Trilha e Próximos Passos no Ecossistema</h1>
+        <p>Módulo 6: Soft Skills, Carreira e Inteligência Emocional — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: AUDITORIA FINAL DO PORTFÓLIO -->
+            <div class="card" id="card-1">
+                <h2>🗂️ 1. Auditoria Final do Portfólio</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A turma fictícia da ByteClass chega à formatura com uma exigência: cada aluno apresenta à banca um portfólio que qualquer recrutador consiga avaliar sozinho em dez minutos. Na revisão prévia, o instrutor abriu o portfólio do aluno fictício Renan Costa e encontrou link quebrado, projeto sem README e uma chave de API no histórico. O que conferir, em que ordem, para que nada disso chegue à banca?</p>
+                </div>
+
+                <p>Ao longo da trilha o aluno produziu dezenas de artefatos; a formatura é o momento de escolher, corrigir e apresentar os que representam o nível atual. A auditoria usa critérios que já apareceram nos módulos anteriores: projeto publicado e funcionando, README que se executa, configuração fora do código, acessibilidade básica e segurança. É a revisão de qualidade aplicada ao próprio trabalho.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://docs.github.com/pt/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener noreferrer">📄 Criando um site com GitHub Pages — GitHub Docs</a>
+                        <span class="link-desc">Garantir que cada projeto de frontend esteja publicado e acessível por link.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank" rel="noopener noreferrer">📄 Referência rápida da WCAG 2.1 — W3C</a>
+                        <span class="link-desc">Os critérios de acessibilidade para a checagem final das páginas.</span>
+                    </li>
+                    <li>
+                        <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">📄 OWASP Top 10</a>
+                        <span class="link-desc">Os riscos de segurança mais comuns para revisar nos projetos com backend.</span>
+                    </li>
+                    <li>
+                        <a href="https://12factor.net/pt_br/config" target="_blank" rel="noopener noreferrer">📄 The Twelve-Factor App — Configuração</a>
+                        <span class="link-desc">Confirmar que nenhum segredo ficou no código ou no histórico.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=d8MReiqqElE" target="_blank" rel="noopener noreferrer">▶️ Analisando PORTFÓLIOS dos Inscritos (+ Dicas Práticas para Criar seu Portfólio)</a>
+                            <span class="link-desc">Attekita Dev · 26:26 — Analisa portfólios reais e dá dicas práticas para melhorar os projetos apresentados.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=G9PdrEnQiAQ" target="_blank" rel="noopener noreferrer">▶️ COMO CRIAR UM PORTFÓLIO DE PROGRAMAÇÃO 🤩</a>
+                            <span class="link-desc">Código CEO · 21:54 — Mostra como montar um portfólio de programação escolhendo e apresentando os projetos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Checklist de Entrega do Portfólio de Formatura</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o repositório ou a página <code>portfolio-formatura</code> e liste todos os projetos da trilha com link do repositório e link publicado.</li>
+                            <li><strong>Escolhendo os Projetos:</strong> selecione de três a seis projetos que provam o posicionamento definido na aula 54.</li>
+                            <li><strong>Links:</strong> abra cada link publicado numa janela anônima e no celular, anotando os que não carregam.</li>
+                            <li><strong>README:</strong> confira em cada projeto as seções problema, como rodar, tecnologias, decisões e link publicado.</li>
+                            <li><strong>Segredos:</strong> revise o histórico dos projetos com backend em busca de chaves; revogue as encontradas e mova para variáveis de ambiente.</li>
+                            <li><strong>Acessibilidade:</strong> verifique contraste, textos alternativos e navegação por teclado em cada página publicada.</li>
+                            <li><strong>Erro Provocado:</strong> peça a um colega que avalie o portfólio sem nenhuma explicação sua, cronometrando dez minutos, e anote onde ele desistiu.</li>
+                            <li><strong>Ajustando:</strong> corrija primeiro o ponto em que o colega desistiu, antes de qualquer melhoria visual.</li>
+                            <li><strong>Página de Entrada:</strong> escreva no topo do portfólio a versão de três linhas do seu posicionamento e a ordem sugerida de leitura.</li>
+                            <li><strong>Validação e Testes:</strong> marque cada item do checklist com data, repita o teste dos dez minutos com outra pessoa e registre o resultado no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: PLANO DOS PRÓXIMOS 90 DIAS -->
+            <div class="card" id="card-2">
+                <h2>🗓️ 2. Plano dos Próximos 90 Dias</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Ao terminar a trilha, a aluna fictícia Débora Nunes se sente pronta e ao mesmo tempo perdida: sem aula marcada, ela não sabe se estuda algo novo, se envia currículos ou se melhora projetos antigos. Nas primeiras duas semanas não fez nenhum dos três. Como transformar 'continuar estudando e procurar vaga' num plano com metas, ritmo e revisão?</p>
+                </div>
+
+                <p>O fim da trilha tira a estrutura externa que organizava a semana. Um plano de 90 dias devolve essa estrutura: poucas metas verificáveis, divididas em ciclos curtos, com um quadro visível e uma revisão marcada. Os dados de tecnologia do Stack Overflow Survey e o panorama de emprego do Novo CAGED ajudam a escolher o que estudar, e o método Kanban ajuda a limitar o que está em andamento.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://survey.stackoverflow.co/2025/technology" target="_blank" rel="noopener noreferrer">📄 Tecnologias — Stack Overflow Survey 2025</a>
+                        <span class="link-desc">Onde conferir o que está sendo usado antes de escolher o próximo estudo.</span>
+                    </li>
+                    <li>
+                        <a href="https://survey.stackoverflow.co/2025/ai" target="_blank" rel="noopener noreferrer">📄 IA — Stack Overflow Survey 2025</a>
+                        <span class="link-desc">Como ferramentas de IA estão entrando na rotina e o que vale aprender sobre elas.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/novo-caged" target="_blank" rel="noopener noreferrer">📄 O que é o Novo CAGED — Ministério do Trabalho e Emprego</a>
+                        <span class="link-desc">Acompanhar o mercado formal com dado oficial durante a busca.</span>
+                    </li>
+                    <li>
+                        <a href="https://kanbanguides.org/" target="_blank" rel="noopener noreferrer">📄 Guia Kanban — kanbanguides.org</a>
+                        <span class="link-desc">Limitar o trabalho em andamento para não abrir cinco frentes e terminar nenhuma.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=9tFmklPl3oo" target="_blank" rel="noopener noreferrer">▶️ Como APRENDER A PROGRAMAR: monte um PLANO DE ESTUDOS passo a passo</a>
+                            <span class="link-desc">Attekita Dev · 20:50 — Mostra como montar um plano de estudos em programação passo a passo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=R-q5KRHDp5M" target="_blank" rel="noopener noreferrer">▶️ O plano realista para sair do zero na programação</a>
+                            <span class="link-desc">Área Tech Brasil · 11:55 — Apresenta um plano realista de estudos com metas e etapas para evoluir na programação.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Plano de 90 Dias com Quadro e Revisões</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie um quadro com as colunas <strong>A fazer</strong>, <strong>Fazendo</strong> e <strong>Feito</strong> e o arquivo <code>plano-90-dias.md</code>.</li>
+                            <li><strong>Três Frentes:</strong> defina uma meta verificável para cada frente: candidaturas, estudo e portfólio.</li>
+                            <li><strong>Metas Mensuráveis:</strong> reescreva cada meta com número e prazo, por exemplo <em>enviar 30 candidaturas personalizadas até o dia 90</em>.</li>
+                            <li><strong>Ritmo Semanal:</strong> reserve na agenda os blocos fixos da semana para cada frente, com horário.</li>
+                            <li><strong>Escolhendo o Estudo:</strong> escolha um único tema de estudo com base nas vagas coletadas e nos dados do Survey.</li>
+                            <li><strong>Erro Provocado:</strong> coloque dez cartões na coluna Fazendo ao mesmo tempo e, após uma semana, conte quantos foram concluídos.</li>
+                            <li><strong>Ajustando:</strong> defina um limite de no máximo três cartões em Fazendo, um por frente.</li>
+                            <li><strong>Revisões:</strong> marque na agenda revisões nos dias 30, 60 e 90, com as perguntas que vai responder em cada uma.</li>
+                            <li><strong>Continuidade no Ecossistema:</strong> anote os canais da ByteClass e do ecossistema learnTECH que você vai acompanhar e como pretende participar.</li>
+                            <li><strong>Validação e Testes:</strong> apresente o plano a um colega, ajuste o que ele considerar vago e registre a versão final no README.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: APRESENTAÇÃO DE FORMATURA E BANCA -->
+            <div class="card" id="card-3">
+                <h2>🎓 3. Apresentação de Formatura e Banca</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na banca de formatura da ByteClass, cada aluno tem sete minutos para apresentar quem é como profissional, um projeto e o próximo passo. No ensaio, o aluno fictício Samuel Freitas gastou seis minutos mostrando telas e ficou sem tempo para responder às perguntas. Como organizar sete minutos para que a banca saia sabendo para qual vaga ele serve e por quê?</p>
+                </div>
+
+                <p>A apresentação de formatura junta tudo o que foi trabalhado no módulo: posicionamento, história de projeto, explicação técnica e plano. Ela é avaliada por uma rubrica conhecida com antecedência, o que permite ensaiar contra critérios e não contra impressão. Slides legíveis e com contraste adequado fazem parte da clareza, e o retorno da banca é tratado como feedback, separando intenção de impacto.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">📄 Contraste mínimo — W3C WAI</a>
+                        <span class="link-desc">O critério de contraste que também vale para slides projetados.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.nngroup.com/articles/visual-hierarchy-ux-definition/" target="_blank" rel="noopener noreferrer">📄 Hierarquia visual — Nielsen Norman Group</a>
+                        <span class="link-desc">Como organizar cada slide para que a mensagem principal seja lida primeiro.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-feedbacktip/" target="_blank" rel="noopener noreferrer">📄 Intenção e impacto — Center for Creative Leadership</a>
+                        <span class="link-desc">Receber o retorno da banca separando o que você quis dizer do que foi entendido.</span>
+                    </li>
+                    <li>
+                        <a href="https://amycedmondson.com/psychological-safety/" target="_blank" rel="noopener noreferrer">📄 Segurança Psicológica — Amy Edmondson</a>
+                        <span class="link-desc">Por que a banca é um espaço para errar e ajustar antes do mercado.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=tkPRMNbLsY4" target="_blank" rel="noopener noreferrer">▶️ Como fazer uma apresentação PODEROSA | com Joel Jota</a>
+                            <span class="link-desc">Joel Jota · 9:38 — Dá dicas para estruturar e conduzir uma apresentação com clareza e segurança.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=GmShuStTFcE" target="_blank" rel="noopener noreferrer">▶️ Como fazer BOAS apresentações de TRABALHOS em sala de aula (Faculdade, Escola, TCC…)</a>
+                            <span class="link-desc">Me Julga - Cíntia Brunelli · 5:27 — Reúne dicas para apresentar trabalhos diante de uma banca ou turma.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Roteiro de Sete Minutos e Ensaio com Rubrica</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie o arquivo <code>apresentacao.md</code> e uma apresentação com no máximo sete slides.</li>
+                            <li><strong>Divisão do Tempo:</strong> reserve um minuto para quem você é, três para o projeto, um para o plano de 90 dias e dois para perguntas.</li>
+                            <li><strong>Abertura:</strong> use a versão de trinta segundos do seu posicionamento, sem ler.</li>
+                            <li><strong>Projeto:</strong> apresente o projeto na ordem problema, desenho, decisões, limite e próximo passo, como na aula 56.</li>
+                            <li><strong>Slides:</strong> deixe uma ideia por slide, com título que diga a conclusão e contraste conferido pelo critério da W3C.</li>
+                            <li><strong>Erro Provocado:</strong> ensaie mostrando todas as telas do projeto antes de explicar o problema e cronometre quanto tempo sobra para as perguntas.</li>
+                            <li><strong>Ajustando:</strong> troque as telas por uma demonstração de um único fluxo, com no máximo um minuto.</li>
+                            <li><strong>Perguntas Prováveis:</strong> liste cinco perguntas que a banca pode fazer e ensaie respostas de até trinta segundos.</li>
+                            <li><strong>Ensaio com Rubrica:</strong> ensaie para um colega que pontua com a rubrica da atividade e anote a nota de cada critério.</li>
+                            <li><strong>Validação e Testes:</strong> faça o ensaio final cronometrado, confira que ficaram dois minutos para perguntas e registre no README o que mudou entre o primeiro e o último ensaio.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

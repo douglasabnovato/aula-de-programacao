@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separando a Área Administrativa com lazy e Suspense — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Separando a Área Administrativa com lazy e Suspense — Resposta</h1>
+        <p class="subtitulo">Aula 19 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O Cine Clube Paraibuna entregando primeiro só a programação: a página de administração vira um arquivo JavaScript separado, baixado apenas quando alguém a abre, com uma mensagem de carregamento enquanto isso. Os cartazes usam <code>loading="lazy"</code> e dimensões fixas para não empurrar o layout. No demo, o atraso do download é simulado com 1,2 s.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.linha { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+td, th { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); }
+code { color: var(--primary); }
+ul.check { list-style: none; padding: 0; }
+ul.check li { padding: 4px 0; }
+.barra { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.barra div { height: 100%; background: var(--primary); transition: width .2s; }
+.sessoes { list-style: none; padding: 0; max-height: 320px; overflow: auto; }
+.sessoes li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.claro-19 { background: #F4F4F4; color: #111; }
+.claro-19 .card { background: #FFF; color: #111; }
+.metricas { font-size: .85rem; color: var(--muted); }
+.claro-19 .metricas { color: #555; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState, useMemo, useCallback, memo, useRef, lazy, Suspense } = React;
+
+// Início: src/pages/Admin.jsx — página pesada que só a equipe usa
+// Painel administrativo com relatório de público; em projeto real traria editor e gráficos
+function AdminPagina() {
+  const publico = [
+    { filme: &#x27;Noite no Paraibuna&#x27;, ingressos: 312 },
+    { filme: &#x27;Serra Azul&#x27;, ingressos: 198 },
+    { filme: &#x27;Café com Neblina&#x27;, ingressos: 254 },
+  ];
+  const maior = Math.max(...publico.map((p) =&gt; p.ingressos));
+  return (
+    &lt;section className=&quot;card&quot;&gt;
+      &lt;h2&gt;Administração&lt;/h2&gt;
+      {publico.map((p) =&gt; (
+        &lt;div key={p.filme}&gt;
+          &lt;span&gt;{p.filme} — {p.ingressos}&lt;/span&gt;
+          &lt;div className=&quot;barra&quot;&gt;&lt;div style={{ width: `${(p.ingressos / maior) * 100}%` }} /&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/section&gt;
+  );
+}
+// Fim de Admin.jsx
+
+// Início: src/App.jsx — programação carregada de início e administração sob demanda
+
+const Admin = lazy(() =&gt; new Promise((resolver) =&gt; setTimeout(() =&gt; resolver({ default: AdminPagina }), 1200)));
+
+// Cartaz com carregamento adiado e dimensões reservadas (imagem SVG gerada no próprio código)
+function Cartaz({ titulo }) {
+  const svg = `&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;160&quot; height=&quot;240&quot;&gt;&lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;#30363D&quot;/&gt;&lt;text x=&quot;50%&quot; y=&quot;50%&quot; fill=&quot;#00FF66&quot; font-size=&quot;14&quot; text-anchor=&quot;middle&quot;&gt;${titulo}&lt;/text&gt;&lt;/svg&gt;`;
+  return (
+    &lt;img src={`data:image/svg+xml,${encodeURIComponent(svg)}`} alt={`Cartaz de ${titulo}`}
+      width=&quot;160&quot; height=&quot;240&quot; loading=&quot;lazy&quot; style={{ borderRadius: 8 }} /&gt;
+  );
+}
+
+// Componente raiz: a página de administração só é baixada quando aberta
+function App() {
+  const [pagina, setPagina] = useState(&#x27;programacao&#x27;);
+
+  return (
+    &lt;&gt;
+      &lt;div className=&quot;linha&quot;&gt;
+        &lt;button className={pagina === &#x27;programacao&#x27; ? &#x27;&#x27; : &#x27;secundario&#x27;} onClick={() =&gt; setPagina(&#x27;programacao&#x27;)}&gt;Programação&lt;/button&gt;
+        &lt;button className={pagina === &#x27;admin&#x27; ? &#x27;&#x27; : &#x27;secundario&#x27;} onClick={() =&gt; setPagina(&#x27;admin&#x27;)}&gt;Administração&lt;/button&gt;
+      &lt;/div&gt;
+      {pagina === &#x27;programacao&#x27; &amp;&amp; (
+        &lt;section className=&quot;card&quot;&gt;
+          &lt;h2&gt;Em cartaz&lt;/h2&gt;
+          &lt;div className=&quot;linha&quot;&gt;
+            &lt;Cartaz titulo=&quot;Serra Azul&quot; /&gt;
+            &lt;Cartaz titulo=&quot;Café com Neblina&quot; /&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      )}
+      {pagina === &#x27;admin&#x27; &amp;&amp; (
+        &lt;Suspense fallback={&lt;p className=&quot;card&quot;&gt;Carregando administração...&lt;/p&gt;}&gt;
+          &lt;Admin /&gt;
+        &lt;/Suspense&gt;
+      )}
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/pages/Admin.jsx</h2>
+        <pre>// Início: src/pages/Admin.jsx — página pesada que só a equipe usa
+// Painel administrativo com relatório de público; em projeto real traria editor e gráficos
+export default function Admin() {
+  const publico = [
+    { filme: 'Noite no Paraibuna', ingressos: 312 },
+    { filme: 'Serra Azul', ingressos: 198 },
+    { filme: 'Café com Neblina', ingressos: 254 },
+  ];
+  const maior = Math.max(...publico.map((p) =&gt; p.ingressos));
+  return (
+    &lt;section className="card"&gt;
+      &lt;h2&gt;Administração&lt;/h2&gt;
+      {publico.map((p) =&gt; (
+        &lt;div key={p.filme}&gt;
+          &lt;span&gt;{p.filme} — {p.ingressos}&lt;/span&gt;
+          &lt;div className="barra"&gt;&lt;div style={{ width: `${(p.ingressos / maior) * 100}%` }} /&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/section&gt;
+  );
+}
+// Fim de Admin.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — programação carregada de início e administração sob demanda
+import { lazy, Suspense, useState } from 'react';
+
+const Admin = lazy(() =&gt; import('./pages/Admin.jsx'));
+
+// Cartaz com carregamento adiado e dimensões reservadas (imagem SVG gerada no próprio código)
+function Cartaz({ titulo }) {
+  const svg = `&lt;svg xmlns="http://www.w3.org/2000/svg" width="160" height="240"&gt;&lt;rect width="100%" height="100%" fill="#30363D"/&gt;&lt;text x="50%" y="50%" fill="#00FF66" font-size="14" text-anchor="middle"&gt;${titulo}&lt;/text&gt;&lt;/svg&gt;`;
+  return (
+    &lt;img src={`data:image/svg+xml,${encodeURIComponent(svg)}`} alt={`Cartaz de ${titulo}`}
+      width="160" height="240" loading="lazy" style={{ borderRadius: 8 }} /&gt;
+  );
+}
+
+// Componente raiz: a página de administração só é baixada quando aberta
+export default function App() {
+  const [pagina, setPagina] = useState('programacao');
+
+  return (
+    &lt;&gt;
+      &lt;div className="linha"&gt;
+        &lt;button className={pagina === 'programacao' ? '' : 'secundario'} onClick={() =&gt; setPagina('programacao')}&gt;Programação&lt;/button&gt;
+        &lt;button className={pagina === 'admin' ? '' : 'secundario'} onClick={() =&gt; setPagina('admin')}&gt;Administração&lt;/button&gt;
+      &lt;/div&gt;
+      {pagina === 'programacao' &amp;&amp; (
+        &lt;section className="card"&gt;
+          &lt;h2&gt;Em cartaz&lt;/h2&gt;
+          &lt;div className="linha"&gt;
+            &lt;Cartaz titulo="Serra Azul" /&gt;
+            &lt;Cartaz titulo="Café com Neblina" /&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      )}
+      {pagina === 'admin' &amp;&amp; (
+        &lt;Suspense fallback={&lt;p className="card"&gt;Carregando administração...&lt;/p&gt;}&gt;
+          &lt;Admin /&gt;
+        &lt;/Suspense&gt;
+      )}
+    &lt;/&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie os dois arquivos num projeto Vite + React</li>
+            <li><code>npm run build</code> e veja em <code>dist/assets</code> um arquivo separado para o Admin</li>
+            <li><code>npm run preview</code> com a aba Rede aberta: o arquivo do Admin só aparece ao clicar em Administração</li>
+            <li>Rode o Lighthouse no modo celular e compare a nota de desempenho com a versão sem <code>lazy</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Sem o <code>Suspense</code> em volta, o React não tem o que mostrar enquanto o arquivo chega e interrompe a renderização com erro.</li>
+            <li>O <code>import()</code> dinâmico é o que faz o Vite gerar o arquivo separado; um <code>import</code> no topo juntaria tudo de novo.</li>
+            <li><code>width</code> e <code>height</code> na imagem reservam o espaço antes do download e evitam o salto de layout.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

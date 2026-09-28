@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medindo e Otimizando uma Lista de 2.000 Sessões — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Medindo e Otimizando uma Lista de 2.000 Sessões — Resposta</h1>
+        <p class="subtitulo">Aula 19 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A programação do Cine Clube Paraibuna com 2.000 sessões, um filtro que custa 80 ms de propósito e três ajustes medidos: <code>useMemo</code> para o filtro rodar só quando a busca muda, <code>memo</code> na lista e <code>useCallback</code> para a função de favoritar não quebrar o <code>memo</code>. Os contadores na tela mostram quantas vezes o filtro e a lista rodaram.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 2" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+.linha { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+td, th { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); }
+code { color: var(--primary); }
+ul.check { list-style: none; padding: 0; }
+ul.check li { padding: 4px 0; }
+.barra { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.barra div { height: 100%; background: var(--primary); transition: width .2s; }
+.sessoes { list-style: none; padding: 0; max-height: 320px; overflow: auto; }
+.sessoes li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.claro-19 { background: #F4F4F4; color: #111; }
+.claro-19 .card { background: #FFF; color: #111; }
+.metricas { font-size: .85rem; color: var(--muted); }
+.claro-19 .metricas { color: #555; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState, useMemo, useCallback, memo, useRef, lazy, Suspense } = React;
+
+// Início: src/data/sessoes.js — gerador de sessões fictícias e filtro caro de propósito
+const FILMES = [&#x27;Noite no Paraibuna&#x27;, &#x27;O Trem das Onze&#x27;, &#x27;Serra Azul&#x27;, &#x27;Café com Neblina&#x27;, &#x27;A Última Sessão&#x27;, &#x27;Rua Halfeld, 1950&#x27;];
+const SALAS = [&#x27;Sala 1&#x27;, &#x27;Sala 2&#x27;, &#x27;Sala Rosa&#x27;];
+
+// Gera uma lista de sessões com título, sala e horário
+function gerarSessoes(total) {
+  return Array.from({ length: total }, (_, i) =&gt; ({
+    id: i + 1,
+    titulo: `${FILMES[i % FILMES.length]} #${Math.floor(i / FILMES.length) + 1}`,
+    sala: SALAS[i % SALAS.length],
+    horario: `${String(14 + (i % 8)).padStart(2, &#x27;0&#x27;)}:${i % 2 ? &#x27;30&#x27; : &#x27;00&#x27;}`,
+  }));
+}
+
+// Segura a execução pelo tempo indicado, simulando um cálculo pesado
+function esperar(ms) {
+  const fim = performance.now() + ms;
+  let agora = performance.now();
+  while (agora &lt; fim) {
+    agora = performance.now();
+  }
+}
+
+// Filtra as sessões pelo texto, sem diferenciar acentos nem maiúsculas
+function filtrarSessoes(sessoes, busca) {
+  esperar(80);
+  const termo = busca.normalize(&#x27;NFD&#x27;).replace(/[\u0300-\u036f]/g, &#x27;&#x27;).toLowerCase();
+  return sessoes.filter((s) =&gt; s.titulo.normalize(&#x27;NFD&#x27;).replace(/[\u0300-\u036f]/g, &#x27;&#x27;).toLowerCase().includes(termo));
+}
+// Fim de sessoes.js
+
+// Início: src/components/ListaSessoes.jsx — lista memorizada
+
+// Lista que só renderiza de novo quando sessões, favoritos ou onFavoritar mudam
+function ListaSessoes({ sessoes, favoritos, onFavoritar }) {
+  const renders = useRef(0);
+  renders.current += 1;
+  return (
+    &lt;&gt;
+      &lt;p className=&quot;metricas&quot;&gt;Lista renderizada {renders.current} vez(es) · mostrando {Math.min(sessoes.length, 100)} de {sessoes.length}&lt;/p&gt;
+      &lt;ul className=&quot;sessoes&quot;&gt;
+        {sessoes.slice(0, 100).map((s) =&gt; (
+          &lt;li key={s.id}&gt;
+            &lt;span&gt;{s.horario} · {s.titulo} · {s.sala}&lt;/span&gt;
+            &lt;button className=&quot;secundario&quot; onClick={() =&gt; onFavoritar(s.id)}&gt;
+              {favoritos.includes(s.id) ? &#x27;★&#x27; : &#x27;☆&#x27;}
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/&gt;
+  );
+}
+
+const ListaSessoesMemo = memo(ListaSessoes);
+// Fim de ListaSessoes.jsx
+
+// Início: src/App.jsx — busca com useMemo e callback estável
+
+const SESSOES = gerarSessoes(2000);
+
+// Página de programação: o filtro caro só roda quando a busca muda
+function App() {
+  const [busca, setBusca] = useState(&#x27;&#x27;);
+  const [claro, setClaro] = useState(false);
+  const [favoritos, setFavoritos] = useState([]);
+  const execucoes = useRef(0);
+
+  const visiveis = useMemo(() =&gt; {
+    execucoes.current += 1;
+    return filtrarSessoes(SESSOES, busca);
+  }, [busca]);
+
+  const favoritar = useCallback((id) =&gt; {
+    setFavoritos((atuais) =&gt; (atuais.includes(id) ? atuais.filter((f) =&gt; f !== id) : [...atuais, id]));
+  }, []);
+
+  return (
+    &lt;div className={claro ? &#x27;claro-19&#x27; : &#x27;&#x27;} style={{ padding: 12, borderRadius: 12 }}&gt;
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;Programação — Cine Clube Paraibuna&lt;/h2&gt;
+        &lt;div className=&quot;linha&quot;&gt;
+          &lt;input value={busca} onChange={(e) =&gt; setBusca(e.target.value)} placeholder=&quot;Buscar filme&quot; aria-label=&quot;Buscar filme&quot; /&gt;
+          &lt;button className=&quot;secundario&quot; onClick={() =&gt; setClaro(!claro)}&gt;Trocar tema&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p className=&quot;metricas&quot;&gt;Filtro executado {execucoes.current} vez(es) · favoritos: {favoritos.length}&lt;/p&gt;
+        &lt;ListaSessoesMemo sessoes={visiveis} favoritos={favoritos} onFavoritar={favoritar} /&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de App.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/data/sessoes.js</h2>
+        <pre>// Início: src/data/sessoes.js — gerador de sessões fictícias e filtro caro de propósito
+const FILMES = ['Noite no Paraibuna', 'O Trem das Onze', 'Serra Azul', 'Café com Neblina', 'A Última Sessão', 'Rua Halfeld, 1950'];
+const SALAS = ['Sala 1', 'Sala 2', 'Sala Rosa'];
+
+// Gera uma lista de sessões com título, sala e horário
+export function gerarSessoes(total) {
+  return Array.from({ length: total }, (_, i) =&gt; ({
+    id: i + 1,
+    titulo: `${FILMES[i % FILMES.length]} #${Math.floor(i / FILMES.length) + 1}`,
+    sala: SALAS[i % SALAS.length],
+    horario: `${String(14 + (i % 8)).padStart(2, '0')}:${i % 2 ? '30' : '00'}`,
+  }));
+}
+
+// Segura a execução pelo tempo indicado, simulando um cálculo pesado
+function esperar(ms) {
+  const fim = performance.now() + ms;
+  let agora = performance.now();
+  while (agora &lt; fim) {
+    agora = performance.now();
+  }
+}
+
+// Filtra as sessões pelo texto, sem diferenciar acentos nem maiúsculas
+export function filtrarSessoes(sessoes, busca) {
+  esperar(80);
+  const termo = busca.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return sessoes.filter((s) =&gt; s.titulo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(termo));
+}
+// Fim de sessoes.js</pre>
+        <h2>src/components/ListaSessoes.jsx</h2>
+        <pre>// Início: src/components/ListaSessoes.jsx — lista memorizada
+import { memo, useRef } from 'react';
+
+// Lista que só renderiza de novo quando sessões, favoritos ou onFavoritar mudam
+function ListaSessoes({ sessoes, favoritos, onFavoritar }) {
+  const renders = useRef(0);
+  renders.current += 1;
+  return (
+    &lt;&gt;
+      &lt;p className="metricas"&gt;Lista renderizada {renders.current} vez(es) · mostrando {Math.min(sessoes.length, 100)} de {sessoes.length}&lt;/p&gt;
+      &lt;ul className="sessoes"&gt;
+        {sessoes.slice(0, 100).map((s) =&gt; (
+          &lt;li key={s.id}&gt;
+            &lt;span&gt;{s.horario} · {s.titulo} · {s.sala}&lt;/span&gt;
+            &lt;button className="secundario" onClick={() =&gt; onFavoritar(s.id)}&gt;
+              {favoritos.includes(s.id) ? '★' : '☆'}
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/&gt;
+  );
+}
+
+export default memo(ListaSessoes);
+// Fim de ListaSessoes.jsx</pre>
+        <h2>src/App.jsx</h2>
+        <pre>// Início: src/App.jsx — busca com useMemo e callback estável
+import { useCallback, useMemo, useRef, useState } from 'react';
+import ListaSessoes from './components/ListaSessoes.jsx';
+import { gerarSessoes, filtrarSessoes } from './data/sessoes.js';
+
+const SESSOES = gerarSessoes(2000);
+
+// Página de programação: o filtro caro só roda quando a busca muda
+export default function App() {
+  const [busca, setBusca] = useState('');
+  const [claro, setClaro] = useState(false);
+  const [favoritos, setFavoritos] = useState([]);
+  const execucoes = useRef(0);
+
+  const visiveis = useMemo(() =&gt; {
+    execucoes.current += 1;
+    return filtrarSessoes(SESSOES, busca);
+  }, [busca]);
+
+  const favoritar = useCallback((id) =&gt; {
+    setFavoritos((atuais) =&gt; (atuais.includes(id) ? atuais.filter((f) =&gt; f !== id) : [...atuais, id]));
+  }, []);
+
+  return (
+    &lt;div className={claro ? 'claro-19' : ''} style={{ padding: 12, borderRadius: 12 }}&gt;
+      &lt;section className="card"&gt;
+        &lt;h2&gt;Programação — Cine Clube Paraibuna&lt;/h2&gt;
+        &lt;div className="linha"&gt;
+          &lt;input value={busca} onChange={(e) =&gt; setBusca(e.target.value)} placeholder="Buscar filme" aria-label="Buscar filme" /&gt;
+          &lt;button className="secundario" onClick={() =&gt; setClaro(!claro)}&gt;Trocar tema&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p className="metricas"&gt;Filtro executado {execucoes.current} vez(es) · favoritos: {favoritos.length}&lt;/p&gt;
+        &lt;ListaSessoes sessoes={visiveis} favoritos={favoritos} onFavoritar={favoritar} /&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  );
+}
+// Fim de App.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie os três arquivos num projeto Vite + React</li>
+            <li><code>npm run dev</code> e instale a extensão React Developer Tools</li>
+            <li>Na aba <em>Profiler</em>, grave enquanto digita e enquanto clica em Trocar tema</li>
+            <li>Compare as durações antes e depois de cada otimização</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Trocar o tema não aumenta o contador do filtro nem o da lista: nenhuma das dependências mudou.</li>
+            <li>Com <code>onFavoritar={(id) =&gt; ...}</code> escrito direto no JSX, cada renderização cria uma função nova e o <code>memo</code> da lista deixa de funcionar.</li>
+            <li>Mostrar só 100 itens com <code>slice</code> reduz o DOM; otimização sem medição antes costuma só deixar o código mais difícil de ler.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

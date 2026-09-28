@@ -32,6 +32,10 @@
             <!-- TEMA 1: O QUE É NODE.JS E O MODELO DE EXECUÇÃO -->
             <div class="card" id="card-1">
                 <h2>🟢 1. O que é Node.js e o Modelo de Execução</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O clube de corrida fictício Passo Firme abre as inscrições da prova anual às 8h, e cem pessoas acessam o site no mesmo minuto. Cada inscrição precisa consultar o banco e enviar um e-mail, operações que demoram. Como um único processo JavaScript atende todo mundo sem travar esperando?</p>
+                </div>
                 <p>Antes de escrever um servidor, entender por que o Node existe: JavaScript fora do navegador, um processo só, e um laço de eventos que não trava esperando o disco ou a rede.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=TYuMeH3WE50" target="_blank" rel="noopener noreferrer">▶️ NODEJS EVENT LOOP NA PRÁTICA | SINGLE THREAD REQUEST/RESPONSE</a>
+                            <span class="link-desc">Gbrottas · 19:05 — Mostra na prática como o Node.js atende requisições com uma única thread e o event loop.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=zJ15AIdCKTM" target="_blank" rel="noopener noreferrer">▶️ Como funciona o Event Loop do Node.js</a>
+                            <span class="link-desc">LuizTools · 50:00 — Explica em detalhes como funciona o event loop do Node.js e suas fases.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: EXPRESS, ROTAS E O CICLO REQUISIÇÃO-RESPOSTA -->
             <div class="card" id="card-2">
                 <h2>🚏 2. Express, Rotas e o Ciclo Requisição-Resposta</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A padaria fictícia Pão da Serra quer que o app do entregador liste, consulte, crie e remova as tarefas do dia. No servidor escrito à mão, cada rota nova virou mais um if, e o arquivo já não cabe na tela. Como declarar rotas com parâmetros e status corretos sem reinventar o roteamento?</p>
+                </div>
                 <p>O servidor à mão mostra o mecanismo; o Express mostra por que ninguém escreve assim em produção. Rotas, parâmetros e o objeto de resposta como contrato com o cliente.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ycIxWTEI908" target="_blank" rel="noopener noreferrer">▶️ Como Criar uma API REST com Node.js e Express em 16 Minutos!</a>
+                            <span class="link-desc">Hashtag Programação · 16:07 — Cria uma API REST com Node.js e Express, com rotas e respostas em JSON.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=V3PUGubaSQo" target="_blank" rel="noopener noreferrer">▶️ Curso de Node JS Aula 02 Criar projeto. API REST. Express. Rotas. Nodemon</a>
+                            <span class="link-desc">Professor Edson Maia · 23:06 — Mostra a criação de um projeto Express com rotas e reinício automático com Nodemon.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: ORGANIZAÇÃO DE PROJETO E VARIÁVEIS DE AMBIENTE -->
             <div class="card" id="card-3">
                 <h2>🧱 3. Organização de Projeto e Variáveis de Ambiente</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A API de tarefas da Pão da Serra tem 300 linhas num arquivo só, e a porta e a senha do banco estão escritas no meio do código, já enviadas ao GitHub. Como dividir o projeto por responsabilidade e tirar a configuração de dentro do código?</p>
+                </div>
                 <p>Um arquivo de 300 linhas funciona até a segunda semana. Aqui o projeto ganha pastas com responsabilidade definida, configuração fora do código e tratamento de erro num lugar só.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=PJ0zXs2Sjwg" target="_blank" rel="noopener noreferrer">▶️ #15 - Variáveis de ambiente com dotenv em um projeto Express | MERN STACK</a>
+                            <span class="link-desc">Thiago Veigah · 14:06 — Configura variáveis de ambiente com dotenv num projeto Express.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=KOYQDxaL9ag" target="_blank" rel="noopener noreferrer">▶️ Dotenv e variáveis de ambiente no NodeJS</a>
+                            <span class="link-desc">DevPleno · 5:34 — Explica como usar dotenv para tirar configurações e segredos do código no Node.js.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

@@ -32,6 +32,10 @@
             <!-- TEMA 1: INTEGRAÇÃO CONTÍNUA: O QUE É E O QUE NÃO É -->
             <div class="card" id="card-1">
                 <h2>🔁 1. Integração Contínua: o que é e o que não é</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na agência fictícia Pixel Serrano, cada pessoa descobre que quebrou o projeto só quando outra baixa o código no dia seguinte. A main já passou uma tarde inteira sem instalar. Como ter um veredito automático em minutos a cada push, antes que o erro chegue aos colegas?</p>
+                </div>
                 <p>CI não é ter um arquivo YAML no repositório. É a prática de integrar cedo e com frequência, com uma verificação automática que dá o veredito em minutos.</p>
 
                 <ul class="links-list">
@@ -53,10 +57,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=IKjcdYQvcDo" target="_blank" rel="noopener noreferrer">▶️ O que é CI e CD? Pra vc aprender e nunca mais esquecer! | Como usar GitHub Actions?</a>
+                            <span class="link-desc">Mario Souto - Dev Soutinho · 19:51 — Explica o que é CI e CD e como o GitHub Actions automatiza a verificação do código.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=W_Fhjmsq7hU" target="_blank" rel="noopener noreferrer">▶️ Entenda DevOps, CI e GITHUB ACTIONS de uma vez por todas</a>
+                            <span class="link-desc">Paulo Salvatore · 17:15 — Apresenta DevOps, integração contínua e o funcionamento básico do GitHub Actions.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -92,6 +105,10 @@
             <!-- TEMA 2: OS PORTÕES DE QUALIDADE DA ESTEIRA -->
             <div class="card" id="card-2">
                 <h2>🧪 2. Os Portões de Qualidade da Esteira</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A esteira da Pixel Serrano fica verde em todo commit porque só instala dependências. Na semana passada, um teste quebrado e uma biblioteca com vulnerabilidade conhecida chegaram à main sem ninguém ver. Quais verificações precisam barrar o commit ruim antes da mesclagem?</p>
+                </div>
                 <p>Uma esteira que só instala dependência não protege ninguém. Os portões são o que fazem o commit ruim parar antes do usuário: lint, teste, build e auditoria.</p>
 
                 <ul class="links-list">
@@ -113,10 +130,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=F51HlrEeedw" target="_blank" rel="noopener noreferrer">▶️ Criando um Workflow AUTOMATIZADO de CI com o Github Actions</a>
+                            <span class="link-desc">Fernanda Kipper · 14:59 — Cria um workflow de CI no GitHub Actions que roda verificações a cada push e pull request.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=Kr4VxMbF3LY" target="_blank" rel="noopener noreferrer">▶️ Lint Like a Senior Developer w/ eslint + husky + lint staged + github actions</a>
+                            <span class="link-desc">Syntax · 20:19 · em inglês — Mostra em inglês como combinar ESLint, Husky e GitHub Actions para barrar código fora do padrão.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">
@@ -152,6 +178,10 @@
             <!-- TEMA 3: IMPLANTAÇÃO AUTOMÁTICA E O DIREITO DE VOLTAR ATRÁS -->
             <div class="card" id="card-3">
                 <h2>🎯 3. Implantação Automática e o Direito de Voltar Atrás</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A Pixel Serrano publica o site copiando arquivos à mão na sexta à noite, e quando algo quebra ninguém sabe voltar à versão anterior. Como publicar automaticamente a cada mesclagem na main e garantir que voltar atrás leve minutos, não horas?</p>
+                </div>
                 <p>Publicar automático só é seguro quando voltar atrás também é rápido. O bloco fecha com a etapa de deploy, os segredos fora do código e o plano de reversão.</p>
 
                 <ul class="links-list">
@@ -173,10 +203,19 @@
                     </li>
                 </ul>
 
-                <p class="link-desc" style="margin-top:14px;opacity:.75;">
-                    🎥 <strong>Curadoria de vídeo pendente.</strong> Este bloco recebe os vídeos de apoio
-                    selecionados pelo instrutor para o tema acima.
-                </p>
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=3cLbh-k2qKk" target="_blank" rel="noopener noreferrer">▶️ Deploy Automático com GITHUB ACTIONS em Hospedagem Compartilhada em 12 minutos</a>
+                            <span class="link-desc">Código Fonte TV · 12:27 — Mostra como configurar deploy automático com GitHub Actions a cada alteração no repositório.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=JWYuq2pv3-s" target="_blank" rel="noopener noreferrer">▶️ Como fazer DEPLOY AUTOMÁTICO no GITHUB PAGES com GITHUB ACTIONS [React] | 2022</a>
+                            <span class="link-desc">João Pster · 29:21 — Configura deploy automático de um projeto React no GitHub Pages com GitHub Actions.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
                 <div class="atividade-container">

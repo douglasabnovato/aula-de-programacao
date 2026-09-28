@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Backlog Priorizado com RICE e MoSCoW | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Backlog Priorizado com RICE e MoSCoW</h1>
+        <p class="subtitulo">Aula 44 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um backlog de exemplo com 8 itens da Agenda Pet, classificado em MoSCoW e pontuado em RICE, com a decisão final e a justificativa de cada posição.</p>
+        </div>
+        <h2>backlog-priorizado.md</h2>
+        <pre># Backlog priorizado — Agenda Pet
+
+RICE = (Alcance x Impacto x Confiança) / Esforço
+Alcance: tutores por mês | Impacto: 0,25 a 3 | Esforço: pessoas-semana
+
+| Item                       | MoSCoW | Alc. | Imp. | Conf. | Esf. | RICE  |
+|----------------------------|--------|------|------|-------|------|-------|
+| Remarcar pelo app          | Must   | 400  | 2    | 80%   | 2    | 320   |
+| Lembrete 24h               | Must   | 600  | 1    | 100%  | 1    | 600   |
+| Cancelar pelo app          | Must   | 150  | 1    | 80%   | 1    | 120   |
+| Fila de espera             | Should | 80   | 2    | 50%   | 3    | 26,7  |
+| Avaliar o atendimento      | Could  | 300  | 0,5  | 80%   | 1    | 120   |
+| Foto do pet após o banho   | Could  | 500  | 0,5  | 50%   | 2    | 62,5  |
+| Relatório de faturamento   | Should | 2    | 2    | 100%  | 2    | 2     |
+| Loja de rações             | Won't  | -    | -    | -     | 8    | -     |
+
+## Ordem final
+1. Lembrete 24h — maior RICE e menor esforço; ataca faltas.
+2. Remarcar pelo app — principal motivo das ligações.
+3. Cancelar pelo app — completa o ciclo de autoatendimento.
+4. Avaliar o atendimento — barato e gera dado para a próxima meta.
+5. Foto após o banho — reforça o uso do app.
+6. Fila de espera — confiança baixa; precisa de discovery antes.
+</pre>
+        <h2>Onde os métodos discordaram</h2>
+        <ul>
+            <li><strong>Relatório de faturamento</strong> é Should para o sócio, mas o RICE é 2: alcança duas pessoas. Ficou fora da sprint.</li>
+            <li><strong>Avaliar o atendimento</strong> é só Could, mas tem RICE alto. Subiu porque é barato e gera dado.</li>
+            <li><strong>Fila de espera</strong> tem confiança de 50%: antes de construir, vira pergunta de discovery.</li>
+        </ul>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Classifique em MoSCoW primeiro, sem números.</li>
+            <li>Pontue o RICE e ordene.</li>
+            <li>Onde os dois discordarem, escreva o motivo da sua decisão final.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O número do RICE não decide sozinho: ele obriga a explicitar as suposições.</li>
+            <li>Confiança baixa é sinal de que falta pesquisa, não de que o item é ruim.</li>
+            <li>Won't não é "nunca": é "não nesta entrega".</li>
+        </ul>
+    </div>
+</body>
+
+</html>

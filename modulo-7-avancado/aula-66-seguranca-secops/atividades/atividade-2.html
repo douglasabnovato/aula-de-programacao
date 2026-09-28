@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotas Vulneráveis e Corrigidas — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Rotas Vulneráveis e Corrigidas — Código de Referência</h1>
+        <p class="subtitulo">Aula 66 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>As duas versões das rotas da Nota Certa, lado a lado, e os testes que provam o ataque e depois a correção. Use apenas no seu ambiente local de laboratório.</p>
+        </div>
+        <h2>src/notas.vulneravel.js</h2>
+        <pre>// Início: versão VULNERÁVEL, usada só no laboratório para demonstrar IDOR e injeção
+const express = require('express');
+const { pool } = require('./db');
+const { autenticar } = require('./auth');
+
+const router = express.Router();
+
+router.get('/notas/:id', autenticar, async (req, res) =&gt; {
+  const { rows } = await pool.query(`SELECT * FROM notas WHERE id = ${req.params.id}`);
+  if (!rows[0]) return res.status(404).json({ erro: 'Nota não encontrada' });
+  res.json(rows[0]);
+});
+
+router.get('/notas', autenticar, async (req, res) =&gt; {
+  const termo = req.query.cliente || '';
+  const { rows } = await pool.query(`SELECT * FROM notas WHERE empresa_id = ${req.usuario.empresaId} AND cliente = '${termo}'`);
+  res.json(rows);
+});
+
+module.exports = router;
+// Fim de src/notas.vulneravel.js</pre>
+        <h2>src/notas.routes.js</h2>
+        <pre>// Início: versão CORRIGIDA, com autorização por dono e consultas parametrizadas
+const express = require('express');
+const { pool } = require('./db');
+const { autenticar } = require('./auth');
+
+const router = express.Router();
+
+// Busca uma nota garantindo que ela pertence à empresa do usuário logado
+async function buscarNotaDaEmpresa(id, empresaId) {
+  const { rows } = await pool.query(
+    'SELECT id, numero, cliente, valor, emitida_em FROM notas WHERE id = $1 AND empresa_id = $2',
+    [id, empresaId]
+  );
+  return rows[0];
+}
+
+router.get('/notas/:id', autenticar, async (req, res) =&gt; {
+  const id = Number.parseInt(req.params.id, 10);
+  if (!Number.isInteger(id)) return res.status(400).json({ erro: 'Identificador inválido' });
+  const nota = await buscarNotaDaEmpresa(id, req.usuario.empresaId);
+  if (!nota) return res.status(404).json({ erro: 'Nota não encontrada' });
+  res.json(nota);
+});
+
+router.get('/notas', autenticar, async (req, res) =&gt; {
+  const termo = String(req.query.cliente || '');
+  const { rows } = await pool.query(
+    'SELECT id, numero, cliente, valor, emitida_em FROM notas WHERE empresa_id = $1 AND cliente ILIKE $2 ORDER BY emitida_em DESC LIMIT 50',
+    [req.usuario.empresaId, `%${termo}%`]
+  );
+  res.json(rows);
+});
+
+module.exports = router;
+// Fim de src/notas.routes.js</pre>
+        <h2>tests/seguranca.test.js</h2>
+        <pre>// Início: testes de segurança que reproduzem os ataques contra a rota corrigida
+const request = require('supertest');
+const app = require('../src/app');
+const { tokenDe } = require('./helpers');
+
+describe('Nota Certa — ataques de laboratório', () =&gt; {
+  test('IDOR: empresa A não lê nota da empresa B', async () =&gt; {
+    const res = await request(app).get('/notas/4').set('Authorization', `Bearer ${tokenDe('empresaA')}`);
+    expect(res.status).toBe(404);
+  });
+
+  test('Injeção: termo malicioso não amplia o resultado', async () =&gt; {
+    const res = await request(app)
+      .get('/notas')
+      .query({ cliente: "' OR '1'='1" })
+      .set('Authorization', `Bearer ${tokenDe('empresaA')}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(0);
+  });
+});
+// Fim de tests/seguranca.test.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install express pg jsonwebtoken</code> e <code>npm install -D jest supertest</code></li>
+            <li>Suba o PostgreSQL local e rode o script de sementes com duas empresas</li>
+            <li>Monte o app com <code>notas.vulneravel.js</code> e rode <code>npx jest</code>: os dois testes falham, provando os ataques</li>
+            <li>Troque para <code>notas.routes.js</code> e rode de novo: os dois passam</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A correção do IDOR responde 404, e não 403, para não confirmar ao atacante que a nota existe.</li>
+            <li>A consulta parametrizada envia o termo separado do comando: o banco nunca interpreta o texto do usuário como SQL.</li>
+            <li>Os testes ficam na suíte para sempre; se alguém reintroduzir a falha, o pipeline acusa.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

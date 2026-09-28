@@ -7,10 +7,10 @@
     <title>Aula 12 | ByteClass</title>
     <!-- Importando a fonte moderna Inter para UI -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png">
-    <link rel="manifest" href="../../../assets/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
     <link rel="stylesheet" href="../../assets/aula.css" />
 </head>
 
@@ -18,7 +18,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="../../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
             <span class="logo-text">BYTECLASS</span>
         </div>
         <h1>Aula 12: Props e Comunicação entre Componentes</h1>
@@ -31,6 +31,10 @@
             <!-- TEMA 1: O FLUXO DE DADOS UNIDIRECIONAL -->
             <div class="card" id="card-1">
                 <h2>📦 1. O Fluxo de Dados Unidirecional no React explicado na prática</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>A plataforma fictícia de vagas Ponte Jobs exibe a equipe de recrutamento em cards, e cada card foi escrito à mão com nome, cargo e foto fixos no JSX. Com vinte pessoas na equipe, cada contratação exige copiar um card inteiro. Como escrever um único componente de card e alimentá-lo com os dados de uma lista?</p>
+                </div>
                 <p>Compreenda como as informações trafegam estruturalmente de cima para baixo na árvore de componentes utilizando propriedades (*props*).</p>
 
                 <ul class="links-list">
@@ -84,6 +88,10 @@
             <!-- TEMA 2: DESESTRUTURAÇÃO E TIPAGEM DE PROPS -->
             <div class="card" id="card-2">
                 <h2>📋 2. Desestruturação de Props e Tipagem Básica de Componentes</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na Ponte Jobs, o card de curso recebe título, descrição, carga horária e nível, mas alguns cursos chegam sem descrição e o card mostra undefined. Outra pessoa da equipe passou a carga horária como texto e o card passou a mostrar "a definir" sem nenhum aviso. Como deixar claro o que o componente espera e garantir um comportamento seguro quando faltar dado?</p>
+                </div>
                 <p>Domine técnicas avançadas para extração limpa de propriedades e validação de contratos de dados em seus componentes.</p>
 
                 <ul class="links-list">
@@ -137,6 +145,10 @@
             <!-- TEMA 3: COMUNICAÇÃO REVERSA E CHILDREN -->
             <div class="card" id="card-3">
                 <h2>🔄 3. Comunicação Reversa e Padrões de Composição Avançada (children)</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Na Ponte Jobs, o botão Candidatar fica dentro do card de cada vaga, mas o total de candidaturas aparece no topo da página, no componente pai. Além disso, os painéis de vagas e de dicas repetem a mesma moldura com borda e título. Como um componente filho avisa o pai de que algo aconteceu, e como criar uma moldura que aceite qualquer conteúdo?</p>
+                </div>
                 <p>Aprenda a enviar eventos dos filhos para os pais utilizando callbacks e a criar layouts genéricos flexíveis com a prop children.</p>
 
                 <ul class="links-list">

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Diagnóstico — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Relatório de Diagnóstico — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 69 · Módulo 7: Avançado (Engenharia e Arquitetura Master) · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um relatório de diagnóstico preenchido para o Grupo Bom Grão, com critério de nota por dimensão, achados com evidência e o resumo executivo para a diretoria.</p>
+        </div>
+        <h2>diagnostico/relatorio.md</h2>
+        <pre>&lt;!-- Início: relatório de diagnóstico técnico do Grupo Bom Grão --&gt;
+# Diagnóstico Técnico — Sistema de Pedidos
+
+## Critério de nota
+1 = risco imediato ao negócio · 3 = funciona, com limitações conhecidas · 5 = prática de referência
+
+## Notas por dimensão
+| Dimensão | Nota | Evidência principal |
+|----------|------|---------------------|
+| Arquitetura | 3 | Monolito coeso; módulo de pedidos acoplado ao de estoque por tabelas compartilhadas |
+| Código | 2 | 3 arquivos concentram 61% das mudanças do ano e têm funções com complexidade acima de 40 |
+| Entrega | 1 | Deploy manual por FTP, 1 publicação a cada 3 semanas, 4 de 17 deploys causaram incidente |
+| Operação | 1 | Sem health check, sem alerta, backup nunca restaurado em teste |
+| Segurança | 2 | 9 dependências com vulnerabilidade alta; senha do banco no repositório |
+| Custo | 4 | Servidor único bem dimensionado para o volume atual |
+
+## Achados principais
+| ID | Achado | Evidência | Risco para o negócio | Urgência |
+|----|--------|-----------|----------------------|----------|
+| D1 | Backup nunca testado | Nenhum registro de restauração; script sem verificação | Perda de todos os pedidos em falha de disco | Imediata |
+| D2 | Pedido duplicado por reenvio | 312 pares duplicados em 30 dias no log | Retrabalho do financeiro e cliente cobrado duas vezes | Alta |
+| D3 | Senha do banco no Git | Commit de 2022 ainda no histórico | Acesso total aos dados por qualquer pessoa com o repositório | Imediata |
+| D4 | Consulta de estoque sem índice | 2,8 s por consulta no pico, log de consultas lentas | Vendedor desiste do pedido no horário de maior venda | Alta |
+| D5 | Deploy manual | Histórico de deploys e incidentes | Correções demoram semanas para chegar | Média |
+
+## Resumo executivo (para a diretoria)
+1. **Os pedidos não estão protegidos contra perda.** Uma falha no servidor hoje pode apagar o histórico de vendas. Corrigir leva uma semana.
+2. **Clientes estão sendo cobrados em dobro.** Foram cerca de 300 casos em um mês. A correção é pequena e pode sair em 15 dias.
+3. **A lentidão no pico tem causa localizada.** Não é falta de servidor nem de pessoas: é uma consulta específica, corrigível em dias.
+&lt;!-- Fim de relatorio.md --&gt;</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Toda nota cita uma evidência coletada, e o critério de 1 a 5 está escrito antes da tabela.</li>
+            <li>O resumo executivo não usa as palavras índice, backup ou idempotência: fala de perda, cobrança em dobro e desistência.</li>
+            <li>A dimensão custo recebeu nota boa: diagnóstico honesto também registra o que está funcionando.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

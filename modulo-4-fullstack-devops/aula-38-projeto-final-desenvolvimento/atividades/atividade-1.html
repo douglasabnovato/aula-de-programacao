@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotas do Núcleo — Quadro de Rotas e Definição de Pronto | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Rotas do Núcleo — Quadro de Rotas e Definição de Pronto</h1>
+        <p class="subtitulo">Aula 38 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Um quadro de acompanhamento das rotas do MVP, a Definição de Pronto que cada rota precisa cumprir e a migração de exemplo da Agenda Lírio com a regra de não sobreposição garantida no banco.</p>
+        </div>
+        <h2>docs/ROTAS.md</h2>
+        <pre>&lt;!-- Início: ROTAS.md — acompanhamento das rotas do MVP da Agenda Lírio --&gt;
+# Rotas do MVP
+
+| Método | Caminho                 | História | Protegida | Status esperados   | Teste | Pronta |
+|--------|-------------------------|----------|-----------|--------------------|-------|--------|
+| POST   | /auth/login             | 1        | não       | 200, 400, 401      | [ ]   | [ ]    |
+| GET    | /agendamentos?data=     | 2        | sim       | 200, 400, 401      | [ ]   | [ ]    |
+| POST   | /agendamentos           | 3        | sim       | 201, 400, 401, 409 | [ ]   | [ ]    |
+| PATCH  | /agendamentos/:id       | 4        | sim       | 200, 400, 404, 409 | [ ]   | [ ]    |
+| GET    | /horarios-livres?data=  | 5        | não       | 200, 400           | [ ]   | [ ]    |
+&lt;!-- Fim de ROTAS.md --&gt;</pre>
+        <h2>api/migracoes/002_sem_sobreposicao.sql</h2>
+        <pre>-- Início: 002_sem_sobreposicao.sql — impede dois agendamentos sobrepostos para a mesma profissional
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+ALTER TABLE agendamentos
+  ADD CONSTRAINT agendamentos_sem_sobreposicao
+  EXCLUDE USING gist (
+    profissional_id WITH =,
+    tstzrange(inicio, fim) WITH &amp;&amp;
+  )
+  WHERE (status = 'marcado');
+
+CREATE INDEX IF NOT EXISTS idx_agendamentos_inicio ON agendamentos (inicio);
+-- Fim de 002_sem_sobreposicao.sql</pre>
+        <h2>Definição de Pronto de cada rota</h2>
+        <ul>
+            <li>[ ] Entrada e saída iguais ao <code>openapi.yaml</code>, campo a campo.</li>
+            <li>[ ] Entrada inválida devolve <code>400</code> com o esquema de erro único.</li>
+            <li>[ ] Consulta ao banco com parâmetros (<code>$1</code>, <code>$2</code>), nunca com texto concatenado.</li>
+            <li>[ ] Regra de negócio crítica garantida também no banco.</li>
+            <li>[ ] Pelo menos um teste automatizado do caminho feliz e um do erro principal.</li>
+            <li>[ ] Rota testada manualmente e issue movida para Feito.</li>
+        </ul>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A restrição <code>EXCLUDE</code> faz o banco recusar a sobreposição mesmo com duas requisições chegando juntas; o erro chega à API com o código <code>23P01</code>, que o middleware traduz para <code>409</code>.</li>
+            <li>O <code>WHERE (status = 'marcado')</code> libera o horário quando o agendamento é cancelado.</li>
+            <li>O quadro liga cada rota a uma história do escopo: rota sem história é escopo que cresceu sem decisão.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

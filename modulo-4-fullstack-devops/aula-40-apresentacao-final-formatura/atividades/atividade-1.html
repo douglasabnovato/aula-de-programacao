@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README Final — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>README Final — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 40 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O modelo de README final do projeto, preenchido com a Agenda Lírio, na ordem em que uma pessoa avaliadora lê: o que é, prova, links, decisões, como rodar e próximos passos.</p>
+        </div>
+        <h2>README.md</h2>
+        <pre>&lt;!-- Início: README.md — modelo de README final do projeto de formatura --&gt;
+# Agenda Lírio
+
+Agendamento online para o salão fictício Studio Lírio: acaba com horários
+sobrepostos e remarcações perdidas no caderno da recepção.
+
+![Fluxo de criação de agendamento, do login à agenda do dia](docs/fluxo.gif)
+
+**Aplicação:** https://agenda-lirio.vercel.app
+**Contrato da API:** [docs/openapi.yaml](docs/openapi.yaml)
+**Decisões técnicas:** [docs/adr/](docs/adr/)
+
+## O problema
+A recepção perdia cerca de 8 clientes por semana por conflito de horário.
+
+## O que o sistema faz
+- Login da recepção
+- Agenda do dia por profissional
+- Criação, remarcação e cancelamento sem sobreposição
+- Consulta pública de horários livres
+
+## Tecnologias e por quê
+| Parte     | Tecnologia           | Por quê                                                     |
+|-----------|----------------------|-------------------------------------------------------------|
+| Frontend  | React + Vite         | componentes reaproveitados entre agenda e formulário        |
+| API       | Node + Express       | mesma linguagem do front e ecossistema visto no curso       |
+| Banco     | PostgreSQL           | restrição de não sobreposição garantida no próprio banco    |
+| Deploy    | Vercel, Render, Neon | planos gratuitos, deploy a cada push na main                |
+
+## Como rodar localmente
+```
+git clone &lt;url-do-repositorio&gt;
+cp api/.env.example api/.env
+cp web/.env.example web/.env
+docker compose up --build
+```
+
+## Limites conhecidos
+- A API no plano gratuito hiberna; a primeira requisição pode demorar.
+- Sem lembrete automático por mensagem (fora do escopo do MVP).
+
+## Próximos passos
+- Lembrete por e-mail um dia antes do horário.
+- Relatório mensal de ocupação por profissional.
+
+## Equipe
+- Nome Sobrenome — API e banco — github.com/usuario
+- Nome Sobrenome — frontend e deploy — github.com/usuario
+
+Versão 1.0 apresentada na formatura ByteClass.
+&lt;!-- Fim de README.md --&gt;</pre>
+        <h2>Checklist do repositório</h2>
+        <ul>
+            <li>[ ] Descrição do repositório com a frase do problema.</li>
+            <li>[ ] Tópicos: <code>react</code>, <code>nodejs</code>, <code>postgresql</code>, <code>fullstack</code>.</li>
+            <li>[ ] Link da aplicação no campo Website do repositório.</li>
+            <li>[ ] Projeto fixado no perfil de cada integrante.</li>
+            <li>[ ] GIF com texto alternativo e menos de 5 MB.</li>
+        </ul>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Os comandos de instalação estão no meio do README, não no topo: quem avalia quer ver o resultado antes de saber rodar.</li>
+            <li>A tabela de tecnologias tem a coluna Por quê — é o que diferencia o projeto de uma lista de ferramentas.</li>
+            <li>Os limites conhecidos estão escritos: mostrar consciência do que falta pesa mais do que esconder.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

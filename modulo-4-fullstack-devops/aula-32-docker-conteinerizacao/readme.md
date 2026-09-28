@@ -34,12 +34,12 @@ Esta ementa resolve a frase mais cara do desenvolvimento de software — 'na min
 
 * **Atividade 1 (Primeiro Contêiner e Exploração das Camadas — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-1.html)
 
 * **Atividade 2 (Empacotando a API do Módulo 3 — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-2.html)
 
 * **Atividade 3 (Persistência e Configuração sem Rebuild — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-32-docker-conteinerizacao/atividades/atividade-3.html)

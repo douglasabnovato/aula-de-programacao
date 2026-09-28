@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 49 | ByteClass</title>
+    <meta name="description" content="Esta aula leva o aluno a comparar suas competências com as do papel que deseja ocupar, escrever metas de desenvolvimento verificáveis e manter o plano vivo com evidências e revisão mensal.">
+    <!-- Importando a fonte moderna Inter para UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/site.webmanifest">
+    <link rel="stylesheet" href="../../assets/aula.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../../assets/byteclass-dev-1.jpg" alt="ByteClass Logo" style="height: 32px; border-radius: 4px;">
+            <span class="logo-text">BYTECLASS</span>
+        </div>
+        <h1>Aula 49: Plano de Desenvolvimento Individual (PDI) e Carreira Tech</h1>
+        <p>Módulo 5: Produto, UX e Agilidade — Ecossistema learnTECH</p>
+    </header>
+
+    <div class="container">
+        <div class="roadmap-grid">
+
+            <!-- TEMA 1: AUTOAVALIAÇÃO: COMPETÊNCIAS DO PAPEL QUE VOCÊ QUER -->
+            <div class="card" id="card-1">
+                <h2>🧩 1. Autoavaliação: Competências do Papel que Você Quer</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Carla, dev frontend fictícia com um ano de empresa, diz que quer "crescer na carreira". Quando o gestor pergunta para qual papel — dev pleno, especialista, PO ou liderança —, ela não sabe responder, nem o que falta para cada um. Como transformar a vontade vaga de crescer numa comparação honesta entre onde ela está e onde quer chegar?</p>
+                </div>
+
+                <p>Um plano de desenvolvimento começa com dois retratos: as competências que o papel desejado exige e as evidências de onde você está hoje em cada uma. Num time de produto, os papéis têm responsabilidades diferentes — conhecê-las evita planejar o crescimento para um cargo que você nem quer.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.svpg.com/product-team-faq/" target="_blank" rel="noopener noreferrer">📄 Perguntas frequentes sobre times de produto — SVPG</a>
+                        <span class="link-desc">Quem faz o quê num time de produto: PM, design e engenharia, e onde cada papel se encosta.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.scrum.org/resources/what-is-a-product-owner" target="_blank" rel="noopener noreferrer">📄 O que é um Product Owner — Scrum.org</a>
+                        <span class="link-desc">As responsabilidades do PO, útil para quem cogita migrar do desenvolvimento para produto.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management" target="_blank" rel="noopener noreferrer">📄 Gestão de produto — Atlassian</a>
+                        <span class="link-desc">O panorama da disciplina de produto e das competências que ela exige no dia a dia.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/the-product-operating-model/" target="_blank" rel="noopener noreferrer">📄 O modelo operacional de produto — SVPG</a>
+                        <span class="link-desc">As competências que uma empresa orientada a produto espera de cada papel do time.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=hmOMKb_DQTA" target="_blank" rel="noopener noreferrer">▶️ Matriz de competências: o que é e como usar?</a>
+                            <span class="link-desc">Escola DNC · 9:47 — Explica o que é uma matriz de competências e como usá-la para mapear habilidades.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=4CNx2MNOWD0" target="_blank" rel="noopener noreferrer">▶️ Matriz de competências: como criar e usar na gestão de pessoas</a>
+                            <span class="link-desc">hub40 · 8:06 — Mostra como criar uma matriz de competências para avaliar o nível atual em cada habilidade.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(1)">
+                        <span>💡 Prática Guiada: Matriz de Competências: Hoje × Papel Desejado</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-1">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie a pasta <code>pdi</code> no seu repositório <code>rotina-tecnica</code> com a planilha <code>matriz-competencias</code>.</li>
+                            <li><strong>Escolhendo o Papel:</strong> escreva o papel que você quer ocupar em 12 a 18 meses e uma frase dizendo por que ele e não outro.</li>
+                            <li><strong>Listando Competências:</strong> liste de oito a dez competências do papel, separadas em técnicas (ex.: testes, arquitetura) e de produto ou pessoas (ex.: escrever história, conduzir reunião).</li>
+                            <li><strong>Escala de Nível:</strong> defina uma escala de 1 a 4: <em>1 conheço o nome</em>, <em>2 faço com ajuda</em>, <em>3 faço sozinho</em>, <em>4 ensino outras pessoas</em>.</li>
+                            <li><strong>Nível Esperado:</strong> marque o nível que o papel desejado exige em cada competência.</li>
+                            <li><strong>Erro Provocado:</strong> preencha seu nível atual de memória, sem olhar nada. Depois tente citar um fato que prove cada nota e anote quantas ficaram sem prova.</li>
+                            <li><strong>Nível com Evidência:</strong> reavalie cada nota usando o diário técnico e os projetos do catálogo — nota sem evidência desce um nível.</li>
+                            <li><strong>Calculando a Lacuna:</strong> subtraia o nível atual do esperado e ordene as competências pela maior lacuna.</li>
+                            <li><strong>Segunda Opinião:</strong> peça a um colega ou ao instrutor que avalie três competências e compare com a sua nota.</li>
+                            <li><strong>Validação e Testes:</strong> escolha as três lacunas que mais importam para o papel desejado e justifique a escolha; registre no README a matriz e as três lacunas.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-1">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(1)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: METAS DO PDI: RESULTADO, HIPÓTESE E ROADMAP -->
+            <div class="card" id="card-2">
+                <h2>🎯 2. Metas do PDI: Resultado, Hipótese e Roadmap</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>O primeiro PDI da Carla tinha três metas: "estudar back-end", "melhorar a comunicação" e "fazer cursos". Seis meses depois, ela fez dois cursos e não sabe dizer se alguma lacuna diminuiu. Como escrever metas de desenvolvimento que digam claramente quando foram atingidas?</p>
+                </div>
+
+                <p>Meta de PDI boa descreve uma mudança observável, não uma atividade. Escrever cada meta como hipótese — "se eu fizer isto, vou conseguir aquilo, e vou saber porque..." — e organizá-las num roadmap de Agora, Próximo e Depois aplica ao próprio crescimento o que se aplica a um produto.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.scrum.org/resources/blog/product-goal-commitment-product-backlog" target="_blank" rel="noopener noreferrer">📄 A meta como compromisso do backlog — Scrum.org</a>
+                        <span class="link-desc">Como uma meta de longo prazo organiza as escolhas menores — a mesma lógica serve para o PDI.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.strategyzer.com/library/mastering-business-testing-formulating-strong-hypotheses" target="_blank" rel="noopener noreferrer">📄 Formulando hipóteses fortes — Strategyzer</a>
+                        <span class="link-desc">Como escrever uma hipótese testável, específica e com critério de sucesso.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/product-management/roadmaps" target="_blank" rel="noopener noreferrer">📄 Roadmaps ágeis — Atlassian</a>
+                        <span class="link-desc">Como montar e revisar um roadmap que muda com o aprendizado, aplicável a um plano de carreira.</span>
+                    </li>
+                    <li>
+                        <a href="https://amplitude.com/books/north-star/the-north-star-checklist" target="_blank" rel="noopener noreferrer">📄 Checklist da North Star — Amplitude</a>
+                        <span class="link-desc">Os critérios que separam um indicador de resultado de um indicador de esforço.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=QnikPctQaW8" target="_blank" rel="noopener noreferrer">▶️ Plano de Desenvolvimento Individual (PDI): veja como fazer e acelerar sua carreira | Na Prática</a>
+                            <span class="link-desc">Na Prática · 6:47 — Mostra como montar um Plano de Desenvolvimento Individual com metas para acelerar a carreira.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=FhBMLs5NVSA" target="_blank" rel="noopener noreferrer">▶️ PDI - Plano de Desenvolvimento Individual: Como Fazer e Evitar Erros Comuns - Laura Widal</a>
+                            <span class="link-desc">Laura Widal · 9:22 — Explica como fazer um PDI e os erros comuns ao definir metas.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(2)">
+                        <span>💡 Prática Guiada: Escrevendo Metas como Hipóteses e Montando o Roadmap do PDI</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-2">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>pdi/metas.md</code> e cole as três lacunas escolhidas na prática anterior.</li>
+                            <li><strong>Meta de Longo Prazo:</strong> escreva em uma frase a meta de 12 meses, ligada ao papel desejado.</li>
+                            <li><strong>Erro Provocado:</strong> escreva uma meta de atividade, como <em>"fazer um curso de Node"</em>, e pergunte: se eu terminar o curso e não conseguir criar uma API sozinho, a meta foi cumprida? Anote por que ela não responde.</li>
+                            <li><strong>Meta de Resultado:</strong> reescreva cada meta como mudança observável, como <em>"entregar sozinho uma API usada em produção"</em>.</li>
+                            <li><strong>Hipótese de Caminho:</strong> para cada meta, preencha: <code>Acredito que ... vai me levar a ... Vou saber porque ...</code>.</li>
+                            <li><strong>Critério e Prazo:</strong> defina a evidência que comprova a meta e a data da primeira verificação.</li>
+                            <li><strong>Formas de Aprender:</strong> para cada meta, liste uma ação de prática no trabalho, uma de aprendizado com outra pessoa e uma de estudo formal.</li>
+                            <li><strong>Roadmap Agora/Próximo/Depois:</strong> distribua as metas em três colunas, colocando em Agora a que destrava as outras.</li>
+                            <li><strong>Conferindo a Capacidade:</strong> confira se as ações da coluna Agora cabem na capacidade semanal medida na aula 48.</li>
+                            <li><strong>Validação e Testes:</strong> mostre as metas ao instrutor e peça que ele diga, para cada uma, que evidência a comprovaria; registre no README as metas finais e o roadmap.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-2">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(2)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: EVIDÊNCIA, ACOMPANHAMENTO E REVISÃO DO PLANO -->
+            <div class="card" id="card-3">
+                <h2>🔁 3. Evidência, Acompanhamento e Revisão do Plano</h2>
+                <div class="desafio">
+                    <span class="desafio-rotulo">🎯 Desafio</span>
+                    <p>Os colegas da Carla fazem o PDI em janeiro e só abrem o documento de novo em dezembro, na avaliação. Nessa hora, ninguém lembra o que foi feito, e o plano é reescrito do zero. Como manter o plano vivo durante o ano, com evidência acumulada e ajuste de rota antes que seja tarde?</p>
+                </div>
+
+                <p>Um plano sem ritual de revisão vira documento de gaveta. Registrar evidências conforme acontecem, medir as mesmas competências em intervalos fixos e ajustar as hipóteses que não funcionaram é o que transforma o PDI num ciclo — e deixa claro que a pessoa, não a empresa, é a dona dele.</p>
+
+                <ul class="links-list">
+                    <li>
+                        <a href="https://www.nngroup.com/articles/benchmarking-ux/" target="_blank" rel="noopener noreferrer">📄 Benchmarking: acompanhando métricas no tempo — NN/g</a>
+                        <span class="link-desc">Por que medir sempre do mesmo jeito em intervalos fixos é o que permite ver evolução.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.strategyzer.com/library/designing-strong-experiments" target="_blank" rel="noopener noreferrer">📄 Desenhando experimentos fortes — Strategyzer</a>
+                        <span class="link-desc">Como escolher a evidência mais confiável para testar se um caminho está funcionando.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.scrum.org/resources/blog/accountability-responsibility-and-authority-scrum" target="_blank" rel="noopener noreferrer">📄 Responsabilidade, prestação de contas e autoridade — Scrum.org</a>
+                        <span class="link-desc">A diferença entre ser dono de um resultado e só executar tarefas, aplicável ao próprio plano.</span>
+                    </li>
+                    <li>
+                        <a href="https://www.svpg.com/product-management-theater/" target="_blank" rel="noopener noreferrer">📄 Product Management Theater — SVPG</a>
+                        <span class="link-desc">O alerta contra parecer produtivo sem gerar resultado — o mesmo risco de um PDI de fachada.</span>
+                    </li>
+                </ul>
+
+                <div class="videos">
+                    <span class="videos-rotulo">🎥 Vídeos de apoio</span>
+                    <ul class="links-list videos-list">
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=UWDDKOrGX84" target="_blank" rel="noopener noreferrer">▶️ PDI - Plano de desenvolvimento individual</a>
+                            <span class="link-desc">Thiago Jatobá · 18:36 — Explica o PDI do planejamento ao acompanhamento das metas ao longo do tempo.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=lq875CrMvJY" target="_blank" rel="noopener noreferrer">▶️ COMO MONTAR PDI DE COLABORADOR? PASSO A PASSO</a>
+                            <span class="link-desc">Carol Cabral Valente · 14:06 — Mostra o passo a passo de um PDI, incluindo as etapas de acompanhamento e revisão.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ACORDEÃO DE ATIVIDADE PRÁTICA -->
+                <div class="atividade-container">
+                    <button class="atividade-toggle" onclick="toggleAcordeon(3)">
+                        <span>💡 Prática Guiada: Ritual Mensal de Revisão do PDI</span>
+                        <span class="seta">▼</span>
+                    </button>
+
+                    <div class="atividade-conteudo" id="conteudo-atividade-3">
+                        <p class="atividade-intro">Siga os 10 passos abaixo para construir a prática aplicando os
+                            conceitos do bloco:</p>
+                        <ol class="passos-lista">
+                            <li><strong>Configuração do Ambiente:</strong> crie <code>pdi/evidencias.md</code> com uma seção por meta e <code>pdi/revisoes.md</code> para as revisões mensais.</li>
+                            <li><strong>Registrando Evidência:</strong> sempre que algo comprovar avanço numa meta, copie do diário técnico a data, o fato e o link (PR, projeto, feedback).</li>
+                            <li><strong>Tipos de Evidência:</strong> classifique cada evidência como forte (entrega real, feedback de outra pessoa) ou fraca (curso concluído, leitura).</li>
+                            <li><strong>Agendando a Revisão:</strong> marque na agenda uma revisão de 30 minutos na primeira sexta de cada mês.</li>
+                            <li><strong>Reavaliando a Matriz:</strong> na revisão, dê de novo a nota das três competências-alvo usando a mesma escala e as evidências do mês.</li>
+                            <li><strong>Erro Provocado:</strong> compare uma meta que só tem evidências fracas com uma que tem evidências fortes. Anote qual delas você conseguiria defender numa conversa com o gestor.</li>
+                            <li><strong>Ajustando a Hipótese:</strong> para a meta que não avançou, escreva se o problema foi o caminho escolhido, a falta de tempo ou a meta em si, e mude uma coisa só.</li>
+                            <li><strong>Pedindo Feedback:</strong> escreva uma pergunta específica para o gestor ou um colega sobre a meta principal, como <em>"o que faltou na minha última entrega para ser considerada sênior?"</em>.</li>
+                            <li><strong>Atualizando o Roadmap:</strong> mova metas entre Agora, Próximo e Depois conforme o que aprendeu no mês.</li>
+                            <li><strong>Validação e Testes:</strong> simule a primeira revisão mensal com o instrutor, mostrando a matriz reavaliada e uma evidência forte; registre no README a data da próxima revisão e o que mudou no plano.</li>
+                        </ol>
+
+                        <div class="atividade-box-footer">
+                            <span id="status-texto-3">Concluiu todos os passos?</span>
+                            <button class="btn-concluir" onclick="marcarConcluido(3)">Marcar como Concluído</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ByteClass - Ecossistema learnTECH. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function marcarConcluido(idTema) {
+            const card = document.getElementById(`card-${idTema}`);
+            const botao = card.querySelector('.btn-concluir');
+            const statusTexto = document.getElementById(`status-texto-${idTema}`);
+
+            card.classList.toggle('concluido');
+
+            if (card.classList.contains('concluido')) {
+                botao.textContent = "Concluído ✔";
+                statusTexto.textContent = `Atividade concluída! (Consulte com o Instrutor a resposta da Atividade ${idTema})`;
+            } else {
+                botao.textContent = "Marcar como Concluído";
+                statusTexto.textContent = "Concluiu todos os passos?";
+            }
+        }
+
+        function toggleAcordeon(idCard) {
+            const card = document.getElementById(`card-${idCard}`);
+            const container = card.querySelector('.atividade-container');
+            container.classList.toggle('ativo');
+        }
+    </script>
+
+</body>
+
+</html>

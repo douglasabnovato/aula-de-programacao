@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preenchido: Árvore de Oportunidades e Cartão de Teste | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Modelo Preenchido: Árvore de Oportunidades e Cartão de Teste</h1>
+        <p class="subtitulo">Aula 46 · Módulo 5: Produto, UX e Agilidade · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A árvore de oportunidades do Marmita Já e o cartão de teste da solução escolhida, com critério numérico definido antes do experimento.</p>
+        </div>
+        <h2>experimentos.md</h2>
+        <pre># Experimentos — Marmita Já
+
+## Árvore de oportunidades
+Resultado: restaurantes perdem menos pedidos no pico do almoço
+├── Oportunidade A: não consigo ler mensagens entre 11h30 e 12h30
+│   ├── Solução A1: pedidos fecham às 11h com lista impressa
+│   ├── Solução A2: página de encomenda que gera lista por horário
+│   └── Solução A3: atendente extra só no pico (sem software)
+├── Oportunidade B: cliente manda áudio e eu não entendo o pedido
+└── Oportunidade C: não sei quantas marmitas preparar
+
+## Cartão de teste — Solução A2
+Acreditamos que: donos de restaurante pequeno usariam uma lista de
+  encomendas separada do WhatsApp se ela chegasse pronta antes do pico.
+Vamos testar com: uma página de formulário para 10 restaurantes;
+  a lista é montada à mão e enviada às 11h por uma pessoa da equipe.
+Vamos medir: quantos restaurantes pedem para continuar após 5 dias úteis.
+Estamos certos se: pelo menos 3 de 10 pedem para continuar.
+</pre>
+        <h2>Por que A2 e não A1 ou A3</h2>
+        <ul>
+            <li>A1 muda o hábito do cliente, que as entrevistas mostraram ser difícil.</li>
+            <li>A3 resolve, mas custa um salário — vale como comparação de preço.</li>
+            <li>A2 pode ser testada sem código, montando a lista à mão.</li>
+        </ul>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Comece pelo resultado, não pela solução.</li>
+            <li>Gere pelo menos três soluções por oportunidade.</li>
+            <li>Escreva o critério numérico antes de rodar o teste e não mude depois.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O critério permite reprovar a ideia — esse é o ponto.</li>
+            <li>O teste não tem código: a lista é montada à mão.</li>
+            <li>As oportunidades B e C ficam guardadas para a próxima rodada.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

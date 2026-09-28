@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviço de API, Hook useBusca e Troca sem Condição de Corrida — Resposta | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Serviço de API, Hook useBusca e Troca sem Condição de Corrida — Resposta</h1>
+        <p class="subtitulo">Aula 17 · Módulo 2: Frontend Moderno · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O acesso à API organizado em três camadas: <code>services/api.js</code> guarda a URL base e a checagem de status, <code>hooks/useBusca.js</code> guarda os estados de carregando, erro e dados, e o componente só decide o que mostrar. Ao trocar de pessoa, a requisição anterior é cancelada com <code>AbortController</code>, então a lista nunca mostra tarefas de quem já não está selecionado.</p>
+        </div>
+        <h2>Demonstração ao vivo</h2>
+        <iframe class="demo" id="demo" title="Demonstração da atividade 3" sandbox="allow-scripts allow-forms allow-modals allow-same-origin" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;style&gt;
+:root { --bg: #0D1117; --surface: #161B22; --primary: #00FF66; --text: #FFFFFF; --muted: #8B949E; --border: #30363D; --erro: #FF6B6B; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-family: &#x27;Inter&#x27;, system-ui, sans-serif; line-height: 1.5; }
+h1, h2, h3 { margin: 0 0 12px; }
+a { color: var(--primary); }
+button { background: var(--primary); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font: inherit; font-weight: 600; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secundario { background: transparent; color: var(--text); border: 1px solid var(--border); }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: .9rem; }
+
+ul.tarefas { list-style: none; padding: 0; margin: 12px 0 0; }
+ul.tarefas li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+ul.tarefas li span { flex: 1; }
+ul.tarefas li.feita span { text-decoration: line-through; color: var(--muted); }
+.erro { color: var(--erro); }
+form.nova { display: flex; gap: 8px; }
+form.nova input { flex: 1; }
+button.mini { padding: 4px 10px; font-size: .85rem; }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/babel&quot;&gt;
+const { useState, useEffect } = React;
+
+// Início: src/services/api.js — ponto único de acesso à API
+const BASE_URL = &#x27;https://jsonplaceholder.typicode.com&#x27;;
+
+// Faz a requisição, confere o status e devolve o corpo já convertido de JSON
+async function requisitar(caminho, opcoes = {}) {
+  const headers = opcoes.body ? { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, ...opcoes.headers } : opcoes.headers;
+  const resposta = await fetch(`${BASE_URL}${caminho}`, { ...opcoes, headers });
+  if (!resposta.ok) {
+    throw new Error(`Falha ${resposta.status} ao acessar ${caminho}.`);
+  }
+  return resposta.json();
+}
+// Fim de api.js
+
+// Início: src/hooks/useBusca.js — os três estados de uma busca reunidos num hook
+
+// Busca o caminho informado, cancela a busca anterior quando ele muda e devolve dados, carregando e erro
+function useBusca(caminho) {
+  const [dados, setDados] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() =&gt; {
+    const controle = new AbortController();
+    setCarregando(true);
+    setErro(null);
+    requisitar(caminho, { signal: controle.signal })
+      .then((resposta) =&gt; setDados(resposta))
+      .catch((falha) =&gt; {
+        if (falha.name !== &#x27;AbortError&#x27;) setErro(falha.message);
+      })
+      .finally(() =&gt; {
+        if (!controle.signal.aborted) setCarregando(false);
+      });
+    return () =&gt; controle.abort();
+  }, [caminho]);
+
+  return { dados, carregando, erro };
+}
+// Fim de useBusca.js
+
+// Início: src/components/PainelEquipe.jsx — troca de pessoa sem condição de corrida
+
+// Painel que lista as tarefas da pessoa escolhida usando o hook useBusca
+function PainelEquipe() {
+  const [usuarioId, setUsuarioId] = useState(1);
+  const usuarios = useBusca(&#x27;/users&#x27;);
+  const tarefas = useBusca(`/todos?userId=${usuarioId}`);
+
+  return (
+    &lt;section className=&quot;card&quot;&gt;
+      &lt;h2&gt;Equipe — Entrega Já&lt;/h2&gt;
+      &lt;label htmlFor=&quot;pessoa&quot;&gt;Pessoa: &lt;/label&gt;
+      &lt;select id=&quot;pessoa&quot; value={usuarioId} disabled={!usuarios.dados}
+        onChange={(e) =&gt; setUsuarioId(Number(e.target.value))}&gt;
+        {(usuarios.dados ?? [{ id: 1, name: &#x27;Carregando...&#x27; }]).map((u) =&gt; (
+          &lt;option key={u.id} value={u.id}&gt;{u.name}&lt;/option&gt;
+        ))}
+      &lt;/select&gt;
+      {tarefas.carregando &amp;&amp; &lt;p&gt;Carregando tarefas...&lt;/p&gt;}
+      {tarefas.erro &amp;&amp; &lt;p className=&quot;erro&quot;&gt;{tarefas.erro}&lt;/p&gt;}
+      {!tarefas.carregando &amp;&amp; !tarefas.erro &amp;&amp; tarefas.dados &amp;&amp; (
+        &lt;ul className=&quot;tarefas&quot;&gt;
+          {tarefas.dados.slice(0, 6).map((t) =&gt; (
+            &lt;li key={t.id} className={t.completed ? &#x27;feita&#x27; : &#x27;&#x27;}&gt;
+              &lt;span&gt;#{t.userId} · {t.title}&lt;/span&gt;
+            &lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/section&gt;
+  );
+}
+// Fim de PainelEquipe.jsx
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;PainelEquipe /&gt;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+        <p class="demo-acoes"><button type="button" onclick="recarregarDemo()">Reiniciar demonstração</button><button type="button" onclick="abrirDemo()">Abrir em nova aba</button> Arraste a borda inferior para aumentar a área.</p>
+        <h2>src/services/api.js</h2>
+        <pre>// Início: src/services/api.js — ponto único de acesso à API
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+// Faz a requisição, confere o status e devolve o corpo já convertido de JSON
+export async function requisitar(caminho, opcoes = {}) {
+  const headers = opcoes.body ? { 'Content-Type': 'application/json', ...opcoes.headers } : opcoes.headers;
+  const resposta = await fetch(`${BASE_URL}${caminho}`, { ...opcoes, headers });
+  if (!resposta.ok) {
+    throw new Error(`Falha ${resposta.status} ao acessar ${caminho}.`);
+  }
+  return resposta.json();
+}
+// Fim de api.js</pre>
+        <h2>src/hooks/useBusca.js</h2>
+        <pre>// Início: src/hooks/useBusca.js — os três estados de uma busca reunidos num hook
+import { useEffect, useState } from 'react';
+import { requisitar } from '../services/api.js';
+
+// Busca o caminho informado, cancela a busca anterior quando ele muda e devolve dados, carregando e erro
+export function useBusca(caminho) {
+  const [dados, setDados] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() =&gt; {
+    const controle = new AbortController();
+    setCarregando(true);
+    setErro(null);
+    requisitar(caminho, { signal: controle.signal })
+      .then((resposta) =&gt; setDados(resposta))
+      .catch((falha) =&gt; {
+        if (falha.name !== 'AbortError') setErro(falha.message);
+      })
+      .finally(() =&gt; {
+        if (!controle.signal.aborted) setCarregando(false);
+      });
+    return () =&gt; controle.abort();
+  }, [caminho]);
+
+  return { dados, carregando, erro };
+}
+// Fim de useBusca.js</pre>
+        <h2>src/components/PainelEquipe.jsx</h2>
+        <pre>// Início: src/components/PainelEquipe.jsx — troca de pessoa sem condição de corrida
+import { useState } from 'react';
+import { useBusca } from '../hooks/useBusca.js';
+
+// Painel que lista as tarefas da pessoa escolhida usando o hook useBusca
+export default function PainelEquipe() {
+  const [usuarioId, setUsuarioId] = useState(1);
+  const usuarios = useBusca('/users');
+  const tarefas = useBusca(`/todos?userId=${usuarioId}`);
+
+  return (
+    &lt;section className="card"&gt;
+      &lt;h2&gt;Equipe — Entrega Já&lt;/h2&gt;
+      &lt;label htmlFor="pessoa"&gt;Pessoa: &lt;/label&gt;
+      &lt;select id="pessoa" value={usuarioId} disabled={!usuarios.dados}
+        onChange={(e) =&gt; setUsuarioId(Number(e.target.value))}&gt;
+        {(usuarios.dados ?? [{ id: 1, name: 'Carregando...' }]).map((u) =&gt; (
+          &lt;option key={u.id} value={u.id}&gt;{u.name}&lt;/option&gt;
+        ))}
+      &lt;/select&gt;
+      {tarefas.carregando &amp;&amp; &lt;p&gt;Carregando tarefas...&lt;/p&gt;}
+      {tarefas.erro &amp;&amp; &lt;p className="erro"&gt;{tarefas.erro}&lt;/p&gt;}
+      {!tarefas.carregando &amp;&amp; !tarefas.erro &amp;&amp; tarefas.dados &amp;&amp; (
+        &lt;ul className="tarefas"&gt;
+          {tarefas.dados.slice(0, 6).map((t) =&gt; (
+            &lt;li key={t.id} className={t.completed ? 'feita' : ''}&gt;
+              &lt;span&gt;#{t.userId} · {t.title}&lt;/span&gt;
+            &lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/section&gt;
+  );
+}
+// Fim de PainelEquipe.jsx</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie as pastas <code>src/services</code> e <code>src/hooks</code> e salve os arquivos acima</li>
+            <li>Renderize <code>&lt;PainelEquipe /&gt;</code> no <code>App.jsx</code></li>
+            <li><code>npm run dev</code>, abra a aba Rede e ative <em>Slow 3G</em></li>
+            <li>Troque de pessoa várias vezes seguidas e observe as requisições marcadas como <em>canceled</em></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A função devolvida pelo <code>useEffect</code> roda antes do próximo efeito: é ali que a busca antiga é abortada.</li>
+            <li>O <code>AbortError</code> é ignorado no <code>catch</code>, porque cancelar foi uma decisão e não uma falha.</li>
+            <li>Trocar a URL base agora é mudar uma linha em <code>api.js</code>, e qualquer tela nova ganha os três estados com uma chamada de <code>useBusca</code>.</li>
+        </ul>
+    </div>
+
+    <script>
+        // recarrega a demonstração do zero
+        function recarregarDemo() {
+            const quadro = document.getElementById('demo');
+            quadro.srcdoc = quadro.srcdoc;
+        }
+
+        // abre a demonstração sozinha numa nova aba
+        function abrirDemo() {
+            const quadro = document.getElementById('demo');
+            const url = URL.createObjectURL(new Blob([quadro.srcdoc], { type: 'text/html' }));
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+
+</html>

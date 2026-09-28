@@ -34,12 +34,12 @@ Esta ementa trata do que separa uma API de estudo de uma API que pode ir para pr
 
 * **Atividade 1 (Cadastro e Login com Senha em Hash — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-1.html)
 
 * **Atividade 2 (Emitindo e Validando o Token de Acesso — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-2.html)
 
 * **Atividade 3 (Fechando as Portas Abertas da API — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-22-autenticacao-jwt-seguranca/atividades/atividade-3.html)

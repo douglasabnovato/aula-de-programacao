@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload com Multer — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Upload com Multer — Código de Referência</h1>
+        <p class="subtitulo">Aula 27 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Uma rota que recebe foto e legenda em <code>multipart/form-data</code>, grava em disco com nome aleatório, e uma variação para várias fotos. Inclui o formulário HTML para testar sem ferramenta extra.</p>
+        </div>
+        <h2>src/routes/anexos.routes.js</h2>
+        <pre>// Início: rota de anexo recebendo arquivo em multipart/form-data com Multer em disco
+const crypto = require('crypto');
+const path = require('path');
+const express = require('express');
+const multer = require('multer');
+
+const armazenamento = multer.diskStorage({
+  destination: 'uploads/',
+  // gera um nome aleatório mantendo a extensão enviada (provisório: a próxima prática troca isso)
+  filename(req, arquivo, callback) {
+    callback(null, `${crypto.randomUUID()}${path.extname(arquivo.originalname).toLowerCase()}`);
+  }
+});
+
+const upload = multer({ storage: armazenamento });
+const router = express.Router();
+
+// recebe uma foto e a legenda de uma tarefa
+router.post('/tarefas/:id/anexos', upload.single('foto'), (req, res) =&gt; {
+  if (!req.file) return res.status(400).json({ erro: 'Envie o arquivo no campo foto' });
+  res.status(201).json({
+    tarefaId: Number(req.params.id),
+    legenda: req.body.legenda || null,
+    arquivo: req.file.filename,
+    tipoDeclarado: req.file.mimetype,
+    tamanho: req.file.size
+  });
+});
+
+// recebe até cinco fotos de uma vez
+router.post('/tarefas/:id/anexos/lote', upload.array('fotos', 5), (req, res) =&gt; {
+  res.status(201).json({ recebidos: req.files.map((f) =&gt; ({ arquivo: f.filename, tamanho: f.size })) });
+});
+
+module.exports = router;
+// Fim de anexos.routes.js</pre>
+        <h2>public/teste-upload.html</h2>
+        <pre>&lt;!-- Início: formulário de teste para a rota de anexos --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Teste de upload&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form action="http://localhost:3000/tarefas/1/anexos" method="post" enctype="multipart/form-data"&gt;
+    &lt;label&gt;Foto &lt;input type="file" name="foto" accept="image/*"&gt;&lt;/label&gt;
+    &lt;label&gt;Legenda &lt;input type="text" name="legenda"&gt;&lt;/label&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- Fim de teste-upload.html --&gt;</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li><code>npm install multer</code> e crie a pasta <code>uploads/</code></li>
+            <li>Registre o roteador com <code>app.use(rotasAnexos)</code></li>
+            <li><code>node server.js</code></li>
+            <li>Abra <code>public/teste-upload.html</code> no navegador e envie uma imagem</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>Sem <code>enctype="multipart/form-data"</code>, o navegador manda só o nome do arquivo, e <code>req.file</code> chega vazio.</li>
+            <li>O nome passado a <code>upload.single</code> precisa ser igual ao <code>name</code> do input, ou o Multer recusa com <code>Unexpected field</code>.</li>
+            <li>A extensão ainda vem do nome original enviado pelo cliente — é o ponto fraco que a próxima atividade corrige.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

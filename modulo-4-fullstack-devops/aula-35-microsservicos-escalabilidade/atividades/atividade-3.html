@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réplicas Sem Estado atrás do Nginx — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Réplicas Sem Estado atrás do Nginx — Código de Referência</h1>
+        <p class="subtitulo">Aula 35 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>Três cópias da mesma API atrás de um Nginx na porta 8080, com o contador de visitas guardado no Redis. Cada resposta mostra qual réplica atendeu e o total compartilhado.</p>
+        </div>
+        <h2>api/server.js</h2>
+        <pre>// Início: server.js — API sem estado; o contador vive no Redis, não na memória do processo
+const express = require('express');
+const os = require('os');
+const { createClient } = require('redis');
+
+const app = express();
+const redis = createClient({ url: process.env.REDIS_URL || 'redis://redis:6379' });
+
+// soma uma visita no Redis e devolve qual réplica respondeu
+app.get('/visitas', async (req, res, next) =&gt; {
+  try {
+    const total = await redis.incr('visitas');
+    res.json({ replica: os.hostname(), total });
+  } catch (erro) {
+    next(erro);
+  }
+});
+
+// trata falhas de forma padronizada
+app.use((erro, req, res, next) =&gt; {
+  console.error(erro.message);
+  res.status(500).json({ erro: 'Erro interno' });
+});
+
+// conecta ao Redis antes de aceitar requisições
+async function iniciar() {
+  redis.on('error', (erro) =&gt; console.error('Redis:', erro.message));
+  await redis.connect();
+  app.listen(3000, () =&gt; console.log(`Réplica ${os.hostname()} ouvindo na porta 3000`));
+}
+
+iniciar();
+// Fim de server.js</pre>
+        <h2>nginx.conf</h2>
+        <pre># Início: nginx.conf — distribui as requisições entre as réplicas do serviço api
+events {}
+
+http {
+  upstream api_replicas {
+    server api:3000;
+  }
+
+  server {
+    listen 80;
+
+    location / {
+      proxy_pass http://api_replicas;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+  }
+}
+# Fim de nginx.conf</pre>
+        <h2>compose.yaml</h2>
+        <pre># Início: compose.yaml — três réplicas da API, Redis compartilhado e Nginx na frente
+services:
+  api:
+    build: ./api
+    environment:
+      REDIS_URL: redis://redis:6379
+    deploy:
+      replicas: 3
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+# Fim de compose.yaml</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Em <code>api/</code>, rode <code>npm init -y</code> e <code>npm install express redis</code> e crie o <code>Dockerfile</code> da aula 32</li>
+            <li>Na raiz, rode <code>docker compose up --build</code></li>
+            <li>Chame várias vezes: <code>for i in $(seq 10); do curl -s localhost:8080/visitas; echo; done</code></li>
+            <li>Aumente a escala com <code>docker compose up -d --scale api=5</code> e rode <code>docker compose restart nginx</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A API não tem <code>ports</code>: com três réplicas, três contêineres tentariam publicar a mesma porta do host.</li>
+            <li>O Nginx resolve o nome <code>api</code> na subida e recebe o endereço de todas as réplicas; réplicas novas só entram depois de reiniciá-lo.</li>
+            <li>Troque o <code>redis.incr</code> por uma variável em memória e repita o laço: o total passa a depender de qual réplica respondeu.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

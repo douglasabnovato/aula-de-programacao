@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeiro Artigo Técnico — Modelo Preenchido | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Primeiro Artigo Técnico — Modelo Preenchido</h1>
+        <p class="subtitulo">Aula 59 · Módulo 6: Soft Skills, Carreira e Inteligência Emocional · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O artigo do desenvolvedor fictício Mateus Rangel sobre um erro de CORS, em markdown, no formato problema, tentativas, solução, motivo e referências.</p>
+        </div>
+        <h2>2026-cors-api-local.md</h2>
+        <pre>&lt;!-- Início: artigo técnico (exemplo fictício) --&gt;
+# Erro de CORS ao chamar a API local a partir do React
+
+## O problema
+O frontend em http://localhost:5173 chamava a API em http://localhost:3000
+e o navegador bloqueava a resposta com erro de CORS.
+
+## O que tentei
+- Mudar a URL para 127.0.0.1: o erro continuou.
+- Desativar a checagem no navegador: funcionou só na minha máquina.
+
+## O que funcionou
+Configurar a API para responder com o cabeçalho Access-Control-Allow-Origin
+permitindo apenas a origem do frontend, lida de uma variável de ambiente.
+
+## Por que funcionou
+Origens diferentes (porta diferente conta) exigem que o servidor declare
+quem pode ler a resposta. A checagem é do navegador; por isso o teste
+com ferramentas de linha de comando funcionava.
+
+## Ambiente
+Node 20, Express 4, Vite 5.
+
+## Referências
+- MDN — CORS: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS
+&lt;!-- Fim de 2026-cors-api-local.md --&gt;</pre>
+        <h2>Como usar</h2>
+        <ol>
+            <li>Troque o problema por um que você resolveu.</li>
+            <li>Mantenha a seção <em>O que tentei</em>: ela mostra processo, não só resposta.</li>
+            <li>Publique no seu site do GitHub Pages.</li>
+            <li>Compartilhe com duas frases e o link.</li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O texto não tem nenhum dado de cliente, colega ou empresa: o exemplo é reproduzível com dados fictícios.</li>
+            <li>Informar as versões evita que o artigo engane quem o lê daqui a um ano.</li>
+            <li>A seção <em>Por que funcionou</em> é a que demonstra entendimento, e não só a correção.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

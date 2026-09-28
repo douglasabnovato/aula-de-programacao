@@ -34,12 +34,12 @@ Esta ementa mostra por que separar o código em camadas não é preciosismo: é 
 
 * **Atividade 1 (Diagnosticando e Separando um Controlador Inchado — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-1.html)
 
 * **Atividade 2 (Invertendo a Dependência do Repositório — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-2.html)
 
 * **Atividade 3 (Avaliando a Arquitetura do Próprio Projeto — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-3-backend/aula-23-mvc-clean-architecture/atividades/atividade-3.html)

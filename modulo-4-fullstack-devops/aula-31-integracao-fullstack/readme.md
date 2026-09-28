@@ -34,12 +34,12 @@ Esta ementa liga as duas metades que o aluno aprendeu separadas: o React do Mód
 
 * **Atividade 1 (Definindo e Documentando o Contrato da API — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-1.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-1.html)
 
 * **Atividade 2 (Tela de Tarefas com os Três Estados Tratados — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-2.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-2.html)
 
 * **Atividade 3 (Do Localhost ao Endereço Público — Código-Fonte):**
   *Esta atividade roda fora do navegador e exige o ambiente descrito no próprio material.*
-  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/tree/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-3.html)
+  [Visualizar Código-Fonte no Repositório](https://github.com/douglasabnovato/aula-de-programacao/blob/main/modulo-4-fullstack-devops/aula-31-integracao-fullstack/atividades/atividade-3.html)

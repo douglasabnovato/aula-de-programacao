@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prontidão para Produção — Checklist | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Prontidão para Produção — Checklist</h1>
+        <p class="subtitulo">Aula 39 · Módulo 4: Fullstack, DevOps e Projeto Final · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>O checklist que a dupla marca antes do primeiro deploy e o trecho da API que concentra as mudanças de configuração para produção.</p>
+        </div>
+        <h2>Checklist de configuração</h2>
+        <ul>
+            <li>[ ] Porta lida de <code>process.env.PORT</code>.</li>
+            <li>[ ] Banco lido só de <code>DATABASE_URL</code>, com SSL em produção.</li>
+            <li>[ ] <code>JWT_SECRET</code> com pelo menos 32 caracteres aleatórios, diferente do de desenvolvimento.</li>
+            <li>[ ] CORS com origem de <code>ORIGEM_FRONT</code>, sem <code>*</code>.</li>
+            <li>[ ] <code>.env.example</code> da API e do frontend listando todas as variáveis.</li>
+        </ul>
+        <h2>Checklist de segurança</h2>
+        <ul>
+            <li>[ ] <code>helmet()</code> registrado antes das rotas.</li>
+            <li>[ ] Middleware de erro devolve mensagem genérica e <code>requestId</code>, sem pilha.</li>
+            <li>[ ] Nenhum segredo no histórico do Git (confira com <code>git log -p | grep -i senha</code>).</li>
+            <li>[ ] <code>npm audit --audit-level=high</code> sem alertas.</li>
+        </ul>
+        <h2>Checklist de operação</h2>
+        <ul>
+            <li>[ ] <code>npm start</code> roda sem dependências de desenvolvimento.</li>
+            <li>[ ] <code>npm run migrar</code> aplica migrações num banco vazio do zero.</li>
+            <li>[ ] <code>/saude/vivo</code> e <code>/saude/pronto</code> respondendo.</li>
+            <li>[ ] Logs em JSON na saída padrão.</li>
+        </ul>
+        <h2>api/src/config.js</h2>
+        <pre>// Início: config.js — toda configuração da API num lugar, lida do ambiente
+const producao = process.env.NODE_ENV === 'production';
+
+// lê uma variável obrigatória e encerra cedo se ela faltar
+function obrigatoria(nome) {
+  const valor = process.env[nome];
+  if (!valor) {
+    console.error(`Variável de ambiente ausente: ${nome}`);
+    process.exit(1);
+  }
+  return valor;
+}
+
+const config = {
+  producao,
+  porta: Number(process.env.PORT || 3000),
+  bancoUrl: obrigatoria('DATABASE_URL'),
+  bancoSsl: producao ? { rejectUnauthorized: false } : false,
+  jwtSecret: obrigatoria('JWT_SECRET'),
+  origemFront: producao ? obrigatoria('ORIGEM_FRONT') : process.env.ORIGEM_FRONT || 'http://localhost:5173'
+};
+
+module.exports = config;
+// Fim de config.js</pre>
+        <h2>O que observar</h2>
+        <ul>
+            <li>A API encerra na subida se faltar variável: o erro aparece no log do deploy, não na primeira requisição do usuário.</li>
+            <li><code>rejectUnauthorized: false</code> aceita o certificado do provedor sem validar a cadeia; se o provedor fornecer o certificado raiz, prefira configurá-lo.</li>
+            <li>Em desenvolvimento a origem tem valor padrão; em produção ela é obrigatória.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Storage — Código de Referência | ByteClass</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png">
+    <style>
+        :root {
+            --bg-main: #0D1117;
+            --bg-surface: #161B22;
+            --primary-color: #00FF66;
+            --text-main: #FFFFFF;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px 60px;
+        }
+
+        .folha { max-width: 860px; margin: 0 auto; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+        .subtitulo { color: var(--text-muted); font-size: .9rem; margin-bottom: 26px; }
+
+        h2 {
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-color);
+            margin: 26px 0 10px;
+        }
+
+        .painel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        pre {
+            background-color: #0a0d12;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            font: 400 .84rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+            color: #d7e2ee;
+            white-space: pre;
+        }
+
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary-color); }
+
+        ul, ol { padding-left: 22px; }
+
+        li { margin-bottom: 7px; }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .voltar:hover { text-decoration: underline; }
+
+        .demo {
+            width: 100%;
+            height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            resize: vertical;
+            overflow: auto;
+            display: block;
+        }
+
+        .demo-acoes { margin-top: 10px; font-size: .85rem; color: var(--text-muted); }
+
+        .demo-acoes button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font: inherit;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="folha">
+        <a class="voltar" href="../index.html">← Voltar para a aula</a>
+        <h1>Supabase Storage — Código de Referência</h1>
+        <p class="subtitulo">Aula 27 · Módulo 3: Backend e Banco de Dados · ByteClass</p>
+        <h2>O que esta atividade entrega</h2>
+        <div class="painel">
+            <p>A foto validada vai para um bucket privado do Supabase, os metadados vão para a tabela <code>anexos</code> e a leitura acontece por link assinado que expira em cinco minutos.</p>
+        </div>
+        <h2>db/anexos.sql</h2>
+        <pre>-- Início: tabela de metadados dos anexos guardados no Supabase Storage
+create table anexos (
+  id bigint generated always as identity primary key,
+  tarefa_id bigint not null references tarefas(id) on delete cascade,
+  caminho text not null unique,
+  tipo text not null,
+  tamanho integer not null check (tamanho &gt; 0),
+  criado_em timestamptz not null default now()
+);
+
+create index anexos_tarefa_id_idx on anexos (tarefa_id);
+-- Fim de anexos.sql</pre>
+        <h2>src/services/anexos.service.js</h2>
+        <pre>// Início: serviço que guarda o arquivo no bucket privado e os metadados no banco
+const crypto = require('crypto');
+const supabase = require('../infra/db/supabase');
+const { AppError, NaoEncontrado } = require('../erros/AppError');
+
+const BUCKET = 'anexos';
+
+// envia o arquivo, registra os metadados e desfaz o upload se o registro falhar
+async function salvarAnexo(tarefaId, arquivo, detectado) {
+  const caminho = `tarefas/${tarefaId}/${crypto.randomUUID()}.${detectado.extensao}`;
+
+  const envio = await supabase.storage.from(BUCKET).upload(caminho, arquivo.buffer, {
+    contentType: detectado.tipo,
+    upsert: false
+  });
+  if (envio.error) throw new AppError(502, 'Falha no armazenamento', envio.error.message);
+
+  const { data, error } = await supabase
+    .from('anexos')
+    .insert({ tarefa_id: tarefaId, caminho, tipo: detectado.tipo, tamanho: arquivo.size })
+    .select('id, caminho, tipo, tamanho')
+    .single();
+
+  if (error) {
+    await supabase.storage.from(BUCKET).remove([caminho]);
+    throw error;
+  }
+  return data;
+}
+
+// gera um link temporário para o anexo informado
+async function gerarLink(anexoId, segundos = 300) {
+  const { data: anexo, error } = await supabase.from('anexos').select('caminho').eq('id', anexoId).maybeSingle();
+  if (error) throw error;
+  if (!anexo) throw new NaoEncontrado('Anexo', anexoId);
+
+  const assinado = await supabase.storage.from(BUCKET).createSignedUrl(anexo.caminho, segundos);
+  if (assinado.error) throw new AppError(502, 'Falha no armazenamento', assinado.error.message);
+  return { url: assinado.data.signedUrl, expiraEmSegundos: segundos };
+}
+
+module.exports = { salvarAnexo, gerarLink };
+// Fim de anexos.service.js</pre>
+        <h2>src/routes/anexos.routes.js</h2>
+        <pre>// Início: rotas de anexos ligadas ao Supabase Storage
+const express = require('express');
+const upload = require('../uploads/upload');
+const detectarImagem = require('../uploads/detectarImagem');
+const { salvarAnexo, gerarLink } = require('../services/anexos.service');
+const { AppError } = require('../erros/AppError');
+
+const router = express.Router();
+
+// recebe, valida e guarda a imagem da tarefa
+router.post('/tarefas/:id/anexos', upload.single('foto'), async (req, res) =&gt; {
+  if (!req.file) throw new AppError(400, 'Arquivo ausente', 'Envie a imagem no campo foto');
+  const detectado = detectarImagem(req.file.buffer);
+  if (!detectado) throw new AppError(415, 'Conteúdo não é imagem', 'O arquivo não é JPEG, PNG ou WebP de verdade');
+  res.status(201).json(await salvarAnexo(Number(req.params.id), req.file, detectado));
+});
+
+// devolve um link assinado de cinco minutos
+router.get('/anexos/:id/link', async (req, res) =&gt; {
+  res.json(await gerarLink(Number(req.params.id)));
+});
+
+module.exports = router;
+// Fim de anexos.routes.js</pre>
+        <h2>Como rodar</h2>
+        <ol>
+            <li>Crie o bucket privado <code>anexos</code> em <strong>Storage</strong> no painel do Supabase</li>
+            <li>Execute <code>db/anexos.sql</code> no SQL Editor</li>
+            <li><code>node server.js</code> com <code>SUPABASE_URL</code> e <code>SUPABASE_SECRET_KEY</code> no <code>.env</code></li>
+            <li>Envie uma foto e depois chame <code>GET /anexos/1/link</code></li>
+        </ol>
+        <h2>O que observar</h2>
+        <ul>
+            <li>O banco guarda o caminho, não o arquivo: trocar de provedor de armazenamento depois muda só o serviço.</li>
+            <li>Se o insert falhar, o <code>remove</code> apaga o arquivo recém-enviado — sem isso, o bucket acumula arquivos sem dono.</li>
+            <li>O link assinado vale para qualquer pessoa enquanto não expira; por isso o prazo curto.</li>
+        </ul>
+    </div>
+</body>
+
+</html>
