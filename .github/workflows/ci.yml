@@ -1,0 +1,36 @@
+# O repositório não tinha nenhum workflow: só o Pages rodava na branch principal
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # O repositório é grande: só o que os testes usam
+          filter: blob:none
+          sparse-checkout: |
+            /*
+            !/*/
+            /.github/
+            /docs/
+            /scripts/
+            /tests/
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: node scripts/verificar-conteudo.mjs
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
