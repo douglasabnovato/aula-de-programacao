@@ -1,5 +1,7 @@
 # ⚡ Aula de Programação | da ByteClass para o Aluno
 
+> **Estado em 02/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
+
 ## 📖 Descrição do Projeto
 
 O **Aula de Programação** é o painel de ensino da **ByteClass** (ecossistema learnTECH). Reúne, num só lugar, as duas metades da jornada do aluno: a **grade curricular** — teoria e prática guiada, módulo a módulo — e o **catálogo de projetos** — 59 projetos práticos organizados por tecnologia, para o aluno ver código de verdade funcionando.
