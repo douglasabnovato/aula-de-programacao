@@ -539,6 +539,34 @@
             margin-bottom: 15px;
         }
 
+        .erro-aula__acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .erro-aula__botao {
+            background-color: var(--primary-color);
+            color: #000;
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .erro-aula__botao--secundario {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid currentColor;
+        }
+
+        .erro-aula__botao:focus-visible {
+            outline: 3px solid var(--warning-color);
+            outline-offset: 2px;
+        }
+
         .badge.aviso,
         .badge.experimental {
             background-color: rgba(240, 136, 62, 0.15);
@@ -879,7 +907,7 @@
                     <span class="badge experimental" id="playerAulaBadge">Aula</span>
                     <h2 id="playerAulaTitle" style="margin-bottom:15px; color:#fff;"></h2>
                     <div class="video-player-wrapper">
-                        <iframe id="youtubeIframe" src="" allowfullscreen></iframe>
+                        <iframe id="youtubeIframe" title="Vídeo da aula" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -894,13 +922,26 @@
             </div>
         </div>
 
+        <!-- Tela de erro: a aula não respondeu (pasta sem página ou sem rede) -->
+        <div id="erroAulaView" class="center-screen" style="display: none;">
+            <div class="content-card aviso" role="alert">
+                <span class="badge aviso">Aula indisponível</span>
+                <h1 id="erroAulaTitulo">Não foi possível abrir a aula</h1>
+                <p id="erroAulaMotivo">Confira a conexão e tente de novo.</p>
+                <div class="erro-aula__acoes">
+                    <button type="button" id="erroAulaTentar" class="erro-aula__botao">Tentar de novo</button>
+                    <button type="button" class="erro-aula__botao erro-aula__botao--secundario" onclick="voltarHome()">Voltar ao painel</button>
+                </div>
+            </div>
+        </div>
+
         <div class="rastro" id="rastroProjetos">
             <button type="button" onclick="abrirProjetos()">📁 Projetos</button>
             <span class="rastro__sep" id="rastroSep" hidden>›</span>
             <span class="rastro__atual" id="rastroAtual"></span>
         </div>
 
-        <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
+        <iframe id="aulaFrame" title="Conteúdo da aula" class="iframe-container" style="display: none;"></iframe>
     </main>
 
     <script src="cursos.js"></script>
@@ -953,7 +994,8 @@
                 const emAula = document.getElementById("aulaFrame").style.display === "block";
                 const emVideo = document.getElementById("playerView").style.display === "flex";
                 const emConstrucao = document.getElementById("construcaoView").style.display === "flex";
-                if (emAula || emVideo || emConstrucao) voltarHome();
+                const emErro = document.getElementById("erroAulaView").style.display === "flex";
+                if (emAula || emVideo || emConstrucao || emErro) voltarHome();
             });
 
             window.addEventListener("popstate", () => voltarHome());
@@ -1150,7 +1192,7 @@
             esconderTodasAsTelas();
             document.getElementById("playerAulaBadge").textContent = `Aula ${aula.numero}`;
             document.getElementById("playerAulaTitle").textContent = aula.titulo;
-            document.getElementById("youtubeIframe").src = `https://www.youtube.com/embed/${aula.youtubeId}?autoplay=1`;
+            document.getElementById("youtubeIframe").src = `https://www.youtube-nocookie.com/embed/${aula.youtubeId}?autoplay=1`;
             document.getElementById("playerView").style.display = "flex";
         }
 
@@ -1160,6 +1202,7 @@
             document.getElementById("playlistDetailView").style.display = "none";
             document.getElementById("playerView").style.display = "none";
             document.getElementById("construcaoView").style.display = "none";
+            document.getElementById("erroAulaView").style.display = "none";
             document.getElementById("aulaFrame").style.display = "none";
             document.getElementById("youtubeIframe").src = "";
             document.getElementById("rastroProjetos").classList.remove("ativo");
@@ -1268,13 +1311,34 @@
             elementoData.innerHTML = `${mesFormatado}, ${agora.getDate()} <span class="ano">${agora.getFullYear()}</span>`;
         }
 
-        function carregarAula(caminhoArquivo, elementoMenu) {
+        // O iframe não avisa quando a página dá 404 ou a rede cai: o load
+        // dispara do mesmo jeito. Por isso o painel confere a aula antes.
+        async function carregarAula(caminhoArquivo, elementoMenu) {
             esconderTodasAsTelas();
+            atualizarMenuAtivo(elementoMenu);
+            marcarNoHistorico("aula");
+            let motivo = "";
+            try {
+                const resposta = await fetch(caminhoArquivo, { method: "HEAD", cache: "no-store" });
+                if (!resposta.ok) motivo = `A página da aula não foi encontrada (erro ${resposta.status}).`;
+            } catch {
+                motivo = "Sem conexão com o site. Confira a internet e tente de novo.";
+            }
+            if (motivo) {
+                exibirErroDaAula(motivo, caminhoArquivo, elementoMenu);
+                return;
+            }
             const frame = document.getElementById('aulaFrame');
             frame.style.display = 'block';
             frame.src = caminhoArquivo;
-            atualizarMenuAtivo(elementoMenu);
-            marcarNoHistorico("aula");
+        }
+
+        function exibirErroDaAula(motivo, caminhoArquivo, elementoMenu) {
+            esconderTodasAsTelas();
+            document.getElementById("erroAulaMotivo").textContent = motivo;
+            document.getElementById("erroAulaTentar").onclick = () => carregarAula(caminhoArquivo, elementoMenu);
+            document.getElementById("erroAulaView").style.display = "flex";
+            document.getElementById("erroAulaTentar").focus();
         }
 
         function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
