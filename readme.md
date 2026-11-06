@@ -1,6 +1,32 @@
 # ⚡ Aula de Programação | da ByteClass para o Aluno
 
-> **Estado em 02/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
+> **Estado em 06/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
+
+## Estado e próximos passos (ciclo de 03/11/2026)
+
+Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 06/11/2026).
+
+**O que foi feito**
+- Aula que não abre (404 ou sem rede) mostra uma tela de erro com "Tentar de novo" e "Voltar ao painel", com 2 testes ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
+- Iframes com título para leitor de tela; vídeos pelo modo de privacidade do YouTube ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
+- CI também nos PRs para a `developer` ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
+- CI com conferência das 70 aulas e testes Playwright do painel ([#8](https://github.com/douglasabnovato/aula-de-programacao/issues/8)).
+- Nível N1 registrado no `docs/MVP.md`: 7 de 10 critérios aplicáveis atendidos.
+
+**O que queremos fazer**
+- [#16](https://github.com/douglasabnovato/aula-de-programacao/issues/16) Proteger a `main` com PR e CI obrigatórios (responsável).
+- [#17](https://github.com/douglasabnovato/aula-de-programacao/issues/17) Teste do fluxo com um aluno de fora (responsável).
+- [#21](https://github.com/douglasabnovato/aula-de-programacao/issues/21) Validar os vídeos de apoio das aulas (responsável).
+- [#22](https://github.com/douglasabnovato/aula-de-programacao/issues/22) Link direto para cada aula.
+- [#18](https://github.com/douglasabnovato/aula-de-programacao/issues/18) Marcar aula como concluída e continuar de onde parou.
+- [#19](https://github.com/douglasabnovato/aula-de-programacao/issues/19) Reduzir o peso das imagens e da mídia.
+- [#20](https://github.com/douglasabnovato/aula-de-programacao/issues/20) Apagar arquivos que sobraram do catálogo antigo.
+
+**Onde está a documentação**
+- Estado e critérios: [docs/MVP.md](docs/MVP.md).
+- Plano do ciclo: [docs/PLANO-DE-ACAO.md](docs/PLANO-DE-ACAO.md), seção "Ciclo de 03/11/2026".
+
+---
 
 ## 📖 Descrição do Projeto
 
