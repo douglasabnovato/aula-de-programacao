@@ -23,6 +23,34 @@ test('abrir uma aula carrega o conteúdo e Esc volta ao painel', async ({ page }
   await expect(page.locator('#welcomeView')).toBeVisible();
 });
 
+async function abrirPrimeiraAula(page) {
+  await page.goto('/');
+  await page.locator('#menuList .modulo-toggle[aria-label*="aulas publicadas"]').first().click();
+  await page.getByRole('link', { name: /^Aula 1: / }).first().click();
+}
+
+test('aula que não existe mostra o erro e volta ao painel', async ({ page }) => {
+  await page.route('**/modulo-*/**', (r) => r.fulfill({ status: 404, body: 'não achou' }));
+  await abrirPrimeiraAula(page);
+  await expect(page.locator('#erroAulaView')).toBeVisible();
+  await expect(page.locator('#erroAulaMotivo')).toContainText('404');
+  await expect(page.locator('#aulaFrame')).toBeHidden();
+  await expect(page.locator('#erroAulaTentar')).toBeFocused();
+  await page.getByRole('button', { name: 'Voltar ao painel' }).click();
+  await expect(page.locator('#welcomeView')).toBeVisible();
+});
+
+test('sem rede, a aula avisa e "Tentar de novo" abre quando a rede volta', async ({ page }) => {
+  let falhar = true;
+  await page.route('**/modulo-*/**', (r) => (falhar ? r.abort() : r.fulfill({ contentType: 'text/html', body: '<h1>Aula</h1>' })));
+  await abrirPrimeiraAula(page);
+  await expect(page.locator('#erroAulaMotivo')).toContainText('Sem conexão');
+  falhar = false;
+  await page.locator('#erroAulaTentar').click();
+  await expect(page.locator('#aulaFrame')).toBeVisible();
+  await expect(page.locator('#erroAulaView')).toBeHidden();
+});
+
 test('em 375 px não há rolagem horizontal', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto('/');
