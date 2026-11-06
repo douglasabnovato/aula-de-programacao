@@ -907,7 +907,7 @@
                     <span class="badge experimental" id="playerAulaBadge">Aula</span>
                     <h2 id="playerAulaTitle" style="margin-bottom:15px; color:#fff;"></h2>
                     <div class="video-player-wrapper">
-                        <iframe id="youtubeIframe" src="" allowfullscreen></iframe>
+                        <iframe id="youtubeIframe" title="Vídeo da aula" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -941,7 +941,7 @@
             <span class="rastro__atual" id="rastroAtual"></span>
         </div>
 
-        <iframe id="aulaFrame" class="iframe-container" style="display: none;"></iframe>
+        <iframe id="aulaFrame" title="Conteúdo da aula" class="iframe-container" style="display: none;"></iframe>
     </main>
 
     <script src="cursos.js"></script>
@@ -1192,7 +1192,7 @@
             esconderTodasAsTelas();
             document.getElementById("playerAulaBadge").textContent = `Aula ${aula.numero}`;
             document.getElementById("playerAulaTitle").textContent = aula.titulo;
-            document.getElementById("youtubeIframe").src = `https://www.youtube.com/embed/${aula.youtubeId}?autoplay=1`;
+            document.getElementById("youtubeIframe").src = `https://www.youtube-nocookie.com/embed/${aula.youtubeId}?autoplay=1`;
             document.getElementById("playerView").style.display = "flex";
         }
 
