@@ -2,6 +2,53 @@
 
 O estado e os critérios ficam em [`MVP.md`](MVP.md). Este arquivo guarda o plano de cada ciclo, com data.
 
+## Ciclo de 07/11/2026
+
+> Executado em 09/11/2026. Branch `feature/2026-11-07` → `developer/sprint-2026-11-12` → `main` (o PR para a `main` fica aberto para o responsável). Nível: Estudo (N1).
+
+### Produto
+
+**Foco.** Critério 9: peso da mídia (#19) e arquivos sem uso (#20). Percorrer o fluxo principal na tela e registrar.
+
+**O que a pesquisa trouxe.**
+
+| Ideia | O que levamos para o projeto | Fonte |
+|---|---|---|
+| Não há nível de compressão universal: reduzir a imagem ao tamanho em que aparece e testar a qualidade | Imagens acima de 500 KB reduzidas no lado maior e comprimidas de novo, mantendo nome e formato para não mudar referências | [web.dev: escolher o nível de compressão](https://web.dev/articles/compress-images), [web.dev: desempenho de imagens](https://web.dev/learn/performance/image-performance) |
+| `preload="none"` faz o navegador não baixar a mídia até o play; `metadata` baixa só a duração | Vídeos do `classic-sites` (todos com pôster) com `preload="none"`; áudio com `metadata` | [MDN: HTMLMediaElement.preload](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/preload) |
+| GIF animado grande pesa mais que o mesmo trecho em vídeo | Virou issue (#24) | [web.dev: desempenho de imagens](https://web.dev/learn/performance/image-performance) |
+
+**Backlog do ciclo.**
+
+| Prioridade | Item | Destino |
+|---|---|---|
+| 1 | Imagens de `projetos/projects/` abaixo de 500 KB | Este ciclo (#19) |
+| 2 | Mídia do `classic-sites` só ao tocar | Este ciclo (#19) |
+| 3 | Cópias idênticas em `assets/banners/` | Este ciclo (#20) |
+| 4 | Tab passando por aulas escondidas (achado no fluxo na tela) | Este ciclo |
+| 5 | Imagem com caminho absoluto no `aprender-programar` | Este ciclo |
+| 6 | GIFs acima de 500 KB | Issue #24 |
+| 7 | Banners de marca sem uso no site | Responsável (#25) |
+| 8 | Histórico do Git com 330 MB | Responsável (#26) |
+| 9 | Busca apagada deixa o módulo aberto | Issue #27 |
+
+### Engenharia
+
+**Riscos.**
+- Comprimir não diminui o clone: as versões antigas ficam no histórico (#26).
+- PNG reduzido a 256 cores pode mostrar faixas em degradê; conferir as capturas dos fundos do `dev-em-dobro`.
+- Antes de apagar, `git grep` pelo caminho e pelo nome; banners de marca podem ser usados fora do site, por isso ficaram (#25).
+
+**Qualidade.** `node scripts/verificar-conteudo.mjs`, `npm test` (7 testes) e o roteiro do fluxo na tela, com 0 imagem quebrada nos 10 projetos alterados.
+
+**Definição de pronto.** CI verde no PR para a sprint; PR sprint → `main` aberto com `revisao-responsavel`; `docs/MVP.md` e README atualizados.
+
+### Plano de ação
+
+**Este ciclo executa.** Itens 1 a 5 do backlog, o fluxo na tela e a atualização do `docs/MVP.md` e do README.
+
+**Vira issue.** #24 e #27 (agente); #25 e #26 (responsável).
+
 ## Ciclo de 03/11/2026
 
 > Executado em 06/11/2026. Branch `feature/2026-11-06` → `developer/sprint-2026-11-12` → `main`. Nível: Estudo (N1); critérios 5 e 7 não se aplicam.
