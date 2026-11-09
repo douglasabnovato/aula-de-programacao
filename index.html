@@ -354,14 +354,18 @@
             margin: 0;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease, visibility 0s linear 0.3s;
             background-color: rgba(0, 0, 0, 0.2);
+            /* Fechada, a lista sai da ordem do Tab: sem isso o teclado passava por ~70 links invisíveis */
+            visibility: hidden;
         }
 
         .modulo-item.ativo .aulas-sublist {
             max-height: 620px;
             padding: 6px 0 10px 0;
             overflow-y: auto;
+            visibility: visible;
+            transition-delay: 0s;
         }
 
         .modulo-item.ativo .seta-modulo {
@@ -1021,6 +1025,7 @@
             btnExp.className = "modulo-toggle";
             btnExp.style.color = "var(--warning-color)";
             btnExp.innerHTML = `<span>🎬 Aula Experimental</span><span class="seta-modulo">▼</span>`;
+            btnExp.setAttribute("aria-expanded", "false");
             btnExp.onclick = () => {
                 toggleModulo("menu-experimental");
             };
@@ -1089,6 +1094,7 @@
                             </span>
                         </span>
                         <span class="seta-modulo">▼</span>`;
+                    btnToggle.setAttribute("aria-expanded", "false");
                     btnToggle.onclick = () => toggleModulo(modulo.id);
 
                     const ulAulas = document.createElement("ul");
@@ -1281,7 +1287,7 @@
                 });
 
                 modulo.hidden = batemNoModulo === 0;
-                if (busca) modulo.classList.toggle("ativo", batemNoModulo > 0);
+                if (busca) marcarAberto(modulo, batemNoModulo > 0);
                 encontrados += batemNoModulo;
             });
 
@@ -1299,7 +1305,14 @@
 
         function toggleModulo(idModulo) {
             const moduloElemento = document.getElementById(idModulo);
-            if (moduloElemento) moduloElemento.classList.toggle("ativo");
+            if (moduloElemento) marcarAberto(moduloElemento, !moduloElemento.classList.contains("ativo"));
+        }
+
+        // Abre ou fecha o módulo e mantém o aria-expanded do botão igual ao que se vê.
+        function marcarAberto(moduloElemento, aberto) {
+            moduloElemento.classList.toggle("ativo", aberto);
+            const botao = moduloElemento.querySelector(":scope > .modulo-toggle");
+            if (botao && botao.hasAttribute("aria-expanded")) botao.setAttribute("aria-expanded", String(aberto));
         }
 
         function renderizarDataAtual() {
