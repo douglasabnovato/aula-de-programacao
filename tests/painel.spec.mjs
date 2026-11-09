@@ -57,3 +57,17 @@ test('em 375 px não há rolagem horizontal', async ({ page }) => {
   await expect(page.locator('#welcomeView')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
 });
+
+test('módulo fechado não deixa o Tab cair em aula invisível', async ({ page }) => {
+  await page.goto('/');
+  const modulo = page.locator('#menuList .modulo-toggle[aria-label^="Módulo 1"]');
+  await expect(modulo).toHaveAttribute('aria-expanded', 'false');
+  await modulo.focus();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#menuList .modulo-toggle[aria-label^="Módulo 2"]')).toBeFocused();
+  await modulo.focus();
+  await page.keyboard.press('Enter');
+  await expect(modulo).toHaveAttribute('aria-expanded', 'true');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: /^Aula 1: / })).toBeFocused();
+});
