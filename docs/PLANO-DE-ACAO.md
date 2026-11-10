@@ -109,3 +109,21 @@ O estado e os critérios ficam em [`MVP.md`](MVP.md). Este arquivo guarda o plan
 4. `docs/MVP.md` com nível N1 e resumo; README com o estado do ciclo.
 
 **Vira issue.** #16, #17, #21 (responsável); #18, #19, #20, #22 (agente).
+
+## Ciclo de 10/11/2026 (faixa de 90%)
+
+> Branch `feature/2026-11-10-b` → `developer/sprint-2026-11-12` → `main` (o PR para a `main` fica com o responsável). Decisões D1 a D7 em `engenharia/decisoes/2026-11-10-ciclo-faixa-90.md`.
+
+**Produto.** Sem mudança de problema e público. A meta da hipótese passa a ser a do ciclo (D1). O teste com um aluno de fora vira validação (#17).
+
+**Engenharia.** O teste de abrir aula simulava o conteúdo porque o CI não trazia as pastas das aulas. Agora o CI traz as pastas `modulo-*` sem mídia, e um teste faz a tarefa da #17 com a aula real.
+
+**Plano de ação.**
+
+| Item | Destino |
+|---|---|
+| Teste de ponta a ponta com a aula real, no CI | Este ciclo |
+| Critérios 2, 3 e 10 pelas decisões D1 a D3 | Este ciclo |
+| Validar os vídeos | Responsável (#21) |
+| Validar com uma pessoa de fora | Responsável (#17) |
+

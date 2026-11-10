@@ -1,8 +1,33 @@
 # MVP — critérios
 
-> Fonte única do estado. Tabela atual de 09/11/2026 (ciclo de 07/11/2026), com o critério 10 revisto em 10/11/2026. As tabelas anteriores estão em "Histórico", no fim.
+> Fonte única do estado. Tabela atual de 10/11/2026 (ciclo da faixa de 90%; decisões D1 a D7 em `engenharia/decisoes/2026-11-10-ciclo-faixa-90.md`). As tabelas anteriores estão em "Histórico", no fim.
 
 **Nível:** Estudo (N1). Critérios 5 (medição) e 7 (LCP no ar) não se aplicam e saem da conta.
+
+**Resumo:** 9 de 10 aplicáveis atendidos
+
+**Finalizado:** sim
+
+Falta só o critério 9, que depende do responsável: validar os vídeos de apoio (#21, `depende-do-responsavel`). O teste com um aluno de fora saiu do MVP pela decisão D2 e virou validação de produto (#17, rótulo `validacao`).
+
+| # | Critério | Como verificar | Situação em 10/11/2026 |
+|---|---|---|---|
+| 1 | Problema e público claros | Dá para explicar em uma frase | Atende: alunos da ByteClass acham a aula na ordem da grade e veem exemplos sem sair do painel (`docs/PLANO-DE-ACAO.md`) |
+| 2 | Hipótese a validar | Existe uma aposta escrita, com meta | Atende: meta decidida pelo coordenador em 10/11/2026 (decisão D1), revisável pelo responsável: 1 em cada 3 visitantes abre uma aula |
+| 3 | Fluxo principal completo | Teste de ponta a ponta no navegador, no CI | Atende (decisão D2): `npx playwright test`, 10/11/2026: 8 de 8 passaram, inclusive "o aluno busca "Promises", abre a aula real e volta ao painel", que abre o conteúdo real da aula no iframe, sem simular. Roda no CI do PR #32, que agora traz as pastas `modulo-*` sem mídia |
+| 4 | Escopo enxuto | O que não entra está registrado | Atende: login, certificado e progresso no servidor ficam fora (`docs/PLANO-DE-ACAO.md`) |
+| 5 | Medição de uso | A métrica principal é coletada | Não se aplica (N1) |
+| 6 | Falhas tratadas | Erro, vazio e carregamento têm resposta clara | Atende: `npx playwright test`, 10/11/2026: aula com 404, sem rede e busca vazia passam |
+| 7 | Desempenho aceitável | LCP de até 2,5 s no celular | Não se aplica (N1). Registro: 2,84 s em 02/11/2026 |
+| 8 | Acessibilidade básica | Lighthouse e teclado | Atende: `npx playwright test`, 10/11/2026: "módulo fechado não deixa o Tab cair em aula invisível" passou. Lighthouse 100 em 02/11/2026 |
+| 9 | Segurança e conformidade | Riscos decididos; termos cumpridos | Parcial: `npm audit --omit=dev`, 10/11/2026: 0 vulnerabilidades (Dependabot pela API: sem leitura com o token do agente). Sem dados pessoais; YouTube no modo de privacidade. Falta validar os vídeos (#21, responsável) |
+| 10 | Entrega confiável | Publicação só depois de CI verde | Atende: `gh api repos/douglasabnovato/aula-de-programacao/rules/branches/main`, 10/11/2026: `deletion`, `non_fast_forward`, `pull_request` e `required_status_checks` com o job `verificar` (decisão D3) |
+| 11 | Testes dos fluxos críticos | Testes automatizados no CI | Atende: `node scripts/verificar-conteudo.mjs` e `npm test` (8 testes Playwright) no CI |
+| 12 | Documentação honesta | Qualquer pessoa roda o projeto, e os números estão certos | Atende: README revisto em 10/11/2026; `curl` em https://douglasabnovato.github.io/aula-de-programacao/, 10/11/2026: 200 |
+
+## Histórico
+
+### Tabela de 09/11/2026, revista em 10/11/2026 (ciclo de 07/11/2026)
 
 **Resumo:** 8 de 10 aplicáveis atendidos
 
@@ -25,7 +50,7 @@ Os 2 critérios que faltam (3 e 9) dependem do responsável, cada um com issue `
 | 11 | Testes dos fluxos críticos | Testes automatizados no CI | Atende: `node scripts/verificar-conteudo.mjs` e `npm test` (7 testes Playwright) no CI, verdes no PR do ciclo de 07/11/2026 |
 | 12 | Documentação honesta | Qualquer pessoa roda o projeto, e os números estão certos | Atende: README revisto em 09/11/2026; `curl` no site publicado deu 200 e o HTML é igual ao `index.html` da `main` |
 
-### Fluxo principal percorrido na tela (09/11/2026)
+#### Fluxo principal percorrido na tela (09/11/2026)
 
 Como foi feito: clone novo, `http-server` local e um roteiro Playwright (Chromium) que faz o caminho do aluno, com captura de tela em cada passo.
 
@@ -37,8 +62,6 @@ Como foi feito: clone novo, `http-server` local e um roteiro Playwright (Chromiu
 6. Os 10 projetos com imagem comprimida abrem com 0 imagem quebrada, depois de corrigir o caminho absoluto do `aprender-programar`.
 
 O que o roteiro achou: o Tab passava por aulas escondidas (corrigido) e a busca apagada deixa o módulo aberto (#27).
-
-## Histórico
 
 ### Tabela de 06/11/2026 (ciclo de 03/11/2026)
 

@@ -2,33 +2,28 @@
 
 > **Estado em 09/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
 
-## Estado e próximos passos (ciclo de 07/11/2026)
+## Estado e próximos passos (ciclo da faixa de 90%, 10/11/2026)
 
-Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 09/11/2026, igual à `main`). **Finalizado: sim**, com 8 de 10 critérios aplicáveis atendidos; os 2 restantes dependem do responsável. A `main` está protegida desde 10/11/2026 (exige PR e bloqueia force push).
+**Estado:** Estudo (N1), 9 de 10 critérios aplicáveis atendidos; **Finalizado: sim**. Falta só validar os vídeos de apoio, que é do responsável (#21). A `main` exige PR e o job `verificar` do CI verde. Detalhes em [`docs/MVP.md`](docs/MVP.md).
 
-**O que foi feito em 09/11/2026**
-- As 42 imagens de `projetos/projects/` acima de 500 KB ficaram abaixo do limite: 60,9 MB → 15,4 MB, mesmo nome e formato ([#19](https://github.com/douglasabnovato/aula-de-programacao/issues/19)).
-- Vídeos do `classic-sites` só baixam ao tocar ([#19](https://github.com/douglasabnovato/aula-de-programacao/issues/19)).
-- Saíram 3 cópias idênticas de `assets/banners/`. `projetos/assets/logo/` e `projetos/readme.md` já tinham saído em 25/09/2026 ([#20](https://github.com/douglasabnovato/aula-de-programacao/issues/20)).
-- Módulo fechado sai da ordem do Tab, e o botão do módulo diz se está aberto (`aria-expanded`), com teste.
-- Fluxo principal percorrido no navegador e registrado no [docs/MVP.md](docs/MVP.md).
+**No ar:** [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 10/11/2026).
 
-**O que queremos fazer**
-- [#16](https://github.com/douglasabnovato/aula-de-programacao/issues/16) Proteger a `main`: feito em 10/11/2026 (ruleset `principal-protegida`); a issue fecha no merge da `main`.
-- [#17](https://github.com/douglasabnovato/aula-de-programacao/issues/17) Teste do fluxo com um aluno de fora (responsável).
-- [#21](https://github.com/douglasabnovato/aula-de-programacao/issues/21) Validar os vídeos de apoio das aulas (responsável).
-- [#25](https://github.com/douglasabnovato/aula-de-programacao/issues/25) Decidir o destino dos banners de marca sem uso no site (responsável).
-- [#26](https://github.com/douglasabnovato/aula-de-programacao/issues/26) Decidir se o histórico do Git deve ser enxugado (responsável).
-- [#22](https://github.com/douglasabnovato/aula-de-programacao/issues/22) Link direto para cada aula.
-- [#18](https://github.com/douglasabnovato/aula-de-programacao/issues/18) Marcar aula como concluída e continuar de onde parou.
-- [#24](https://github.com/douglasabnovato/aula-de-programacao/issues/24) Trocar os GIFs animados pesados por vídeo.
-- [#27](https://github.com/douglasabnovato/aula-de-programacao/issues/27) Limpar a busca devolve os módulos ao estado anterior.
+**Ciclo anterior (07/11/2026):** imagens de `projetos/projects/` abaixo de 500 KB (60,9 MB → 15,4 MB, #19), Tab sem aulas escondidas e fluxo percorrido no navegador.
+
+**O que foi feito neste ciclo** (PR #32 para a `developer/sprint-2026-11-12`; a `main` espera a revisão do responsável)
+- Teste de ponta a ponta que busca "Promises", abre a aula real e volta ao painel, rodando no CI.
+- O CI passou a trazer as pastas das aulas, sem mídia.
+
+**Próximos passos**
+- #29 Mesclar a sprint na `main` (responsável); #16 fecha nesse merge.
+- #21 Validar os vídeos de apoio (responsável).
+- #17 Validar com uma pessoa de fora (validação de produto, responsável).
+- #22 Link direto para cada aula; #18 marcar aula como concluída; #27 limpar a busca devolve os módulos ao estado anterior.
+- #19, #20 e #24 peso da mídia e arquivos sem uso; #25 e #26 decisões do responsável sobre banners e histórico.
 
 **Onde está a documentação**
-- Estado e critérios: [docs/MVP.md](docs/MVP.md).
-- Plano do ciclo: [docs/PLANO-DE-ACAO.md](docs/PLANO-DE-ACAO.md), seção "Ciclo de 07/11/2026".
-
----
+- Estado dos critérios: [`docs/MVP.md`](docs/MVP.md)
+- Plano do ciclo: [`docs/PLANO-DE-ACAO.md`](docs/PLANO-DE-ACAO.md)
 
 ## 📖 Descrição do Projeto
 
