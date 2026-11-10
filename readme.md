@@ -1,32 +1,29 @@
 # ⚡ Aula de Programação | da ByteClass para o Aluno
 
-> **Estado em 06/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
+> **Estado em 09/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
 
-## Estado e próximos passos (ciclo de 03/11/2026)
+## Estado e próximos passos (ciclo da faixa de 90%, 10/11/2026)
 
-Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 06/11/2026).
+**Estado:** Estudo (N1), 9 de 10 critérios aplicáveis atendidos; **Finalizado: sim**. Falta só validar os vídeos de apoio, que é do responsável (#21). A `main` exige PR e o job `verificar` do CI verde. Detalhes em [`docs/MVP.md`](docs/MVP.md).
 
-**O que foi feito**
-- Aula que não abre (404 ou sem rede) mostra uma tela de erro com "Tentar de novo" e "Voltar ao painel", com 2 testes ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
-- Iframes com título para leitor de tela; vídeos pelo modo de privacidade do YouTube ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
-- CI também nos PRs para a `developer` ([#15](https://github.com/douglasabnovato/aula-de-programacao/pull/15)).
-- CI com conferência das 70 aulas e testes Playwright do painel ([#8](https://github.com/douglasabnovato/aula-de-programacao/issues/8)).
-- Nível N1 registrado no `docs/MVP.md`: 7 de 10 critérios aplicáveis atendidos.
+**No ar:** [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 10/11/2026).
 
-**O que queremos fazer**
-- [#16](https://github.com/douglasabnovato/aula-de-programacao/issues/16) Proteger a `main` com PR e CI obrigatórios (responsável).
-- [#17](https://github.com/douglasabnovato/aula-de-programacao/issues/17) Teste do fluxo com um aluno de fora (responsável).
-- [#21](https://github.com/douglasabnovato/aula-de-programacao/issues/21) Validar os vídeos de apoio das aulas (responsável).
-- [#22](https://github.com/douglasabnovato/aula-de-programacao/issues/22) Link direto para cada aula.
-- [#18](https://github.com/douglasabnovato/aula-de-programacao/issues/18) Marcar aula como concluída e continuar de onde parou.
-- [#19](https://github.com/douglasabnovato/aula-de-programacao/issues/19) Reduzir o peso das imagens e da mídia.
-- [#20](https://github.com/douglasabnovato/aula-de-programacao/issues/20) Apagar arquivos que sobraram do catálogo antigo.
+**Ciclo anterior (07/11/2026):** imagens de `projetos/projects/` abaixo de 500 KB (60,9 MB → 15,4 MB, #19), Tab sem aulas escondidas e fluxo percorrido no navegador.
+
+**O que foi feito neste ciclo** (PR #32 para a `developer/sprint-2026-11-12`; a `main` espera a revisão do responsável)
+- Teste de ponta a ponta que busca "Promises", abre a aula real e volta ao painel, rodando no CI.
+- O CI passou a trazer as pastas das aulas, sem mídia.
+
+**Próximos passos**
+- #29 Mesclar a sprint na `main` (responsável); #16 fecha nesse merge.
+- #21 Validar os vídeos de apoio (responsável).
+- #17 Validar com uma pessoa de fora (validação de produto, responsável).
+- #22 Link direto para cada aula; #18 marcar aula como concluída; #27 limpar a busca devolve os módulos ao estado anterior.
+- #19, #20 e #24 peso da mídia e arquivos sem uso; #25 e #26 decisões do responsável sobre banners e histórico.
 
 **Onde está a documentação**
-- Estado e critérios: [docs/MVP.md](docs/MVP.md).
-- Plano do ciclo: [docs/PLANO-DE-ACAO.md](docs/PLANO-DE-ACAO.md), seção "Ciclo de 03/11/2026".
-
----
+- Estado dos critérios: [`docs/MVP.md`](docs/MVP.md)
+- Plano do ciclo: [`docs/PLANO-DE-ACAO.md`](docs/PLANO-DE-ACAO.md)
 
 ## 📖 Descrição do Projeto
 
@@ -244,10 +241,8 @@ aula-de-programacao/
 
 - [ ] Revisar os vídeos escolhidos (curadoria feita por busca + conferência de ID; o instrutor valida o conteúdo)
 - [ ] Temas com um vídeo só (28-3 e 53-3): procurar um segundo vídeo em português
-- [ ] **Apagar `projetos/assets/logo/`** — 2,0 MB de logos do antigo cabeçalho do hub, que saiu
-- [ ] **Apagar `projetos/readme.md`** — readme do repositório antigo, substituído por este
-- [ ] **171 MB em `projetos/projects/`** — o maior peso é mídia sem compressão: 37,5 MB de `.mp3` em `devcast-player` e 21 MB de `.jpg` em `curso-em-video` (um deles com 5 MB)
-- [ ] Converter os 6 MB de banners em `assets/` para `.webp`
+- [ ] Mídia de `projetos/projects/`: as imagens já estão abaixo de 500 KB (09/11/2026); faltam 2 GIFs (#24) e o áudio e vídeo de `classic-sites` e `devcast-player` (cerca de 190 MB)
+- [ ] Banners de `assets/banners/` não são usados pelo site: decidir o destino (#25)
 - [ ] Decidir o destino do repositório `escola-de-programacao`, de onde o catálogo veio: arquivar, redirecionar ou apagar
 
 ### Feito nesta rodada

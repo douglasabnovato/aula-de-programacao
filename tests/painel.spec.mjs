@@ -57,3 +57,32 @@ test('em 375 px não há rolagem horizontal', async ({ page }) => {
   await expect(page.locator('#welcomeView')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
 });
+
+test('módulo fechado não deixa o Tab cair em aula invisível', async ({ page }) => {
+  await page.goto('/');
+  const modulo = page.locator('#menuList .modulo-toggle[aria-label^="Módulo 1:"]');
+  await expect(modulo).toHaveAttribute('aria-expanded', 'false');
+  await modulo.focus();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#menuList .modulo-toggle[aria-label^="Módulo 2:"]')).toBeFocused();
+  await modulo.focus();
+  await page.keyboard.press('Enter');
+  await expect(modulo).toHaveAttribute('aria-expanded', 'true');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: /^Aula 1: / })).toBeFocused();
+});
+
+// Fluxo principal de ponta a ponta, sem simular o conteúdo: a tarefa da #17 ("abra a aula de Promises")
+test('o aluno busca "Promises", abre a aula real e volta ao painel', async ({ page, context }) => {
+  await context.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
+  await page.goto('/');
+  await page.locator('#buscaAula').fill('Promises');
+  const link = page.getByRole('link', { name: /Assincronicidade e Promises/ }).first();
+  await expect(link).toBeVisible();
+  await link.click();
+  await expect(page.locator('#aulaFrame')).toBeVisible();
+  const aula = page.frameLocator('#aulaFrame');
+  await expect(aula.locator('h1')).toHaveText('Aula 5: Assincronicidade e Promises');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#welcomeView')).toBeVisible();
+});
