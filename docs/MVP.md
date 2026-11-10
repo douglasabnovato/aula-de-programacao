@@ -1,14 +1,14 @@
 # MVP — critérios
 
-> Fonte única do estado. Tabela atual de 09/11/2026 (ciclo de 07/11/2026). As tabelas anteriores estão em "Histórico", no fim.
+> Fonte única do estado. Tabela atual de 09/11/2026 (ciclo de 07/11/2026), com o critério 10 revisto em 10/11/2026. As tabelas anteriores estão em "Histórico", no fim.
 
 **Nível:** Estudo (N1). Critérios 5 (medição) e 7 (LCP no ar) não se aplicam e saem da conta.
 
-**Resumo:** 7 de 10 aplicáveis atendidos
+**Resumo:** 8 de 10 aplicáveis atendidos
 
 **Finalizado:** sim
 
-Os 3 critérios que faltam (3, 9 e 10) dependem do responsável, cada um com issue `depende-do-responsavel`: teste com aluno de fora (#17), validar os vídeos (#21) e proteger a `main` (#16).
+Os 2 critérios que faltam (3 e 9) dependem do responsável, cada um com issue `depende-do-responsavel`: teste com aluno de fora (#17) e validar os vídeos (#21). A `main` está protegida desde 10/11/2026 (#16).
 
 | # | Critério | Como verificar | Situação em 09/11/2026 |
 |---|---|---|---|
@@ -21,7 +21,7 @@ Os 3 critérios que faltam (3, 9 e 10) dependem do responsável, cada um com iss
 | 7 | Desempenho aceitável | LCP de até 2,5 s no celular | Não se aplica (N1). Registro: 2,84 s em 02/11/2026 |
 | 8 | Acessibilidade básica | Lighthouse e teclado | Atende: `npm test` em 09/11/2026, teste "módulo fechado não deixa o Tab cair em aula invisível" passou; antes, o Tab passava por cerca de 70 links escondidos. Lighthouse 100 em 02/11/2026 |
 | 9 | Segurança e conformidade | Riscos decididos; termos cumpridos | Parcial: sem dados pessoais; YouTube no modo de privacidade; imagens de `projetos/projects/` abaixo de 500 KB (soma das 42 maiores: 60,9 MB → 15,4 MB). Falta validar os vídeos (#21) |
-| 10 | Entrega confiável | Publicação só depois de CI verde | Parcial: CI nos PRs para a `main` e a `developer/**`; a `main` não está protegida (#16) |
+| 10 | Entrega confiável | Publicação só depois de CI verde | Atende: `gh api repos/douglasabnovato/aula-de-programacao/rulesets` em 10/11/2026: ruleset `principal-protegida` ativo (exige PR, bloqueia force push e exclusão); o workflow `CI` roda nos PRs para a `main` e a `developer/**` (#16) |
 | 11 | Testes dos fluxos críticos | Testes automatizados no CI | Atende: `node scripts/verificar-conteudo.mjs` e `npm test` (7 testes Playwright) no CI, verdes no PR do ciclo de 07/11/2026 |
 | 12 | Documentação honesta | Qualquer pessoa roda o projeto, e os números estão certos | Atende: README revisto em 09/11/2026; `curl` no site publicado deu 200 e o HTML é igual ao `index.html` da `main` |
 
