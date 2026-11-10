@@ -4,7 +4,7 @@
 
 ## Estado e próximos passos (ciclo de 07/11/2026)
 
-Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 09/11/2026, igual à `main`). **Finalizado: sim**, com 7 de 10 critérios aplicáveis atendidos; os 3 restantes dependem do responsável.
+Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 09/11/2026, igual à `main`). **Finalizado: sim**, com 8 de 10 critérios aplicáveis atendidos; os 2 restantes dependem do responsável. A `main` está protegida desde 10/11/2026 (exige PR e bloqueia force push).
 
 **O que foi feito em 09/11/2026**
 - As 42 imagens de `projetos/projects/` acima de 500 KB ficaram abaixo do limite: 60,9 MB → 15,4 MB, mesmo nome e formato ([#19](https://github.com/douglasabnovato/aula-de-programacao/issues/19)).
@@ -14,7 +14,7 @@ Projeto de estudo (nível N1). Site publicado: [douglasabnovato.github.io/aula-d
 - Fluxo principal percorrido no navegador e registrado no [docs/MVP.md](docs/MVP.md).
 
 **O que queremos fazer**
-- [#16](https://github.com/douglasabnovato/aula-de-programacao/issues/16) Proteger a `main` com PR e CI obrigatórios (responsável).
+- [#16](https://github.com/douglasabnovato/aula-de-programacao/issues/16) Proteger a `main`: feito em 10/11/2026 (ruleset `principal-protegida`); a issue fecha no merge da `main`.
 - [#17](https://github.com/douglasabnovato/aula-de-programacao/issues/17) Teste do fluxo com um aluno de fora (responsável).
 - [#21](https://github.com/douglasabnovato/aula-de-programacao/issues/21) Validar os vídeos de apoio das aulas (responsável).
 - [#25](https://github.com/douglasabnovato/aula-de-programacao/issues/25) Decidir o destino dos banners de marca sem uso no site (responsável).
