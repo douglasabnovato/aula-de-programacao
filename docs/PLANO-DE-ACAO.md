@@ -2,6 +2,55 @@
 
 O estado e os critérios ficam em [`MVP.md`](MVP.md). Este arquivo guarda o plano de cada ciclo, com data.
 
+## Ciclo de 16/11/2026
+
+> Branch `feature/2026-11-16` → `developer/sprint-2026-11-19` → `main` (o PR para a `main` fica aberto para o responsável). Nível: Estudo (N1). O ciclo anterior chegou à `main` pelo PR #30, em 16/11/2026.
+
+### Produto
+
+**Problema e público.** Alunos da ByteClass precisam achar a aula na ordem da grade e abri-la sem sair do painel.
+
+**Hipótese.** Acreditamos que achar a aula pela busca ou por um link direto e abri-la na mesma tela faz o aluno abrir uma aula. Meta: 1 em cada 3 visitantes abre uma aula. Saberemos quando a medição de uso (fora do N1) ou a validação com aluno (#17) mostrar essa proporção.
+
+**O que a régua de hoje cobra e falta.** A régua do critério 8 pede axe sem violações dentro do teste Playwright, e o painel não tinha axe. O critério 9, com os alertas do Dependabot desligados (API 403), fica Parcial até a decisão da engenharia#33.
+
+**O que a pesquisa trouxe.**
+
+| Ideia | O que levamos para o projeto | Fonte |
+|---|---|---|
+| O Playwright roda o axe na página aberta e devolve as violações; dá para restringir às regras WCAG A e AA | Teste com `@axe-core/playwright` no painel, num módulo aberto e com a aula aberta, em largura de desktop | Playwright, "Accessibility testing" (https://playwright.dev/docs/accessibility-testing) |
+| Um padrão de "disclosure" (botão que mostra e esconde) mantém o `aria-expanded` igual ao que se vê | Limpar a busca devolve cada módulo ao estado de antes, com `aria-expanded` certo (#27) | W3C WAI-ARIA APG, "Disclosure (Show/Hide) Pattern" (https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/) |
+| O fragmento do endereço (`#...`) guarda o estado de uma página única; `pushState` e `popstate` cuidam do Voltar | Link direto `#aula-N` para cada aula (#22), sem servidor | MDN, "History API" (https://developer.mozilla.org/pt-BR/docs/Web/API/History_API) |
+
+**Backlog priorizado (impacto × esforço).**
+1. Axe no teste do navegador (critério 8): alto impacto, baixo esforço.
+2. Link direto para cada aula (#22, rótulo `mvp`): alto impacto, esforço médio.
+3. Busca apagada devolve os módulos (#27): médio impacto, baixo esforço.
+4. Marcar aula como concluída (#18): fica para o próximo ciclo.
+
+**Fora do escopo.** Login, certificado, progresso no servidor, mudar o conteúdo das aulas.
+
+### Engenharia
+
+**Arquitetura.** Site estático no GitHub Pages (modo legado, publica a `main` na raiz). Um `index.html` com as telas, `cursos.js` como fonte da grade e as aulas em `modulo-*/` carregadas num iframe. Testes Playwright servem o repositório com `http-server`.
+
+**Riscos.** O axe pode achar violações no conteúdo das aulas (iframe), que são 70 páginas; nesse caso, corrigir o que for do painel e abrir issue para o resto. O repositório é grande (cerca de 330 MB), e o CI usa sparse-checkout sem mídia.
+
+**Qualidade.** Axe sem violações WCAG A e AA em desktop. O app não tem tema escuro próprio (não há `prefers-color-scheme` no CSS), então não há teste no escuro. Teste de teclado já existe (Tab e Esc).
+
+**Definição de pronto.** `node scripts/verificar-conteudo.mjs` e `npm test` verdes no CI do PR; `npm audit --omit=dev` sem vulnerabilidades; `docs/MVP.md` com evidência real em cada "Atende".
+
+### Plano de ação
+
+Executa neste ciclo:
+- Teste com axe no fluxo principal (critério 8).
+- #22 link direto para cada aula, com testes.
+- #27 limpar a busca devolve os módulos, com teste.
+- `docs/DEPLOY.md` com o passo a passo do Pages.
+- `docs/MVP.md` e README atualizados.
+
+Vira issue ou segue em issue: #18 (concluída), #21 (vídeos, responsável), #24 (GIFs), #25 e #26 (decisões do responsável), ligar os alertas do Dependabot (responsável).
+
 ## Ciclo de 07/11/2026
 
 > Executado em 09/11/2026. Branch `feature/2026-11-07` → `developer/sprint-2026-11-12` → `main` (o PR para a `main` fica aberto para o responsável). Nível: Estudo (N1).
