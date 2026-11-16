@@ -821,6 +821,16 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Texto só para leitor de tela */
+        .so-leitor {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -1083,17 +1093,18 @@
 
                     const btnToggle = document.createElement("button");
                     btnToggle.className = "modulo-toggle";
-                    btnToggle.setAttribute("aria-label",
-                        `${modulo.titulo} — ${publicadas} de ${totalAulas} aulas publicadas`);
+                    // Sem aria-label: o nome vem do texto visível, e o "10/10" tem
+                    // uma versão por extenso só para o leitor de tela (WCAG 2.5.3).
                     btnToggle.innerHTML = `
                         <span class="modulo-toggle__rotulo">
                             <span class="modulo-toggle__nome">${modulo.titulo}</span>
-                            <span class="modulo-medidor">
+                            <span class="modulo-medidor" aria-hidden="true">
                                 <span class="modulo-medidor__barra"><span style="width:${proporcao}%"></span></span>
                                 ${publicadas}/${totalAulas}
                             </span>
+                            <span class="so-leitor">— ${publicadas} de ${totalAulas} aulas publicadas</span>
                         </span>
-                        <span class="seta-modulo">▼</span>`;
+                        <span class="seta-modulo" aria-hidden="true">▼</span>`;
                     btnToggle.setAttribute("aria-expanded", "false");
                     btnToggle.onclick = () => toggleModulo(modulo.id);
 

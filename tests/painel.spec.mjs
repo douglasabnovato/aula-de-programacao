@@ -16,7 +16,7 @@ test('a busca filtra as aulas e avisa quando não acha nada', async ({ page }) =
 test('abrir uma aula carrega o conteúdo e Esc volta ao painel', async ({ page }) => {
   await page.route('**/modulo-*/**', (r) => r.fulfill({ contentType: 'text/html', body: '<h1>Aula</h1>' }));
   await page.goto('/');
-  await page.locator('#menuList .modulo-toggle[aria-label*="aulas publicadas"]').first().click();
+  await page.getByRole('button', { name: /aulas publicadas/ }).first().click();
   await page.getByRole('link', { name: /^Aula 1: / }).first().click();
   await expect(page.locator('#aulaFrame')).toBeVisible();
   await page.keyboard.press('Escape');
@@ -25,7 +25,7 @@ test('abrir uma aula carrega o conteúdo e Esc volta ao painel', async ({ page }
 
 async function abrirPrimeiraAula(page) {
   await page.goto('/');
-  await page.locator('#menuList .modulo-toggle[aria-label*="aulas publicadas"]').first().click();
+  await page.getByRole('button', { name: /aulas publicadas/ }).first().click();
   await page.getByRole('link', { name: /^Aula 1: / }).first().click();
 }
 
@@ -60,11 +60,11 @@ test('em 375 px não há rolagem horizontal', async ({ page }) => {
 
 test('módulo fechado não deixa o Tab cair em aula invisível', async ({ page }) => {
   await page.goto('/');
-  const modulo = page.locator('#menuList .modulo-toggle[aria-label^="Módulo 1:"]');
+  const modulo = page.getByRole('button', { name: /^Módulo 1:/ });
   await expect(modulo).toHaveAttribute('aria-expanded', 'false');
   await modulo.focus();
   await page.keyboard.press('Tab');
-  await expect(page.locator('#menuList .modulo-toggle[aria-label^="Módulo 2:"]')).toBeFocused();
+  await expect(page.getByRole('button', { name: /^Módulo 2:/ })).toBeFocused();
   await modulo.focus();
   await page.keyboard.press('Enter');
   await expect(modulo).toHaveAttribute('aria-expanded', 'true');
