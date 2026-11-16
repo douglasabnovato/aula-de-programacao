@@ -4,7 +4,7 @@
 
 ## Estado e próximos passos (ciclo de 16/11/2026)
 
-**Estado:** Estudo (N1), 9 de 10 critérios aplicáveis atendidos; **Finalizado: sim**. Falta só o critério 9, que é do responsável: ligar os alertas do Dependabot (#33) e validar os vídeos de apoio (#21). A `main` exige PR e o job `verificar` do CI verde. Detalhes em [`docs/MVP.md`](docs/MVP.md).
+**Estado:** Estudo (N1), 9 de 10 critérios aplicáveis atendidos; **Finalizado: não**. Falta o critério 9: validar os vídeos de apoio (#21, responsável) e resolver os 8 alertas do Dependabot (todos do `vite` no `package.json` de uma atividade de aula, sem correção sem versão maior; #37). Os alertas foram ligados em 16/11/2026. A `main` exige PR e o job `verificar` do CI verde. Detalhes em [`docs/MVP.md`](docs/MVP.md).
 
 **No ar:** [douglasabnovato.github.io/aula-de-programacao](https://douglasabnovato.github.io/aula-de-programacao/) (HTTP 200 em 16/11/2026, igual à `main`).
 
@@ -17,7 +17,8 @@
 **Ciclos anteriores:** teste de ponta a ponta com a aula real (PR #32) e imagens abaixo de 500 KB (PR #28), na `main` desde 16/11/2026 (PR #30).
 
 **Próximos passos**
-- #33 Ligar os alertas do Dependabot (responsável).
+- #37 Resolver os 8 alertas do Dependabot que restam (atividade de aula com `vite` 5).
+- #33 Ligar os alertas do Dependabot (ligados pelo responsável em 16/11/2026; falta fechar a issue).
 - #21 Validar os vídeos de apoio (responsável).
 - #17 Validar com uma pessoa de fora (validação de produto, responsável).
 - #34 Rodar o axe em todas as aulas publicadas.
