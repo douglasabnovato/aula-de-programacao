@@ -25,6 +25,12 @@ jobs:
             /docs/
             /scripts/
             /tests/
+            /modulo-*/
+            !*.png
+            !*.jpg
+            !*.jpeg
+            !*.gif
+            !*.mp4
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v4
         with:
