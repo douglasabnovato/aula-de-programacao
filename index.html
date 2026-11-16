@@ -827,8 +827,12 @@
             position: absolute;
             width: 1px;
             height: 1px;
+            margin: -1px;
+            padding: 0;
+            border: 0;
             overflow: hidden;
             clip: rect(0 0 0 0);
+            clip-path: inset(50%);
             white-space: nowrap;
         }
     </style>
@@ -1028,7 +1032,12 @@
                 if (emAula || emVideo || emConstrucao || emErro) voltarHome();
             });
 
-            window.addEventListener("popstate", () => voltarHome());
+            // Endereço com #aula-N (colado na barra ou vindo do histórico) abre a
+            // aula; qualquer outro volta ao painel.
+            window.addEventListener("popstate", () => {
+                if (/^#aula-\d+$/.test(location.hash)) abrirAulaDoEndereco();
+                else voltarHome();
+            });
         }
 
         // Guarda a tela aberta no histórico, para o Voltar ter o que desfazer.
@@ -1309,8 +1318,11 @@
             if (!busca && abertosAntesDaBusca !== null) {
                 const abertos = abertosAntesDaBusca;
                 abertosAntesDaBusca = null;
+                // O módulo da aula aberta durante a busca também fica aberto.
                 modulos.forEach((m) => {
-                    if (m.querySelector(".aulas-sublist a")) marcarAberto(m, abertos.has(m.id));
+                    if (m.querySelector(".aulas-sublist a")) {
+                        marcarAberto(m, abertos.has(m.id) || !!m.querySelector(".aulas-sublist a.ativo"));
+                    }
                 });
             }
 
@@ -1408,7 +1420,7 @@
             document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
             document.getElementById('construcaoView').style.display = 'flex';
             atualizarMenuAtivo(elementoMenu);
-            marcarNoHistorico("em-construcao");
+            marcarNoHistorico(`aula-${numero}`);
         }
 
         function atualizarMenuAtivo(elementoMenu) {

@@ -24,7 +24,7 @@ curl -s https://douglasabnovato.github.io/aula-de-programacao/ | tr -d '\r' | md
 git show origin/main:index.html | tr -d '\r' | md5sum
 ```
 
-Os dois `md5sum` devem ser iguais. Um link direto de aula também deve abrir: https://douglasabnovato.github.io/aula-de-programacao/#aula-5
+Os dois `md5sum` devem ser iguais. O `git show` roda dentro de um clone do repositório, depois de `git fetch`. Um link direto de aula também deve abrir: https://douglasabnovato.github.io/aula-de-programacao/#aula-5
 
 ## Se o Pages for desligado (passo do responsável)
 

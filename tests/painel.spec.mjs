@@ -97,6 +97,7 @@ test('apagar a busca devolve os módulos ao estado de antes', async ({ page }) =
 
   await page.locator('#buscaAula').fill('arrays');
   await expect(modulo1).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#modulo-2')).toBeHidden();
   await page.locator('#buscaAula').fill('');
 
   await expect(modulo1).toHaveAttribute('aria-expanded', 'false');
@@ -141,4 +142,25 @@ test('#aula com número que não existe mostra o erro e o botão de voltar', asy
   await expect(voltar).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#welcomeView')).toBeVisible();
+});
+
+test('aula aberta durante a busca mantém o módulo aberto ao apagar o termo', async ({ page }) => {
+  await page.route('**/modulo-*/**', (r) => r.fulfill({ contentType: 'text/html', body: '<h1>Aula</h1>' }));
+  await page.goto('/');
+  await page.locator('#buscaAula').fill('Promises');
+  const link = page.getByRole('link', { name: /Assincronicidade e Promises/ }).first();
+  await link.click();
+  await page.locator('#buscaAula').fill('');
+  await expect(page.getByRole('button', { name: /^Módulo 1:/ })).toHaveAttribute('aria-expanded', 'true');
+  await expect(link).toBeVisible();
+});
+
+test('colar #aula-N na barra com o site aberto abre a aula', async ({ page }) => {
+  await page.route('**/modulo-*/**', (r) => r.fulfill({ contentType: 'text/html', body: '<h1>Aula</h1>' }));
+  await page.goto('/');
+  await expect(page.locator('#welcomeView')).toBeVisible();
+  await page.evaluate(() => { location.hash = '#aula-12'; });
+  await expect(page.locator('#aulaFrame')).toBeVisible();
+  await expect(page.locator('#aulaFrame')).toHaveAttribute('src', /modulo-2-frontend-moderno\/aula-12-props-comunicacao\/index\.html$/);
+  await expect(page).toHaveURL(/#aula-12$/);
 });

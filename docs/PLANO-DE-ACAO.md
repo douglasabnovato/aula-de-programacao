@@ -49,7 +49,7 @@ Executa neste ciclo:
 - `docs/DEPLOY.md` com o passo a passo do Pages.
 - `docs/MVP.md` e README atualizados.
 
-Vira issue ou segue em issue: #18 (concluída), #21 (vídeos, responsável), #24 (GIFs), #25 e #26 (decisões do responsável), ligar os alertas do Dependabot (responsável).
+Segue em issue: #18 (concluída), #21 (vídeos, responsável), #19 e #24 (mídia), #25 e #26 (decisões do responsável). Issues novas: #33 (ligar os alertas do Dependabot, responsável) e #34 (axe em todas as aulas).
 
 ## Ciclo de 07/11/2026
 
