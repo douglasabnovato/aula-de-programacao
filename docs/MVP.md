@@ -1,6 +1,6 @@
 # MVP — critérios
 
-> Fonte única do estado. Tabela atual de 16/11/2026 (ciclo de 16/11/2026, PR #35). As tabelas anteriores estão em "Histórico", no fim.
+> Fonte única do estado. Tabela atual de 16/11/2026 (ciclo de 16/11/2026, PR #35; critério 9 revisto às 12h40 de 16/11, com os alertas do Dependabot ligados, e às 14h45, com a ADR-0001). Revisto em 16/11/2026, 14h45. As tabelas anteriores estão em "Histórico", no fim.
 
 **Nível:** Estudo (N1). Critérios 5 (medição) e 7 (LCP no ar) não se aplicam e saem da conta.
 
@@ -10,7 +10,7 @@
 
 **Hipótese:** acreditamos que achar a aula pela busca ou por um link direto (`#aula-N`) e abri-la na mesma tela faz o aluno abrir uma aula. Meta: 1 em cada 3 visitantes abre uma aula (decisão D1 de 10/11/2026, revisável pelo responsável). Saberemos quando a validação com aluno (#17) ou uma medição de uso, fora do N1, mostrar essa proporção.
 
-Falta só o critério 9, que depende do responsável: ligar os alertas do Dependabot (#33) e validar os vídeos de apoio (#21), as duas com `depende-do-responsavel`. Antes deste ciclo, o resumo dizia 9 de 10, mas o critério 8 não tinha axe no navegador, como a régua pede: pela régua de hoje eram 8 de 10.
+Falta só o critério 9, e o que falta é do responsável: validar os vídeos de apoio (#21, com `depende-do-responsavel`). Os 8 alertas do Dependabot, todos do `vite` numa atividade de aula que não é instalada nem publicada, estão aceitos na [ADR-0001](adr/0001-aceitar-alertas-de-desenvolvimento.md) por ordem do responsável (16/11/2026). Por isso o Finalizado é "sim". Antes do ciclo de 16/11/2026, o resumo dizia 9 de 10, mas o critério 8 não tinha axe no navegador, como a régua pede: pela régua de hoje eram 8 de 10.
 
 | # | Critério | Como verificar | Situação em 16/11/2026 |
 |---|---|---|---|
@@ -22,12 +22,20 @@ Falta só o critério 9, que depende do responsável: ligar os alertas do Depend
 | 6 | Falhas tratadas | Erro, vazio e carregamento têm resposta clara | Atende: `npm test` no CI, run [43810626944](https://github.com/douglasabnovato/aula-de-programacao/actions/runs/43810626944) (16/11/2026), verde: aula com 404, sem rede com "Tentar de novo", busca vazia e `#aula-999` (aula que não existe) |
 | 7 | Desempenho aceitável | LCP de até 2,5 s no celular | Não se aplica (N1). Registro: 2,84 s em 02/11/2026 |
 | 8 | Acessibilidade básica | axe e teclado | Atende: `tests/acessibilidade.spec.mjs` no CI, run [43810626944](https://github.com/douglasabnovato/aula-de-programacao/actions/runs/43810626944) (16/11/2026), verde: axe WCAG A e AA sem violações, em 1280 px, com a grade real, no painel, na busca, na aula 5 real e na tela de erro. Teclado: "módulo fechado não deixa o Tab cair em aula invisível", Esc volta ao painel e o foco vai ao botão da tela de erro. O app não tem tema escuro próprio (não há `prefers-color-scheme`), por isso não há teste no escuro. As outras 69 aulas ainda sem axe (#34) |
-| 9 | Segurança e conformidade | `npm audit --omit=dev` e alertas do Dependabot pela API; sem segredo; dados pessoais decididos | Parcial: `npm audit --omit=dev`, 16/11/2026: 0 vulnerabilidades (não há dependência de produção). `gh api "repos/douglasabnovato/aula-de-programacao/dependabot/alerts?state=open&per_page=100"`, 16/11/2026: 403, alertas desligados; pela regra em decisão na engenharia#33, fica Parcial (#33 aqui liga os alertas). Sem dados pessoais nem segredo; YouTube no modo de privacidade. Falta validar os vídeos (#21) |
+| 9 | Segurança e conformidade | `npm audit --omit=dev` e alertas do Dependabot pela API; sem segredo; dados pessoais decididos | Parcial, só pelos vídeos (#21, responsável): `npm audit --omit=dev`, 16/11/2026: 0 vulnerabilidades (não há dependência de produção). `gh api "repos/douglasabnovato/aula-de-programacao/dependabot/alerts?state=open&per_page=100"` às 14h45 de 16/11/2026: 8 abertos (#1 a #8), 8 na [ADR-0001](adr/0001-aceitar-alertas-de-desenvolvimento.md), 0 corrigidos e 0 sem decisão. Todos são do `vite` (1 alta, 6 médias, 1 baixa) no `package.json` de `modulo-1-fundamentos/aula-1-js-ordenacao-reactjs/atividades/atividade-3/`, sem lockfile, fora do CI e do Pages (publicação sem build); `grep -c '"node_modules/vite"' package-lock.json` na raiz devolve 0. Sem dados pessoais nem segredo; YouTube no modo de privacidade. Falta validar os vídeos (#21) |
 | 10 | Entrega confiável | CI nos PRs e principal protegida | Atende: `gh api repos/douglasabnovato/aula-de-programacao/rules/branches/main`, 16/11/2026: `deletion`, `non_fast_forward`, `pull_request` e `required_status_checks` com o job `verificar`; o CI roda nos PRs para a `main` e a `developer/**` |
 | 11 | Testes dos fluxos críticos | Testes automatizados no CI, sem `skipped` | Atende: run [43810626944](https://github.com/douglasabnovato/aula-de-programacao/actions/runs/43810626944) (16/11/2026): `node scripts/verificar-conteudo.mjs` (70 aulas) e `npm test` com 18 testes Playwright, nenhum pulado |
 | 12 | Documentação honesta | Qualquer pessoa roda o projeto | Atende: README e `docs/DEPLOY.md` com os comandos do `package.json` e do `playwright.config.mjs`, revistos em 16/11/2026; `curl` em https://douglasabnovato.github.io/aula-de-programacao/, 16/11/2026: 200, e o `index.html` publicado é igual ao da `main` (md5) |
 
 ## Histórico
+
+### Revisão de 16/11/2026, 14h45 (ADR dos alertas)
+
+Ordem do responsável ("Regra geral por ADR"): os 8 alertas do `vite` ficam aceitos na ADR-0001, porque a atividade não é instalada no CI nem construída no Pages. O 9 segue "Parcial" só pelos vídeos (#21, `depende-do-responsavel`). Resumo segue 9 de 10; Finalizado de "não" para "sim".
+
+### Revisão de 16/11/2026, 12h40 (alertas do Dependabot)
+
+Antes: **Resumo** 9 de 10, **Finalizado:** sim, com o 9 em "Parcial" por alertas desligados (403, #33) e vídeos a validar (#21). Depois: alertas ligados, 8 abertos do `vite` numa atividade, sem correção sem versão maior (#37). O 9 segue "Parcial" e o Finalizado cai para "não". Resumo segue 9 de 10.
 
 ### Tabela de 10/11/2026 (ciclo da faixa de 90%)
 
