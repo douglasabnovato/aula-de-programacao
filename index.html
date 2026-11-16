@@ -821,6 +821,20 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Texto só para leitor de tela */
+        .so-leitor {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -934,7 +948,7 @@
                 <p id="erroAulaMotivo">Confira a conexão e tente de novo.</p>
                 <div class="erro-aula__acoes">
                     <button type="button" id="erroAulaTentar" class="erro-aula__botao">Tentar de novo</button>
-                    <button type="button" class="erro-aula__botao erro-aula__botao--secundario" onclick="voltarHome()">Voltar ao painel</button>
+                    <button type="button" id="erroAulaVoltar" class="erro-aula__botao erro-aula__botao--secundario" onclick="voltarHome()">Voltar ao painel</button>
                 </div>
             </div>
         </div>
@@ -975,7 +989,23 @@
             renderizarProgressoDaGrade();
             ligarAtalhosDeSaida();
             ligarPonteComOCatalogo();
+            abrirAulaDoEndereco();
         });
+
+        // Link direto (#22): "#aula-N" abre a aula N da grade ao carregar o site.
+        function abrirAulaDoEndereco() {
+            const achado = /^#aula-(\d+)$/.exec(location.hash);
+            if (!achado || typeof gradeCurricular === "undefined") return;
+            const numero = Number(achado[1]);
+            const aula = gradeCurricular.flatMap(m => m.aulas).find(a => a.numero === numero);
+            if (!aula) {
+                exibirErroDaAula(`A aula ${numero} não existe na grade.`, null, null);
+                return;
+            }
+            const link = document.querySelector(`.aulas-sublist a[data-aula="${numero}"]`);
+            if (aula.status === "construcao") exibirTelaEmConstrucao(aula.numero, aula.titulo, link);
+            else carregarAula(`${aula.pasta}/index.html`, link, numero);
+        }
 
         // Conta quantas aulas da grade já estão publicadas e mostra a proporção na home.
         function renderizarProgressoDaGrade() {
@@ -1002,7 +1032,12 @@
                 if (emAula || emVideo || emConstrucao || emErro) voltarHome();
             });
 
-            window.addEventListener("popstate", () => voltarHome());
+            // Endereço com #aula-N (colado na barra ou vindo do histórico) abre a
+            // aula; qualquer outro volta ao painel.
+            window.addEventListener("popstate", () => {
+                if (/^#aula-\d+$/.test(location.hash)) abrirAulaDoEndereco();
+                else voltarHome();
+            });
         }
 
         // Guarda a tela aberta no histórico, para o Voltar ter o que desfazer.
@@ -1083,17 +1118,18 @@
 
                     const btnToggle = document.createElement("button");
                     btnToggle.className = "modulo-toggle";
-                    btnToggle.setAttribute("aria-label",
-                        `${modulo.titulo} — ${publicadas} de ${totalAulas} aulas publicadas`);
+                    // Sem aria-label: o nome vem do texto visível, e o "10/10" tem
+                    // uma versão por extenso só para o leitor de tela (WCAG 2.5.3).
                     btnToggle.innerHTML = `
                         <span class="modulo-toggle__rotulo">
                             <span class="modulo-toggle__nome">${modulo.titulo}</span>
-                            <span class="modulo-medidor">
+                            <span class="modulo-medidor" aria-hidden="true">
                                 <span class="modulo-medidor__barra"><span style="width:${proporcao}%"></span></span>
                                 ${publicadas}/${totalAulas}
                             </span>
+                            <span class="so-leitor">— ${publicadas} de ${totalAulas} aulas publicadas</span>
                         </span>
-                        <span class="seta-modulo">▼</span>`;
+                        <span class="seta-modulo" aria-hidden="true">▼</span>`;
                     btnToggle.setAttribute("aria-expanded", "false");
                     btnToggle.onclick = () => toggleModulo(modulo.id);
 
@@ -1103,7 +1139,8 @@
                     modulo.aulas.forEach(aula => {
                         const liAula = document.createElement("li");
                         const aAula = document.createElement("a");
-                        aAula.href = "#";
+                        aAula.href = aula.status === "construcao" ? "#" : `#aula-${aula.numero}`;
+                        aAula.dataset.aula = aula.numero;
                         aAula.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
 
                         if (aula.status === "construcao") {
@@ -1117,7 +1154,7 @@
                             const caminhoCompleto = `${aula.pasta}/index.html`;
                             aAula.onclick = (e) => {
                                 e.preventDefault();
-                                carregarAula(caminhoCompleto, aAula);
+                                carregarAula(caminhoCompleto, aAula, aula.numero);
                                 fecharSidebarMobile();
                             };
                         }
@@ -1264,10 +1301,30 @@
 
         // Filtra os links de aula do menu enquanto o aluno digita. Módulo com
         // resultado abre sozinho; módulo sem resultado some da lista.
+        // Guarda quais módulos estavam abertos antes da busca, para devolver ao
+        // apagar o termo (#27).
+        let abertosAntesDaBusca = null;
+
         function filtrarMenu(termo) {
             const busca = normalizarTexto(termo);
             const modulos = document.querySelectorAll("#menuList .modulo-item");
             let encontrados = 0;
+
+            if (busca && abertosAntesDaBusca === null) {
+                abertosAntesDaBusca = new Set(
+                    [...modulos].filter((m) => m.classList.contains("ativo")).map((m) => m.id)
+                );
+            }
+            if (!busca && abertosAntesDaBusca !== null) {
+                const abertos = abertosAntesDaBusca;
+                abertosAntesDaBusca = null;
+                // O módulo da aula aberta durante a busca também fica aberto.
+                modulos.forEach((m) => {
+                    if (m.querySelector(".aulas-sublist a")) {
+                        marcarAberto(m, abertos.has(m.id) || !!m.querySelector(".aulas-sublist a.ativo"));
+                    }
+                });
+            }
 
             modulos.forEach((modulo) => {
                 const links = modulo.querySelectorAll(".aulas-sublist a");
@@ -1326,10 +1383,10 @@
 
         // O iframe não avisa quando a página dá 404 ou a rede cai: o load
         // dispara do mesmo jeito. Por isso o painel confere a aula antes.
-        async function carregarAula(caminhoArquivo, elementoMenu) {
+        async function carregarAula(caminhoArquivo, elementoMenu, numero) {
             esconderTodasAsTelas();
             atualizarMenuAtivo(elementoMenu);
-            marcarNoHistorico("aula");
+            marcarNoHistorico(numero ? `aula-${numero}` : "aula");
             let motivo = "";
             try {
                 const resposta = await fetch(caminhoArquivo, { method: "HEAD", cache: "no-store" });
@@ -1338,7 +1395,7 @@
                 motivo = "Sem conexão com o site. Confira a internet e tente de novo.";
             }
             if (motivo) {
-                exibirErroDaAula(motivo, caminhoArquivo, elementoMenu);
+                exibirErroDaAula(motivo, caminhoArquivo, elementoMenu, numero);
                 return;
             }
             const frame = document.getElementById('aulaFrame');
@@ -1346,12 +1403,16 @@
             frame.src = caminhoArquivo;
         }
 
-        function exibirErroDaAula(motivo, caminhoArquivo, elementoMenu) {
+        // Sem caminho (aula que não existe na grade), não há o que tentar de novo:
+        // o foco vai para "Voltar ao painel".
+        function exibirErroDaAula(motivo, caminhoArquivo, elementoMenu, numero) {
             esconderTodasAsTelas();
             document.getElementById("erroAulaMotivo").textContent = motivo;
-            document.getElementById("erroAulaTentar").onclick = () => carregarAula(caminhoArquivo, elementoMenu);
+            const tentar = document.getElementById("erroAulaTentar");
+            tentar.hidden = !caminhoArquivo;
+            tentar.onclick = caminhoArquivo ? () => carregarAula(caminhoArquivo, elementoMenu, numero) : null;
             document.getElementById("erroAulaView").style.display = "flex";
-            document.getElementById("erroAulaTentar").focus();
+            (caminhoArquivo ? tentar : document.getElementById("erroAulaVoltar")).focus();
         }
 
         function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
@@ -1359,7 +1420,7 @@
             document.getElementById('tituloAulaConstrucao').textContent = `Aula ${numero}: ${titulo} (Em Construção)`;
             document.getElementById('construcaoView').style.display = 'flex';
             atualizarMenuAtivo(elementoMenu);
-            marcarNoHistorico("em-construcao");
+            marcarNoHistorico(`aula-${numero}`);
         }
 
         function atualizarMenuAtivo(elementoMenu) {
@@ -1367,7 +1428,7 @@
             if (elementoMenu) {
                 elementoMenu.classList.add('ativo');
                 const moduloPai = elementoMenu.closest('.modulo-item');
-                if (moduloPai) moduloPai.classList.add('ativo');
+                if (moduloPai) marcarAberto(moduloPai, true);
             }
         }
 
