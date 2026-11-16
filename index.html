@@ -1275,10 +1275,27 @@
 
         // Filtra os links de aula do menu enquanto o aluno digita. Módulo com
         // resultado abre sozinho; módulo sem resultado some da lista.
+        // Guarda quais módulos estavam abertos antes da busca, para devolver ao
+        // apagar o termo (#27).
+        let abertosAntesDaBusca = null;
+
         function filtrarMenu(termo) {
             const busca = normalizarTexto(termo);
             const modulos = document.querySelectorAll("#menuList .modulo-item");
             let encontrados = 0;
+
+            if (busca && abertosAntesDaBusca === null) {
+                abertosAntesDaBusca = new Set(
+                    [...modulos].filter((m) => m.classList.contains("ativo")).map((m) => m.id)
+                );
+            }
+            if (!busca && abertosAntesDaBusca !== null) {
+                const abertos = abertosAntesDaBusca;
+                abertosAntesDaBusca = null;
+                modulos.forEach((m) => {
+                    if (m.querySelector(".aulas-sublist a")) marcarAberto(m, abertos.has(m.id));
+                });
+            }
 
             modulos.forEach((modulo) => {
                 const links = modulo.querySelectorAll(".aulas-sublist a");

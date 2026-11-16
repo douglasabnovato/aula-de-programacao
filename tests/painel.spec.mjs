@@ -86,3 +86,25 @@ test('o aluno busca "Promises", abre a aula real e volta ao painel', async ({ pa
   await page.keyboard.press('Escape');
   await expect(page.locator('#welcomeView')).toBeVisible();
 });
+
+// #27: apagar a busca devolve os módulos ao estado de antes
+test('apagar a busca devolve os módulos ao estado de antes', async ({ page }) => {
+  await page.goto('/');
+  const modulo1 = page.getByRole('button', { name: /^Módulo 1:/ });
+  const modulo2 = page.getByRole('button', { name: /^Módulo 2:/ });
+  await modulo2.click();
+  await expect(modulo2).toHaveAttribute('aria-expanded', 'true');
+
+  await page.locator('#buscaAula').fill('arrays');
+  await expect(modulo1).toHaveAttribute('aria-expanded', 'true');
+  await page.locator('#buscaAula').fill('');
+
+  await expect(modulo1).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#modulo-1 .aulas-sublist a').first()).toBeHidden();
+  await expect(modulo2).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#modulo-2 .aulas-sublist a').first()).toBeVisible();
+
+  await modulo1.click();
+  await expect(modulo1).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#modulo-1 .aulas-sublist a').first()).toBeVisible();
+});
