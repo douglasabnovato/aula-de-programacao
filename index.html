@@ -944,7 +944,7 @@
                 <p id="erroAulaMotivo">Confira a conexão e tente de novo.</p>
                 <div class="erro-aula__acoes">
                     <button type="button" id="erroAulaTentar" class="erro-aula__botao">Tentar de novo</button>
-                    <button type="button" class="erro-aula__botao erro-aula__botao--secundario" onclick="voltarHome()">Voltar ao painel</button>
+                    <button type="button" id="erroAulaVoltar" class="erro-aula__botao erro-aula__botao--secundario" onclick="voltarHome()">Voltar ao painel</button>
                 </div>
             </div>
         </div>
@@ -985,7 +985,23 @@
             renderizarProgressoDaGrade();
             ligarAtalhosDeSaida();
             ligarPonteComOCatalogo();
+            abrirAulaDoEndereco();
         });
+
+        // Link direto (#22): "#aula-N" abre a aula N da grade ao carregar o site.
+        function abrirAulaDoEndereco() {
+            const achado = /^#aula-(\d+)$/.exec(location.hash);
+            if (!achado || typeof gradeCurricular === "undefined") return;
+            const numero = Number(achado[1]);
+            const aula = gradeCurricular.flatMap(m => m.aulas).find(a => a.numero === numero);
+            if (!aula) {
+                exibirErroDaAula(`A aula ${numero} não existe na grade.`, null, null);
+                return;
+            }
+            const link = document.querySelector(`.aulas-sublist a[data-aula="${numero}"]`);
+            if (aula.status === "construcao") exibirTelaEmConstrucao(aula.numero, aula.titulo, link);
+            else carregarAula(`${aula.pasta}/index.html`, link, numero);
+        }
 
         // Conta quantas aulas da grade já estão publicadas e mostra a proporção na home.
         function renderizarProgressoDaGrade() {
@@ -1114,7 +1130,8 @@
                     modulo.aulas.forEach(aula => {
                         const liAula = document.createElement("li");
                         const aAula = document.createElement("a");
-                        aAula.href = "#";
+                        aAula.href = aula.status === "construcao" ? "#" : `#aula-${aula.numero}`;
+                        aAula.dataset.aula = aula.numero;
                         aAula.textContent = `Aula ${aula.numero}: ${aula.titulo}`;
 
                         if (aula.status === "construcao") {
@@ -1128,7 +1145,7 @@
                             const caminhoCompleto = `${aula.pasta}/index.html`;
                             aAula.onclick = (e) => {
                                 e.preventDefault();
-                                carregarAula(caminhoCompleto, aAula);
+                                carregarAula(caminhoCompleto, aAula, aula.numero);
                                 fecharSidebarMobile();
                             };
                         }
@@ -1354,10 +1371,10 @@
 
         // O iframe não avisa quando a página dá 404 ou a rede cai: o load
         // dispara do mesmo jeito. Por isso o painel confere a aula antes.
-        async function carregarAula(caminhoArquivo, elementoMenu) {
+        async function carregarAula(caminhoArquivo, elementoMenu, numero) {
             esconderTodasAsTelas();
             atualizarMenuAtivo(elementoMenu);
-            marcarNoHistorico("aula");
+            marcarNoHistorico(numero ? `aula-${numero}` : "aula");
             let motivo = "";
             try {
                 const resposta = await fetch(caminhoArquivo, { method: "HEAD", cache: "no-store" });
@@ -1366,7 +1383,7 @@
                 motivo = "Sem conexão com o site. Confira a internet e tente de novo.";
             }
             if (motivo) {
-                exibirErroDaAula(motivo, caminhoArquivo, elementoMenu);
+                exibirErroDaAula(motivo, caminhoArquivo, elementoMenu, numero);
                 return;
             }
             const frame = document.getElementById('aulaFrame');
@@ -1374,12 +1391,16 @@
             frame.src = caminhoArquivo;
         }
 
-        function exibirErroDaAula(motivo, caminhoArquivo, elementoMenu) {
+        // Sem caminho (aula que não existe na grade), não há o que tentar de novo:
+        // o foco vai para "Voltar ao painel".
+        function exibirErroDaAula(motivo, caminhoArquivo, elementoMenu, numero) {
             esconderTodasAsTelas();
             document.getElementById("erroAulaMotivo").textContent = motivo;
-            document.getElementById("erroAulaTentar").onclick = () => carregarAula(caminhoArquivo, elementoMenu);
+            const tentar = document.getElementById("erroAulaTentar");
+            tentar.hidden = !caminhoArquivo;
+            tentar.onclick = caminhoArquivo ? () => carregarAula(caminhoArquivo, elementoMenu, numero) : null;
             document.getElementById("erroAulaView").style.display = "flex";
-            document.getElementById("erroAulaTentar").focus();
+            (caminhoArquivo ? tentar : document.getElementById("erroAulaVoltar")).focus();
         }
 
         function exibirTelaEmConstrucao(numero, titulo, elementoMenu) {
@@ -1395,7 +1416,7 @@
             if (elementoMenu) {
                 elementoMenu.classList.add('ativo');
                 const moduloPai = elementoMenu.closest('.modulo-item');
-                if (moduloPai) moduloPai.classList.add('ativo');
+                if (moduloPai) marcarAberto(moduloPai, true);
             }
         }
 

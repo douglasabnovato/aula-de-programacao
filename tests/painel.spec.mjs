@@ -108,3 +108,37 @@ test('apagar a busca devolve os módulos ao estado de antes', async ({ page }) =
   await expect(modulo1).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#modulo-1 .aulas-sublist a').first()).toBeVisible();
 });
+
+// #22: link direto para cada aula
+test('abrir uma aula muda o endereço para #aula-N', async ({ page }) => {
+  await page.route('**/modulo-*/**', (r) => r.fulfill({ contentType: 'text/html', body: '<h1>Aula</h1>' }));
+  await page.goto('/');
+  await page.locator('#buscaAula').fill('Promises');
+  await page.getByRole('link', { name: /Assincronicidade e Promises/ }).first().click();
+  await expect(page.locator('#aulaFrame')).toBeVisible();
+  await expect(page).toHaveURL(/#aula-5$/);
+  await page.goBack();
+  await expect(page.locator('#welcomeView')).toBeVisible();
+  await expect(page.locator('#aulaFrame')).toBeHidden();
+});
+
+test('abrir o site com #aula-5 carrega a aula 5 com o módulo aberto, e Esc volta', async ({ page, context }) => {
+  await context.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
+  await page.goto('/#aula-5');
+  await expect(page.frameLocator('#aulaFrame').locator('h1')).toHaveText('Aula 5: Assincronicidade e Promises');
+  await expect(page.getByRole('button', { name: /^Módulo 1:/ })).toHaveAttribute('aria-expanded', 'true');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#welcomeView')).toBeVisible();
+  await expect(page).not.toHaveURL(/#/);
+});
+
+test('#aula com número que não existe mostra o erro e o botão de voltar', async ({ page }) => {
+  await page.goto('/#aula-999');
+  await expect(page.locator('#erroAulaView')).toBeVisible();
+  await expect(page.locator('#erroAulaMotivo')).toContainText('A aula 999 não existe');
+  await expect(page.locator('#erroAulaTentar')).toBeHidden();
+  const voltar = page.getByRole('button', { name: 'Voltar ao painel' });
+  await expect(voltar).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#welcomeView')).toBeVisible();
+});
