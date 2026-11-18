@@ -22,6 +22,7 @@ jobs:
             /*
             !/*/
             /.github/
+            /assets/
             /docs/
             /scripts/
             /tests/

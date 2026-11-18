@@ -21,7 +21,7 @@
 - #33 Ligar os alertas do Dependabot (ligados pelo responsável em 16/11/2026; falta fechar a issue).
 - #21 Validar os vídeos de apoio (responsável).
 - #17 Validar com uma pessoa de fora (validação de produto, responsável).
-- #34 Rodar o axe em todas as aulas publicadas.
+- #34 Rodar o axe em todas as aulas publicadas (feito em 18/11/2026, no PR da `feature/2026-11-18` para a `developer/sprint-2026-11-19`: 70 aulas, 0 violações; falta chegar à `main`).
 - #18 Marcar aula como concluída e continuar de onde parou.
 - #19 e #24 peso da mídia; #25 e #26 decisões do responsável sobre banners e histórico.
 
