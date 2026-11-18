@@ -5,7 +5,9 @@ import vm from 'node:vm';
 
 // Critério 8 do docs/MVP.md (#34): axe WCAG A e AA em todas as aulas com
 // status "disponivel" em cursos.js, abertas direto pela página da aula,
-// em largura de desktop. Fonte e vídeos de fora não entram no teste.
+// em largura de desktop. Fontes da web e vídeos externos ficam bloqueados.
+// O teste exige o assets/aula.css carregado: sem ele, o contraste seria medido
+// na página sem estilo e passaria sem medir nada.
 const regras = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
 const contexto = {};
@@ -27,6 +29,12 @@ for (const aula of aulas) {
     const resposta = await page.goto(`/${aula.pasta.replace(/\/$/, '')}/index.html`);
     expect(resposta.status()).toBe(200);
     await expect(page.locator('h1').first()).toBeVisible();
+    const regrasDoCss = await page.evaluate(() =>
+      [...document.styleSheets]
+        .filter((s) => s.href && s.href.endsWith('/assets/aula.css'))
+        .reduce((total, s) => total + s.cssRules.length, 0),
+    );
+    expect(regrasDoCss, 'assets/aula.css precisa carregar').toBeGreaterThan(0);
     const { violations } = await new AxeBuilder({ page }).withTags(regras).analyze();
     const lista = violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
     expect(lista).toEqual([]);
