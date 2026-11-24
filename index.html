@@ -460,6 +460,12 @@
             outline-offset: 2px;
         }
 
+        /* Foco visível na área principal, por dentro da borda para não ser cortado (#45). */
+        main:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: -3px;
+        }
+
         .rastro__sep {
             opacity: .5;
         }
@@ -865,7 +871,8 @@
         <p class="sidebar-vazio" id="menuVazio">Nenhuma aula encontrada.</p>
     </aside>
 
-    <main><!-- Home / Apresentação -->
+    <!-- A área principal rola no celular: tabindex="0" deixa o teclado chegar a ela e rolar com as setas (#45). -->
+    <main tabindex="0" aria-label="Conteúdo do painel"><!-- Home / Apresentação -->
         <div id="welcomeView" class="center-screen">
             <div class="content-card">
                 <span class="badge">Ecossistema learnTECH</span>
