@@ -47,3 +47,27 @@ test('axe: tela de erro da aula sem violações', async ({ page }) => {
   await expect(page.locator('#erroAulaView')).toBeVisible();
   expect(await violacoes(page)).toEqual([]);
 });
+
+test.describe('no celular (360 px)', () => {
+  test.use({ viewport: { width: 360, height: 800 } });
+
+  test('axe: painel inicial sem violações (#45)', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#gradeProgressoTexto')).toContainText('aulas publicadas');
+    expect(await violacoes(page)).toEqual([]);
+  });
+
+  test('teclado: a área principal recebe o foco e rola com as setas (#45)', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#gradeProgressoTexto')).toContainText('aulas publicadas');
+    const main = page.locator('main');
+    await main.focus();
+    await expect(main).toBeFocused();
+    const antes = await main.evaluate((e) => e.scrollTop);
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('PageDown');
+    await expect.poll(() => main.evaluate((e) => e.scrollTop)).toBeGreaterThan(antes);
+    // Foco visível: contorno de 3 px
+    expect(await main.evaluate((e) => getComputedStyle(e).outlineWidth)).toBe('3px');
+  });
+});
