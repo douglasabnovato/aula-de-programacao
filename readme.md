@@ -1,5 +1,23 @@
 # ⚡ Aula de Programação | da ByteClass para o Aluno
 
+O painel de ensino da ByteClass: 7 módulos e 70 aulas, com teoria, desafio e prática guiada, e um catálogo de 59 projetos.
+
+**▶ [Abrir o painel no ar](https://douglasabnovato.github.io/aula-de-programacao/)**
+
+## Experimente em 30 segundos
+1. Abra o painel no ar.
+2. Na busca, digite **Promises**.
+3. Abra a **Aula 5: Assincronicidade e Promises**. O link direto é [`#aula-5`](https://douglasabnovato.github.io/aula-de-programacao/#aula-5).
+
+## Telas
+
+| | Celular (360 px) | Computador (1440 px) |
+|---|---|---|
+| **Painel** | <img src="docs/telas/painel-celular.jpg" width="180" alt="Painel no celular: o menu e o cartão de boas-vindas da ByteClass"> | <img src="docs/telas/painel-computador.jpg" width="480" alt="Painel no computador: a barra lateral com a busca e os módulos, e o cartão de boas-vindas"> |
+| **Aula** | <img src="docs/telas/aula-celular.jpg" width="180" alt="Aula 5 no celular: o título e o desafio da central de entregas"> | <img src="docs/telas/aula-computador.jpg" width="480" alt="Aula 5 no computador: a lista de aulas do Módulo 1 ao lado do desafio, da explicação e dos links de leitura"> |
+
+As telas são de 24/11/2026, do build da `developer/sprint-2026-11-26`.
+
 > **Estado em 16/11/2026:** Publicado no GitHub Pages. Verificação: `node scripts/verificar-conteudo.mjs`, `npm ci`, `npx playwright install chromium` e `npm test`. O conteúdo das aulas não foi revisado uma a uma. Critérios em [docs/MVP.md](docs/MVP.md).
 
 ## Estado e próximos passos (ciclo de 16/11/2026)
